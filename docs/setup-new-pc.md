@@ -29,7 +29,7 @@ gh auth login
 
 デスクトップなど好きな場所で:
 ```powershell
-gh repo clone <GitHubユーザー名>/blog-workspace "ブログ作業場"
+gh repo clone b2bs61617-ops/blog-workspace "ブログ作業場"
 cd "ブログ作業場"
 ```
 
