@@ -63,6 +63,10 @@
 
 WordPressのアプリパスワード・Gemini APIキー・Google認証情報は **Gitに含めない**。`.env`(このリポジトリ直下)と`tools/Xi/xi_config.json`にローカル保存する。テンプレートは`.env.example`を参照。新しいPCでセットアップする際は、これらの値をパスワードマネージャーなど安全な経路で受け取り、ローカルに作成すること。
 
+## 新しいPCでのセットアップ
+
+新しいPCでこのリポジトリを使い始めるときは [docs/setup-new-pc.md](docs/setup-new-pc.md) を参照。
+
 ## 運用ルール(複数PC共有)
 
 - 作業を始める前に `git pull` して最新の状態にする。
