@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+}
+.container {
+  width: 1200px;
+  height: 630px;
+  background: #fdf0f0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  overflow: hidden;
+}
+.blob1 {
+  position: absolute;
+  width: 740px;
+  height: 740px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(239,154,154,0.75) 0%, rgba(206,147,216,0.55) 40%, transparent 70%);
+  opacity: 0.6;
+  right: -170px;
+  top: -170px;
+  filter: blur(58px);
+}
+.blob2 {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229,115,115,0.6) 0%, transparent 70%);
+  opacity: 0.42;
+  left: -90px;
+  bottom: -90px;
+  filter: blur(45px);
+}
+.blob3 {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,98,146,0.5) 0%, transparent 70%);
+  opacity: 0.45;
+  left: 340px;
+  top: -50px;
+  filter: blur(38px);
+}
+.top-text {
+  font-size: 36px;
+  font-weight: 700;
+  color: #3d3d3d;
+  letter-spacing: 0.12em;
+  z-index: 1;
+}
+.name {
+  font-size: 112px;
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: 0.1em;
+  z-index: 1;
+  text-align: center;
+  line-height: 1.05;
+}
+.bottom-text {
+  font-size: 35px;
+  font-weight: 700;
+  color: #2d2d2d;
+  letter-spacing: 0.03em;
+  z-index: 1;
+  text-align: center;
+  line-height: 1.65;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="top-text">AKB48 19期生</div>
+  <div class="name">花田 藍衣</div>
+  <div class="bottom-text">
+    彼氏はいる？特定ファントラブルの真相！<br>
+    AKB史上初の契約解除を徹底解説！
+  </div>
+</div>
+</body>
+</html>

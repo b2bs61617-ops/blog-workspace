@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 630px; overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif; }
+.container {
+  width: 1200px; height: 630px;
+  background: #f0eff5;
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 18px;
+  overflow: hidden;
+}
+.blob1 {
+  position: absolute; width: 750px; height: 750px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(149,117,205,0.65) 0%, rgba(100,181,246,0.5) 40%, transparent 70%);
+  opacity: 0.6; right: -180px; top: -180px; filter: blur(58px);
+}
+.blob2 {
+  position: absolute; width: 450px; height: 450px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,98,146,0.5) 0%, transparent 70%);
+  opacity: 0.45; left: -90px; bottom: -90px; filter: blur(45px);
+}
+.blob3 {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,182,172,0.4) 0%, transparent 70%);
+  opacity: 0.35; left: 350px; top: -60px; filter: blur(40px);
+}
+.top-text { font-size: 34px; font-weight: 700; color: #3d3d3d; letter-spacing: 0.12em; z-index: 1; }
+.name { font-size: 118px; font-weight: 900; color: #1a1a2e; letter-spacing: 0.06em; z-index: 1; text-align: center; line-height: 1.05; }
+.bottom-text { font-size: 36px; font-weight: 700; color: #2d2d2d; letter-spacing: 0.06em; z-index: 1; text-align: center; line-height: 1.65; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="top-text">Golden SixTONES ゲスト出演</div>
+  <div class="name">中森明菜</div>
+  <div class="bottom-text">GOSTでの喋り方がヤバい！<br>話し方に違和感の理由とは？</div>
+</div>
+</body>
+</html>

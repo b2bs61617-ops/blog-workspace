@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 630px; overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif; }
+.container {
+  width: 1200px; height: 630px;
+  background: #f5f0eb;
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 18px;
+  overflow: hidden;
+}
+.blob1 {
+  position: absolute; width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(129,212,250,0.7) 0%, rgba(165,214,167,0.6) 40%, transparent 70%);
+  opacity: 0.55; right: -150px; top: -150px; filter: blur(55px);
+}
+.blob2 {
+  position: absolute; width: 420px; height: 420px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(206,147,216,0.65) 0%, transparent 70%);
+  opacity: 0.45; left: -80px; bottom: -80px; filter: blur(42px);
+}
+.blob3 {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,238,88,0.5) 0%, transparent 70%);
+  opacity: 0.4; left: 350px; top: -60px; filter: blur(40px);
+}
+.top-text { font-size: 34px; font-weight: 700; color: #3d3d3d; letter-spacing: 0.12em; z-index: 1; }
+.name { font-size: 118px; font-weight: 900; color: #1a1a1a; letter-spacing: 0.1em; z-index: 1; text-align: center; line-height: 1.05; }
+.bottom-text { font-size: 36px; font-weight: 700; color: #2d2d2d; letter-spacing: 0.05em; z-index: 1; text-align: center; line-height: 1.65; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="top-text">モデル・タレント</div>
+  <div class="name">西山茉希</div>
+  <div class="bottom-text">長女が通った学校はどこ？<br>等々力小学校〜進学先中学校まで調査！</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 630px; overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif; }
+.container {
+  width: 1200px; height: 630px;
+  background: #f0faf5;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center; align-items: center;
+  overflow: hidden;
+}
+.blob1 {
+  position: absolute; width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(72,209,170,0.7) 0%, rgba(100,210,255,0.6) 40%, transparent 70%);
+  opacity: 0.55; right: -100px; top: -150px; filter: blur(55px);
+}
+.blob2 {
+  position: absolute; width: 420px; height: 420px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(180,255,200,0.65) 0%, transparent 70%);
+  opacity: 0.45; left: -80px; bottom: -80px; filter: blur(45px);
+}
+.blob3 {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,230,100,0.5) 0%, transparent 70%);
+  opacity: 0.35; left: 250px; top: -60px; filter: blur(40px);
+}
+.left {
+  z-index: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding-left: 80px;
+  flex: 1;
+  gap: 16px;
+}
+.main-text {
+  font-size: 90px; font-weight: 900; color: #1a3a2a;
+  letter-spacing: 0.04em; line-height: 1.1;
+}
+.sub-text {
+  font-size: 46px; font-weight: 700; color: #2d7a5a;
+  letter-spacing: 0.1em;
+}
+.right {
+  z-index: 1;
+  display: flex;
+  justify-content: center; align-items: center;
+  width: 420px;
+  padding-right: 40px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+
+  <!-- 左：テキスト -->
+  <div class="left">
+    <div class="main-text">ダイキュリー<br>アイス</div>
+    <div class="sub-text">作り方・再現レシピ</div>
+  </div>
+
+  <!-- 右：アイスクリームイラスト（SVG） -->
+  <div class="right">
+    <svg viewBox="0 0 220 340" width="320" height="480" xmlns="http://www.w3.org/2000/svg">
+      <!-- アイスクリームのスクープ（水色・ダイキュリーカラー） -->
+      <ellipse cx="110" cy="115" rx="88" ry="86" fill="#6ee0f5" opacity="0.92"/>
+      <ellipse cx="110" cy="110" rx="88" ry="86" fill="#5cd4ec" opacity="0.85"/>
+      <!-- ツヤ -->
+      <ellipse cx="85" cy="80" rx="28" ry="20" fill="white" opacity="0.35" transform="rotate(-20,85,80)"/>
+      <!-- ライムスライス（ダイキリのイメージ） -->
+      <circle cx="148" cy="88" r="32" fill="#a8e063" opacity="0.95"/>
+      <circle cx="148" cy="88" r="32" fill="none" stroke="#6ab22e" stroke-width="2"/>
+      <line x1="148" y1="58" x2="148" y2="118" stroke="#6ab22e" stroke-width="2"/>
+      <line x1="118" y1="88" x2="178" y2="88" stroke="#6ab22e" stroke-width="2"/>
+      <line x1="126" y1="67" x2="170" y2="109" stroke="#6ab22e" stroke-width="1.5"/>
+      <line x1="126" y1="109" x2="170" y2="67" stroke="#6ab22e" stroke-width="1.5"/>
+      <!-- コーン本体 -->
+      <polygon points="40,185 180,185 110,330" fill="#f5c060"/>
+      <!-- コーンの格子模様 -->
+      <line x1="75" y1="188" x2="110" y2="325" stroke="#d4a020" stroke-width="2.5"/>
+      <line x1="145" y1="188" x2="110" y2="325" stroke="#d4a020" stroke-width="2.5"/>
+      <line x1="57" y1="220" x2="163" y2="220" stroke="#d4a020" stroke-width="2"/>
+      <line x1="73" y1="255" x2="147" y2="255" stroke="#d4a020" stroke-width="2"/>
+      <line x1="89" y1="290" x2="131" y2="290" stroke="#d4a020" stroke-width="1.5"/>
+      <!-- コーンと接続部分のシャドウ -->
+      <ellipse cx="110" cy="185" rx="70" ry="10" fill="#c89010" opacity="0.3"/>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>

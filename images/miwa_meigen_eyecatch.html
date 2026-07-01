@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 630px; overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif; }
+.container {
+  width: 1200px; height: 630px;
+  background: #f8f5f0;
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 24px;
+  overflow: hidden;
+}
+/* 右上の大きな円（オレンジ） */
+.blob1 {
+  position: absolute;
+  width: 520px; height: 520px; border-radius: 50%;
+  background: #F5A623;
+  opacity: 0.88;
+  right: -80px; top: -80px;
+}
+/* 左下の中サイズ円（ピンク） */
+.blob2 {
+  position: absolute;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: #F28B82;
+  opacity: 0.80;
+  left: -60px; bottom: -60px;
+}
+/* 中央左の薄い重なり円 */
+.blob3 {
+  position: absolute;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: #FBBF67;
+  opacity: 0.45;
+  left: 160px; top: 80px;
+}
+.top-text {
+  font-size: 34px; font-weight: 600; color: #3a3a3a;
+  letter-spacing: 0.2em; z-index: 1;
+}
+.name {
+  font-size: 160px; font-weight: 900; color: #1a1a1a;
+  letter-spacing: 0.06em; z-index: 1; text-align: center; line-height: 1.0;
+}
+.bottom-text {
+  font-size: 36px; font-weight: 700; color: #3a3a3a;
+  letter-spacing: 0.06em; z-index: 1; text-align: center; line-height: 1.75;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="top-text">名言集</div>
+  <div class="name">美輪明宏</div>
+  <div class="bottom-text">辛い時に読みたい言葉10選<br>苦しい日を生き抜く名言</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,940 @@
+import tkinter as tk
+from tkinter import messagebox, filedialog, ttk
+import threading
+import asyncio
+import time
+import json
+from datetime import datetime
+from pathlib import Path
+import requests
+from io import BytesIO
+import re
+
+try:
+    from PIL import Image, ImageTk
+    PIL_OK = True
+except ImportError:
+    PIL_OK = False
+
+try:
+    from playwright.async_api import async_playwright
+    PLAYWRIGHT_OK = True
+except ImportError:
+    PLAYWRIGHT_OK = False
+
+try:
+    from google import genai as google_genai
+    GEMINI_OK = True
+except ImportError:
+    GEMINI_OK = False
+
+try:
+    import yt_dlp
+    YTDLP_OK = True
+except ImportError:
+    YTDLP_OK = False
+
+try:
+    from youtube_transcript_api import YouTubeTranscriptApi
+    YT_TRANSCRIPT_OK = True
+except ImportError:
+    YT_TRANSCRIPT_OK = False
+
+try:
+    from faster_whisper import WhisperModel
+    WHISPER_OK = True
+except ImportError:
+    WHISPER_OK = False
+
+PROFILE_DIR = str(Path.home() / "x_collector_profile")
+THUMB_SIZE = (150, 150)
+CONFIG_FILE = str(Path(__file__).parent / "xi_config.json")
+
+
+def x_full_size_url(url: str) -> str:
+    url = re.sub(r"name=\w+", "name=orig", url)
+    if "name=" not in url:
+        url += ("&" if "?" in url else "?") + "name=orig"
+    return url
+
+
+def detect_platform(url: str) -> str:
+    if "youtube.com" in url or "youtu.be" in url:
+        return "youtube"
+    if "instagram.com" in url:
+        return "instagram"
+    if "x.com/explore" in url or "twitter.com/explore" in url:
+        return "trending"
+    return "x"
+
+
+# ── 大画面ポップアップ ──
+def show_fullscreen(root, url):
+    popup = tk.Toplevel(root)
+    popup.title("画像プレビュー")
+    popup.configure(bg="black")
+    popup.bind("<Escape>", lambda e: popup.destroy())
+    popup.bind("<Button-1>", lambda e: popup.destroy())
+
+    lbl = tk.Label(popup, text="読み込み中...", bg="black", fg="white",
+                   font=("Arial", 14))
+    lbl.pack(expand=True)
+
+    def load():
+        try:
+            resp = requests.get(url, timeout=15)
+            img = Image.open(BytesIO(resp.content))
+            sw = root.winfo_screenwidth() - 60
+            sh = root.winfo_screenheight() - 60
+            img.thumbnail((sw, sh), Image.LANCZOS)
+            photo = ImageTk.PhotoImage(img)
+            popup.after(0, lambda: _show(photo))
+        except Exception:
+            popup.after(0, popup.destroy)
+
+    def _show(photo):
+        lbl.configure(image=photo, text="")
+        lbl.image = photo
+        popup.geometry(f"{photo.width()}x{photo.height()}")
+
+    threading.Thread(target=load, daemon=True).start()
+
+
+class ScrollableFrame(tk.Frame):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self._canvas = tk.Canvas(self, bg="white", highlightthickness=0)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=self._canvas.yview)
+        self.inner = tk.Frame(self._canvas, bg="white")
+        self.inner.bind("<Configure>",
+            lambda e: self._canvas.configure(scrollregion=self._canvas.bbox("all")))
+        self._canvas.create_window((0, 0), window=self.inner, anchor="nw")
+        self._canvas.configure(yscrollcommand=scrollbar.set)
+        self._canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self._canvas.bind("<MouseWheel>",
+            lambda e: self._canvas.yview_scroll(int(-1 * (e.delta / 120)), "units"))
+
+
+class PostCard(tk.Frame):
+    def __init__(self, parent, index, post, on_image_click=None, **kwargs):
+        super().__init__(parent, relief=tk.RIDGE, bd=1, bg="white", **kwargs)
+
+        header = tk.Frame(self, bg="#f0f4f8", padx=8, pady=4)
+        header.pack(fill=tk.X)
+        platform_label = "X" if post.get("platform") == "x" else "Instagram"
+        tk.Label(header,
+                 text=f"#{index}  [{platform_label}]  {post['date']}",
+                 fg="#333", bg="#f0f4f8", font=("Arial", 9, "bold")).pack(anchor=tk.W)
+
+        body = tk.Frame(self, bg="white", padx=8, pady=6)
+        body.pack(fill=tk.X)
+        if post["text"]:
+            tk.Label(body, text=post["text"],
+                     bg="white", font=("Arial", 10),
+                     wraplength=520, justify=tk.LEFT, anchor=tk.W).pack(anchor=tk.W)
+
+        if post["images"] and PIL_OK:
+            img_frame = tk.Frame(body, bg="white")
+            img_frame.pack(anchor=tk.W, pady=(6, 0))
+            for url in post["images"][:4]:
+                try:
+                    resp = requests.get(url, timeout=8)
+                    img = Image.open(BytesIO(resp.content))
+                    img.thumbnail(THUMB_SIZE, Image.LANCZOS)
+                    photo = ImageTk.PhotoImage(img)
+                    lbl = tk.Label(img_frame, image=photo, bg="white",
+                                   relief=tk.GROOVE, bd=1, cursor="hand2")
+                    lbl.image = photo
+                    if on_image_click:
+                        lbl.bind("<Button-1>", lambda e, u=url: on_image_click(u))
+                    lbl.pack(side=tk.LEFT, padx=3)
+                except Exception:
+                    pass
+        elif post["images"] and not PIL_OK:
+            tk.Label(body, text=f"画像 {len(post['images'])}枚（pip install Pillow が必要）",
+                     fg="gray", bg="white", font=("Arial", 9)).pack(anchor=tk.W)
+
+
+class CollectorApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Xiy")
+        self.root.geometry("860x800")
+        self.root.resizable(True, True)
+        self.is_running = False
+        self.collected_posts = []
+        self.youtube_posts = []
+        self.api_key_var = tk.StringVar()
+        self.setup_ui()
+        self.load_config()
+
+        if not PLAYWRIGHT_OK:
+            messagebox.showwarning("エラー",
+                "pip install playwright\nplaywright install chromium")
+        if not GEMINI_OK:
+            messagebox.showwarning("Gemini未導入",
+                "AI分析を使うには:\npip install google-genai")
+
+    def setup_ui(self):
+        # URL入力
+        url_frame = tk.LabelFrame(self.root, text="対象URL（X / Instagram / YouTube）",
+                                  padx=5, pady=5)
+        url_frame.pack(fill=tk.X, padx=10, pady=(10, 5))
+        self.url_entry = tk.Entry(url_frame, font=("Arial", 10))
+        self.url_entry.pack(fill=tk.X, expand=True)
+
+        # AI分析設定
+        ai_frame = tk.LabelFrame(self.root, text="AI分析設定（Gemini Flash）",
+                                 padx=5, pady=5)
+        ai_frame.pack(fill=tk.X, padx=10, pady=(0, 5))
+
+        tk.Label(ai_frame, text="Gemini APIキー:").grid(row=0, column=0, sticky=tk.W)
+        tk.Entry(ai_frame, textvariable=self.api_key_var,
+                 font=("Arial", 10), width=55, show="*").grid(row=0, column=1, padx=5, sticky=tk.W)
+        tk.Button(ai_frame, text="保存", command=self.save_config,
+                  width=5).grid(row=0, column=2, padx=3)
+
+        # ボタン群
+        bf = tk.Frame(self.root)
+        bf.pack(fill=tk.X, padx=10, pady=5)
+        self.start_btn = tk.Button(bf, text="▶ 収集開始", command=self.start_collection,
+            bg="#1DA1F2", fg="white", font=("Arial", 11, "bold"), width=14)
+        self.start_btn.pack(side=tk.LEFT, padx=5)
+        self.stop_btn = tk.Button(bf, text="■ 停止", command=self.stop_collection,
+            bg="#E0245E", fg="white", font=("Arial", 11, "bold"), width=14, state=tk.DISABLED)
+        self.stop_btn.pack(side=tk.LEFT, padx=5)
+        self.save_btn = tk.Button(bf, text="保存", command=self.save_results,
+            font=("Arial", 11), width=10, state=tk.DISABLED)
+        self.save_btn.pack(side=tk.LEFT, padx=5)
+        tk.Button(bf, text="クリア", command=self.clear_results,
+            font=("Arial", 11), width=10).pack(side=tk.LEFT, padx=5)
+        self.ai_btn = tk.Button(bf, text="再分析", command=self.analyze_with_ai,
+            bg="#34A853", fg="white", font=("Arial", 11, "bold"), width=10, state=tk.DISABLED)
+        self.ai_btn.pack(side=tk.LEFT, padx=5)
+
+        # ステータスバー
+        self.status_var = tk.StringVar(value="待機中...")
+        tk.Label(self.root, textvariable=self.status_var, anchor=tk.W,
+                 relief=tk.SUNKEN, bg="#f0f0f0", font=("Arial", 10)).pack(
+                 fill=tk.X, padx=10, pady=(0, 2))
+
+        # タブ
+        self.notebook = ttk.Notebook(self.root)
+        self.notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+
+        tab1 = tk.Frame(self.notebook)
+        self.notebook.add(tab1, text="  収集した投稿  ")
+        self.scroll_frame = ScrollableFrame(tab1)
+        self.scroll_frame.pack(fill=tk.BOTH, expand=True)
+
+        tab2 = tk.Frame(self.notebook)
+        self.notebook.add(tab2, text="  AI分析結果  ")
+        self.ai_result_text = tk.Text(tab2, font=("Arial", 10), wrap=tk.WORD,
+                                      state=tk.DISABLED, padx=8, pady=8)
+        ai_sb = ttk.Scrollbar(tab2, orient="vertical", command=self.ai_result_text.yview)
+        self.ai_result_text.configure(yscrollcommand=ai_sb.set)
+        self.ai_result_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        ai_sb.pack(side=tk.RIGHT, fill=tk.Y)
+
+        tab3 = tk.Frame(self.notebook)
+        self.notebook.add(tab3, text="  YouTube文字起こし  ")
+        self.yt_text = tk.Text(tab3, font=("Arial", 10), wrap=tk.WORD,
+                               state=tk.DISABLED, padx=8, pady=8)
+        yt_sb = ttk.Scrollbar(tab3, orient="vertical", command=self.yt_text.yview)
+        self.yt_text.configure(yscrollcommand=yt_sb.set)
+        self.yt_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        yt_sb.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # ── 設定の保存・読み込み ──
+    def load_config(self):
+        try:
+            with open(CONFIG_FILE, encoding="utf-8") as f:
+                config = json.load(f)
+                self.api_key_var.set(config.get("gemini_api_key", ""))
+        except Exception:
+            pass
+
+    def save_config(self):
+        config = {
+            "gemini_api_key": self.api_key_var.get().strip(),
+        }
+        try:
+            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                json.dump(config, f, ensure_ascii=False, indent=2)
+            messagebox.showinfo("保存完了", "設定を保存しました")
+        except Exception as e:
+            messagebox.showerror("保存エラー", str(e))
+
+    def start_collection(self):
+        url = self.url_entry.get().strip()
+        if not url:
+            messagebox.showwarning("URL未入力", "URLを入力してください。")
+            return
+        platform = detect_platform(url)
+
+        self.is_running = True
+        self.start_btn.config(state=tk.DISABLED)
+        self.stop_btn.config(state=tk.NORMAL)
+        self.save_btn.config(state=tk.DISABLED)
+        self.ai_btn.config(state=tk.DISABLED)
+        self.update_status("起動中...")
+
+        if platform == "youtube":
+            if not YTDLP_OK or not YT_TRANSCRIPT_OK:
+                missing = []
+                if not YTDLP_OK:
+                    missing.append("yt-dlp")
+                if not YT_TRANSCRIPT_OK:
+                    missing.append("youtube-transcript-api")
+                messagebox.showerror("ライブラリ不足",
+                    f"以下をインストールしてください:\npip install {' '.join(missing)}")
+                self.is_running = False
+                self.start_btn.config(state=tk.NORMAL)
+                self.stop_btn.config(state=tk.DISABLED)
+                return
+            self.youtube_posts = []
+            self.yt_text.config(state=tk.NORMAL)
+            self.yt_text.delete("1.0", tk.END)
+            self.yt_text.config(state=tk.DISABLED)
+            self.notebook.select(2)
+            threading.Thread(target=self._collect_youtube_sync, daemon=True).start()
+        else:
+            if not PLAYWRIGHT_OK:
+                messagebox.showerror("エラー", "Playwrightをインストールしてください。")
+                self.is_running = False
+                self.start_btn.config(state=tk.NORMAL)
+                self.stop_btn.config(state=tk.DISABLED)
+                return
+            self.collected_posts = []
+            for w in self.scroll_frame.inner.winfo_children():
+                w.destroy()
+            threading.Thread(target=lambda: asyncio.run(self._collect()), daemon=True).start()
+
+    def stop_collection(self):
+        self.is_running = False
+        self.update_status("停止中...")
+
+    def clear_results(self):
+        for w in self.scroll_frame.inner.winfo_children():
+            w.destroy()
+        self.collected_posts = []
+        self.youtube_posts = []
+        self.save_btn.config(state=tk.DISABLED)
+        self.ai_btn.config(state=tk.DISABLED)
+        self.ai_result_text.config(state=tk.NORMAL)
+        self.ai_result_text.delete("1.0", tk.END)
+        self.ai_result_text.config(state=tk.DISABLED)
+        self.yt_text.config(state=tk.NORMAL)
+        self.yt_text.delete("1.0", tk.END)
+        self.yt_text.config(state=tk.DISABLED)
+        self.update_status("待機中...")
+
+    async def _collect(self):
+        url = self.url_entry.get().strip()
+        platform = detect_platform(url)
+        try:
+            async with async_playwright() as p:
+                context = await p.chromium.launch_persistent_context(
+                    PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
+                    args=["--disable-blink-features=AutomationControlled"],
+                )
+                page = context.pages[0] if context.pages else await context.new_page()
+                self.update_status(f"[{platform.upper()}] ページを開いています...")
+                await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                await page.wait_for_timeout(3000)
+
+                if platform == "x":
+                    await self._collect_x(page)
+                elif platform == "trending":
+                    await self._collect_trending(page)
+                else:
+                    await self._collect_instagram(page)
+
+                await context.close()
+        except Exception as e:
+            self.root.after(0, lambda: messagebox.showerror("エラー", str(e)))
+        self._finish()
+
+    # ── トレンドページ収集 ──
+    async def _collect_trending(self, page):
+        self.update_status("トレンドページを解析中...")
+        await page.wait_for_timeout(4000)
+
+        # デバッグ用: ページHTMLをファイル保存
+        debug_path = str(Path(__file__).parent / "trending_debug.html")
+        try:
+            html = await page.content()
+            Path(debug_path).write_text(html, encoding="utf-8")
+        except Exception:
+            pass
+
+        # セレクタ候補を順番に試す
+        selectors = [
+            '[data-testid="trend"]',
+            'div[data-testid="trendingCell"]',
+            'div[role="button"] span[dir="ltr"]',
+        ]
+
+        items = []
+        for sel in selectors:
+            items = await page.query_selector_all(sel)
+            if items:
+                self.update_status(f"セレクタ '{sel}' で {len(items)}件 検出")
+                break
+
+        if not items:
+            self.update_status("トレンド要素が見つかりませんでした。trending_debug.htmlを確認してください。")
+            return
+
+        now_str = datetime.now().strftime("%Y/%m/%d %H:%M")
+        for item in items:
+            try:
+                text = (await item.inner_text()).strip()
+                if not text:
+                    continue
+                post = {"platform": "x", "date": now_str, "text": text, "images": []}
+                self.collected_posts.append(post)
+                self._add_card(len(self.collected_posts), post)
+            except Exception:
+                continue
+
+        self.update_status(f"トレンド取得完了: {len(self.collected_posts)}件")
+
+    # ── X収集 ──
+    async def _collect_x(self, page):
+        seen = set()
+        scroll_count = 0
+        last_new_time = time.monotonic()
+
+        while self.is_running:
+            articles = await page.query_selector_all('article[data-testid="tweet"]')
+            prev_article_count = len(articles)
+
+            for article in articles:
+                try:
+                    text_el = await article.query_selector('[data-testid="tweetText"]')
+                    text = (await text_el.inner_text()).strip() if text_el else ""
+                    if not text or text in seen:
+                        continue
+                    seen.add(text)
+
+                    time_el = await article.query_selector("time")
+                    date_str = ""
+                    if time_el:
+                        dt_attr = await time_el.get_attribute("datetime")
+                        if dt_attr:
+                            dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
+                            date_str = dt.strftime("%Y/%m/%d %H:%M")
+
+                    img_els = await article.query_selector_all('[data-testid="tweetPhoto"] img')
+                    img_urls = []
+                    for img_el in img_els:
+                        src = await img_el.get_attribute("src")
+                        if src:
+                            img_urls.append(x_full_size_url(src))
+
+                    post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
+                    self.collected_posts.append(post)
+                    self._add_card(len(self.collected_posts), post)
+                    last_new_time = time.monotonic()
+                except Exception:
+                    continue
+
+            await page.evaluate("window.scrollBy(0, 900)")
+            try:
+                await page.wait_for_function(
+                    f"document.querySelectorAll('article[data-testid=\"tweet\"]').length > {prev_article_count}",
+                    timeout=3000
+                )
+            except Exception:
+                await page.wait_for_timeout(400)
+
+            elapsed = int(time.monotonic() - last_new_time)
+            if elapsed >= 10:
+                break
+            self.update_status(
+                f"[X] 取得済み: {len(self.collected_posts)}件 ／ 新着待機: {elapsed}秒 / 10秒")
+            scroll_count += 1
+
+    # ── インスタのポップアップを自動で閉じる ──
+    async def _dismiss_instagram_popups(self, page):
+        for text in ["後で", "今はしない", "キャンセル"]:
+            try:
+                btn = page.get_by_role("button", name=text)
+                if await btn.is_visible():
+                    await btn.click()
+                    await page.wait_for_timeout(500)
+            except Exception:
+                pass
+
+    # ── Instagram収集（グリッドを左上から順にクリック） ──
+    async def _collect_instagram(self, page):
+        processed = set()
+        last_new_time = time.monotonic()
+
+        while self.is_running:
+            elapsed = int(time.monotonic() - last_new_time)
+            if elapsed >= 10:
+                break
+
+            links = await page.query_selector_all('a[href*="/p/"]')
+            new_links = []
+            for link in links:
+                href = await link.get_attribute("href")
+                if href and href not in processed:
+                    new_links.append((href, link))
+
+            if not new_links:
+                self.update_status(
+                    f"[Instagram] 取得済み: {len(self.collected_posts)}件 ／ 新着待機: {elapsed}秒 / 10秒")
+                await page.evaluate("window.scrollBy(0, 900)")
+                await page.wait_for_timeout(500)
+                continue
+
+            for href, link in new_links:
+                if not self.is_running:
+                    break
+                processed.add(href)
+
+                try:
+                    await self._dismiss_instagram_popups(page)
+                    await link.click()
+                    try:
+                        await page.wait_for_selector('div[role="dialog"]', timeout=5000)
+                    except Exception:
+                        await page.wait_for_timeout(800)
+                    await self._dismiss_instagram_popups(page)
+
+                    dialog = await page.query_selector('div[role="dialog"]')
+                    search_root = dialog if dialog else page
+
+                    img_urls = []
+                    for img in await search_root.query_selector_all("img"):
+                        src = await img.get_attribute("src") or ""
+                        if ("cdninstagram" in src or "fbcdn" in src) and not any(
+                            x in src for x in ["s150x150", "s32x32", "s48x48", "s75x75", "e0/p"]
+                        ):
+                            img_urls.append(src)
+
+                    caption = ""
+                    caption_selectors = [
+                        "ul > li:first-child span[dir='auto']",
+                        "h1",
+                        "article div[dir='auto'] > span",
+                        "ul li:first-child div span",
+                    ]
+                    for sel in caption_selectors:
+                        try:
+                            el = await search_root.query_selector(sel)
+                            if el:
+                                t = (await el.inner_text()).strip()
+                                if t and len(t) > 1:
+                                    caption = t
+                                    break
+                        except Exception:
+                            continue
+
+                    date_str = ""
+                    time_el = await search_root.query_selector("time")
+                    if time_el:
+                        dt_attr = await time_el.get_attribute("datetime")
+                        if dt_attr:
+                            dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
+                            date_str = dt.strftime("%Y/%m/%d %H:%M")
+
+                    if img_urls:
+                        post = {"platform": "instagram", "date": date_str,
+                                "text": caption, "images": img_urls[:4]}
+                        self.collected_posts.append(post)
+                        self._add_card(len(self.collected_posts), post)
+                        last_new_time = time.monotonic()
+                        self.update_status(
+                            f"[Instagram] 取得済み: {len(self.collected_posts)}件")
+
+                    await page.keyboard.press("Escape")
+                    await page.wait_for_timeout(300)
+
+                except Exception:
+                    await page.keyboard.press("Escape")
+                    await page.wait_for_timeout(200)
+                    continue
+
+            await page.evaluate("window.scrollBy(0, 900)")
+            await page.wait_for_timeout(400)
+
+    # ── YouTube文字起こし ──
+    def _extract_video_id(self, url):
+        for pattern in [r'[?&]v=([a-zA-Z0-9_-]{11})',
+                        r'youtu\.be/([a-zA-Z0-9_-]{11})',
+                        r'/shorts/([a-zA-Z0-9_-]{11})']:
+            m = re.search(pattern, url)
+            if m:
+                return m.group(1)
+        return None
+
+    def _collect_youtube_sync(self):
+        url = self.url_entry.get().strip()
+        try:
+            video_id = self._extract_video_id(url)
+            if video_id:
+                self.update_status("動画情報を取得中...")
+                try:
+                    ydl_opts = {"quiet": True, "no_warnings": True}
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        info = ydl.extract_info(
+                            f"https://www.youtube.com/watch?v={video_id}", download=False)
+                    title = info.get("title", video_id) if info else video_id
+                except Exception:
+                    title = video_id
+                videos = [{"id": video_id, "title": title}]
+            else:
+                self.update_status("チャンネルの動画一覧を取得中...")
+                videos = self._get_channel_videos(url)
+
+            if not videos:
+                self.root.after(0, lambda: messagebox.showwarning(
+                    "動画なし", "動画が見つかりませんでした。\nURLを確認してください。"))
+                self._finish_youtube(0)
+                return
+
+            total = len(videos)
+            self.update_status(f"動画 {total}件 を発見。文字起こしを開始します...")
+
+            for i, video in enumerate(videos, 1):
+                if not self.is_running:
+                    break
+                title = video.get("title", "(タイトル不明)")
+                vid_id = video.get("id", "")
+
+                transcript = self._get_transcript(vid_id, i, total, title) if vid_id else None
+                yt_post = {
+                    "index": i,
+                    "title": title,
+                    "id": vid_id,
+                    "url": f"https://www.youtube.com/watch?v={vid_id}",
+                    "transcript": transcript or "(字幕なし・取得不可)",
+                }
+                self.youtube_posts.append(yt_post)
+                self._append_youtube_card(yt_post)
+
+        except Exception as e:
+            self.root.after(0, lambda: messagebox.showerror("YouTubeエラー", str(e)))
+
+        self._finish_youtube(len(self.youtube_posts))
+
+    def _get_channel_videos(self, url):
+        ydl_opts = {
+            "extract_flat": "in_playlist",
+            "quiet": True,
+            "no_warnings": True,
+            "ignoreerrors": True,
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+        if not info:
+            return []
+        entries = info.get("entries") or []
+        return [
+            {"id": e["id"], "title": e.get("title", "")}
+            for e in entries if e and e.get("id")
+        ]
+
+    def _get_transcript(self, video_id, idx=0, total=0, title=""):
+        label = f"[{idx}/{total}] {title[:25]}"
+
+        # ① 字幕を試みる
+        if YT_TRANSCRIPT_OK:
+            self.update_status(f"{label} | 字幕を確認中...")
+            try:
+                transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+                for lang in ["ja", "en"]:
+                    try:
+                        t = transcript_list.find_transcript([lang])
+                        data = t.fetch()
+                        self.update_status(f"{label} | 字幕取得完了")
+                        return "[字幕] " + " ".join(item["text"] for item in data)
+                    except Exception:
+                        pass
+                for t in transcript_list:
+                    try:
+                        data = t.fetch()
+                        self.update_status(f"{label} | 字幕取得完了")
+                        return "[字幕] " + " ".join(item["text"] for item in data)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
+        # ② 字幕なし → Whisperで音声文字起こし
+        if WHISPER_OK:
+            self.update_status(f"{label} | 字幕なし → 音声文字起こしへ")
+            return self._whisper_transcribe(video_id, label)
+        return None
+
+    def _whisper_transcribe(self, video_id, label=""):
+        import tempfile
+        tmp_dir = Path(tempfile.gettempdir()) / "xi_audio"
+        tmp_dir.mkdir(exist_ok=True)
+        audio_base = tmp_dir / video_id
+
+        try:
+            # 音声ダウンロード（タイムアウト対策・リトライあり）
+            last_err = None
+            for attempt in range(3):
+                try:
+                    if attempt > 0:
+                        self.update_status(
+                            f"{label} | 音声DL リトライ {attempt}/2...")
+                    else:
+                        self.update_status(f"{label} | 音声をダウンロード中...")
+                    ydl_opts = {
+                        "format": "bestaudio[ext=m4a]/bestaudio",
+                        "outtmpl": str(audio_base) + ".%(ext)s",
+                        "quiet": True,
+                        "no_warnings": True,
+                        "socket_timeout": 60,
+                        "retries": 5,
+                        "fragment_retries": 5,
+                        "http_chunk_size": 1048576,
+                    }
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        ydl.download(
+                            [f"https://www.youtube.com/watch?v={video_id}"])
+                    last_err = None
+                    break
+                except Exception as e:
+                    last_err = e
+                    time.sleep(5)
+
+            if last_err:
+                return f"(音声DL失敗: {last_err})"
+
+            audio_files = list(tmp_dir.glob(f"{video_id}.*"))
+            if not audio_files:
+                return "(音声ファイルの取得に失敗)"
+            audio_file = audio_files[0]
+
+            # Whisperモデル（初回のみ読み込み）
+            if not hasattr(self, "_whisper_model"):
+                self.update_status(
+                    f"{label} | Whisperモデル読み込み中（初回のみ時間がかかります）...")
+                self._whisper_model = WhisperModel(
+                    "small", device="cpu", compute_type="int8")
+
+            self.update_status(f"{label} | Whisper 音声→テキスト変換中...")
+            segments, _ = self._whisper_model.transcribe(
+                str(audio_file), beam_size=5)
+            text = " ".join(seg.text.strip() for seg in segments)
+            self.update_status(f"{label} | 音声文字起こし完了")
+            return "[音声] " + text
+
+        except Exception as e:
+            return f"(音声文字起こし失敗: {e})"
+        finally:
+            for f in tmp_dir.glob(f"{video_id}.*"):
+                try:
+                    f.unlink()
+                except Exception:
+                    pass
+
+    def _append_youtube_card(self, yt_post):
+        def _do():
+            self.yt_text.config(state=tk.NORMAL)
+            self.yt_text.insert(tk.END,
+                f"━━━ [{yt_post['index']}] {yt_post['title']}\n"
+                f"{yt_post['url']}\n"
+                f"{yt_post['transcript']}\n\n")
+            self.yt_text.config(state=tk.DISABLED)
+            self.yt_text.see(tk.END)
+        self.root.after(0, _do)
+
+    def _finish_youtube(self, count):
+        def _done():
+            import winsound
+            self.is_running = False
+            self.start_btn.config(state=tk.NORMAL)
+            self.stop_btn.config(state=tk.DISABLED)
+            if count:
+                self.save_btn.config(state=tk.NORMAL)
+            self.status_var.set(f"文字起こし完了 {count}件")
+            winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
+        self.root.after(0, _done)
+
+    def _add_card(self, index, post):
+        self.root.after(0, lambda: PostCard(
+            self.scroll_frame.inner, index, post,
+            on_image_click=lambda u: show_fullscreen(self.root, u)
+        ).pack(fill=tk.X, pady=3, padx=4))
+
+    def update_status(self, msg):
+        self.root.after(0, lambda: self.status_var.set(msg))
+
+    def _finish(self):
+        def _done():
+            import winsound
+            self.is_running = False
+            self.start_btn.config(state=tk.NORMAL)
+            self.stop_btn.config(state=tk.DISABLED)
+            count = len(self.collected_posts)
+            if count:
+                self.save_btn.config(state=tk.NORMAL)
+                self.ai_btn.config(state=tk.NORMAL)
+            self.status_var.set(f"収集完了 {count}件 → AI分析を開始します...")
+            winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            # APIキーがあれば自動でAI分析、なければ通知して終了
+            if count and self.api_key_var.get().strip():
+                self.root.after(500, self.analyze_with_ai)
+            else:
+                if count and not self.api_key_var.get().strip():
+                    messagebox.showinfo("取得完了",
+                        f"{count}件取得しました。\nGemini APIキーを入力すると自動でAI分析が始まります。")
+                else:
+                    messagebox.showinfo("取得完了", f"{count}件の投稿を取得しました！")
+        self.root.after(0, _done)
+
+    # ── AI分析 ──
+    def analyze_with_ai(self):
+        if not GEMINI_OK:
+            messagebox.showerror("Gemini未導入",
+                "以下を実行してください:\npip install google-genai")
+            return
+        if not self.collected_posts:
+            messagebox.showwarning("データなし", "先に投稿を収集してください。")
+            return
+        api_key = self.api_key_var.get().strip()
+        if not api_key:
+            messagebox.showwarning("APIキー未入力", "Gemini APIキーを入力してください。")
+            return
+
+        self.ai_btn.config(state=tk.DISABLED)
+        self.update_status("AI分析中...")
+        threading.Thread(
+            target=lambda: self._run_ai_analysis(api_key), daemon=True).start()
+
+    def _run_ai_analysis(self, api_key):
+        MAX_CHARS = 30000
+        try:
+            posts_text = ""
+            for i, post in enumerate(self.collected_posts, 1):
+                platform = post.get("platform", "").upper()
+                posts_text += f"[投稿{i}] [{platform}] {post['date']}\n"
+                if post["text"]:
+                    posts_text += post["text"] + "\n"
+                posts_text += "\n"
+
+            truncated = False
+            if len(posts_text) > MAX_CHARS:
+                posts_text = posts_text[:MAX_CHARS]
+                truncated = True
+
+            prompt = f"""以下はある人物のSNS投稿一覧です。これらの投稿に含まれるプライベート情報をカテゴリ別に整理して抽出してください。
+
+【抽出するカテゴリ】
+1. 学歴（通っていた学校・大学・卒業年など）
+2. 誕生日・年齢
+3. 出身地・居住地・地元
+4. 家族構成（親・兄弟姉妹・子供など）
+5. 交際相手・婚姻状況
+6. 職業・所属・活動歴
+7. その他のプライベート情報
+
+【注意事項】
+- 投稿から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
+- 各情報の根拠となる投稿番号を【投稿〇】の形式で記載すること
+- 情報が見つからないカテゴリは「情報なし」と記載すること
+- 日本語で回答すること
+
+【SNS投稿一覧】
+{posts_text}"""
+
+            client = google_genai.Client(api_key=api_key)
+
+            result = None
+            for attempt in range(3):
+                try:
+                    if attempt > 0:
+                        wait_sec = attempt * 15
+                        self.root.after(0, lambda s=wait_sec: self.update_status(
+                            f"レート制限のため {s}秒待機してリトライ中..."))
+                        time.sleep(wait_sec)
+                    response = client.models.generate_content(
+                        model="gemini-2.0-flash",
+                        contents=prompt
+                    )
+                    result = response.text
+                    break
+                except Exception as e:
+                    if "429" in str(e) and attempt < 2:
+                        continue
+                    raise
+
+            if truncated:
+                result = f"※ 投稿が多すぎるため先頭{MAX_CHARS}文字のみ分析しました。\n\n" + result
+            self.root.after(0, lambda: self._show_ai_results(result))
+        except Exception as e:
+            self.root.after(0, lambda: messagebox.showerror("AI分析エラー", str(e)))
+        finally:
+            self.root.after(0, lambda: self.ai_btn.config(state=tk.NORMAL))
+            self.root.after(0, lambda: self.update_status(
+                f"AI分析完了 / 収集済み: {len(self.collected_posts)}件"))
+
+    def _show_ai_results(self, text):
+        self.ai_result_text.config(state=tk.NORMAL)
+        self.ai_result_text.delete("1.0", tk.END)
+        self.ai_result_text.insert(tk.END, text)
+        self.ai_result_text.config(state=tk.DISABLED)
+        self.notebook.select(1)
+
+    def save_results(self):
+        now = datetime.now().strftime("%Y%m%d_%H%M%S")
+        save_dir = filedialog.askdirectory(title="保存フォルダを選択")
+        if not save_dir:
+            return
+        save_path = Path(save_dir) / f"posts_{now}"
+        save_path.mkdir(exist_ok=True)
+        img_dir = save_path / "images"
+        img_dir.mkdir(exist_ok=True)
+
+        lines = []
+        for i, post in enumerate(self.collected_posts, 1):
+            platform = post.get("platform", "").upper()
+            lines.append(f"[{i}] [{platform}] {post['date']}")
+            if post["text"]:
+                lines.append(post["text"])
+            for j, img_url in enumerate(post["images"], 1):
+                try:
+                    resp = requests.get(img_url, timeout=15)
+                    img_file = img_dir / f"post_{i}_img_{j}.jpg"
+                    img_file.write_bytes(resp.content)
+                    lines.append(f"  画像: {img_file.name}")
+                except Exception:
+                    pass
+            lines.append("─" * 50)
+
+        (save_path / "posts.txt").write_text("\n".join(lines), encoding="utf-8")
+
+        # AI分析結果も保存
+        ai_text = self.ai_result_text.get("1.0", tk.END).strip()
+        if ai_text:
+            (save_path / "ai_analysis.txt").write_text(ai_text, encoding="utf-8")
+
+        # YouTube文字起こし保存
+        if self.youtube_posts:
+            yt_lines = []
+            for yt in self.youtube_posts:
+                yt_lines.append(f"[{yt['index']}] {yt['title']}")
+                yt_lines.append(yt["url"])
+                yt_lines.append(yt["transcript"])
+                yt_lines.append("─" * 50)
+            (save_path / "youtube_transcripts.txt").write_text(
+                "\n".join(yt_lines), encoding="utf-8")
+
+        messagebox.showinfo("保存完了", f"{save_path} に保存しました")
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = CollectorApp(root)
+    root.mainloop()
