@@ -72,4 +72,5 @@ WordPressのアプリパスワード・Gemini APIキー・Google認証情報は 
 
 - 作業を始める前に `git pull` して最新の状態にする。
 - 新しいスキル・ルールを学んだら、この`CLAUDE.md`か`.claude/skills/`・`docs/`に反映してから`git commit`し、`git push`まで必ず行う(2026-07-02にユーザーから指示があり、確認なしで自動push可に変更済み)。他のPCにすぐ反映されるようにするため。
+- `tools/`配下のツールコード(`x_collector.py`、`youtube_transcript.py`など)の変更も同様に、確認なしで自動`git commit`→`git push`する(2026-07-02にユーザーから指示)。マツが作ったツールは常にこのリポジトリ経由で4台のPCに自動配布される。
 - 自動メモリ(`~/.claude/projects/.../memory/`)はPCごとの個人メモなので、チーム共有が必要な内容はここに書かず、必ずこのリポジトリ内のファイルに書く。
