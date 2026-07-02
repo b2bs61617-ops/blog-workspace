@@ -184,6 +184,15 @@ class CollectorApp:
             messagebox.showwarning("Gemini未導入",
                 "AI分析を使うには:\npip install google-genai")
 
+    def _add_context_menu(self, entry):
+        menu = tk.Menu(entry, tearoff=0)
+        menu.add_command(label="切り取り", command=lambda: entry.event_generate("<<Cut>>"))
+        menu.add_command(label="コピー", command=lambda: entry.event_generate("<<Copy>>"))
+        menu.add_command(label="貼り付け", command=lambda: entry.event_generate("<<Paste>>"))
+        menu.add_separator()
+        menu.add_command(label="全て選択", command=lambda: entry.select_range(0, tk.END))
+        entry.bind("<Button-3>", lambda e: menu.tk_popup(e.x_root, e.y_root))
+
     def setup_ui(self):
         # URL入力
         url_frame = tk.LabelFrame(self.root, text="対象URL（X / Instagram / YouTube）",
@@ -191,6 +200,7 @@ class CollectorApp:
         url_frame.pack(fill=tk.X, padx=10, pady=(10, 5))
         self.url_entry = tk.Entry(url_frame, font=("Arial", 10))
         self.url_entry.pack(fill=tk.X, expand=True)
+        self._add_context_menu(self.url_entry)
 
         # AI分析設定
         ai_frame = tk.LabelFrame(self.root, text="AI分析設定（Gemini Flash）",
@@ -198,8 +208,10 @@ class CollectorApp:
         ai_frame.pack(fill=tk.X, padx=10, pady=(0, 5))
 
         tk.Label(ai_frame, text="Gemini APIキー:").grid(row=0, column=0, sticky=tk.W)
-        tk.Entry(ai_frame, textvariable=self.api_key_var,
-                 font=("Arial", 10), width=55, show="*").grid(row=0, column=1, padx=5, sticky=tk.W)
+        api_key_entry = tk.Entry(ai_frame, textvariable=self.api_key_var,
+                 font=("Arial", 10), width=55, show="*")
+        api_key_entry.grid(row=0, column=1, padx=5, sticky=tk.W)
+        self._add_context_menu(api_key_entry)
         tk.Button(ai_frame, text="保存", command=self.save_config,
                   width=5).grid(row=0, column=2, padx=3)
 
@@ -820,9 +832,19 @@ class CollectorApp:
             self.stop_btn.config(state=tk.DISABLED)
             if count:
                 self.save_btn.config(state=tk.NORMAL)
-            self.status_var.set(f"文字起こし完了 {count}件")
+                self.ai_btn.config(state=tk.NORMAL)
             winsound.MessageBeep(winsound.MB_ICONASTERISK)
-            messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
+            # APIキーがあれば自動でAI分析、なければ通知して終了
+            if count and self.api_key_var.get().strip():
+                self.status_var.set(f"文字起こし完了 {count}件 → AI分析を開始します...")
+                self.root.after(500, self.analyze_with_ai)
+            else:
+                self.status_var.set(f"文字起こし完了 {count}件")
+                if count and not self.api_key_var.get().strip():
+                    messagebox.showinfo("完了",
+                        f"{count}件の動画を文字起こしました！\nGemini APIキーを入力すると自動でAI分析が始まります。")
+                else:
+                    messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
         self.root.after(0, _done)
 
     def _add_card(self, index, post):
@@ -863,8 +885,8 @@ class CollectorApp:
             messagebox.showerror("Gemini未導入",
                 "以下を実行してください:\npip install google-genai")
             return
-        if not self.collected_posts:
-            messagebox.showwarning("データなし", "先に投稿を収集してください。")
+        if not self.collected_posts and not self.youtube_posts:
+            messagebox.showwarning("データなし", "先に投稿または動画を収集してください。")
             return
         api_key = self.api_key_var.get().strip()
         if not api_key:
@@ -880,19 +902,25 @@ class CollectorApp:
         MAX_CHARS = 30000
         try:
             posts_text = ""
-            for i, post in enumerate(self.collected_posts, 1):
+            i = 0
+            for post in self.collected_posts:
+                i += 1
                 platform = post.get("platform", "").upper()
-                posts_text += f"[投稿{i}] [{platform}] {post['date']}\n"
+                posts_text += f"[資料{i}] [{platform}] {post['date']}\n"
                 if post["text"]:
                     posts_text += post["text"] + "\n"
                 posts_text += "\n"
+            for yt in self.youtube_posts:
+                i += 1
+                posts_text += f"[資料{i}] [YouTube] {yt['title']}\n"
+                posts_text += yt["transcript"] + "\n\n"
 
             truncated = False
             if len(posts_text) > MAX_CHARS:
                 posts_text = posts_text[:MAX_CHARS]
                 truncated = True
 
-            prompt = f"""以下はある人物のSNS投稿一覧です。これらの投稿に含まれるプライベート情報をカテゴリ別に整理して抽出してください。
+            prompt = f"""以下はある人物のSNS投稿・YouTube動画の文字起こしです。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
 
 【抽出するカテゴリ】
 1. 学歴（通っていた学校・大学・卒業年など）
@@ -904,12 +932,12 @@ class CollectorApp:
 7. その他のプライベート情報
 
 【注意事項】
-- 投稿から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
-- 各情報の根拠となる投稿番号を【投稿〇】の形式で記載すること
+- 投稿・動画から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
+- 各情報の根拠となる資料番号を【資料〇】の形式で記載すること
 - 情報が見つからないカテゴリは「情報なし」と記載すること
 - 日本語で回答すること
 
-【SNS投稿一覧】
+【SNS投稿・YouTube動画文字起こし一覧】
 {posts_text}"""
 
             client = google_genai.Client(api_key=api_key)
@@ -941,7 +969,7 @@ class CollectorApp:
         finally:
             self.root.after(0, lambda: self.ai_btn.config(state=tk.NORMAL))
             self.root.after(0, lambda: self.update_status(
-                f"AI分析完了 / 収集済み: {len(self.collected_posts)}件"))
+                f"AI分析完了 / 収集済み: {len(self.collected_posts) + len(self.youtube_posts)}件"))
 
     def _show_ai_results(self, text):
         self.ai_result_text.config(state=tk.NORMAL)
