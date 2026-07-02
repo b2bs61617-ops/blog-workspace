@@ -57,7 +57,8 @@
 
 ## ツール
 
-- **Xi**(`tools/Xi/`): X/Instagram投稿収集ツール。`tools/Xi/起動.bat`で起動。SNS調査スキルで使用。
+- **Xi**(`tools/Xi/`): X/Instagram投稿収集 + YouTube文字起こしツール。`tools/Xi/起動.bat`で起動。SNS調査スキルで使用。
+  - YouTube文字起こしは「字幕優先(youtube-transcript-api)→無ければWhisper(faster-whisper)で音声文字起こし」の2段構成。GPUがあれば自動でCUDAを使い(無ければCPU int8)、複数動画処理時は字幕チェックの並列化・音声DLと文字起こしのパイプライン化で高速化してある(2026-07-02改良)。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 
 ## 秘密情報
