@@ -8,7 +8,7 @@ try {
     $prompt = ""
 }
 
-$keywords = @("今日はおしまい", "また明日ね", "また明日", "バイバイ", "またね")
+$keywords = @("今日はおしまい", "また明日ね", "また明日", "バイバイ", "またね", "お休み", "お疲れ様", "おつかれー")
 $matched = $false
 foreach ($k in $keywords) {
     if ($prompt -like "*$k*") {
