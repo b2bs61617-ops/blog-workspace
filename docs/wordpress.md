@@ -5,7 +5,7 @@
 | サイト | URL | 用途 | 認証情報(.envのキー) |
 |---|---|---|---|
 | トレンドブログ | https://chomoand.com | 時事・話題の記事 | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
-| オーディションブログ | https://chomoand-0.com | オーディション番組系の記事 | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
+| ジャニオタブログ | https://chomoand-0.com | オーディション番組系の記事 | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。

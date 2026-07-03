@@ -9,7 +9,7 @@
 運営サイトは3つあります(詳細は [docs/wordpress.md](docs/wordpress.md)):
 
 - **chomoand.com** — トレンドブログ(時事・話題)
-- **chomoand-0.com** — オーディションブログ
+- **chomoand-0.com** — ジャニオタブログ
 - **chomoand-1.com** — コイキーズブログ
 
 ## アシスタントの人格
