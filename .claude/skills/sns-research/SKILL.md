@@ -11,9 +11,9 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 
 **Why:** 大手・強いブロガーはSNSやYouTubeを深掘りしない。ここに差別化の余地がある。
 
-## 調査ツール: Xi
+## 調査ツール: Xiy
 
-`tools/Xi/起動.bat` で起動するX/Instagram投稿収集ツール(詳細は[reference/Xiツール](#xiツールの詳細)を参照)。人物のアカウントを指定すると投稿・画像・日時を一括収集できる。
+`tools/Xiy/起動.bat` で起動するX/Instagram投稿収集ツール(詳細は[reference/Xiyツール](#xiyツールの詳細)を参照)。人物のアカウントを指定すると投稿・画像・日時を一括収集できる。
 
 ## SNSから読み取れる情報の例
 
@@ -39,19 +39,19 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 
 ## 調査の流れ
 
-1. トレンド人物のX・Instagramアカウントを特定 → Xiツールで一括収集
+1. トレンド人物のX・Instagramアカウントを特定 → Xiyツールで一括収集
 2. 過去投稿・画像・コメントを時系列で遡って痕跡を探す
 3. YouTubeで本人出演動画を検索 → 文字起こしスキルでテキスト化して情報抽出
 4. 見つけた情報をずらし記事の根拠として使う
 
-**How to apply:** ずらし記事を書く前に必ずXi+YouTube文字起こしで対象人物を調査する。
+**How to apply:** ずらし記事を書く前に必ずXiy+YouTube文字起こしで対象人物を調査する。
 
-## Xiツールの詳細
+## Xiyツールの詳細
 
-- スクリプト: `tools/Xi/x_collector.py`
-- 起動ファイル: `tools/Xi/起動.bat`(ダブルクリックで起動)
+- スクリプト: `tools/Xiy/x_collector.py`
+- 起動ファイル: `tools/Xiy/起動.bat`(ダブルクリックで起動)
 - ブラウザプロファイル: `%USERPROFILE%\x_collector_profile`(ログイン情報保存。PCごとに個別に必要)
-- 設定ファイル: `tools/Xi/xi_config.json`(Gemini APIキー。Gitには含めない。`xi_config.json.example`参照)
+- 設定ファイル: `tools/Xiy/xiy_config.json`(Gemini APIキー。Gitには含めない。`xiy_config.json.example`参照)
 
 **機能:**
 - URLを貼り付けて「収集開始」→ 自動スクロール&収集

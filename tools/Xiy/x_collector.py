@@ -48,7 +48,7 @@ except ImportError:
 
 PROFILE_DIR = str(Path.home() / "x_collector_profile")
 THUMB_SIZE = (150, 150)
-CONFIG_FILE = str(Path(__file__).parent / "xi_config.json")
+CONFIG_FILE = str(Path(__file__).parent / "xiy_config.json")
 
 
 def x_full_size_url(url: str) -> str:
@@ -344,6 +344,9 @@ class CollectorApp:
                 await page.goto(url, wait_until="domcontentloaded", timeout=30000)
                 await page.wait_for_timeout(3000)
 
+                if platform == "x" and "/search" in url:
+                    await self._switch_to_latest_tab(page)
+
                 if platform == "x":
                     await self._collect_x(page)
                 elif platform == "trending":
@@ -401,6 +404,16 @@ class CollectorApp:
 
         self.update_status(f"トレンド取得完了: {len(self.collected_posts)}件")
 
+    # ── 検索結果ページ: 「おすすめ」ではなく「最新」タブに切り替える ──
+    async def _switch_to_latest_tab(self, page):
+        try:
+            tab = page.get_by_role("tab", name="最新")
+            if await tab.count():
+                await tab.first.click()
+                await page.wait_for_timeout(1500)
+        except Exception:
+            pass
+
     # ── X収集 ──
     async def _collect_x(self, page):
         seen = set()
@@ -408,31 +421,34 @@ class CollectorApp:
         last_new_time = time.monotonic()
 
         while self.is_running:
-            articles = await page.query_selector_all('article[data-testid="tweet"]')
+            articles = await page.query_selector_all('article[data-tweet-id]')
             prev_article_count = len(articles)
 
             for article in articles:
                 try:
-                    text_el = await article.query_selector('[data-testid="tweetText"]')
+                    text_el = await article.query_selector('div[dir="auto"]')
                     text = (await text_el.inner_text()).strip() if text_el else ""
-                    if not text or text in seen:
-                        continue
-                    seen.add(text)
 
-                    time_el = await article.query_selector("time")
-                    date_str = ""
-                    if time_el:
-                        dt_attr = await time_el.get_attribute("datetime")
-                        if dt_attr:
-                            dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
-                            date_str = dt.strftime("%Y/%m/%d %H:%M")
-
-                    img_els = await article.query_selector_all('[data-testid="tweetPhoto"] img')
+                    tweet_id = await article.get_attribute("data-tweet-id")
+                    img_els = await article.query_selector_all('img[src*="pbs.twimg.com/media"]')
                     img_urls = []
                     for img_el in img_els:
                         src = await img_el.get_attribute("src")
                         if src:
                             img_urls.append(x_full_size_url(src))
+
+                    if not text and not img_urls:
+                        continue
+                    dedup_key = tweet_id or text
+                    if dedup_key in seen:
+                        continue
+                    seen.add(dedup_key)
+
+                    date_str = ""
+                    if tweet_id:
+                        date_el = await article.query_selector(f'a[href$="/status/{tweet_id}"]')
+                        if date_el:
+                            date_str = (await date_el.inner_text()).strip()
 
                     post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
                     self.collected_posts.append(post)
@@ -444,7 +460,7 @@ class CollectorApp:
             await page.evaluate("window.scrollBy(0, 900)")
             try:
                 await page.wait_for_function(
-                    f"document.querySelectorAll('article[data-testid=\"tweet\"]').length > {prev_article_count}",
+                    f"document.querySelectorAll('article[data-tweet-id]').length > {prev_article_count}",
                     timeout=3000
                 )
             except Exception:
@@ -467,10 +483,32 @@ class CollectorApp:
                     await page.wait_for_timeout(500)
             except Exception:
                 pass
+        # 「登録する/ログイン」の未ログイン向け誘導ダイアログはEscapeで閉じる
+        # (閉じるボタンは固定ヘッダーに遮られてクリックできないため)。
+        # 投稿詳細ダイアログには「登録する」の文言がないので誤って閉じない。
+        try:
+            signup_dialog = page.locator('div[role="dialog"]', has_text="登録する")
+            if await signup_dialog.count():
+                await page.keyboard.press("Escape")
+                await page.wait_for_timeout(500)
+        except Exception:
+            pass
 
     # ── Instagram収集（グリッドを左上から順にクリック） ──
     async def _collect_instagram(self, page):
         processed = set()
+
+        if "instagram.com/accounts/" in page.url:
+            self.update_status("Instagramにログインしてください（ログイン完了まで待機します）...")
+            for _ in range(180):
+                if not self.is_running:
+                    return
+                await page.wait_for_timeout(1000)
+                if "instagram.com/accounts/" not in page.url:
+                    break
+            await page.wait_for_timeout(1500)
+
+        await self._dismiss_instagram_popups(page)
         last_new_time = time.monotonic()
 
         while self.is_running:
@@ -757,9 +795,19 @@ class CollectorApp:
             self.stop_btn.config(state=tk.DISABLED)
             if count:
                 self.save_btn.config(state=tk.NORMAL)
+                self.ai_btn.config(state=tk.NORMAL)
             self.status_var.set(f"文字起こし完了 {count}件")
             winsound.MessageBeep(winsound.MB_ICONASTERISK)
-            messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
+            # APIキーがあれば自動でAI分析、なければ通知して終了
+            if count and self.api_key_var.get().strip():
+                self.status_var.set(f"文字起こし完了 {count}件 → AI分析を開始します...")
+                self.root.after(500, self.analyze_with_ai)
+            else:
+                if count and not self.api_key_var.get().strip():
+                    messagebox.showinfo("完了",
+                        f"{count}件の動画を文字起こしました。\nGemini APIキーを入力すると自動でAI分析が始まります。")
+                else:
+                    messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
         self.root.after(0, _done)
 
     def _add_card(self, index, post):
@@ -800,8 +848,8 @@ class CollectorApp:
             messagebox.showerror("Gemini未導入",
                 "以下を実行してください:\npip install google-genai")
             return
-        if not self.collected_posts:
-            messagebox.showwarning("データなし", "先に投稿を収集してください。")
+        if not self.collected_posts and not self.youtube_posts:
+            messagebox.showwarning("データなし", "先に投稿または動画を収集してください。")
             return
         api_key = self.api_key_var.get().strip()
         if not api_key:
@@ -817,19 +865,25 @@ class CollectorApp:
         MAX_CHARS = 30000
         try:
             posts_text = ""
-            for i, post in enumerate(self.collected_posts, 1):
+            idx = 0
+            for post in self.collected_posts:
+                idx += 1
                 platform = post.get("platform", "").upper()
-                posts_text += f"[投稿{i}] [{platform}] {post['date']}\n"
+                posts_text += f"[投稿{idx}] [{platform}] {post['date']}\n"
                 if post["text"]:
                     posts_text += post["text"] + "\n"
                 posts_text += "\n"
+            for yt in self.youtube_posts:
+                idx += 1
+                posts_text += f"[投稿{idx}] [YOUTUBE] {yt.get('title', '')}\n"
+                posts_text += yt.get("transcript", "") + "\n\n"
 
             truncated = False
             if len(posts_text) > MAX_CHARS:
                 posts_text = posts_text[:MAX_CHARS]
                 truncated = True
 
-            prompt = f"""以下はある人物のSNS投稿一覧です。これらの投稿に含まれるプライベート情報をカテゴリ別に整理して抽出してください。
+            prompt = f"""以下はある人物のSNS投稿・YouTube文字起こしの一覧です。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
 
 【抽出するカテゴリ】
 1. 学歴（通っていた学校・大学・卒業年など）
@@ -846,7 +900,7 @@ class CollectorApp:
 - 情報が見つからないカテゴリは「情報なし」と記載すること
 - 日本語で回答すること
 
-【SNS投稿一覧】
+【投稿・文字起こし一覧】
 {posts_text}"""
 
             client = google_genai.Client(api_key=api_key)

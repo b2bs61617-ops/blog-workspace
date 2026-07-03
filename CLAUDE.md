@@ -45,7 +45,7 @@
 | [trend-research](.claude/skills/trend-research/SKILL.md) | 今日のトレンド・話題を調査する |
 | [tv-research](.claude/skills/tv-research/SKILL.md) | テレビ番組表から旬な出演者を調査する |
 | [trend-title](.claude/skills/trend-title/SKILL.md) | トレンド記事のタイトル・ずらし記事戦略 |
-| [sns-research](.claude/skills/sns-research/SKILL.md) | Xiツールでネットにない人物情報をSNSから掘る |
+| [sns-research](.claude/skills/sns-research/SKILL.md) | Xiyツールでネットにない人物情報をSNSから掘る |
 | [youtube-transcript](.claude/skills/youtube-transcript/SKILL.md) | YouTube動画の文字起こし取得(リサーチ用) |
 | [wiki-article](.claude/skills/wiki-article/SKILL.md) | 人物wiki・プロフィール・経歴記事の書き方 |
 | [gakureki-kazoku-kanojo](.claude/skills/gakureki-kazoku-kanojo/SKILL.md) | 学歴・家族構成・彼女記事の書き方 |
@@ -57,12 +57,12 @@
 
 ## ツール
 
-- **Xi**(`tools/Xi/`): X/Instagram投稿収集ツール。`tools/Xi/起動.bat`で起動。SNS調査スキルで使用。
+- **Xiy**(`tools/Xiy/`): X/Instagram投稿収集ツール。`tools/Xiy/起動.bat`で起動。SNS調査スキルで使用。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 
 ## 秘密情報
 
-WordPressのアプリパスワード・Gemini APIキー・Google認証情報は **Gitに含めない**。`.env`(このリポジトリ直下)と`tools/Xi/xi_config.json`にローカル保存する。テンプレートは`.env.example`を参照。新しいPCでセットアップする際は、これらの値をパスワードマネージャーなど安全な経路で受け取り、ローカルに作成すること。
+WordPressのアプリパスワード・Gemini APIキー・Google認証情報は **Gitに含めない**。`.env`(このリポジトリ直下)と`tools/Xiy/xiy_config.json`にローカル保存する。テンプレートは`.env.example`を参照。新しいPCでセットアップする際は、これらの値をパスワードマネージャーなど安全な経路で受け取り、ローカルに作成すること。
 
 ## 新しいPCでのセットアップ
 

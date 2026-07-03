@@ -44,16 +44,16 @@ notepad .env
 ```
 `WP_TREND_*` / `WP_AUDITION_*` / `WP_KOIKEYS_*` の3サイト分のURL・ユーザー名・アプリパスワードを入力する。
 
-**`tools/Xi/xi_config.json`**(`xi_config.json.example`をコピーして値を埋める):
+**`tools/Xiy/xiy_config.json`**(`xiy_config.json.example`をコピーして値を埋める):
 ```powershell
-Copy-Item tools\Xi\xi_config.json.example tools\Xi\xi_config.json
-notepad tools\Xi\xi_config.json
+Copy-Item tools\Xiy\xiy_config.json.example tools\Xiy\xiy_config.json
+notepad tools\Xiy\xiy_config.json
 ```
 `gemini_api_key`を入力する。
 
-## 6. Xiツールの動作環境(Python)
+## 6. Xiyツールの動作環境(Python)
 
-Xiツール(`tools/Xi/`)はPython 3.12を使う。未インストールなら:
+Xiyツール(`tools/Xiy/`)はPython 3.12を使う。未インストールなら:
 ```powershell
 winget install --id Python.Python.3.12 -e --source winget
 ```
@@ -64,14 +64,14 @@ py -3 -m playwright install chromium
 ```
 初回起動時にブラウザでX/Instagramへのログインを求められる。ログイン情報は`%USERPROFILE%\x_collector_profile`にPCごとに個別保存されるので、**PCごとに1回ログインが必要**。
 
-`tools/Xi/起動.bat`をダブルクリックすると起動する。
+`tools/Xiy/起動.bat`をダブルクリックすると起動する。
 
 ## 7. 動作確認
 
 - Claude Code(松)をリポジトリ直下(`ブログ作業場`フォルダ)で起動し、`CLAUDE.md`が読み込まれ「松」として振る舞うか確認する
 - `.claude/skills/`配下のスキル(例: wiki-article)を使う作業を試す
 - WordPress投稿テスト: `python wp_upload_batch.py`(対象記事を書き換えてから)、またはチャットで「ブログにアップして」と依頼して[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)が動くか確認
-- `tools/Xi/起動.bat`でXiツールが起動するか確認
+- `tools/Xiy/起動.bat`でXiyツールが起動するか確認
 
 ## 8. 日常の運用
 
