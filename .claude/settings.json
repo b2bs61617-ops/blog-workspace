@@ -11,12 +11,12 @@
         ]
       }
     ],
-    "Stop": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\knowledge-check.ps1\"",
+            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\farewell-check.ps1\"",
             "timeout": 10
           }
         ]
