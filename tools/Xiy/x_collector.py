@@ -4,6 +4,8 @@ import threading
 import asyncio
 import time
 import json
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 import requests
@@ -45,6 +47,12 @@ try:
     WHISPER_OK = True
 except ImportError:
     WHISPER_OK = False
+
+try:
+    import torch
+    CUDA_OK = torch.cuda.is_available()
+except ImportError:
+    CUDA_OK = False
 
 PROFILE_DIR = str(Path.home() / "x_collector_profile")
 THUMB_SIZE = (150, 150)
@@ -176,6 +184,15 @@ class CollectorApp:
             messagebox.showwarning("Gemini未導入",
                 "AI分析を使うには:\npip install google-genai")
 
+    def _add_context_menu(self, entry):
+        menu = tk.Menu(entry, tearoff=0)
+        menu.add_command(label="切り取り", command=lambda: entry.event_generate("<<Cut>>"))
+        menu.add_command(label="コピー", command=lambda: entry.event_generate("<<Copy>>"))
+        menu.add_command(label="貼り付け", command=lambda: entry.event_generate("<<Paste>>"))
+        menu.add_separator()
+        menu.add_command(label="全て選択", command=lambda: entry.select_range(0, tk.END))
+        entry.bind("<Button-3>", lambda e: menu.tk_popup(e.x_root, e.y_root))
+
     def setup_ui(self):
         # URL入力
         url_frame = tk.LabelFrame(self.root, text="対象URL（X / Instagram / YouTube）",
@@ -183,6 +200,7 @@ class CollectorApp:
         url_frame.pack(fill=tk.X, padx=10, pady=(10, 5))
         self.url_entry = tk.Entry(url_frame, font=("Arial", 10))
         self.url_entry.pack(fill=tk.X, expand=True)
+        self._add_context_menu(self.url_entry)
 
         # AI分析設定
         ai_frame = tk.LabelFrame(self.root, text="AI分析設定（Gemini Flash）",
@@ -190,8 +208,10 @@ class CollectorApp:
         ai_frame.pack(fill=tk.X, padx=10, pady=(0, 5))
 
         tk.Label(ai_frame, text="Gemini APIキー:").grid(row=0, column=0, sticky=tk.W)
-        tk.Entry(ai_frame, textvariable=self.api_key_var,
-                 font=("Arial", 10), width=55, show="*").grid(row=0, column=1, padx=5, sticky=tk.W)
+        api_key_entry = tk.Entry(ai_frame, textvariable=self.api_key_var,
+                 font=("Arial", 10), width=55, show="*")
+        api_key_entry.grid(row=0, column=1, padx=5, sticky=tk.W)
+        self._add_context_menu(api_key_entry)
         tk.Button(ai_frame, text="保存", command=self.save_config,
                   width=5).grid(row=0, column=2, padx=3)
 
@@ -630,6 +650,7 @@ class CollectorApp:
                 self.update_status("チャンネルの動画一覧を取得中...")
                 videos = self._get_channel_videos(url)
 
+            videos = [v for v in videos if v.get("id")]
             if not videos:
                 self.root.after(0, lambda: messagebox.showwarning(
                     "動画なし", "動画が見つかりませんでした。\nURLを確認してください。"))
@@ -637,24 +658,52 @@ class CollectorApp:
                 return
 
             total = len(videos)
-            self.update_status(f"動画 {total}件 を発見。文字起こしを開始します...")
+            self.update_status(f"動画 {total}件 を発見。字幕を確認中...")
 
-            for i, video in enumerate(videos, 1):
-                if not self.is_running:
-                    break
-                title = video.get("title", "(タイトル不明)")
-                vid_id = video.get("id", "")
+            idx_of = {v["id"]: i for i, v in enumerate(videos, 1)}
+            emitted = set()
 
-                transcript = self._get_transcript(vid_id, i, total, title) if vid_id else None
+            def emit(video, transcript):
+                vid_id = video["id"]
+                if vid_id in emitted:
+                    return
+                emitted.add(vid_id)
                 yt_post = {
-                    "index": i,
-                    "title": title,
+                    "index": idx_of[vid_id],
+                    "title": video.get("title", "(タイトル不明)"),
                     "id": vid_id,
                     "url": f"https://www.youtube.com/watch?v={vid_id}",
                     "transcript": transcript or "(字幕なし・取得不可)",
                 }
                 self.youtube_posts.append(yt_post)
                 self._append_youtube_card(yt_post)
+
+            # 字幕チェックはネットワーク待ちが主体なので複数動画をまとめて並列に確認する。
+            # 字幕が見つかった動画は取れ次第すぐ表示する
+            no_caption = []
+            with ThreadPoolExecutor(max_workers=min(6, total)) as ex:
+                futures = {
+                    ex.submit(self._get_caption_only, v["id"], i, total, v.get("title", "")): v
+                    for i, v in enumerate(videos, 1)
+                }
+                for fut in as_completed(futures):
+                    video = futures[fut]
+                    transcript = fut.result()
+                    if transcript:
+                        emit(video, transcript)
+                    elif self.is_running:
+                        no_caption.append(video)
+
+            # 字幕が無かった動画だけWhisperに回す。DLと文字起こしを重ねて待ち時間を削る
+            if no_caption and WHISPER_OK:
+                self._whisper_pipeline(no_caption, emit)
+
+            # 中断やWhisper未導入などで処理されなかった動画も欠かさず一覧に残す
+            for video in videos:
+                emit(video, None)
+
+            # 表示は結果が来た順だが、保存ファイル用に動画本来の並びへ揃える
+            self.youtube_posts.sort(key=lambda p: p["index"])
 
         except Exception as e:
             self.root.after(0, lambda: messagebox.showerror("YouTubeエラー", str(e)))
@@ -678,103 +727,129 @@ class CollectorApp:
             for e in entries if e and e.get("id")
         ]
 
-    def _get_transcript(self, video_id, idx=0, total=0, title=""):
+    def _get_caption_only(self, video_id, idx=0, total=0, title=""):
+        if not YT_TRANSCRIPT_OK:
+            return None
         label = f"[{idx}/{total}] {title[:25]}"
-
-        # ① 字幕を試みる
-        if YT_TRANSCRIPT_OK:
-            self.update_status(f"{label} | 字幕を確認中...")
-            try:
-                transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-                for lang in ["ja", "en"]:
-                    try:
-                        t = transcript_list.find_transcript([lang])
-                        data = t.fetch()
-                        self.update_status(f"{label} | 字幕取得完了")
-                        return "[字幕] " + " ".join(item["text"] for item in data)
-                    except Exception:
-                        pass
-                for t in transcript_list:
-                    try:
-                        data = t.fetch()
-                        self.update_status(f"{label} | 字幕取得完了")
-                        return "[字幕] " + " ".join(item["text"] for item in data)
-                    except Exception:
-                        pass
-            except Exception:
-                pass
-
-        # ② 字幕なし → Whisperで音声文字起こし
-        if WHISPER_OK:
-            self.update_status(f"{label} | 字幕なし → 音声文字起こしへ")
-            return self._whisper_transcribe(video_id, label)
+        self.update_status(f"{label} | 字幕を確認中...")
+        try:
+            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+            for lang in ["ja", "en"]:
+                try:
+                    data = transcript_list.find_transcript([lang]).fetch()
+                    self.update_status(f"{label} | 字幕取得完了")
+                    return "[字幕] " + " ".join(item["text"] for item in data)
+                except Exception:
+                    pass
+            for t in transcript_list:
+                try:
+                    data = t.fetch()
+                    self.update_status(f"{label} | 字幕取得完了")
+                    return "[字幕] " + " ".join(item["text"] for item in data)
+                except Exception:
+                    pass
+        except Exception:
+            pass
         return None
 
-    def _whisper_transcribe(self, video_id, label=""):
+    def _whisper_pipeline(self, videos, emit):
+        total = len(videos)
+
+        def label_of(video, idx):
+            return f"[音声 {idx}/{total}] {video.get('title', '')[:25]}"
+
+        dl_pool = ThreadPoolExecutor(max_workers=1)
+        try:
+            next_future = dl_pool.submit(self._download_audio, videos[0]["id"], label_of(videos[0], 1))
+            for i, video in enumerate(videos):
+                if not self.is_running:
+                    break
+                vid_id = video["id"]
+                label = label_of(video, i + 1)
+
+                # 今の動画をWhisperで処理する前に、次の動画の音声DLを裏で先行着手させておく
+                if i + 1 < len(videos):
+                    nxt = videos[i + 1]
+                    prefetch = dl_pool.submit(self._download_audio, nxt["id"], label_of(nxt, i + 2))
+                else:
+                    prefetch = None
+
+                try:
+                    audio_file = next_future.result()
+                    text = self._transcribe_audio_file(audio_file, label)
+                    emit(video, "[音声] " + text)
+                except Exception as e:
+                    emit(video, f"(音声文字起こし失敗: {e})")
+                finally:
+                    self._cleanup_audio(vid_id)
+
+                next_future = prefetch
+        finally:
+            dl_pool.shutdown(wait=False, cancel_futures=True)
+
+    def _download_audio(self, video_id, label=""):
         import tempfile
         tmp_dir = Path(tempfile.gettempdir()) / "xi_audio"
         tmp_dir.mkdir(exist_ok=True)
         audio_base = tmp_dir / video_id
 
-        try:
-            # 音声ダウンロード（タイムアウト対策・リトライあり）
-            last_err = None
-            for attempt in range(3):
-                try:
-                    if attempt > 0:
-                        self.update_status(
-                            f"{label} | 音声DL リトライ {attempt}/2...")
-                    else:
-                        self.update_status(f"{label} | 音声をダウンロード中...")
-                    ydl_opts = {
-                        "format": "bestaudio[ext=m4a]/bestaudio",
-                        "outtmpl": str(audio_base) + ".%(ext)s",
-                        "quiet": True,
-                        "no_warnings": True,
-                        "socket_timeout": 60,
-                        "retries": 5,
-                        "fragment_retries": 5,
-                        "http_chunk_size": 1048576,
-                    }
-                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                        ydl.download(
-                            [f"https://www.youtube.com/watch?v={video_id}"])
-                    last_err = None
-                    break
-                except Exception as e:
-                    last_err = e
-                    time.sleep(5)
+        last_err = None
+        for attempt in range(3):
+            try:
+                if attempt > 0:
+                    self.update_status(f"{label} | 音声DL リトライ {attempt}/2...")
+                else:
+                    self.update_status(f"{label} | 音声をダウンロード中...")
+                ydl_opts = {
+                    "format": "bestaudio[ext=m4a]/bestaudio",
+                    "outtmpl": str(audio_base) + ".%(ext)s",
+                    "quiet": True,
+                    "no_warnings": True,
+                    "socket_timeout": 60,
+                    "retries": 5,
+                    "fragment_retries": 5,
+                    "http_chunk_size": 1048576,
+                }
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
+                last_err = None
+                break
+            except Exception as e:
+                last_err = e
+                time.sleep(5)
 
-            if last_err:
-                return f"(音声DL失敗: {last_err})"
+        if last_err:
+            raise RuntimeError(f"音声DL失敗: {last_err}")
 
-            audio_files = list(tmp_dir.glob(f"{video_id}.*"))
-            if not audio_files:
-                return "(音声ファイルの取得に失敗)"
-            audio_file = audio_files[0]
+        audio_files = list(tmp_dir.glob(f"{video_id}.*"))
+        if not audio_files:
+            raise RuntimeError("音声ファイルの取得に失敗")
+        return audio_files[0]
 
-            # Whisperモデル（初回のみ読み込み）
-            if not hasattr(self, "_whisper_model"):
-                self.update_status(
-                    f"{label} | Whisperモデル読み込み中（初回のみ時間がかかります）...")
-                self._whisper_model = WhisperModel(
-                    "small", device="cpu", compute_type="int8")
+    def _transcribe_audio_file(self, audio_file, label=""):
+        if not hasattr(self, "_whisper_model"):
+            device = "cuda" if CUDA_OK else "cpu"
+            compute_type = "float16" if CUDA_OK else "int8"
+            self.update_status(f"{label} | Whisperモデル読み込み中（{device}・初回のみ時間がかかります）...")
+            self._whisper_model = WhisperModel(
+                "small", device=device, compute_type=compute_type,
+                cpu_threads=os.cpu_count() or 4)
 
-            self.update_status(f"{label} | Whisper 音声→テキスト変換中...")
-            segments, _ = self._whisper_model.transcribe(
-                str(audio_file), beam_size=5)
-            text = " ".join(seg.text.strip() for seg in segments)
-            self.update_status(f"{label} | 音声文字起こし完了")
-            return "[音声] " + text
+        self.update_status(f"{label} | Whisper 音声→テキスト変換中...")
+        segments, _ = self._whisper_model.transcribe(
+            str(audio_file), beam_size=5, vad_filter=True)
+        text = " ".join(seg.text.strip() for seg in segments)
+        self.update_status(f"{label} | 音声文字起こし完了")
+        return text
 
-        except Exception as e:
-            return f"(音声文字起こし失敗: {e})"
-        finally:
-            for f in tmp_dir.glob(f"{video_id}.*"):
-                try:
-                    f.unlink()
-                except Exception:
-                    pass
+    def _cleanup_audio(self, video_id):
+        import tempfile
+        tmp_dir = Path(tempfile.gettempdir()) / "xi_audio"
+        for f in tmp_dir.glob(f"{video_id}.*"):
+            try:
+                f.unlink()
+            except Exception:
+                pass
 
     def _append_youtube_card(self, yt_post):
         def _do():
@@ -796,16 +871,16 @@ class CollectorApp:
             if count:
                 self.save_btn.config(state=tk.NORMAL)
                 self.ai_btn.config(state=tk.NORMAL)
-            self.status_var.set(f"文字起こし完了 {count}件")
             winsound.MessageBeep(winsound.MB_ICONASTERISK)
             # APIキーがあれば自動でAI分析、なければ通知して終了
             if count and self.api_key_var.get().strip():
                 self.status_var.set(f"文字起こし完了 {count}件 → AI分析を開始します...")
                 self.root.after(500, self.analyze_with_ai)
             else:
+                self.status_var.set(f"文字起こし完了 {count}件")
                 if count and not self.api_key_var.get().strip():
                     messagebox.showinfo("完了",
-                        f"{count}件の動画を文字起こしました。\nGemini APIキーを入力すると自動でAI分析が始まります。")
+                        f"{count}件の動画を文字起こしました！\nGemini APIキーを入力すると自動でAI分析が始まります。")
                 else:
                     messagebox.showinfo("完了", f"{count}件の動画を文字起こしました！")
         self.root.after(0, _done)
@@ -865,25 +940,25 @@ class CollectorApp:
         MAX_CHARS = 30000
         try:
             posts_text = ""
-            idx = 0
+            i = 0
             for post in self.collected_posts:
-                idx += 1
+                i += 1
                 platform = post.get("platform", "").upper()
-                posts_text += f"[投稿{idx}] [{platform}] {post['date']}\n"
+                posts_text += f"[資料{i}] [{platform}] {post['date']}\n"
                 if post["text"]:
                     posts_text += post["text"] + "\n"
                 posts_text += "\n"
             for yt in self.youtube_posts:
-                idx += 1
-                posts_text += f"[投稿{idx}] [YOUTUBE] {yt.get('title', '')}\n"
-                posts_text += yt.get("transcript", "") + "\n\n"
+                i += 1
+                posts_text += f"[資料{i}] [YouTube] {yt['title']}\n"
+                posts_text += yt["transcript"] + "\n\n"
 
             truncated = False
             if len(posts_text) > MAX_CHARS:
                 posts_text = posts_text[:MAX_CHARS]
                 truncated = True
 
-            prompt = f"""以下はある人物のSNS投稿・YouTube文字起こしの一覧です。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
+            prompt = f"""以下はある人物のSNS投稿・YouTube動画の文字起こしです。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
 
 【抽出するカテゴリ】
 1. 学歴（通っていた学校・大学・卒業年など）
@@ -895,12 +970,12 @@ class CollectorApp:
 7. その他のプライベート情報
 
 【注意事項】
-- 投稿から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
-- 各情報の根拠となる投稿番号を【投稿〇】の形式で記載すること
+- 投稿・動画から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
+- 各情報の根拠となる資料番号を【資料〇】の形式で記載すること
 - 情報が見つからないカテゴリは「情報なし」と記載すること
 - 日本語で回答すること
 
-【投稿・文字起こし一覧】
+【SNS投稿・YouTube動画文字起こし一覧】
 {posts_text}"""
 
             client = google_genai.Client(api_key=api_key)
@@ -932,7 +1007,7 @@ class CollectorApp:
         finally:
             self.root.after(0, lambda: self.ai_btn.config(state=tk.NORMAL))
             self.root.after(0, lambda: self.update_status(
-                f"AI分析完了 / 収集済み: {len(self.collected_posts)}件"))
+                f"AI分析完了 / 収集済み: {len(self.collected_posts) + len(self.youtube_posts)}件"))
 
     def _show_ai_results(self, text):
         self.ai_result_text.config(state=tk.NORMAL)

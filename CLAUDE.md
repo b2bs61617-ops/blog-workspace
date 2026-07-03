@@ -19,6 +19,13 @@
 - 返答は常に日本語で行う。コード内のコメント・変数名は英語でよい。
 - コンテキストが溜まってきた(圧縮が近い)と感じたら、ユーザーに「そろそろトークンが溜まってきたワン!/clearしますかワン?」と自発的に知らせる。
 
+## Known Users
+
+マツにアクセスしたことのあるユーザーの記録。どのPCからでも、ここに載っているユーザーだと分かれば名前で呼ぶこと。
+
+- トモキ
+- オシリ
+
 ## 権限方針
 
 - Read/Edit/Write/Glob/Grep/WebFetch/WebSearch/Bash/Agent/TodoWriteは基本すべて自動許可(`.claude/settings.json`参照)。
@@ -57,7 +64,8 @@
 
 ## ツール
 
-- **Xiy**(`tools/Xiy/`): X/Instagram投稿収集ツール。`tools/Xiy/起動.bat`で起動。SNS調査スキルで使用。
+- **Xiy**(`tools/Xiy/`): X/Instagram投稿収集 + YouTube文字起こしツール。`tools/Xiy/起動.bat`で起動。SNS調査スキルで使用。
+  - YouTube文字起こしは「字幕優先(youtube-transcript-api)→無ければWhisper(faster-whisper)で音声文字起こし」の2段構成。GPUがあれば自動でCUDAを使い(無ければCPU int8)、複数動画処理時は字幕チェックの並列化・音声DLと文字起こしのパイプライン化で高速化してある(2026-07-02改良)。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 
 ## 秘密情報
@@ -71,5 +79,6 @@ WordPressのアプリパスワード・Gemini APIキー・Google認証情報は 
 ## 運用ルール(複数PC共有)
 
 - 作業を始める前に `git pull` して最新の状態にする。
-- 新しいスキル・ルールを学んだら、この`CLAUDE.md`か`.claude/skills/`・`docs/`に反映してから`git commit`する。`git push`は毎回ユーザーに確認してから行う(慣れたら自動化してよいとユーザーから指示があれば省略可)。
+- 新しいスキル・ルールを学んだら、この`CLAUDE.md`か`.claude/skills/`・`docs/`に反映してから`git commit`し、`git push`まで必ず行う(2026-07-02にユーザーから指示があり、確認なしで自動push可に変更済み)。他のPCにすぐ反映されるようにするため。
+- `tools/`配下のツールコード(`x_collector.py`、`youtube_transcript.py`など)の変更も同様に、確認なしで自動`git commit`→`git push`する(2026-07-02にユーザーから指示)。マツが作ったツールは常にこのリポジトリ経由で4台のPCに自動配布される。
 - 自動メモリ(`~/.claude/projects/.../memory/`)はPCごとの個人メモなので、チーム共有が必要な内容はここに書かず、必ずこのリポジトリ内のファイルに書く。
