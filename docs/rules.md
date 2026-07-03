@@ -44,6 +44,33 @@
 - 地図は「どんな学校?」capboxブロックの直後か、H3セクションの末尾に配置するのが自然。
 - 適用場面: 出身高校・中学・小学校、アルバイト先・活動拠点、出身市区町村、番組ロケ地(公開されている場合)など。
 
+## 画像埋め込みルール(SNS由来の画像を使う場合)
+
+X(Twitter)やInstagramなどSNS上の画像を記事に使う場合の手順:
+
+1. 元ツイート/投稿から画像URLを取得する(取得方法は下記「Xの投稿を軽く1件だけ調べたい場合」参照)。
+2. 画像をダウンロードし、`POST {サイトURL}/wp-json/wp/v2/media`でWordPressのメディアライブラリにアップロードする。
+3. アップロード後にWordPressが自動生成する`medium`/`large`などのサイズURL(`media_details.sizes`)を使う。**オリジナルの巨大画像(`full`)をそのまま`width`/`height`固定で埋め込むと、記事本文エリアの幅からはみ出して見切れる。**
+4. 埋め込みは以下の型を使う(`large`サイズを基準にsrcsetで縮小版も指定し、`style="max-width:100%;height:auto;"`でレスポンシブにする):
+   ```html
+   <figure class="wp-block-image size-large">
+     <img src="{large画像URL}" alt="説明" width="{large幅}" height="{large高さ}"
+       style="max-width:100%;height:auto;"
+       srcset="{medium画像URL} {medium幅}w, {large画像URL} {large幅}w, {full画像URL} {full幅}w"
+       sizes="(max-width: 1024px) 100vw, 1024px">
+     <figcaption>出典:{投稿者表示名}(@{アカウントID}) {投稿URL}</figcaption>
+   </figure>
+   ```
+5. **画像の下に必ず`<figcaption>`で出典(投稿者名・アカウントID・投稿URL)を明記する。** ユーザーから出典URLの指定がない場合は、記事に使う前に必ず確認する。
+
+## Xの投稿を軽く1件だけ調べたい場合
+
+`x.com`のツイートURLはWebFetchで直接取得しようとすると402エラーになりやすい。1件のツイートのテキスト・投稿者名・投稿日時・画像URル(原寸)だけサクッと知りたい場合は、Xiyツールを起動しなくても`https://api.fxtwitter.com/{ユーザー名}/status/{ID}`をWebFetchすれば取得できる。画像は`https://pbs.twimg.com/media/xxxxx.jpg?name=orig`の形で原寸URLが返る。複数投稿をまとめて深掘りする調査には引き続き[sns-researchスキル](../.claude/skills/sns-research/SKILL.md)のXiyツールを使う。
+
+## 絵文字について
+
+WordPress記事本文で絵文字(🔵❤️💚など)がうまく表示されない場合がある。色や項目を表す際は絵文字ではなく、文字(色名・太字・括弧書きなど)で表現する。
+
 ## 文体ルール
 
 - 句点(。)で文が終わったら必ず`<br>`で改行を入れる。

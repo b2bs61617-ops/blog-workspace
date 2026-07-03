@@ -5,7 +5,7 @@
 | サイト | URL | 用途 | 認証情報(.envのキー) |
 |---|---|---|---|
 | トレンドブログ | https://chomoand.com | 時事・話題の記事 | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
-| ジャニオタブログ | https://chomoand-0.com | オーディション番組系の記事 | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
+| ジャニオタブログ | https://chomoand-0.com | ジャニーズ系記事全般(オーディション番組系だけでなく、グループ・メンバー個人の話題・ファンクラブ情報なども含む) | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。
@@ -31,6 +31,10 @@
 ## サイトマップに関する既知の問題
 
 サイトマッププラグインが2個入っていて競合・不具合が発生していたため削除対応済み。今後サイトマップ関連の作業をする際は、プラグインが1個だけになっているか確認し、再度2個入れないよう注意する。
+
+## 既知の問題: gen_eyecatch_batch.pyの秘密情報ハードコード
+
+`gen_eyecatch_batch.py`(リポジトリ直下)にWP_TREND_URL/WP_USER/WP_PASS(実際のアプリパスワード)が平文でハードコードされたままGit管理下にある(2026-07-03時点で確認、初回コミットから存在)。`.env`は`.gitignore`済みだが、このファイルだけ素通しになっている。プライベートリポジトリではあるが複数人・複数PC共有のため、今後このファイルを触る機会があれば`wp_upload_batch.py`と同様に`.env`からの読み込み方式に直し、ハードコードされた値を削除するのが望ましい。気づいた時点でこの注記だけ残し、指示なく秘密情報を含むファイルの修正・コミットはしないこと。
 
 ## Search Console
 
