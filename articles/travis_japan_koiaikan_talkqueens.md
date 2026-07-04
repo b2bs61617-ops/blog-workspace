@@ -6,6 +6,11 @@
 
 この記事では、放送内容や3人それぞれの発言、女性陣の反応まで詳しくまとめます。
 
+<figure class="wp-block-image size-large">
+<img src="https://chomoand-0.com/wp-content/uploads/2026/07/travis_japan_talkqueens_tweet-1024x576.jpg" alt="トークィーンズ2月22日放送Travis Japan恋愛観ヤバすぎアイドル告知画像" width="1024" height="576" style="max-width:100%;height:auto;" srcset="https://chomoand-0.com/wp-content/uploads/2026/07/travis_japan_talkqueens_tweet-500x281.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/07/travis_japan_talkqueens_tweet-1024x576.jpg 1024w, https://chomoand-0.com/wp-content/uploads/2026/07/travis_japan_talkqueens_tweet.jpg 1200w" sizes="(max-width: 1024px) 100vw, 1024px">
+<figcaption>出典:ミツ@仕事×恋愛(@mitsu20190908) https://x.com/mitsu20190908/status/2071934142963667042</figcaption>
+</figure>
+
 ---
 
 ## 番組概要をおさらい
