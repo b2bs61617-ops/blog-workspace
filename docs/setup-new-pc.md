@@ -66,14 +66,38 @@ py -3 -m playwright install chromium
 
 `tools/Xiy/起動.bat`をダブルクリックすると起動する。
 
-## 7. 動作確認
+## 7. KO1KEYZ監視ツール(任意・コイキーズ担当PCのみ)
+
+コイキーズブログのリライト用に、X(Twitter)上のKO1KEYZメンバー新着投稿を毎日自動チェックするツール([koikeyz-rewriteスキル](../.claude/skills/koikeyz-rewrite/SKILL.md)参照)。
+
+```powershell
+py -3 -m pip install playwright requests
+py -3 -m playwright install chromium
+```
+
+初回のみXへのログインが必要:
+```powershell
+cd tools\koikeyz-monitor
+py -3 login_x.py
+```
+ブラウザが開くのでXにログインし、ターミナルでEnterキーを押す。
+
+その後、Windowsタスクスケジューラで`tools\koikeyz-monitor\x_monitor.py`を毎朝7時に自動実行するタスク(`KO1KEYZ-Monitor`)を登録する。セットアップ済みのPCの設定を参考にするか、以下で登録できる:
+```powershell
+$pyPath = (Get-Command py).Source
+$action = New-ScheduledTaskAction -Execute $pyPath -Argument '-3 "x_monitor.pyへのフルパス"' -WorkingDirectory "tools\koikeyz-monitorへのフルパス"
+$trigger = New-ScheduledTaskTrigger -Daily -At 7:00AM
+Register-ScheduledTask -TaskName "KO1KEYZ-Monitor" -Action $action -Trigger $trigger -Description "KO1KEYZメンバー12人のX新着投稿を毎日チェック"
+```
+
+## 8. 動作確認
 
 - Claude Code(松)をリポジトリ直下(`ブログ作業場`フォルダ)で起動し、`CLAUDE.md`が読み込まれ「松」として振る舞うか確認する
 - `.claude/skills/`配下のスキル(例: wiki-article)を使う作業を試す
 - WordPress投稿テスト: `python wp_upload_batch.py`(対象記事を書き換えてから)、またはチャットで「ブログにアップして」と依頼して[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)が動くか確認
 - `tools/Xiy/起動.bat`でXiyツールが起動するか確認
 
-## 8. 日常の運用
+## 9. 日常の運用
 
 - 作業を始める前に必ず `git pull`
 - 新しいスキル・ルールを学んだら `CLAUDE.md` / `docs/` / `.claude/skills/` に反映し、`git add` → `git commit` → `git push`(pushは内容を確認してから)

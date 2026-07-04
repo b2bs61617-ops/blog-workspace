@@ -59,6 +59,7 @@
 | [codex-writing](.claude/skills/codex-writing/SKILL.md) | 記事・文書生成にCodexを使う |
 | [blog-upload](.claude/skills/blog-upload/SKILL.md) | 「ブログにアップして」で投稿まで自動実行 |
 | [publish](.claude/skills/publish/SKILL.md) | 「公開して」で下書きを公開する |
+| [koikeyz-rewrite](.claude/skills/koikeyz-rewrite/SKILL.md) | コイキーズブログの既存記事リライト(対象範囲・実行フロー・監視ツール) |
 
 アイキャッチ画像のデザインは [docs/eyecatch-style.md](docs/eyecatch-style.md) を参照。
 
