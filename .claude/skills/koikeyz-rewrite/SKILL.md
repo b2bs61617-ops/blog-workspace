@@ -37,6 +37,7 @@ X(Twitter)でメンバー12人+グループ名を毎日検索し、新着投稿�
 - **ログイン**: `tools/koikeyz-monitor/login_x.py`を一度手動実行してXにログイン(PCごとに1回、`%USERPROFILE%\koikeyz_monitor_profile`にブラウザプロファイル保存)
 - **実行頻度**: Windowsタスクスケジューラで毎朝7時に自動実行(タスク名: `KO1KEYZ-Monitor`)。ログイン状態がPC固有なため、このPC上でのみ動作する。
 - **差分検知**: `monitor_state.json`に前回までの投稿IDを保存し、新着分だけを`monitor_reports/report_*.json`に出力する
+- **ノイズ除外**: トレカ交換・好き顔診断コピペ・アフィリエイト広告(`#PR`等)・同行募集などの定型ノイズはレポート生成前にスクリプト側で除外し、同一告知文の重複投稿も1件にまとめる(マツが読むトークン量削減のため、2026-07-05追加)
 - **セッション開始時の報告**: `.claude/koikeyz-monitor-check.ps1`(SessionStartフック)が未処理レポートを検知すると、マツが自動でファイルを読み込み、記事に使えそうな情報だけ抽出して報告する(トレカ交換・好き顔診断などのファン投稿ノイズは除外)。報告後はレポートファイルを`monitor_reports/processed/`に移動する。
 - `monitor_state.json`・`monitor_reports/`はPCローカルの生成データなので`.gitignore`済み(Git管理外)。
 
