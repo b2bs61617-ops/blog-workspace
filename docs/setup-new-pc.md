@@ -71,9 +71,16 @@ py -3 -m playwright install chromium
 コイキーズブログのリライト用に、X(Twitter)上のKO1KEYZメンバー新着投稿を毎日自動チェックするツール([koikeyz-rewriteスキル](../.claude/skills/koikeyz-rewrite/SKILL.md)参照)。
 
 ```powershell
-py -3 -m pip install playwright requests
+py -3 -m pip install playwright requests google-genai
 py -3 -m playwright install chromium
 ```
+
+**`tools/koikeyz-monitor/monitor_config.json`**(`monitor_config.json.example`をコピーして値を埋める。任意設定、無くても動く):
+```powershell
+Copy-Item tools\koikeyz-monitor\monitor_config.json.example tools\koikeyz-monitor\monitor_config.json
+notepad tools\koikeyz-monitor\monitor_config.json
+```
+`gemini_api_key`を入力すると、収集した投稿をGeminiが要約してからマツに報告する(未設定・失敗時は生データにフォールバックする)。
 
 初回のみXへのログインが必要:
 ```powershell

@@ -12,6 +12,7 @@ PROFILE_DIR = str(Path.home() / "koikeyz_monitor_profile")
 ROOT = Path(__file__).parent
 STATE_FILE = ROOT / "monitor_state.json"
 REPORTS_DIR = ROOT / "monitor_reports"
+CONFIG_FILE = ROOT / "monitor_config.json"
 
 # KO1KEYZ 正式デビューメンバー12人 + グループ全体
 TARGETS = {
@@ -69,6 +70,55 @@ def dedupe_posts(posts):
         else:
             groups[key]["duplicate_count"] += 1
     return [groups[k] for k in order]
+
+
+def load_gemini_api_key():
+    if not CONFIG_FILE.exists():
+        return None
+    try:
+        config = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
+        return config.get("gemini_api_key") or None
+    except Exception:
+        return None
+
+
+def summarize_with_gemini(new_by_target, api_key):
+    """Geminiで「記事に使えそうな情報」だけ抽出した要約を作る。失敗したらNoneを返す(呼び出し側で生データにフォールバック)。"""
+    from google import genai
+
+    lines = []
+    for name, posts in new_by_target.items():
+        lines.append(f"【{name}】")
+        for p in posts:
+            dup = f"(同文投稿{p['duplicate_count']}件)" if p.get("duplicate_count", 1) > 1 else ""
+            lines.append(f"- {p['text']}{dup}")
+    posts_text = "\n".join(lines)
+
+    prompt = f"""以下はKO1KEYZメンバーに関するXの新着投稿一覧です。
+コイキーズブログの既存記事を更新するために「記事に反映する価値がある新情報」だけを抽出してください。
+
+【抽出してほしい情報の例】
+- 公式発表(デビュー・ライブ・ファンミ・グッズ・出演番組などの日程・詳細)
+- メンバーの経歴・エピソードに関わる新事実
+- ニュースサイトの記事や公式アカウントの投稿内容
+
+【除外してよいもの】
+- ファンの感想・応援メッセージ・「好き」「会いたい」等の感情表現のみの投稿
+- 抽選・当落の個人的な報告(具体的な公演日程が伴わないもの)
+- その他、記事に書く価値が無いと判断されるもの
+
+該当する情報が無ければメンバー名ごとに「特筆すべき情報なし」と書いてください。
+簡潔に日本語で、メンバー名ごとに箇条書きでまとめてください。
+
+【投稿一覧】
+{posts_text}"""
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+    )
+    return response.text.strip()
 
 
 def load_state():
@@ -180,14 +230,30 @@ async def main():
 
     save_state(state)
 
-    if new_by_target:
-        REPORTS_DIR.mkdir(exist_ok=True)
-        report_path = REPORTS_DIR / f"report_{today}_{int(time.time())}.json"
-        report_path.write_text(
-            json.dumps(new_by_target, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"\n新着情報あり → {report_path}")
-    else:
+    if not new_by_target:
         print("\n新着情報なし")
+        return
+
+    REPORTS_DIR.mkdir(exist_ok=True)
+    stamp = f"{today}_{int(time.time())}"
+    report_path = REPORTS_DIR / f"report_{stamp}.json"
+    report_path.write_text(
+        json.dumps(new_by_target, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    api_key = load_gemini_api_key()
+    summary = None
+    if api_key:
+        try:
+            summary = summarize_with_gemini(new_by_target, api_key)
+        except Exception as e:
+            print(f"Gemini要約に失敗したのでスキップ(生データのみ出力): {type(e).__name__}: {e}")
+
+    if summary:
+        summary_path = REPORTS_DIR / f"report_{stamp}.summary.txt"
+        summary_path.write_text(summary, encoding="utf-8")
+        print(f"\n新着情報あり → {summary_path} (AI要約あり、生データ: {report_path.name})")
+    else:
+        print(f"\n新着情報あり → {report_path} (AI要約なし、生データのみ)")
 
 
 if __name__ == "__main__":

@@ -37,8 +37,9 @@ X(Twitter)でメンバー12人+グループ名を毎日検索し、新着投稿�
 - **ログイン**: `tools/koikeyz-monitor/login_x.py`を一度手動実行してXにログイン(PCごとに1回、`%USERPROFILE%\koikeyz_monitor_profile`にブラウザプロファイル保存)
 - **実行頻度**: Windowsタスクスケジューラで毎朝7時に自動実行(タスク名: `KO1KEYZ-Monitor`)。ログイン状態がPC固有なため、このPC上でのみ動作する。
 - **差分検知**: `monitor_state.json`に前回までの投稿IDを保存し、新着分だけを`monitor_reports/report_*.json`に出力する
-- **ノイズ除外**: トレカ交換・好き顔診断コピペ・アフィリエイト広告(`#PR`等)・同行募集などの定型ノイズはレポート生成前にスクリプト側で除外し、同一告知文の重複投稿も1件にまとめる(マツが読むトークン量削減のため、2026-07-05追加)
-- **セッション開始時の報告**: `.claude/koikeyz-monitor-check.ps1`(SessionStartフック)が未処理レポートを検知すると、マツが自動でファイルを読み込み、記事に使えそうな情報だけ抽出して報告する(トレカ交換・好き顔診断などのファン投稿ノイズは除外)。報告後はレポートファイルを`monitor_reports/processed/`に移動する。
-- `monitor_state.json`・`monitor_reports/`はPCローカルの生成データなので`.gitignore`済み(Git管理外)。
+- **ノイズ除外**: トレカ交換・好き顔診断コピペ・アフィリエイト広告(`#PR`等)・同行募集などの定型ノイズはレポート生成前にスクリプト側(正規表現)で除外し、同一告知文の重複投稿も1件にまとめる(マツが読むトークン量削減のため、2026-07-05追加)
+- **AI要約(Gemini)**: `monitor_config.json`(`monitor_config.json.example`をコピーして`gemini_api_key`を設定、Git管理外)にGemini APIキーがあれば、ノイズ除外後のデータをGeminiに渡し「記事に使えそうな情報」だけの要約(`report_*.summary.txt`)を作る。マツはこの要約を優先して読み、最終確認だけ行う。**APIキー未設定、またはクォータ超過などで失敗した場合は自動的に生データ(`report_*.json`)のみの出力にフォールバックする**(2026-07-05追加。GeminiのクォータとAnthropic側のトークン使用量は別枠なので、Geminiが落ちてもマツの動作自体は止まらない)。
+- **セッション開始時の報告**: `.claude/koikeyz-monitor-check.ps1`(SessionStartフック)が未処理レポートを検知すると、マツが自動で`.summary.txt`(あれば優先)または`.json`を読み込み、記事に使えそうな情報だけ抽出して報告する。報告後は該当ファイルを`monitor_reports/processed/`に移動する。
+- `monitor_state.json`・`monitor_config.json`・`monitor_reports/`はPCローカルの生成データ・秘密情報なので`.gitignore`済み(Git管理外)。
 
 **How to apply:** 「コイキーズの記事をリライトして」「リライトの続き」などの発言、またはセッション開始時の監視レポート報告をトリガーとして、このスキルのフローに従う。

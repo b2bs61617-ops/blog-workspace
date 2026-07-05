@@ -2,6 +2,7 @@
 .env
 .env.local
 tools/Xiy/xiy_config.json
+tools/koikeyz-monitor/monitor_config.json
 client_secret_*.json
 token.json
 .claude/settings.local.json
