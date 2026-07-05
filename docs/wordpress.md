@@ -40,3 +40,13 @@
 ## Search Console
 
 公開後のURLをGoogle Search Consoleに登録する作業は、API連携が複雑なためユーザーが手動で行う。松/Codexは公開とURL表示までを担当する。
+
+## SNS自動連携(記事公開時にX/Instagram/Threadsへ自動投稿したい場合)
+
+2026-07-05にユーザーから相談があり調査した内容。3サイトとも同じ構成で使える。
+
+- **Instagram・Threads**: WordPress.com公式の「Jetpack Social」で自動投稿できる。WordPress.com管理画面 →「設定」→「共有(Jetpack Social)」からInstagram Business/Threadsアカウントを接続すれば、記事公開時にタイトル+抜粋+アイキャッチ画像+リンクが自動シェアされる。
+  - 注意: Instagramはアイキャッチ画像が必須(画像なしの記事は投稿不可)。1枚画像のみ対応で、複数画像のカルーセル投稿は不可。
+- **X(旧Twitter)**: Jetpack Socialは2023年5月にX API規約・料金変更を理由に自動シェア機能を廃止しており、2026年現在も非対応(対応しているのはFacebook Pages・Instagram Business・Threads・LinkedIn・Bluesky・Nextdoor・Tumblr・Mastodonの8つでXは含まれない)。Xへの自動投稿はZapier/Make/IFTTTなど外部連携サービスで別途構築する必要がある(「WordPress New Post」トリガー→「X Create Tweet」アクション)。外部サービス側がAPI契約を持つため、ユーザー自身がX Developerアカウントを契約する必要はない。
+
+**How to apply:** 記事公開時のSNS自動投稿について聞かれたら、Instagram/ThreadsはJetpack Social、XはZapier等の外部連携、という切り分けで案内する。
