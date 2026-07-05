@@ -31,6 +31,46 @@ TARGETS = {
 }
 
 
+# マツが読むレポートに含めない定型ノイズ投稿(トレカ交換・診断コピペ・同行募集など)
+NOISE_PATTERNS = [
+    r"トレカ",
+    r"譲.{0,30}求|求.{0,30}譲",
+    r"好き顔No\.?1",
+    r"lapone-lanking",
+    r"同行(させて|募集|求め|探)",
+    r"交換希望|買取希望|お気軽にお声(掛け|がけ)",
+    r"郵送希望|郵送or|郵送のみ",
+    r"連番|同担様",
+    r"#PR\b|tag=[\w-]+-22",  # Amazonアフィリエイトの広告コピペ投稿
+]
+NOISE_RE = re.compile("|".join(NOISE_PATTERNS))
+
+
+def is_noise(text: str) -> bool:
+    return bool(NOISE_RE.search(text))
+
+
+def normalize_for_dedup(text: str) -> str:
+    # URL・空白・タグ付き引用元アカウント名の揺れを無視して、同一内容のコピペ投稿をまとめる
+    t = re.sub(r"https?://\S+", "", text)
+    t = re.sub(r"\s+", "", t)
+    return t
+
+
+def dedupe_posts(posts):
+    # 同じ告知文が複数アカウントからコピペ投稿されるケースをまとめ、代表1件+件数にする
+    groups = {}
+    order = []
+    for p in posts:
+        key = normalize_for_dedup(p["text"])
+        if key not in groups:
+            groups[key] = {**p, "duplicate_count": 1}
+            order.append(key)
+        else:
+            groups[key]["duplicate_count"] += 1
+    return [groups[k] for k in order]
+
+
 def load_state():
     if STATE_FILE.exists():
         return json.loads(STATE_FILE.read_text(encoding="utf-8"))
@@ -122,11 +162,15 @@ async def main():
                 continue
 
             new_posts = [p for p in posts if p["id"] not in seen_ids]
-            if new_posts:
-                new_by_target[name] = new_posts
-                print(f"  新着 {len(new_posts)}件")
+            useful_posts = [p for p in new_posts if not is_noise(p["text"])]
+            noise_count = len(new_posts) - len(useful_posts)
+            deduped_posts = dedupe_posts(useful_posts)
+            dup_count = len(useful_posts) - len(deduped_posts)
+            if deduped_posts:
+                new_by_target[name] = deduped_posts
+                print(f"  新着 {len(new_posts)}件(ノイズ除外{noise_count}件・重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
             else:
-                print("  新着なし")
+                print(f"  新着なし(ノイズ{noise_count}件・重複{dup_count}件を除外)")
 
             all_ids = seen_ids | {p["id"] for p in posts}
             # 肥大化を防ぐため直近500件だけ保持
