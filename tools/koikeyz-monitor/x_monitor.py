@@ -241,6 +241,10 @@ async def main():
 
     if not new_by_target:
         print("\n新着情報なし")
+        try:
+            notify("コイキーズ関連、本日は新着情報なしワン")
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
         return
 
     REPORTS_DIR.mkdir(exist_ok=True)
@@ -264,16 +268,20 @@ async def main():
 
         if JUDGE_RE.search(summary):
             body = JUDGE_LINE_RE.sub("", summary).strip()
-            message = f"コイキーズで記事に使えそうな新着ネタがあるワン!\n\n{body[:400]}"
-            try:
-                notify(message)
-                print("LINE通知を送信したワン")
-            except Exception as e:
-                print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
+            message = f"コイキーズで新着情報ありワン。記事に使えそうな内容もあるみたいワン!\n\n{body[:400]}"
         else:
-            print("Geminiの判定: 記事化に値する情報なし → LINE通知はスキップ")
+            message = "コイキーズで新着投稿はあったけど、記事化に値する情報は無かったワン"
+        try:
+            notify(message)
+            print("LINE通知を送信したワン")
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
     else:
         print(f"\n新着情報あり → {report_path} (AI要約なし、生データのみ)")
+        try:
+            notify("コイキーズで新着投稿があったワン(自動要約は失敗、詳細は次回セッションで確認するワン)")
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
 
 
 if __name__ == "__main__":
