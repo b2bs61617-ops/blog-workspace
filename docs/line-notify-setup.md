@@ -35,4 +35,14 @@ LINEに届けば設定完了。届かない場合は`.env`の`LINE_CHANNEL_ACCES
 ## 使われている場所
 
 - [koikeyz-rewriteスキル](../.claude/skills/koikeyz-rewrite/SKILL.md): リライト提案時・記事更新完了時にLINE通知
-- `tools/koikeyz-monitor/x_monitor.py`: 毎朝7時の監視でGeminiが「記事化に値する新情報あり」と判定した場合にLINE通知(2026-07-05追加)
+- `tools/koikeyz-monitor/x_monitor.py`: 毎朝7時の監視結果を**結果に関わらず毎日必ず**LINE通知する(新着なし/新着ありだが記事化価値なし/記事化価値あり(要約付き)/AI要約失敗、の4パターン。2026-07-05に「あり判定のときだけ通知」から「毎日必ず通知」に変更)
+- Gemini要約が失敗した日は、次にセッションを開いたときにマツが生データを目視要約して追加でLINE送信する([koikeyz-rewriteスキル](../.claude/skills/koikeyz-rewrite/SKILL.md)参照)
+
+## 検討したが見送った案: LINE返信トリガーによる記事自動執筆パイプライン(2026-07-05)
+
+「LINE通知に『リライト』『新規作成』と返信するだけで、マツが調査・執筆・WordPress投稿まで自動実行する」仕組みを設計・計画したが、実装前にユーザー判断で見送りになった。
+
+- 技術的にはLINEの返信はWebhookでしかリアルタイム受信できず(ポーリング不可)、安定した固定URLを得るには**chomoand.comをCloudflareに登録してネームサーバーを切り替える**必要があった(本番ドメインのメール(MX/SPF/DKIM)・サイトのDNSに影響するリスクがある変更)。
+- ユーザーが「現時点ではこれは怖い」と判断し中止。DNS移行を伴わない、より安全なシンプルな日次通知(上記)に落ち着いた。
+- 設計の全体像(アーキテクチャ図・ファイル構成案・実行順序)は`C:\Users\ti071\.claude\plans\optimized-greeting-sunset.md`(このPCのローカルファイル、Git管理外)に残っている。再検討する場合はそちらを参照。
+- 再検討する際は、chomoand.com本番DNSに触らない代替案(例: webhook専用の別ドメインを新規取得してCloudflareに登録する)も選択肢に入れるとよい。
