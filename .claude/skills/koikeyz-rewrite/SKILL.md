@@ -20,8 +20,8 @@ description: コイキーズブログ(chomoand-1.com)の既存記事をリライ
 
 1. 対象記事の現在の本文をWordPress REST API(`context=edit`)で取得
 2. 最新情報をリサーチ(WebSearch、または後述の監視ツールのレポート)して裏取りする
-3. **リライト内容(何をどう変えるか)を先にチャットで報告し、ユーザーのOKを待ってから実行する。** 1記事ずつ、都度確認する運用(2026-07-04にユーザーから指示)。
-4. OKが出たらWordPress REST API(`POST /wp-json/wp/v2/posts/{id}`)で`content`を直接更新する。既に公開済みの記事なので下書き経由は不要([docs/wordpress.md](../../../docs/wordpress.md)の「更新/リライトは確認不要で実行してよい」に該当)。
+3. **リライト内容(何をどう変えるか)を先にチャットで報告し、ユーザーのOKを待ってから実行する。** 1記事ずつ、都度確認する運用(2026-07-04にユーザーから指示)。報告と同時に`tools/line_notify.py`でLINE通知を送る(例:`python tools/line_notify.py "コイキーズ記事「{タイトル}」のリライト提案があるワン、確認してほしいワン"`)。`.env`に`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知はスキップされるだけなので、そのまま作業を続けてよい。
+4. OKが出たらWordPress REST API(`POST /wp-json/wp/v2/posts/{id}`)で`content`を直接更新する。既に公開済みの記事なので下書き経由は不要([docs/wordpress.md](../../../docs/wordpress.md)の「更新/リライトは確認不要で実行してよい」に該当)。更新が成功したら`tools/line_notify.py`でLINE通知を送る(例:`python tools/line_notify.py "コイキーズ記事「{タイトル}」を更新したワン https://chomoand-1.com/?p={ID}"`)。
 5. **タイトル・スラッグは基本変更しない。** 公開済み記事のSEO評価(検索順位・被リンク)を守るため。よほど明確な改善がある場合のみユーザーに相談する。
 6. 文体ルール(句点ごとの`<br>`改行など)は[docs/rules.md](../../../docs/rules.md)に従う。
 
