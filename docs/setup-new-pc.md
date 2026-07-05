@@ -109,3 +109,23 @@ Register-ScheduledTask -TaskName "KO1KEYZ-Monitor" -Action $action -Trigger $tri
 - 作業を始める前に必ず `git pull`
 - 新しいスキル・ルールを学んだら `CLAUDE.md` / `docs/` / `.claude/skills/` に反映し、`git add` → `git commit` → `git push`(pushは内容を確認してから)
 - 記事下書き・画像などの成果物も同じリポジトリにコミットして他PCと共有する
+
+## 10. トークン使用量の警告表示(任意・PCごとの個人設定)
+
+複数のPCから同じClaude Codeアカウントでマツにアクセスしていると、セッション/週間の利用上限に気づかず到達してしまうことがある。ステータスラインにセッション・週間の使用率(%)を常時表示し、70%を超えたら⚠マークを出すスクリプトを用意している。
+
+この設定は`~/.claude/settings.json`というPC個人の設定ファイルに書くもので、リポジトリでは共有されない(スクリプト本体`tools/claude-usage-statusline.ps1`のみリポジトリ管理)。使いたいPCごとに以下を設定する:
+
+```powershell
+notepad $env:USERPROFILE\.claude\settings.json
+```
+に以下を追加(既存の設定があればマージする。パスはこのPCでの実際のリポジトリの場所に合わせる):
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "powershell -NoProfile -File \"<このPCでのリポジトリの絶対パス>\\tools\\claude-usage-statusline.ps1\""
+  }
+}
+```
+セッション(5時間)・週間の使用率はPro/Maxプランで、最初のAPI応答後から表示される。
