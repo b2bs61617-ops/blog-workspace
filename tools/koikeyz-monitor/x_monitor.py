@@ -1,6 +1,7 @@
 import asyncio
 import json
 import re
+import sys
 import time
 import urllib.parse
 from datetime import datetime
@@ -13,6 +14,12 @@ ROOT = Path(__file__).parent
 STATE_FILE = ROOT / "monitor_state.json"
 REPORTS_DIR = ROOT / "monitor_reports"
 CONFIG_FILE = ROOT / "monitor_config.json"
+
+sys.path.insert(0, str(ROOT.parent))
+from line_notify import notify  # noqa: E402
+
+JUDGE_RE = re.compile(r"判定[:：]\s*あり")
+JUDGE_LINE_RE = re.compile(r"^判定[:：].*$\n?", re.MULTILINE)
 
 # KO1KEYZ 正式デビューメンバー12人 + グループ全体
 TARGETS = {
@@ -109,6 +116,8 @@ def summarize_with_gemini(new_by_target, api_key):
 
 該当する情報が無ければメンバー名ごとに「特筆すべき情報なし」と書いてください。
 簡潔に日本語で、メンバー名ごとに箇条書きでまとめてください。
+
+最後に必ず1行だけ追加し、上記の投稿の中に「ブログ記事に反映する価値がある新情報」が1つでもあれば`判定: あり`、1つも無ければ`判定: なし`とだけ書いてください。
 
 【投稿一覧】
 {posts_text}"""
@@ -252,6 +261,17 @@ async def main():
         summary_path = REPORTS_DIR / f"report_{stamp}.summary.txt"
         summary_path.write_text(summary, encoding="utf-8")
         print(f"\n新着情報あり → {summary_path} (AI要約あり、生データ: {report_path.name})")
+
+        if JUDGE_RE.search(summary):
+            body = JUDGE_LINE_RE.sub("", summary).strip()
+            message = f"コイキーズで記事に使えそうな新着ネタがあるワン!\n\n{body[:400]}"
+            try:
+                notify(message)
+                print("LINE通知を送信したワン")
+            except Exception as e:
+                print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
+        else:
+            print("Geminiの判定: 記事化に値する情報なし → LINE通知はスキップ")
     else:
         print(f"\n新着情報あり → {report_path} (AI要約なし、生データのみ)")
 

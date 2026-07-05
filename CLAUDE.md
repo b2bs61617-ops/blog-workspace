@@ -68,7 +68,7 @@
 - **Xiy**(`tools/Xiy/`): X/Instagram投稿収集 + YouTube文字起こしツール。`tools/Xiy/起動.bat`で起動。SNS調査スキルで使用。
   - YouTube文字起こしは「字幕優先(youtube-transcript-api)→無ければWhisper(faster-whisper)で音声文字起こし」の2段構成。GPUがあれば自動でCUDAを使い(無ければCPU int8)、複数動画処理時は字幕チェックの並列化・音声DLと文字起こしのパイプライン化で高速化してある(2026-07-02改良)。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
-- **LINE通知**(`tools/line_notify.py`): 記事の更新・リライト提案時にLINEへプッシュ通知するツール(2026-07-05追加)。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)のチャネルアクセストークンを使う方式。`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知だけスキップされ、他の処理は止まらない。初回セットアップは[koikeyz-rewriteスキル](.claude/skills/koikeyz-rewrite/SKILL.md)、または`python tools/line_notify.py --get-user-id`のヘルプを参照。現状はkoikeyz-rewriteスキル(リライト提案時・更新完了時)から呼ばれる。
+- **LINE通知**(`tools/line_notify.py`): 記事の更新・リライト提案時、および`koikeyz-monitor`のAI判定時にLINEへプッシュ通知するツール(2026-07-05追加)。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)のチャネルアクセストークンを使う方式。`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知だけスキップされ、他の処理は止まらない。初回セットアップ手順は[docs/line-notify-setup.md](docs/line-notify-setup.md)を参照(フォロワーID一覧APIは無料プランだと使えないため要注意)。呼び出し元はkoikeyz-rewriteスキル(リライト提案時・更新完了時)と`tools/koikeyz-monitor/x_monitor.py`(Gemini判定が「あり」の場合)。
 
 ## 秘密情報
 

@@ -39,7 +39,8 @@ X(Twitter)でメンバー12人+グループ名を毎日検索し、新着投稿�
 - **差分検知**: `monitor_state.json`に前回までの投稿IDを保存し、新着分だけを`monitor_reports/report_*.json`に出力する
 - **ノイズ除外**: トレカ交換・好き顔診断コピペ・アフィリエイト広告(`#PR`等)・同行募集などの定型ノイズはレポート生成前にスクリプト側(正規表現)で除外し、同一告知文の重複投稿も1件にまとめる(マツが読むトークン量削減のため、2026-07-05追加)
 - **AI要約(Gemini)**: `monitor_config.json`(`monitor_config.json.example`をコピーして`gemini_api_key`を設定、Git管理外)にGemini APIキーがあれば、ノイズ除外後のデータをGeminiに渡し「記事に使えそうな情報」だけの要約(`report_*.summary.txt`)を作る。マツはこの要約を優先して読み、最終確認だけ行う。**APIキー未設定、またはクォータ超過などで失敗した場合は自動的に生データ(`report_*.json`)のみの出力にフォールバックする**(2026-07-05追加。GeminiのクォータとAnthropic側のトークン使用量は別枠なので、Geminiが落ちてもマツの動作自体は止まらない)。
-- **セッション開始時の報告**: `.claude/koikeyz-monitor-check.ps1`(SessionStartフック)が未処理レポートを検知すると、マツが自動で`.summary.txt`(あれば優先)または`.json`を読み込み、記事に使えそうな情報だけ抽出して報告する。報告後は該当ファイルを`monitor_reports/processed/`に移動する。
+- **AI判定によるLINE即時通知**(2026-07-05追加): 上記のGemini要約プロンプトの末尾で「記事化に値する新情報があるか」を`判定: あり`/`判定: なし`の形式でも出力させ、`判定: あり`のときはセッションを待たずにその場で`tools/line_notify.py`の`notify()`を呼んでLINEに要約を送る(`判定: なし`のときはLINE通知せず、次回セッション開始時の報告だけに任せる)。Gemini要約自体が失敗・未設定の場合はこの自動判定もスキップされる(=セッション開始時の報告だけになる)。LINE通知の初回セットアップ手順は[docs/line-notify-setup.md](../../../docs/line-notify-setup.md)を参照。
+- **セッション開始時の報告**: `.claude/koikeyz-monitor-check.ps1`(SessionStartフック)が未処理レポートを検知すると、マツが自動で`.summary.txt`(あれば優先)または`.json`を読み込み、記事に使えそうな情報だけ抽出して報告する。報告後は該当ファイルを`monitor_reports/processed/`に移動する。LINE通知済みかどうかに関わらずこの報告は行う(LINEは「速報」、セッション報告が「本報告」という位置づけ)。
 - `monitor_state.json`・`monitor_config.json`・`monitor_reports/`はPCローカルの生成データ・秘密情報なので`.gitignore`済み(Git管理外)。
 
 **How to apply:** 「コイキーズの記事をリライトして」「リライトの続き」などの発言、またはセッション開始時の監視レポート報告をトリガーとして、このスキルのフローに従う。
