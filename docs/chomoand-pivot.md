@@ -38,7 +38,7 @@ chomoand.com(トレンドブログ)を今の速報型からジャンル転換す
 
 ## 未解決・次セッションでやること
 
-1. **急上昇TikTok/YouTubeインフルエンサーの発見の仕組み**を決める(どのプラットフォーム・どの指標で「旬」と判定するか)。[tv-research](../.claude/skills/tv-research/SKILL.md)の「番組表から旬な出演者を探す」手法が参考になりそう。
+1. ~~急上昇TikTok/YouTubeインフルエンサーの発見の仕組みを決める~~ → **YouTube側は着手済み(2026-07-06)**。YouTube急上昇ページ・TikTok Creative CenterはどちらもJS描画でWebFetch不可と判明したため、YouTube Data API v3を使う方式にした。`tools/youtube_trending.py`(取得スクリプト)・[youtube-trendingスキル](../.claude/skills/youtube-trending/SKILL.md)(tv-researchの固定除外リスト+動的フィルタと同じ発想で旬な人物を絞り込む)・[docs/youtube-api-setup.md](youtube-api-setup.md)(APIキー取得手順)を用意済み。**残作業: トモキ本人がGoogle Cloud ConsoleでAPIキーを発行して`.env`の`YOUTUBE_API_KEY`に設定する必要あり(未実施)**。TikTokは公式APIがなく自動取得の手段が見つかっていないため、当面はYouTube経由で見つかる人物のみを対象にする。
 2. **記事の型**を決める(既存のwiki-article/gakureki-kazoku-kanojoスキルを流用するか、専用スキルを新設するか)。
 3. 上記が固まったら**CLAUDE.md・docs・スキルに正式反映**する。
 4. **chomoand.comの過去1年PVゼロ記事の扱い**(別件で相談あり、未解決): トモキから「削除したい」と相談があったが、[docs/wordpress.md](wordpress.md)の「記事の削除・ゴミ箱移動は絶対に行わない・削除は提案もしない」という絶対厳守ルールがあるため保留中。代替案として提示したのは以下:

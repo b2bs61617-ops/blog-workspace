@@ -51,6 +51,7 @@
 |---|---|
 | [trend-research](.claude/skills/trend-research/SKILL.md) | 今日のトレンド・話題を調査する |
 | [tv-research](.claude/skills/tv-research/SKILL.md) | テレビ番組表から旬な出演者を調査する |
+| [youtube-trending](.claude/skills/youtube-trending/SKILL.md) | YouTube急上昇動画から旬なYouTuber/TikTokerを発見する(chomoand.com新方針用) |
 | [trend-title](.claude/skills/trend-title/SKILL.md) | トレンド記事のタイトル・ずらし記事戦略 |
 | [sns-research](.claude/skills/sns-research/SKILL.md) | Xiyツールでネットにない人物情報をSNSから掘る |
 | [youtube-transcript](.claude/skills/youtube-transcript/SKILL.md) | YouTube動画の文字起こし取得(リサーチ用) |
@@ -69,10 +70,11 @@
   - YouTube文字起こしは「字幕優先(youtube-transcript-api)→無ければWhisper(faster-whisper)で音声文字起こし」の2段構成。GPUがあれば自動でCUDAを使い(無ければCPU int8)、複数動画処理時は字幕チェックの並列化・音声DLと文字起こしのパイプライン化で高速化してある(2026-07-02改良)。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 - **LINE通知**(`tools/line_notify.py`): 記事の更新・リライト提案時、および`koikeyz-monitor`の毎朝の監視結果報告でLINEへプッシュ通知するツール(2026-07-05追加)。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)のチャネルアクセストークンを使う方式。`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知だけスキップされ、他の処理は止まらない。初回セットアップ手順は[docs/line-notify-setup.md](docs/line-notify-setup.md)を参照(フォロワーID一覧APIは無料プランだと使えないため要注意)。呼び出し元はkoikeyz-rewriteスキル(リライト提案時・更新完了時・Gemini失敗時のフォールバック要約)と`tools/koikeyz-monitor/x_monitor.py`(毎朝、結果に関わらず必ず通知)。なお「LINE返信でマツが自動執筆する」パイプラインは本番ドメインのDNS移行リスクを理由に見送り済み([docs/line-notify-setup.md](docs/line-notify-setup.md)参照)。
+- **YouTube急上昇取得**(`tools/youtube_trending.py`): chomoand.com新方針(TikTok/YouTube発バズインフルエンサーのwiki記事)のネタ探し用。YouTube Data API v3で日本の急上昇動画を取得する。`.env`の`YOUTUBE_API_KEY`が必要(2026-07-06追加)。セットアップ手順は[docs/youtube-api-setup.md](docs/youtube-api-setup.md)、使い方は[youtube-trendingスキル](.claude/skills/youtube-trending/SKILL.md)参照。YouTube急上昇ページ・TikTok Creative CenterはどちらもJS描画でWebFetchでは中身が取れないため、API経由で取得する方式にした。TikTok側は現時点で自動取得の手段なし。
 
 ## 秘密情報
 
-WordPressのアプリパスワード・Gemini APIキー・Google認証情報・LINEチャネルアクセストークンは **Gitに含めない**。`.env`(このリポジトリ直下)と`tools/Xiy/xiy_config.json`にローカル保存する。テンプレートは`.env.example`を参照。新しいPCでセットアップする際は、これらの値をパスワードマネージャーなど安全な経路で受け取り、ローカルに作成すること。
+WordPressのアプリパスワード・Gemini APIキー・Google認証情報・LINEチャネルアクセストークン・YouTube Data APIキーは **Gitに含めない**。`.env`(このリポジトリ直下)と`tools/Xiy/xiy_config.json`にローカル保存する。テンプレートは`.env.example`を参照。新しいPCでセットアップする際は、これらの値をパスワードマネージャーなど安全な経路で受け取り、ローカルに作成すること。
 
 **マツはこれらの値を絶対にチャットで教えない・入力させない・Gitにコミットしない。** ユーザーが値を持っていない、または「パスワードどうすればいい?」のように聞いてきた場合は、代筆・推測・チャットへの貼り付け要求は一切せず、「トモキに聞いてワン」と答えて止まること。read-onlyな設定変更(リポジトリのvisibility変更・アーカイブ解除など)でこの制約を回避しようとするのも禁止。
 
