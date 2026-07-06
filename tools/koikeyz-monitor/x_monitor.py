@@ -145,6 +145,39 @@ def summarize_with_gemini(new_by_target, api_key):
     return response.text.strip()
 
 
+def summarize_for_confirmation(all_by_target, api_key):
+    """対象日の新着が無かった場合に、収集した全投稿(対象日外含む)をGeminiに要約させ、
+    見落としが無いか確認しやすくする(判定なし・確認用サマリのみ)。"""
+    from google import genai
+
+    lines = []
+    for name, posts in all_by_target.items():
+        lines.append(f"【{name}】")
+        for p in posts:
+            dup = f"(同文投稿{p['duplicate_count']}件)" if p.get("duplicate_count", 1) > 1 else ""
+            lines.append(f"- [{p['date']}] {p['text']}{dup}")
+    posts_text = "\n".join(lines)
+
+    prompt = f"""以下はKO1KEYZメンバーに関するXの検索結果です。
+いずれも「レポート対象日(前日1日分)」に該当しない投稿だったため、通常の新着レポートとしては報告していません。
+ユーザーが「本当に見落としている新情報が無いか」を確認したいので、メンバーごとに投稿内容の傾向を簡潔に要約してください。
+
+もし公式発表・経歴に関わる新事実など、記事に使えそうな重要な情報が紛れていたら、対象日外であっても必ず指摘してください。
+それ以外(ファンの感想・トレカ交換募集など)は「特筆すべき情報なし」のように簡潔にまとめて構いません。
+
+メンバー名ごとに1〜2行程度で、日本語で簡潔にまとめてください。合計400字程度に収めてください。
+
+【投稿一覧】
+{posts_text}"""
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+    return response.text.strip()
+
+
 def load_state():
     if STATE_FILE.exists():
         return json.loads(STATE_FILE.read_text(encoding="utf-8"))
@@ -221,6 +254,7 @@ async def main():
     # 前日1日分(0時〜24時)を対象にレポートを作る
     target_date = (datetime.now() - timedelta(days=1)).date()
     new_by_target = {}
+    all_unseen_by_target = {}
 
     async with async_playwright() as p:
         context = await p.chromium.launch_persistent_context(
@@ -250,6 +284,9 @@ async def main():
             else:
                 print(f"  新着なし(対象日({target_date})以外{old_count}件・重複{dup_count}件を除外)")
 
+            if unseen_posts:
+                all_unseen_by_target[name] = dedupe_posts(unseen_posts)
+
             all_ids = seen_ids | {p["id"] for p in posts}
             # 肥大化を防ぐため直近500件だけ保持
             state[name] = list(all_ids)[-500:]
@@ -260,8 +297,24 @@ async def main():
 
     if not new_by_target:
         print("\n新着情報なし")
+
+        confirmation = None
+        api_key = load_gemini_api_key()
+        if api_key and all_unseen_by_target:
+            try:
+                confirmation = summarize_for_confirmation(all_unseen_by_target, api_key)
+            except Exception as e:
+                print(f"確認用Gemini要約に失敗: {type(e).__name__}: {e}")
+
+        if confirmation:
+            message = f"コイキーズ関連、本日は新着情報なしワン。\n\n(見落とし確認用・全体要約)\n{confirmation[:1500]}"
+        elif all_unseen_by_target:
+            message = "コイキーズ関連、本日は新着情報なしワン(検索結果はあったが確認用の要約に失敗、詳細は次回セッションで確認するワン)"
+        else:
+            message = "コイキーズ関連、本日は新着情報なしワン(検索でも何もヒットしなかったワン)"
+
         try:
-            notify("コイキーズ関連、本日は新着情報なしワン")
+            notify(message)
         except Exception as e:
             print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
         return
