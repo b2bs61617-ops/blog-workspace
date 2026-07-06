@@ -4,7 +4,7 @@ import re
 import sys
 import time
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -65,15 +65,15 @@ def normalize_for_dedup(text: str) -> str:
     return t
 
 
-def is_today(date_str: str) -> bool:
-    # 投稿日時(UTC)をこのPCのローカル時刻(JST想定)に変換し、実行日と同じ日付かどうかを判定する
+def is_target_date(date_str: str, target_date) -> bool:
+    # 投稿日時(UTC)をこのPCのローカル時刻(JST想定)に変換し、対象日と同じ日付かどうかを判定する
     if not date_str:
         return False
     try:
         dt_utc = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
     except ValueError:
         return False
-    return dt_utc.astimezone().date() == datetime.now().date()
+    return dt_utc.astimezone().date() == target_date
 
 
 def dedupe_posts(posts):
@@ -213,6 +213,9 @@ async def collect_search(page, query, max_scroll=6):
 async def main():
     state = load_state()
     today = datetime.now().strftime("%Y-%m-%d")
+    # 朝7時実行時点では当日はまだ始まったばかりで丸1日分揃わないため、
+    # 前日1日分(0時〜24時)を対象にレポートを作る
+    target_date = (datetime.now() - timedelta(days=1)).date()
     new_by_target = {}
 
     async with async_playwright() as p:
@@ -232,7 +235,7 @@ async def main():
                 continue
 
             unseen_posts = [p for p in posts if p["id"] not in seen_ids]
-            new_posts = [p for p in unseen_posts if is_today(p["date"])]
+            new_posts = [p for p in unseen_posts if is_target_date(p["date"], target_date)]
             old_count = len(unseen_posts) - len(new_posts)
             useful_posts = [p for p in new_posts if not is_noise(p["text"])]
             noise_count = len(new_posts) - len(useful_posts)
@@ -240,9 +243,9 @@ async def main():
             dup_count = len(useful_posts) - len(deduped_posts)
             if deduped_posts:
                 new_by_target[name] = deduped_posts
-                print(f"  新着 {len(new_posts)}件・本日以外{old_count}件除外(ノイズ除外{noise_count}件・重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
+                print(f"  新着 {len(new_posts)}件・対象日({target_date})以外{old_count}件除外(ノイズ除外{noise_count}件・重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
             else:
-                print(f"  新着なし(本日以外{old_count}件・ノイズ{noise_count}件・重複{dup_count}件を除外)")
+                print(f"  新着なし(対象日({target_date})以外{old_count}件・ノイズ{noise_count}件・重複{dup_count}件を除外)")
 
             all_ids = seen_ids | {p["id"] for p in posts}
             # 肥大化を防ぐため直近500件だけ保持
