@@ -17,6 +17,8 @@
 - 投稿: `POST {サイトURL}/wp-json/wp/v2/posts`
 - メディアアップロード: `POST {サイトURL}/wp-json/wp/v2/media`
 - 更新(公開に変更など): `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}`
+- プラグイン一覧取得: `GET {サイトURL}/wp-json/wp/v2/plugins`
+- プラグインのインストール・有効化: `POST {サイトURL}/wp-json/wp/v2/plugins` に `{"slug": "プラグインのslug", "status": "active"}` をJSONで送る(WordPress.orgディレクトリのプラグインならZIPアップロード不要でスラッグ指定だけでインストールできる。2026-07-06、WP Sitemap Page導入時に確認)。ただしプラグインのインストール・有効化自体はサイト設定変更にあたるため、CLAUDE.mdのルール通り必ずユーザーに確認してから実行する。
 - 認証方式: Basic認証(`username:アプリパスワード`をUTF-8でBase64エンコードし`Authorization: Basic ...`ヘッダーに設定)
 - テーマ: 両サイトともSWELLテーマを使用。同じCSSクラス(`swell-block-capbox`・`swl-marker`・`is-style-dent_box`など)がそのまま使える。
 
