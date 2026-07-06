@@ -40,6 +40,10 @@ TARGETS = {
 
 
 # マツが読むレポートに含めない定型ノイズ投稿(トレカ交換・診断コピペ・同行募集など)
+# 2026-07-06時点では is_noise() の呼び出しを main() から外し、フィルタは一時停止中。
+# トレカ交換等の中にも記事のネタになる情報が紛れている可能性があるため、当面は全件を
+# Geminiの判断とマツの目視チェックに委ね、「明らかに無価値」と繰り返し確認できたパターンだけ
+# 個別にここへ追加して再度有効化していく運用にする。
 NOISE_PATTERNS = [
     r"トレカ",
     r"譲.{0,30}求|求.{0,30}譲",
@@ -237,15 +241,14 @@ async def main():
             unseen_posts = [p for p in posts if p["id"] not in seen_ids]
             new_posts = [p for p in unseen_posts if is_target_date(p["date"], target_date)]
             old_count = len(unseen_posts) - len(new_posts)
-            useful_posts = [p for p in new_posts if not is_noise(p["text"])]
-            noise_count = len(new_posts) - len(useful_posts)
-            deduped_posts = dedupe_posts(useful_posts)
-            dup_count = len(useful_posts) - len(deduped_posts)
+            # ノイズ正規表現フィルタは一時停止中(2026-07-06)。全件をGeminiの判断に委ねる。
+            deduped_posts = dedupe_posts(new_posts)
+            dup_count = len(new_posts) - len(deduped_posts)
             if deduped_posts:
                 new_by_target[name] = deduped_posts
-                print(f"  新着 {len(new_posts)}件・対象日({target_date})以外{old_count}件除外(ノイズ除外{noise_count}件・重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
+                print(f"  新着 {len(new_posts)}件・対象日({target_date})以外{old_count}件除外(重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
             else:
-                print(f"  新着なし(対象日({target_date})以外{old_count}件・ノイズ{noise_count}件・重複{dup_count}件を除外)")
+                print(f"  新着なし(対象日({target_date})以外{old_count}件・重複{dup_count}件を除外)")
 
             all_ids = seen_ids | {p["id"] for p in posts}
             # 肥大化を防ぐため直近500件だけ保持
