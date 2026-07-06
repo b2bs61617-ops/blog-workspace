@@ -28,8 +28,8 @@
 
 ## 権限方針
 
-- Read/Edit/Write/Glob/Grep/WebFetch/WebSearch/Bash/Agent/TodoWriteは基本すべて自動許可(`.claude/settings.json`参照)。
-- ただし以下は必ずユーザーに確認してから実行する:
+- Read/Edit/Write/Glob/Grep/WebFetch/WebSearch/Bash/Agent/TodoWriteは基本すべて自動許可(`.claude/settings.json`参照)。`.claude/`配下(スキル・設定ファイルなど)へのEdit/Writeも同様に自動許可(2026-07-06追加、`Edit(.claude)`/`Write(.claude)`)。
+- ファイル/データの削除以外は原則すべて確認なしで進めてよい(2026-07-06にユーザーから指示)。ただし以下は必ずユーザーに確認してから実行する:
   - ファイル削除(`Remove-Item`/`rm`/`del`/`rd`/`rmdir`)
   - **WordPress記事の削除・ゴミ箱移動**(絶対厳禁。詳細は [docs/wordpress.md](docs/wordpress.md))
   - WordPressの設定変更(プラグイン・テーマ・サイト設定など)

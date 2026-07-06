@@ -32,7 +32,9 @@
     "allow": [
       "Read",
       "Edit",
+      "Edit(.claude)",
       "Write",
+      "Write(.claude)",
       "Glob",
       "Grep",
       "WebFetch",
@@ -40,6 +42,7 @@
       "Bash",
       "Agent",
       "TodoWrite",
+      "NotebookEdit",
       "WebFetch(domain:chomoand.com)",
       "WebFetch(domain:chomoand-0.com)",
       "WebFetch(domain:chomoand-1.com)"
