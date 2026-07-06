@@ -8,7 +8,7 @@
 トレンドブログの作業場です。人物・話題の記事を調査・執筆し、WordPressに投稿します。
 運営サイトは3つあります(詳細は [docs/wordpress.md](docs/wordpress.md)):
 
-- **chomoand.com** — トレンドブログ(時事・話題)
+- **chomoand.com** — トレンドブログ(時事・話題)。※2026-07-06、方針転換を検討中。「TikTok/YouTube発バズインフルエンサーの学歴・経歴wiki」路線へ移行する方向で合意済み、具体的な仕組みは未着手。経緯・理由は[docs/chomoand-pivot.md](docs/chomoand-pivot.md)参照。
 - **chomoand-0.com** — ジャニオタブログ
 - **chomoand-1.com** — コイキーズブログ
 
