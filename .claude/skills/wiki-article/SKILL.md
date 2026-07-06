@@ -167,6 +167,16 @@ H3: 最新番組出演
 
 `<strong>`で太字強調。`<span class="swl-fz u-fz-xs">`で小文字注釈、`<span class="swl-fz u-fz-l">`で大文字強調。SWELLテーマが左カラーボーダー・背景色などを自動スタイリングする。
 
+## chomoand.com(TikTok/YouTube発インフルエンサー)向けの読み替え
+
+このスキルは元々chomoand-1.com(オーディション番組の練習生)向けだが、chomoand.comの新方針([docs/chomoand-pivot.md](../../../docs/chomoand-pivot.md)参照)にも同じ型を流用する。以下の要素を読み替える:
+
+- リード文の「番組名(正式名)」→「TikTok/YouTubeでの活動内容・バズったきっかけ(動画タイトル・投稿内容)」
+- H3「前世は?」→「TikTok/YouTube以外の活動は?」(過去の芸能活動・別名義・以前のSNSアカウントの有無)
+- H3「〇〇スクール出身」「〇〇番組出演」(時系列)→「投稿・配信を始めた時期」「バズったきっかけの投稿」「現在のフォロワー数・登録者数」
+- プロフィール表の「所属」→「所属事務所(あれば)」または「主な活動プラットフォーム(TikTok/YouTube/Instagram)」
+- MBTI・「まとめ」の締め(「今後の活躍が楽しみです」等)はそのまま使える
+
 ## 関連ルール
 
 - 場所が特定できていれば必ずGoogleマップを埋め込む([docs/rules.md](../../../docs/rules.md))
