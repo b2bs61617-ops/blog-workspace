@@ -1,36 +1,28 @@
 # LINE通知のセットアップ手順
 
-記事更新時にLINEへプッシュ通知する仕組み(`tools/line_notify.py`)の初回セットアップ手順。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)経由で通知する。
+記事更新時にLINEへ通知する仕組み(`tools/line_notify.py`)の初回セットアップ手順。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)経由で通知する。
+
+**方式はブロードキャスト**(公式アカウントを友だち追加している全員に一斉送信)。2026-07-06に、複数人への通知(同僚に届かない問題)をきっかけに、特定userIdへのpush方式から切り替えた。userIdを個別に取得・登録する必要はない。
 
 ## 1. LINE公式アカウント作成
 
 1. LINE Official Account Manager(https://manager.line.biz/)で公式アカウントを作成(すでにLINEアカウントがあればそれでログイン)
 2. 右上の歯車アイコン →「Messaging API」→「Messaging APIを利用する」で有効化(プロバイダー名は任意)
 3. 有効化後の画面(またはLINE Developersコンソール `https://developers.line.biz/console/` の対象チャネル →「Messaging API設定」タブ)で**チャネルアクセストークン(長期)**を発行し、`.env`の`LINE_CHANNEL_ACCESS_TOKEN`に設定する
-4. 同じ画面のQRコードを、通知を受け取りたい本人のLINEアプリで友だち追加する
+4. 同じ画面のQRコードを、通知を受け取りたい人全員(本人・同僚など)のLINEアプリで友だち追加してもらう。以降、友だち追加した人全員に自動で通知が届く
 
-## 2. 通知先のuserIdを取得する
-
-**`tools/line_notify.py --get-user-id`(フォロワーID一覧API `/v2/bot/followers/ids`)は無料の「コミュニケーション」プランだと`403 Access to this API is not available for your account`で使えない**(2026-07-05確認)。代わりにWebhookで直接受け取る方式を使う。
-
-1. `cloudflared`(Cloudflare Quick Tunnel、アカウント登録不要)をダウンロードする
-   ```
-   curl -sL -o cloudflared.exe "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe"
-   ```
-2. ローカルでWebhook受信用の簡易HTTPサーバーを起動する(POST bodyの`events[].source.userId`を拾って表示・保存するだけの`http.server`ベースの小さなスクリプトでよい)
-3. `./cloudflared.exe tunnel --url http://127.0.0.1:{ポート}` を起動し、発行された`https://xxxx.trycloudflare.com`のURLを控える
-4. LINE Developersコンソールの対象チャネル →「Messaging API設定」タブで、そのURLを「Webhook URL」に設定して保存 →「検証」ボタンで疎通確認 →「Webhookの利用」をオンにする(この「検証」ボタンや「Webhookの利用」トグルはOfficial Account Manager側の簡易画面には無く、LINE Developersコンソール側にしかないので注意)
-5. 友だち追加した公式アカウントに、LINEアプリから何か一言メッセージを送る
-6. ローカルサーバーがWebhookを受信し、`source.userId`(`U`で始まる33文字の文字列)をキャッチできる。それを`.env`の`LINE_USER_ID`に設定する
-7. セットアップ完了後は、ローカルサーバー・トンネルのプロセスを停止し、一時ファイルは削除してよい(Webhookの利用をオフに戻しても、オンのままにしても以降のpush通知には影響しない。オンのままだとトンネルが無いため単に疎通エラーが記録されるだけ)
-
-## 3. 動作確認
+## 2. 動作確認
 
 ```
 python tools/line_notify.py "テスト通知"
 ```
 
-LINEに届けば設定完了。届かない場合は`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`の値・友だち追加状況を確認する。
+友だち追加している全員にLINEが届けば設定完了。届かない場合は`.env`の`LINE_CHANNEL_ACCESS_TOKEN`の値・友だち追加状況を確認する。
+
+## 注意点
+
+- ブロードキャストは無料プランの月間メッセージ配信数(無料枠)を、送信1回につき「友だち人数分」消費する。人数が増えると枠の消費が早くなる点に注意。
+- 特定の人だけに送り分けたい場合はこの方式では不可(その場合はWebhookでuserIdを個別取得し、multicast/push方式に戻す必要がある)。
 
 ## 使われている場所
 

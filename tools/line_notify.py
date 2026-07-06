@@ -1,10 +1,9 @@
-"""LINE Messaging APIでのプッシュ通知送信スクリプト。
+"""LINE Messaging APIでのブロードキャスト通知送信スクリプト。
 
 事前準備(初回のみ):
   1. .envに LINE_CHANNEL_ACCESS_TOKEN を設定する
-  2. 通知を受け取りたい本人がLINE公式アカウントを友だち追加する
-  3. `python tools/line_notify.py --get-user-id` を実行してuserIdを取得し、
-     .envに LINE_USER_ID として保存する
+  2. 通知を受け取りたい人全員がLINE公式アカウントを友だち追加する
+     (以降、友だち追加した人全員に自動で届く。userIdの個別登録は不要)
 
 通知送信:
   python tools/line_notify.py "記事を更新したワン"
@@ -57,15 +56,20 @@ def send_message(token, user_id, text):
     return _request(f"{API_BASE}/message/push", token, data=data, method="POST")
 
 
+def broadcast_message(token, text):
+    """公式アカウントを友だち追加している全員にテキストメッセージを送る。"""
+    data = {"messages": [{"type": "text", "text": text}]}
+    return _request(f"{API_BASE}/message/broadcast", token, data=data, method="POST")
+
+
 def notify(text):
-    """.envの設定を使って、通知先ユーザーにメッセージを送る共通関数。"""
+    """.envの設定を使って、友だち登録している全員にメッセージを送る共通関数。"""
     env = {**load_env(ROOT / ".env")}
     token = env.get("LINE_CHANNEL_ACCESS_TOKEN")
-    user_id = env.get("LINE_USER_ID")
-    if not token or not user_id:
-        print("LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID が.envに未設定のため通知をスキップしたワン")
+    if not token:
+        print("LINE_CHANNEL_ACCESS_TOKEN が.envに未設定のため通知をスキップしたワン")
         return None
-    return send_message(token, user_id, text)
+    return broadcast_message(token, text)
 
 
 if __name__ == "__main__":
@@ -87,11 +91,7 @@ if __name__ == "__main__":
                 print(f"  {uid}")
     elif len(sys.argv) > 1:
         message = sys.argv[1]
-        user_id = env.get("LINE_USER_ID")
-        if not user_id:
-            print("エラー: .envにLINE_USER_IDが設定されてないワン(先に--get-user-idで取得してね)")
-            sys.exit(1)
-        send_message(token, user_id, message)
+        broadcast_message(token, message)
         print("送信したワン")
     else:
         print("使い方: python tools/line_notify.py \"メッセージ\"")
