@@ -21,6 +21,9 @@ import urllib.parse
 from pathlib import Path
 from collections import Counter
 
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).parent.parent
 API_URL = "https://www.googleapis.com/youtube/v3/videos"
 
