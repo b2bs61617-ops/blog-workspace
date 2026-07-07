@@ -241,15 +241,22 @@ async def collect_x(page, should_continue, on_status, on_post):
     last_new_time = time.monotonic()
 
     while should_continue():
-        articles = await page.query_selector_all('article[data-tweet-id]')
+        articles = await page.query_selector_all('article[data-testid="tweet"]')
         prev_article_count = len(articles)
 
         for article in articles:
             try:
-                text_el = await article.query_selector('div[dir="auto"]')
+                text_el = await article.query_selector('[data-testid="tweetText"]')
                 text = (await text_el.inner_text()).strip() if text_el else ""
 
-                tweet_id = await article.get_attribute("data-tweet-id")
+                tweet_id = None
+                status_link = await article.query_selector('a[href*="/status/"]')
+                if status_link:
+                    href = await status_link.get_attribute("href")
+                    m = re.search(r'/status/(\d+)', href or "")
+                    if m:
+                        tweet_id = m.group(1)
+
                 img_els = await article.query_selector_all('img[src*="pbs.twimg.com/media"]')
                 img_urls = []
                 for img_el in img_els:
@@ -265,10 +272,12 @@ async def collect_x(page, should_continue, on_status, on_post):
                 seen.add(dedup_key)
 
                 date_str = ""
-                if tweet_id:
-                    date_el = await article.query_selector(f'a[href$="/status/{tweet_id}"]')
-                    if date_el:
-                        date_str = (await date_el.inner_text()).strip()
+                time_el = await article.query_selector("time")
+                if time_el:
+                    dt_attr = await time_el.get_attribute("datetime")
+                    if dt_attr:
+                        dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
+                        date_str = dt.strftime("%Y/%m/%d %H:%M")
 
                 post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
                 count += 1
@@ -280,7 +289,7 @@ async def collect_x(page, should_continue, on_status, on_post):
         await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
         try:
             await page.wait_for_function(
-                f"document.querySelectorAll('article[data-tweet-id]').length > {prev_article_count}",
+                f"document.querySelectorAll('article[data-testid=\\\"tweet\\\"]').length > {prev_article_count}",
                 timeout=3000
             )
         except Exception:
