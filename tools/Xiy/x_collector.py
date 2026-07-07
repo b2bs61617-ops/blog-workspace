@@ -154,8 +154,36 @@ async def switch_to_latest_tab(page):
         pass
 
 
+async def is_x_login_wall(page) -> bool:
+    if "/i/flow/login" in page.url or "/login" in page.url:
+        return True
+    try:
+        return bool(await page.query_selector('[data-testid="loginButton"], a[href="/login"]'))
+    except Exception:
+        return False
+
+
+# ── Xのログイン待ち(未ログインのまま収集ループに入り、投稿0件のタイムアウトで
+#    ブラウザごと閉じてログイン画面が消えてしまうのを防ぐ) ──
+async def wait_for_x_login(page, should_continue, on_status):
+    if not await is_x_login_wall(page):
+        return
+    on_status("Xにログインしてください（ログイン完了まで待機します）...")
+    for _ in range(180):
+        if not should_continue():
+            return
+        await page.wait_for_timeout(1000)
+        if not await is_x_login_wall(page):
+            break
+    await page.wait_for_timeout(1500)
+
+
 # ── トレンドページ収集 ──
 async def collect_trending(page, should_continue, on_status, on_post):
+    await wait_for_x_login(page, should_continue, on_status)
+    if not should_continue():
+        return
+
     on_status("トレンドページを解析中...")
     await page.wait_for_timeout(4000)
 
@@ -201,6 +229,10 @@ async def collect_trending(page, should_continue, on_status, on_post):
 
 # ── X収集 ──
 async def collect_x(page, should_continue, on_status, on_post):
+    await wait_for_x_login(page, should_continue, on_status)
+    if not should_continue():
+        return
+
     seen = set()
     count = 0
     last_new_time = time.monotonic()
