@@ -154,11 +154,14 @@ async def switch_to_latest_tab(page):
         pass
 
 
-async def is_x_login_wall(page) -> bool:
-    if "/i/flow/login" in page.url or "/login" in page.url:
-        return True
+# ログイン画面は入力欄がモーダルで出るなどパターンが多くURLも変わらないことがあるため、
+# 「未ログイン状態の見た目」を当てにいくのではなく「ログイン済みの時だけ出るナビ要素」の
+# 有無で判定する(SideNav_AccountSwitcher_ButtonはX上のログイン済みシェルで安定して出る)。
+async def is_x_logged_in(page) -> bool:
     try:
-        return bool(await page.query_selector('[data-testid="loginButton"], a[href="/login"]'))
+        el = await page.query_selector(
+            '[data-testid="SideNav_AccountSwitcher_Button"], [data-testid="AppTabBar_Home_Link"]')
+        return el is not None
     except Exception:
         return False
 
@@ -166,14 +169,14 @@ async def is_x_login_wall(page) -> bool:
 # ── Xのログイン待ち(未ログインのまま収集ループに入り、投稿0件のタイムアウトで
 #    ブラウザごと閉じてログイン画面が消えてしまうのを防ぐ) ──
 async def wait_for_x_login(page, should_continue, on_status):
-    if not await is_x_login_wall(page):
+    if await is_x_logged_in(page):
         return
     on_status("Xにログインしてください（ログイン完了まで待機します）...")
     for _ in range(180):
         if not should_continue():
             return
         await page.wait_for_timeout(1000)
-        if not await is_x_login_wall(page):
+        if await is_x_logged_in(page):
             break
     await page.wait_for_timeout(1500)
 
