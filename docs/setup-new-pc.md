@@ -59,9 +59,10 @@ winget install --id Python.Python.3.12 -e --source winget
 ```
 必要なパッケージ:
 ```powershell
-py -3 -m pip install pillow requests playwright google-genai yt-dlp youtube-transcript-api faster-whisper
+py -3 -m pip install pillow requests playwright playwright-stealth google-genai yt-dlp youtube-transcript-api faster-whisper
 py -3 -m playwright install chromium
 ```
+`playwright-stealth`はX側のBot検知(自動化ブラウザと判定されて偽の「JavaScriptを使用できません」ページを返される問題)対策。未インストールでも動くが、検知されやすくなる。
 初回起動時にブラウザでX/Instagramへのログインを求められる。ログイン情報は`%USERPROFILE%\x_collector_profile`にPCごとに個別保存されるので、**PCごとに1回ログインが必要**。
 
 `tools/Xiy/起動.bat`をダブルクリックすると起動する。

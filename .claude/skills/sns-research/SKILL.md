@@ -61,7 +61,11 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 - YouTube URL入力時は文字起こし・チャンネル動画一覧取得・AI要約(Gemini)にも対応
 - 取得完了時に音+ポップアップ通知、「保存」ボタンでテキスト+画像ファイルを書き出し
 
-**使用技術:** Python 3.12 + tkinter(GUI)、Playwright + システムChrome、Pillow + requests、yt-dlp、youtube-transcript-api、faster-whisper、google-genai
+**使用技術:** Python 3.12 + tkinter(GUI)、Playwright + システムChrome + playwright-stealth(Bot検知対策)、Pillow + requests、yt-dlp、youtube-transcript-api、faster-whisper、google-genai
+
+### Bot検知について
+
+Xの検索ページなどで、実際にはJSは動いているのに`navigator.webdriver`等の自動化フィンガープリントを見て「JavaScriptを使用できません」という偽のブロックページを返してくることがある(2026-07-07判明)。この場合、収集ループ自体は正常に動いても投稿が0件のまま終わる。対策として`playwright-stealth`でブラウザ起動時にフィンガープリントを偽装しているが、それでも0件が続く場合は自動アクセスを一旦止めて、手動でXiy(GUI)からログイン状態のブラウザで普通に閲覧し、しばらく間を空けてから再試行する。
 
 ### CLIモード(マツが直接自動実行する場合)
 

@@ -7,6 +7,7 @@ import sys
 import time
 import json
 import os
+import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
@@ -31,6 +32,12 @@ try:
     PLAYWRIGHT_OK = True
 except ImportError:
     PLAYWRIGHT_OK = False
+
+try:
+    from playwright_stealth import Stealth
+    STEALTH_OK = True
+except ImportError:
+    STEALTH_OK = False
 
 try:
     from google import genai as google_genai
@@ -65,6 +72,21 @@ except ImportError:
 PROFILE_DIR = str(Path.home() / "x_collector_profile")
 THUMB_SIZE = (150, 150)
 CONFIG_FILE = str(Path(__file__).parent / "xiy_config.json")
+
+# navigator.webdriver等の自動化フィンガープリントをX側に検知されて
+# 「JavaScriptを使用できません」の偽ブロックページを返されることがあるため、
+# 実際のシステムChromeが本来持つ言語設定に合わせてstealthパッチを当てる。
+STEALTH_KWARGS = dict(navigator_languages_override=("ja-JP", "ja"))
+
+
+async def launch_browser_context(p):
+    context = await p.chromium.launch_persistent_context(
+        PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
+        args=["--disable-blink-features=AutomationControlled"],
+    )
+    if STEALTH_OK:
+        await Stealth(**STEALTH_KWARGS).apply_stealth_async(context)
+    return context
 
 
 def x_full_size_url(url: str) -> str:
@@ -220,7 +242,7 @@ async def collect_x(page, should_continue, on_status, on_post):
             except Exception:
                 continue
 
-        await page.evaluate("window.scrollBy(0, 900)")
+        await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
         try:
             await page.wait_for_function(
                 f"document.querySelectorAll('article[data-tweet-id]').length > {prev_article_count}",
@@ -267,7 +289,7 @@ async def collect_instagram(page, should_continue, on_status, on_post):
 
         if not new_links:
             on_status(f"[Instagram] 取得済み: {count}件 ／ 新着待機: {elapsed}秒 / 10秒")
-            await page.evaluate("window.scrollBy(0, 900)")
+            await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
             await page.wait_for_timeout(500)
             continue
 
@@ -338,7 +360,7 @@ async def collect_instagram(page, should_continue, on_status, on_post):
                 await page.wait_for_timeout(200)
                 continue
 
-        await page.evaluate("window.scrollBy(0, 900)")
+        await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
         await page.wait_for_timeout(400)
 
 
@@ -730,10 +752,7 @@ class CollectorApp:
         platform = detect_platform(url)
         try:
             async with async_playwright() as p:
-                context = await p.chromium.launch_persistent_context(
-                    PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
-                    args=["--disable-blink-features=AutomationControlled"],
-                )
+                context = await launch_browser_context(p)
                 page = context.pages[0] if context.pages else await context.new_page()
                 self.update_status(f"[{platform.upper()}] ページを開いています...")
                 await page.goto(url, wait_until="domcontentloaded", timeout=30000)
@@ -1124,10 +1143,7 @@ async def run_cli(args):
         print(f"\n[{len(posts)}] {post['date']} {preview}")
 
     async with async_playwright() as p:
-        context = await p.chromium.launch_persistent_context(
-            PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
-            args=["--disable-blink-features=AutomationControlled"],
-        )
+        context = await launch_browser_context(p)
         page = context.pages[0] if context.pages else await context.new_page()
         print(f"[{platform.upper()}] ページを開いています... {url}")
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
