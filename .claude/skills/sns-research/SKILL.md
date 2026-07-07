@@ -62,3 +62,21 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 - 取得完了時に音+ポップアップ通知、「保存」ボタンでテキスト+画像ファイルを書き出し
 
 **使用技術:** Python 3.12 + tkinter(GUI)、Playwright + システムChrome、Pillow + requests、yt-dlp、youtube-transcript-api、faster-whisper、google-genai
+
+### CLIモード(マツが直接自動実行する場合)
+
+GUIを開かず、キーワードやURLを渡すだけでX/Instagramの収集→保存(→AI分析)まで自動実行できる(2026-07-07追加)。「Xで〇〇を調べて」のように頼まれたら、Xiyを起動して手動操作してもらうのではなく、まずこちらを使う。
+
+```powershell
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+python tools/Xiy/x_collector.py --keyword "釼持吉成"
+```
+
+- `--keyword "語句"`: Xでキーワード検索(デフォルトは「最新」タブ`f=live`。「話題のツイート」で見たい場合は`--tab top`)
+- `--url "https://x.com/..."` / `--url "https://instagram.com/..."`: キーワードの代わりにURLを直接指定(プロフィールページ・検索結果ページなど)
+- `--out "保存先ディレクトリ"`: 省略時は`tools/Xiy/posts_日時_キーワード/`に自動保存
+- `--no-ai`: Gemini AI分析(プライベート情報抽出)をスキップする。省略時は`xiy_config.json`にAPIキーがあれば自動実行
+- 新着投稿が10秒来なくなったら自動で収集終了。ブラウザウィンドウは(ボット判定回避のため)表示されるが、クリック操作は不要
+- ログイン済みプロファイル(`%USERPROFILE%\x_collector_profile`)をGUIモードと共用するので、事前にGUIで一度ログインしておく必要がある
+
+GUIモード(`起動.bat`)は従来通り引数なしで起動すれば使える。収集・保存・AI分析のロジックは内部でCLIと共通化されている。
