@@ -45,7 +45,7 @@
 
 ## Search Console
 
-公開後のURLをGoogle Search Consoleに登録する作業は、API連携が複雑なためユーザーが手動で行う。松/Codexは公開とURL表示までを担当する。
+公開後のURLは、Google Indexing API経由で[publishスキル](../.claude/skills/publish/SKILL.md)が自動でインデックス登録をリクエストする(2026-07-09〜)。初回セットアップ手順・API利用上の注意点は[docs/google-indexing-setup.md](google-indexing-setup.md)参照。`tools/google_indexing.py`が実体。
 
 ### chomoand-0.comのインデックス未登録問題(2026-07-07調査)
 

@@ -71,6 +71,7 @@
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 - **LINE通知**(`tools/line_notify.py`): 記事の更新・リライト提案時、および`koikeyz-monitor`の毎朝の監視結果報告でLINEへプッシュ通知するツール(2026-07-05追加)。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)のチャネルアクセストークンを使う方式。`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知だけスキップされ、他の処理は止まらない。初回セットアップ手順は[docs/line-notify-setup.md](docs/line-notify-setup.md)を参照(フォロワーID一覧APIは無料プランだと使えないため要注意)。呼び出し元はkoikeyz-rewriteスキル(リライト提案時・更新完了時・Gemini失敗時のフォールバック要約)と`tools/koikeyz-monitor/x_monitor.py`(毎朝、結果に関わらず必ず通知)。なお「LINE返信でマツが自動執筆する」パイプラインは本番ドメインのDNS移行リスクを理由に見送り済み([docs/line-notify-setup.md](docs/line-notify-setup.md)参照)。
 - **YouTube急上昇取得**(`tools/youtube_trending.py`): chomoand.com新方針(TikTok/YouTube発バズインフルエンサーのwiki記事)のネタ探し用。YouTube Data API v3で日本の急上昇動画を取得する。`.env`の`YOUTUBE_API_KEY`が必要(2026-07-06追加)。セットアップ手順は[docs/youtube-api-setup.md](docs/youtube-api-setup.md)、使い方は[youtube-trendingスキル](.claude/skills/youtube-trending/SKILL.md)参照。YouTube急上昇ページ・TikTok Creative CenterはどちらもJS描画でWebFetchでは中身が取れないため、API経由で取得する方式にした。TikTok側は現時点で自動取得の手段なし。
+- **Googleインデックス登録**(`tools/google_indexing.py`): 記事公開時にURLをGoogle Indexing APIへ送信し、即時インデックス登録をリクエストするツール(2026-07-09追加)。[publishスキル](.claude/skills/publish/SKILL.md)から自動で呼ばれる。サービスアカウントのJSON鍵が必要で、`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`が未設定の場合は通知だけスキップされ、公開処理自体は止まらない(LINE通知と同じフェイルセーフ方式)。セットアップ手順は[docs/google-indexing-setup.md](docs/google-indexing-setup.md)参照。Indexing APIは規約上Job Posting/BroadcastEvent専用が本来の用途で、ブログ記事への利用は黙認されている状態である点に注意。
 
 ## テスト
 
