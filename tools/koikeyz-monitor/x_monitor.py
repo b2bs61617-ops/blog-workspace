@@ -355,7 +355,8 @@ async def main():
 
         if JUDGE_RE.search(summary):
             body = JUDGE_LINE_RE.sub("", summary).strip()
-            message = f"コイキーズで新着情報ありワン。記事に使えそうな内容もあるみたいワン!\n\n{body[:1500]}"
+            # LINEのメッセージ上限は5000文字。プレフィックス込みでその範囲に収める。
+            message = f"コイキーズで新着情報ありワン。記事に使えそうな内容もあるみたいワン!\n\n{body}"[:5000]
         else:
             message = "コイキーズで新着投稿はあったけど、記事化に値する情報は無かったワン"
         try:
