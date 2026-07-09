@@ -45,14 +45,20 @@
       "NotebookEdit",
       "WebFetch(domain:chomoand.com)",
       "WebFetch(domain:chomoand-0.com)",
-      "WebFetch(domain:chomoand-1.com)"
+      "WebFetch(domain:chomoand-1.com)",
+      "PowerShell"
     ],
     "ask": [
       "Bash(Remove-Item *)",
       "Bash(rm *)",
       "Bash(del *)",
       "Bash(rd *)",
-      "Bash(rmdir *)"
+      "Bash(rmdir *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(rm *)",
+      "PowerShell(del *)",
+      "PowerShell(rd *)",
+      "PowerShell(rmdir *)"
     ]
   }
 }
