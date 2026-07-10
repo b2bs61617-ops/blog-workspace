@@ -137,3 +137,7 @@ H2「まとめ」: 箇条書きで要点再掲(彼女の有無/過去の噂/好�
 6. 締めは「楽しみですね!」「注目していきましょう!」で応援トーンに統一
 
 情報が見つからない場合は[sns-researchスキル](../sns-research/SKILL.md)で掘る。地図埋め込み・文体ルールは[docs/rules.md](../../../docs/rules.md)参照。
+
+## chomoand.com(TikTok/YouTube発インフルエンサー)向けの読み替え
+
+学歴・家族構成・彼女(彼氏)の3テンプレートは番組非依存の構成なので、chomoand.comの新方針([docs/chomoand-pivot.md](../../../docs/chomoand-pivot.md)参照)にもほぼそのまま使える。リード文の「番組名+人名」の部分だけ「TikTok/YouTubeで話題の〇〇さん」のように読み替える。

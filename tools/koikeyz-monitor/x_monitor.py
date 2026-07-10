@@ -1,0 +1,376 @@
+import asyncio
+import json
+import re
+import sys
+import time
+import urllib.parse
+from datetime import datetime, timedelta
+from pathlib import Path
+
+from playwright.async_api import async_playwright
+
+PROFILE_DIR = str(Path.home() / "koikeyz_monitor_profile")
+ROOT = Path(__file__).parent
+STATE_FILE = ROOT / "monitor_state.json"
+REPORTS_DIR = ROOT / "monitor_reports"
+CONFIG_FILE = ROOT / "monitor_config.json"
+
+sys.path.insert(0, str(ROOT.parent))
+from line_notify import notify  # noqa: E402
+
+JUDGE_RE = re.compile(r"判定[:：]\s*あり")
+JUDGE_LINE_RE = re.compile(r"^判定[:：].*$\n?", re.MULTILINE)
+
+# KO1KEYZ 正式デビューメンバー12人 + グループ全体
+TARGETS = {
+    "加藤大樹": "加藤大樹 OR K.DAIKI KO1KEYZ",
+    "矢田佳暉": "矢田佳暉 OR YOSHIKI KO1KEYZ",
+    "パク・シヨン": "パク・シヨン OR SIYOUNG KO1KEYZ",
+    "オ・シンヘン": "オ・シンヘン OR SHINHAENG KO1KEYZ",
+    "後藤結": "後藤結 OR YUKI KO1KEYZ",
+    "柳谷伊冴": "柳谷伊冴 OR ISSA KO1KEYZ",
+    "小野慶人": "小野慶人 OR KEITO KO1KEYZ",
+    "安部結蘭": "安部結蘭 OR YURA KO1KEYZ",
+    "飯塚亮賀": "飯塚亮賀 OR RYOGA KO1KEYZ",
+    "杉山竜司": "杉山竜司 OR RYUJI KO1KEYZ",
+    "照井康祐": "照井康祐 OR KOSUKE KO1KEYZ",
+    "濱田永遠": "濱田永遠 OR TOWA KO1KEYZ",
+    "KO1KEYZ(グループ全体)": "KO1KEYZ OR コイキーズ",
+}
+
+
+# マツが読むレポートに含めない定型ノイズ投稿(トレカ交換・診断コピペ・同行募集など)
+# 2026-07-06時点では is_noise() の呼び出しを main() から外し、フィルタは一時停止中。
+# トレカ交換等の中にも記事のネタになる情報が紛れている可能性があるため、当面は全件を
+# Geminiの判断とマツの目視チェックに委ね、「明らかに無価値」と繰り返し確認できたパターンだけ
+# 個別にここへ追加して再度有効化していく運用にする。
+NOISE_PATTERNS = [
+    r"トレカ",
+    r"譲.{0,30}求|求.{0,30}譲",
+    r"好き顔No\.?1",
+    r"lapone-lanking",
+    r"同行(させて|募集|求め|探)",
+    r"交換希望|買取希望|お気軽にお声(掛け|がけ)",
+    r"郵送希望|郵送or|郵送のみ",
+    r"連番|同担様",
+    r"#PR\b|tag=[\w-]+-22",  # Amazonアフィリエイトの広告コピペ投稿
+]
+NOISE_RE = re.compile("|".join(NOISE_PATTERNS))
+
+
+def is_noise(text: str) -> bool:
+    return bool(NOISE_RE.search(text))
+
+
+def normalize_for_dedup(text: str) -> str:
+    # URL・空白・タグ付き引用元アカウント名の揺れを無視して、同一内容のコピペ投稿をまとめる
+    t = re.sub(r"https?://\S+", "", text)
+    t = re.sub(r"\s+", "", t)
+    return t
+
+
+def is_target_date(date_str: str, target_date) -> bool:
+    # 投稿日時(UTC)をこのPCのローカル時刻(JST想定)に変換し、対象日と同じ日付かどうかを判定する
+    if not date_str:
+        return False
+    try:
+        dt_utc = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return dt_utc.astimezone().date() == target_date
+
+
+def dedupe_posts(posts):
+    # 同じ告知文が複数アカウントからコピペ投稿されるケースをまとめ、代表1件+件数にする
+    groups = {}
+    order = []
+    for p in posts:
+        key = normalize_for_dedup(p["text"])
+        if key not in groups:
+            groups[key] = {**p, "duplicate_count": 1}
+            order.append(key)
+        else:
+            groups[key]["duplicate_count"] += 1
+    return [groups[k] for k in order]
+
+
+def load_gemini_api_key():
+    if not CONFIG_FILE.exists():
+        return None
+    try:
+        config = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
+        return config.get("gemini_api_key") or None
+    except Exception:
+        return None
+
+
+def summarize_with_gemini(new_by_target, api_key):
+    """Geminiで「記事に使えそうな情報」だけ抽出した要約を作る。失敗したらNoneを返す(呼び出し側で生データにフォールバック)。"""
+    from google import genai
+
+    lines = []
+    for name, posts in new_by_target.items():
+        lines.append(f"【{name}】")
+        for p in posts:
+            dup = f"(同文投稿{p['duplicate_count']}件)" if p.get("duplicate_count", 1) > 1 else ""
+            lines.append(f"- {p['text']}{dup}")
+    posts_text = "\n".join(lines)
+
+    prompt = f"""以下はKO1KEYZメンバーに関するXの新着投稿一覧です。
+コイキーズブログの既存記事を更新するために「記事に反映する価値がある新情報」だけを抽出してください。
+
+【抽出してほしい情報の例】
+- 公式発表(デビュー・ライブ・ファンミ・グッズ・出演番組などの日程・詳細)
+- メンバーの経歴・エピソードに関わる新事実
+- ニュースサイトの記事や公式アカウントの投稿内容
+
+【除外してよいもの】
+- ファンの感想・応援メッセージ・「好き」「会いたい」等の感情表現のみの投稿
+- 抽選・当落の個人的な報告(具体的な公演日程が伴わないもの)
+- その他、記事に書く価値が無いと判断されるもの
+
+【出力形式】
+グッズ・ファンブック・ランキング企画などグループ全体/複数メンバーに共通する告知は、
+メンバーごとに繰り返さず「共通の新着情報」として1回だけ箇条書きでまとめてください。
+そのメンバーだけに関する個別の情報がある場合だけ、メンバー名を見出しにして箇条書きで書いてください
+(個別情報が無いメンバーの見出しは書かなくてよい)。
+
+出力は以下の構成にしてください:
+
+【共通の新着情報】
+- (複数メンバーに共通する内容。無ければ「特になし」)
+
+【メンバー個別の新着情報】
+【メンバー名】
+- (そのメンバー固有の内容)
+
+共通の新着情報も個別の新着情報も何も無ければ「特筆すべき情報なし」と書いてください。
+簡潔に日本語でまとめてください。
+
+最後に必ず1行だけ追加し、上記の投稿の中に「ブログ記事に反映する価値がある新情報」が1つでもあれば`判定: あり`、1つも無ければ`判定: なし`とだけ書いてください。
+
+【投稿一覧】
+{posts_text}"""
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+    return response.text.strip()
+
+
+def summarize_for_confirmation(all_by_target, api_key):
+    """対象日の新着が無かった場合に、収集した全投稿(対象日外含む)をGeminiに要約させ、
+    見落としが無いか確認しやすくする(判定なし・確認用サマリのみ)。"""
+    from google import genai
+
+    lines = []
+    for name, posts in all_by_target.items():
+        lines.append(f"【{name}】")
+        for p in posts:
+            dup = f"(同文投稿{p['duplicate_count']}件)" if p.get("duplicate_count", 1) > 1 else ""
+            lines.append(f"- [{p['date']}] {p['text']}{dup}")
+    posts_text = "\n".join(lines)
+
+    prompt = f"""以下はKO1KEYZメンバーに関するXの検索結果です。
+いずれも「レポート対象日(前日1日分)」に該当しない投稿だったため、通常の新着レポートとしては報告していません。
+ユーザーが「本当に見落としている新情報が無いか」を確認したいので、メンバーごとに投稿内容の傾向を簡潔に要約してください。
+
+もし公式発表・経歴に関わる新事実など、記事に使えそうな重要な情報が紛れていたら、対象日外であっても必ず指摘してください。
+それ以外(ファンの感想・トレカ交換募集など)は「特筆すべき情報なし」のように簡潔にまとめて構いません。
+
+メンバー名ごとに1〜2行程度で、日本語で簡潔にまとめてください。合計400字程度に収めてください。
+
+【投稿一覧】
+{posts_text}"""
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+    return response.text.strip()
+
+
+def load_state():
+    if STATE_FILE.exists():
+        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_state(state):
+    STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+async def switch_to_latest_tab(page):
+    try:
+        tab = page.get_by_role("tab", name="最新")
+        if await tab.count():
+            await tab.first.click()
+            await page.wait_for_timeout(1500)
+    except Exception:
+        pass
+
+
+async def collect_search(page, query, max_scroll=6):
+    url = f"https://x.com/search?q={urllib.parse.quote(query)}&src=typed_query&f=live"
+    await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+    await page.wait_for_timeout(3000)
+    await switch_to_latest_tab(page)
+
+    posts = []
+    seen = set()
+    for _ in range(max_scroll):
+        articles = await page.query_selector_all('article[data-testid="tweet"]')
+        for article in articles:
+            try:
+                status_link = await article.query_selector('a[href*="/status/"]')
+                if not status_link:
+                    continue
+                href = await status_link.get_attribute("href")
+                m = re.search(r"/status/(\d+)", href or "")
+                if not m:
+                    continue
+                tweet_id = m.group(1)
+                if tweet_id in seen:
+                    continue
+                seen.add(tweet_id)
+
+                text_el = await article.query_selector('div[data-testid="tweetText"]')
+                text = (await text_el.inner_text()).strip() if text_el else ""
+
+                date_str = ""
+                time_el = await article.query_selector("time")
+                if time_el:
+                    date_str = (await time_el.get_attribute("datetime")) or ""
+
+                author_el = await article.query_selector('div[data-testid="User-Name"]')
+                author = (await author_el.inner_text()).strip().replace("\n", " ") if author_el else ""
+
+                posts.append({
+                    "id": tweet_id,
+                    "date": date_str,
+                    "author": author,
+                    "text": text,
+                    "url": f"https://x.com/i/status/{tweet_id}",
+                })
+            except Exception:
+                continue
+        await page.evaluate("window.scrollBy(0, 1200)")
+        await page.wait_for_timeout(800)
+    return posts
+
+
+async def main():
+    state = load_state()
+    today = datetime.now().strftime("%Y-%m-%d")
+    # 朝7時実行時点では当日はまだ始まったばかりで丸1日分揃わないため、
+    # 前日1日分(0時〜24時)を対象にレポートを作る
+    target_date = (datetime.now() - timedelta(days=1)).date()
+    new_by_target = {}
+    all_unseen_by_target = {}
+
+    async with async_playwright() as p:
+        context = await p.chromium.launch_persistent_context(
+            PROFILE_DIR, headless=False, channel="chrome", slow_mo=30,
+            args=["--disable-blink-features=AutomationControlled"],
+        )
+        page = context.pages[0] if context.pages else await context.new_page()
+
+        for name, query in TARGETS.items():
+            print(f"[{name}] 検索中: {query}")
+            seen_ids = set(state.get(name, []))
+            try:
+                posts = await collect_search(page, query)
+            except Exception as e:
+                print(f"  失敗: {e}")
+                continue
+
+            unseen_posts = [p for p in posts if p["id"] not in seen_ids]
+            new_posts = [p for p in unseen_posts if is_target_date(p["date"], target_date)]
+            old_count = len(unseen_posts) - len(new_posts)
+            # ノイズ正規表現フィルタは一時停止中(2026-07-06)。全件をGeminiの判断に委ねる。
+            deduped_posts = dedupe_posts(new_posts)
+            dup_count = len(new_posts) - len(deduped_posts)
+            if deduped_posts:
+                new_by_target[name] = deduped_posts
+                print(f"  新着 {len(new_posts)}件・対象日({target_date})以外{old_count}件除外(重複統合{dup_count}件 → 採用{len(deduped_posts)}件)")
+            else:
+                print(f"  新着なし(対象日({target_date})以外{old_count}件・重複{dup_count}件を除外)")
+
+            if unseen_posts:
+                all_unseen_by_target[name] = dedupe_posts(unseen_posts)
+
+            all_ids = seen_ids | {p["id"] for p in posts}
+            # 肥大化を防ぐため直近500件だけ保持
+            state[name] = list(all_ids)[-500:]
+
+        await context.close()
+
+    save_state(state)
+
+    if not new_by_target:
+        print("\n新着情報なし")
+
+        confirmation = None
+        api_key = load_gemini_api_key()
+        if api_key and all_unseen_by_target:
+            try:
+                confirmation = summarize_for_confirmation(all_unseen_by_target, api_key)
+            except Exception as e:
+                print(f"確認用Gemini要約に失敗: {type(e).__name__}: {e}")
+
+        if confirmation:
+            message = f"コイキーズ関連、本日は新着情報なしワン。\n\n(見落とし確認用・全体要約)\n{confirmation[:1500]}"
+        elif all_unseen_by_target:
+            message = "コイキーズ関連、本日は新着情報なしワン(検索結果はあったが確認用の要約に失敗、詳細は次回セッションで確認するワン)"
+        else:
+            message = "コイキーズ関連、本日は新着情報なしワン(検索でも何もヒットしなかったワン)"
+
+        try:
+            notify(message)
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
+        return
+
+    REPORTS_DIR.mkdir(exist_ok=True)
+    stamp = f"{today}_{int(time.time())}"
+    report_path = REPORTS_DIR / f"report_{stamp}.json"
+    report_path.write_text(
+        json.dumps(new_by_target, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    api_key = load_gemini_api_key()
+    summary = None
+    if api_key:
+        try:
+            summary = summarize_with_gemini(new_by_target, api_key)
+        except Exception as e:
+            print(f"Gemini要約に失敗したのでスキップ(生データのみ出力): {type(e).__name__}: {e}")
+
+    if summary:
+        summary_path = REPORTS_DIR / f"report_{stamp}.summary.txt"
+        summary_path.write_text(summary, encoding="utf-8")
+        print(f"\n新着情報あり → {summary_path} (AI要約あり、生データ: {report_path.name})")
+
+        if JUDGE_RE.search(summary):
+            body = JUDGE_LINE_RE.sub("", summary).strip()
+            # LINEのメッセージ上限は5000文字。プレフィックス込みでその範囲に収める。
+            message = f"コイキーズで新着情報ありワン。記事に使えそうな内容もあるみたいワン!\n\n{body}"[:5000]
+        else:
+            message = "コイキーズで新着投稿はあったけど、記事化に値する情報は無かったワン"
+        try:
+            notify(message)
+            print("LINE通知を送信したワン")
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
+    else:
+        print(f"\n新着情報あり → {report_path} (AI要約なし、生データのみ)")
+        try:
+            notify("コイキーズで新着投稿があったワン(自動要約は失敗、詳細は次回セッションで確認するワン)")
+        except Exception as e:
+            print(f"LINE通知に失敗(処理は続行): {type(e).__name__}: {e}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

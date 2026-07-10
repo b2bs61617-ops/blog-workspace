@@ -61,4 +61,38 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 - YouTube URL入力時は文字起こし・チャンネル動画一覧取得・AI要約(Gemini)にも対応
 - 取得完了時に音+ポップアップ通知、「保存」ボタンでテキスト+画像ファイルを書き出し
 
-**使用技術:** Python 3.12 + tkinter(GUI)、Playwright + システムChrome、Pillow + requests、yt-dlp、youtube-transcript-api、faster-whisper、google-genai
+**使用技術:** Python 3.12 + tkinter(GUI)、Playwright + システムChrome + playwright-stealth(Bot検知対策)、Pillow + requests、yt-dlp、youtube-transcript-api、faster-whisper、google-genai
+
+### X収集が0件になる場合のトラブルシュート(2026-07-07判明・解決済み)
+
+「Xで検索しても投稿が0件のまま終わる」問題を調査したところ、原因は2つ絡んでいた。**現在はどちらも修正済み**で、実際に「釼持 吉成」で検索し780件の実ツイートを収集できることを確認済み。
+
+1. **セレクタが古かった(本質的な原因)**: `collect_x`が記事要素を`article[data-tweet-id]`で探していたが、Xの現行DOMにはその属性が無く、ログイン状態やBot検知に関係なく常に0件になっていた。正しくは`article[data-testid="tweet"]`(本文は`[data-testid="tweetText"]`)。今後またXのDOM変更で0件病が再発したら、まずここ(実際のページのHTMLをダンプしてセレクタが現行DOMと一致しているか)を疑うこと。
+2. **Bot検知**: 実際にはJSは動いているのに`navigator.webdriver`等の自動化フィンガープリントを見て「JavaScriptを使用できません」という偽のブロックページを返してくることがある。対策として`playwright-stealth`でブラウザ起動時にフィンガープリントを偽装している。それでも0件が続く場合は自動アクセスを一旦止めて、手動でXiy(GUI)からログイン状態のブラウザで普通に閲覧し、しばらく間を空けてから再試行する。
+3. 未ログイン状態で検索すると投稿が表示されないため、`collect_x`/`collect_trending`はログイン済みナビ要素(`SideNav_AccountSwitcher_Button`等)の有無を見て、未ログインなら最大180秒待機してから収集ループに入る(`wait_for_x_login`)。これにより、ログイン画面の入力中にブラウザが自動で閉じることも無くなった。
+
+### CLIモード(マツが直接自動実行する場合)
+
+GUIを開かず、キーワードやURLを渡すだけでX/Instagramの収集→保存(→AI分析)まで自動実行できる(2026-07-07追加)。「Xで〇〇を調べて」のように頼まれたら、Xiyを起動して手動操作してもらうのではなく、まずこちらを使う。
+
+```powershell
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+python tools/Xiy/x_collector.py --keyword "釼持吉成"
+```
+
+- `--keyword "語句"`: Xでキーワード検索(デフォルトは「最新」タブ`f=live`。「話題のツイート」で見たい場合は`--tab top`)
+- `--url "https://x.com/..."` / `--url "https://instagram.com/..."`: キーワードの代わりにURLを直接指定(プロフィールページ・検索結果ページなど)
+- `--out "保存先ディレクトリ"`: 省略時は`tools/Xiy/posts_日時_キーワード/`に自動保存
+- `--no-ai`: Gemini AI分析(プライベート情報抽出)をスキップする。省略時は`xiy_config.json`にAPIキーがあれば自動実行
+- 新着投稿が10秒来なくなったら自動で収集終了。ブラウザウィンドウは(ボット判定回避のため)表示されるが、クリック操作は不要
+- ログイン済みプロファイル(`%USERPROFILE%\x_collector_profile`)をGUIモードと共用するので、事前にGUIで一度ログインしておく必要がある
+
+GUIモード(`起動.bat`)は従来通り引数なしで起動すれば使える。収集・保存・AI分析のロジックは内部でCLIと共通化されている。
+
+### 収集済みデータからのネタ掘り起こし方(2026-07-07実践)
+
+`posts_日時_キーワード/posts.txt`は数百件規模になることが多く、全文を読むのは非効率。狙いを定めてGrepでキーワード検索するのが実戦的:
+
+- 「現在地・目撃情報」を探す例: `江南|ソウル|空港|NAVER|聖地巡礼`のような固有名詞・地図アプリ名で検索すると、ファンが独自に場所特定した投稿(建物名・駅名まで踏み込んだもの)がヒットしやすい。
+- 「着用アイテム・私服ブランド」を探す例: `ブランド|着用|私服|コーデ`で検索。ヒットした投稿の`画像: post_XXX_img_N.jpg`をReadツールで直接開くと、商品画像そのもの(ブランドロゴ・型番入り)が写っていることがあり、そこからブランド名・商品名を特定できる。
+- 断定的な事実(「〇〇にいる」等)を記事にする場合は、**独立した複数の投稿が同じ結論に至っているか**を確認してから書く。1件だけの「〜っぽい」という推測は記事の推測トーンに留め、「判明」と言い切るのは複数の裏付け(地図アプリでの照合、建物の目印一致、現地経験者の証言など)が揃ったときだけにする。

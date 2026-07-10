@@ -2,6 +2,7 @@
 .env
 .env.local
 tools/Xiy/xiy_config.json
+tools/koikeyz-monitor/monitor_config.json
 client_secret_*.json
 token.json
 .claude/settings.local.json
@@ -10,6 +11,10 @@ token.json
 x_session/
 x_capture/
 tools/Xiy/*/x_session/
+
+# KO1KEYZ監視ツールのローカル生成データ(PCごとの状態・収集結果)
+tools/koikeyz-monitor/monitor_state.json
+tools/koikeyz-monitor/monitor_reports/
 
 # Pythonキャッシュ
 __pycache__/

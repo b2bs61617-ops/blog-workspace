@@ -37,7 +37,7 @@ def md_to_html(md):
             html.append(f"<h3>{line[4:].strip()}</h3>")
         elif line.strip() == "---":
             html.append("<hr>")
-        elif line.strip().startswith("<table>"):
+        elif line.strip().startswith("<"):
             html.append(line.strip())
         elif line.strip() == "":
             pass
@@ -70,10 +70,8 @@ def post_wp(title, content, slug):
         return json.loads(r.read())
 
 articles = [
-    ROOT / "articles" / "hanada_mei_contract.md",
-    ROOT / "articles" / "hanada_mei_gakureki.md",
-    ROOT / "articles" / "hanada_mei_family.md",
-    ROOT / "articles" / "hanada_mei_hobby.md",
+    ROOT / "articles" / "notch_pachinko_keireki.md",
+    ROOT / "articles" / "notch_pachinko_kazoku.md",
 ]
 
 results = []

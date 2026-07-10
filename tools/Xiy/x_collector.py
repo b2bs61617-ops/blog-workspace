@@ -2,15 +2,24 @@ import tkinter as tk
 from tkinter import messagebox, filedialog, ttk
 import threading
 import asyncio
+import argparse
+import sys
 import time
 import json
 import os
+import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote
 import requests
 from io import BytesIO
 import re
+
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
+if sys.stderr.encoding and sys.stderr.encoding.lower() != "utf-8":
+    sys.stderr.reconfigure(encoding="utf-8")
 
 try:
     from PIL import Image, ImageTk
@@ -23,6 +32,12 @@ try:
     PLAYWRIGHT_OK = True
 except ImportError:
     PLAYWRIGHT_OK = False
+
+try:
+    from playwright_stealth import Stealth
+    STEALTH_OK = True
+except ImportError:
+    STEALTH_OK = False
 
 try:
     from google import genai as google_genai
@@ -58,6 +73,21 @@ PROFILE_DIR = str(Path.home() / "x_collector_profile")
 THUMB_SIZE = (150, 150)
 CONFIG_FILE = str(Path(__file__).parent / "xiy_config.json")
 
+# navigator.webdriver等の自動化フィンガープリントをX側に検知されて
+# 「JavaScriptを使用できません」の偽ブロックページを返されることがあるため、
+# 実際のシステムChromeが本来持つ言語設定に合わせてstealthパッチを当てる。
+STEALTH_KWARGS = dict(navigator_languages_override=("ja-JP", "ja"))
+
+
+async def launch_browser_context(p):
+    context = await p.chromium.launch_persistent_context(
+        PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
+        args=["--disable-blink-features=AutomationControlled"],
+    )
+    if STEALTH_OK:
+        await Stealth(**STEALTH_KWARGS).apply_stealth_async(context)
+    return context
+
 
 def x_full_size_url(url: str) -> str:
     url = re.sub(r"name=\w+", "name=orig", url)
@@ -74,6 +104,417 @@ def detect_platform(url: str) -> str:
     if "x.com/explore" in url or "twitter.com/explore" in url:
         return "trending"
     return "x"
+
+
+def build_x_search_url(keyword: str, tab: str = "live") -> str:
+    url = f"https://x.com/search?q={quote(keyword)}"
+    if tab == "live":
+        url += "&f=live"
+    return url
+
+
+def load_api_key() -> str:
+    try:
+        with open(CONFIG_FILE, encoding="utf-8") as f:
+            return json.load(f).get("gemini_api_key", "").strip()
+    except Exception:
+        return ""
+
+
+# ── インスタのポップアップを自動で閉じる ──
+async def dismiss_instagram_popups(page):
+    for text in ["後で", "今はしない", "キャンセル"]:
+        try:
+            btn = page.get_by_role("button", name=text)
+            if await btn.is_visible():
+                await btn.click()
+                await page.wait_for_timeout(500)
+        except Exception:
+            pass
+    # 「登録する/ログイン」の未ログイン向け誘導ダイアログはEscapeで閉じる
+    # (閉じるボタンは固定ヘッダーに遮られてクリックできないため)。
+    # 投稿詳細ダイアログには「登録する」の文言がないので誤って閉じない。
+    try:
+        signup_dialog = page.locator('div[role="dialog"]', has_text="登録する")
+        if await signup_dialog.count():
+            await page.keyboard.press("Escape")
+            await page.wait_for_timeout(500)
+    except Exception:
+        pass
+
+
+# ── 検索結果ページ: 「おすすめ」ではなく「最新」タブに切り替える ──
+async def switch_to_latest_tab(page):
+    try:
+        tab = page.get_by_role("tab", name="最新")
+        if await tab.count():
+            await tab.first.click()
+            await page.wait_for_timeout(1500)
+    except Exception:
+        pass
+
+
+# ログイン画面は入力欄がモーダルで出るなどパターンが多くURLも変わらないことがあるため、
+# 「未ログイン状態の見た目」を当てにいくのではなく「ログイン済みの時だけ出るナビ要素」の
+# 有無で判定する(SideNav_AccountSwitcher_ButtonはX上のログイン済みシェルで安定して出る)。
+async def is_x_logged_in(page) -> bool:
+    try:
+        el = await page.query_selector(
+            '[data-testid="SideNav_AccountSwitcher_Button"], [data-testid="AppTabBar_Home_Link"]')
+        return el is not None
+    except Exception:
+        return False
+
+
+# ── Xのログイン待ち(未ログインのまま収集ループに入り、投稿0件のタイムアウトで
+#    ブラウザごと閉じてログイン画面が消えてしまうのを防ぐ) ──
+async def wait_for_x_login(page, should_continue, on_status):
+    if await is_x_logged_in(page):
+        return
+    on_status("Xにログインしてください（ログイン完了まで待機します）...")
+    for _ in range(180):
+        if not should_continue():
+            return
+        await page.wait_for_timeout(1000)
+        if await is_x_logged_in(page):
+            break
+    await page.wait_for_timeout(1500)
+
+
+# ── トレンドページ収集 ──
+async def collect_trending(page, should_continue, on_status, on_post):
+    await wait_for_x_login(page, should_continue, on_status)
+    if not should_continue():
+        return
+
+    on_status("トレンドページを解析中...")
+    await page.wait_for_timeout(4000)
+
+    debug_path = str(Path(__file__).parent / "trending_debug.html")
+    try:
+        html = await page.content()
+        Path(debug_path).write_text(html, encoding="utf-8")
+    except Exception:
+        pass
+
+    selectors = [
+        '[data-testid="trend"]',
+        'div[data-testid="trendingCell"]',
+        'div[role="button"] span[dir="ltr"]',
+    ]
+
+    items = []
+    for sel in selectors:
+        items = await page.query_selector_all(sel)
+        if items:
+            on_status(f"セレクタ '{sel}' で {len(items)}件 検出")
+            break
+
+    if not items:
+        on_status("トレンド要素が見つかりませんでした。trending_debug.htmlを確認してください。")
+        return
+
+    count = 0
+    now_str = datetime.now().strftime("%Y/%m/%d %H:%M")
+    for item in items:
+        try:
+            text = (await item.inner_text()).strip()
+            if not text:
+                continue
+            post = {"platform": "x", "date": now_str, "text": text, "images": []}
+            count += 1
+            on_post(post)
+        except Exception:
+            continue
+
+    on_status(f"トレンド取得完了: {count}件")
+
+
+# ── X収集 ──
+async def collect_x(page, should_continue, on_status, on_post):
+    await wait_for_x_login(page, should_continue, on_status)
+    if not should_continue():
+        return
+
+    seen = set()
+    count = 0
+    last_new_time = time.monotonic()
+
+    while should_continue():
+        articles = await page.query_selector_all('article[data-testid="tweet"]')
+        prev_article_count = len(articles)
+
+        for article in articles:
+            try:
+                text_el = await article.query_selector('[data-testid="tweetText"]')
+                text = (await text_el.inner_text()).strip() if text_el else ""
+
+                tweet_id = None
+                status_link = await article.query_selector('a[href*="/status/"]')
+                if status_link:
+                    href = await status_link.get_attribute("href")
+                    m = re.search(r'/status/(\d+)', href or "")
+                    if m:
+                        tweet_id = m.group(1)
+
+                img_els = await article.query_selector_all('img[src*="pbs.twimg.com/media"]')
+                img_urls = []
+                for img_el in img_els:
+                    src = await img_el.get_attribute("src")
+                    if src:
+                        img_urls.append(x_full_size_url(src))
+
+                if not text and not img_urls:
+                    continue
+                dedup_key = tweet_id or text
+                if dedup_key in seen:
+                    continue
+                seen.add(dedup_key)
+
+                date_str = ""
+                time_el = await article.query_selector("time")
+                if time_el:
+                    dt_attr = await time_el.get_attribute("datetime")
+                    if dt_attr:
+                        dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
+                        date_str = dt.strftime("%Y/%m/%d %H:%M")
+
+                post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
+                count += 1
+                on_post(post)
+                last_new_time = time.monotonic()
+            except Exception:
+                continue
+
+        await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
+        try:
+            await page.wait_for_function(
+                f"document.querySelectorAll('article[data-testid=\\\"tweet\\\"]').length > {prev_article_count}",
+                timeout=3000
+            )
+        except Exception:
+            await page.wait_for_timeout(400)
+
+        elapsed = int(time.monotonic() - last_new_time)
+        if elapsed >= 10:
+            break
+        on_status(f"[X] 取得済み: {count}件 ／ 新着待機: {elapsed}秒 / 10秒")
+
+
+# ── Instagram収集（グリッドを左上から順にクリック） ──
+async def collect_instagram(page, should_continue, on_status, on_post):
+    processed = set()
+    count = 0
+
+    if "instagram.com/accounts/" in page.url:
+        on_status("Instagramにログインしてください（ログイン完了まで待機します）...")
+        for _ in range(180):
+            if not should_continue():
+                return
+            await page.wait_for_timeout(1000)
+            if "instagram.com/accounts/" not in page.url:
+                break
+        await page.wait_for_timeout(1500)
+
+    await dismiss_instagram_popups(page)
+    last_new_time = time.monotonic()
+
+    while should_continue():
+        elapsed = int(time.monotonic() - last_new_time)
+        if elapsed >= 10:
+            break
+
+        links = await page.query_selector_all('a[href*="/p/"]')
+        new_links = []
+        for link in links:
+            href = await link.get_attribute("href")
+            if href and href not in processed:
+                new_links.append((href, link))
+
+        if not new_links:
+            on_status(f"[Instagram] 取得済み: {count}件 ／ 新着待機: {elapsed}秒 / 10秒")
+            await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
+            await page.wait_for_timeout(500)
+            continue
+
+        for href, link in new_links:
+            if not should_continue():
+                break
+            processed.add(href)
+
+            try:
+                await dismiss_instagram_popups(page)
+                await link.click()
+                try:
+                    await page.wait_for_selector('div[role="dialog"]', timeout=5000)
+                except Exception:
+                    await page.wait_for_timeout(800)
+                await dismiss_instagram_popups(page)
+
+                dialog = await page.query_selector('div[role="dialog"]')
+                search_root = dialog if dialog else page
+
+                img_urls = []
+                for img in await search_root.query_selector_all("img"):
+                    src = await img.get_attribute("src") or ""
+                    if ("cdninstagram" in src or "fbcdn" in src) and not any(
+                        x in src for x in ["s150x150", "s32x32", "s48x48", "s75x75", "e0/p"]
+                    ):
+                        img_urls.append(src)
+
+                caption = ""
+                caption_selectors = [
+                    "ul > li:first-child span[dir='auto']",
+                    "h1",
+                    "article div[dir='auto'] > span",
+                    "ul li:first-child div span",
+                ]
+                for sel in caption_selectors:
+                    try:
+                        el = await search_root.query_selector(sel)
+                        if el:
+                            t = (await el.inner_text()).strip()
+                            if t and len(t) > 1:
+                                caption = t
+                                break
+                    except Exception:
+                        continue
+
+                date_str = ""
+                time_el = await search_root.query_selector("time")
+                if time_el:
+                    dt_attr = await time_el.get_attribute("datetime")
+                    if dt_attr:
+                        dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
+                        date_str = dt.strftime("%Y/%m/%d %H:%M")
+
+                if img_urls:
+                    post = {"platform": "instagram", "date": date_str,
+                            "text": caption, "images": img_urls[:4]}
+                    count += 1
+                    on_post(post)
+                    last_new_time = time.monotonic()
+                    on_status(f"[Instagram] 取得済み: {count}件")
+
+                await page.keyboard.press("Escape")
+                await page.wait_for_timeout(300)
+
+            except Exception:
+                await page.keyboard.press("Escape")
+                await page.wait_for_timeout(200)
+                continue
+
+        await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
+        await page.wait_for_timeout(400)
+
+
+def build_ai_prompt(posts, youtube_posts, max_chars=30000):
+    posts_text = ""
+    i = 0
+    for post in posts:
+        i += 1
+        platform = post.get("platform", "").upper()
+        posts_text += f"[資料{i}] [{platform}] {post['date']}\n"
+        if post["text"]:
+            posts_text += post["text"] + "\n"
+        posts_text += "\n"
+    for yt in youtube_posts:
+        i += 1
+        posts_text += f"[資料{i}] [YouTube] {yt['title']}\n"
+        posts_text += yt["transcript"] + "\n\n"
+
+    truncated = len(posts_text) > max_chars
+    if truncated:
+        posts_text = posts_text[:max_chars]
+
+    prompt = f"""以下はある人物のSNS投稿・YouTube動画の文字起こしです。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
+
+【抽出するカテゴリ】
+1. 学歴（通っていた学校・大学・卒業年など）
+2. 誕生日・年齢
+3. 出身地・居住地・地元
+4. 家族構成（親・兄弟姉妹・子供など）
+5. 交際相手・婚姻状況
+6. 職業・所属・活動歴
+7. その他のプライベート情報
+
+【注意事項】
+- 投稿・動画から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
+- 各情報の根拠となる資料番号を【資料〇】の形式で記載すること
+- 情報が見つからないカテゴリは「情報なし」と記載すること
+- 日本語で回答すること
+
+【SNS投稿・YouTube動画文字起こし一覧】
+{posts_text}"""
+    return prompt, truncated
+
+
+def run_ai_analysis_sync(api_key, posts, youtube_posts, status_cb=None):
+    status_cb = status_cb or (lambda msg: None)
+    prompt, truncated = build_ai_prompt(posts, youtube_posts)
+    client = google_genai.Client(api_key=api_key)
+
+    result = None
+    for attempt in range(3):
+        try:
+            if attempt > 0:
+                wait_sec = attempt * 15
+                status_cb(f"レート制限のため {wait_sec}秒待機してリトライ中...")
+                time.sleep(wait_sec)
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt
+            )
+            result = response.text
+            break
+        except Exception as e:
+            if "429" in str(e) and attempt < 2:
+                continue
+            raise
+
+    if truncated:
+        result = f"※ 投稿が多すぎるため先頭30000文字のみ分析しました。\n\n" + result
+    return result
+
+
+def save_posts_to_dir(save_path, posts, youtube_posts, ai_text=None):
+    save_path = Path(save_path)
+    save_path.mkdir(parents=True, exist_ok=True)
+    img_dir = save_path / "images"
+    img_dir.mkdir(exist_ok=True)
+
+    lines = []
+    for i, post in enumerate(posts, 1):
+        platform = post.get("platform", "").upper()
+        lines.append(f"[{i}] [{platform}] {post['date']}")
+        if post["text"]:
+            lines.append(post["text"])
+        for j, img_url in enumerate(post["images"], 1):
+            try:
+                resp = requests.get(img_url, timeout=15)
+                img_file = img_dir / f"post_{i}_img_{j}.jpg"
+                img_file.write_bytes(resp.content)
+                lines.append(f"  画像: {img_file.name}")
+            except Exception:
+                pass
+        lines.append("─" * 50)
+
+    (save_path / "posts.txt").write_text("\n".join(lines), encoding="utf-8")
+
+    if ai_text:
+        (save_path / "ai_analysis.txt").write_text(ai_text, encoding="utf-8")
+
+    if youtube_posts:
+        yt_lines = []
+        for yt in youtube_posts:
+            yt_lines.append(f"[{yt['index']}] {yt['title']}")
+            yt_lines.append(yt["url"])
+            yt_lines.append(yt["transcript"])
+            yt_lines.append("─" * 50)
+        (save_path / "youtube_transcripts.txt").write_text(
+            "\n".join(yt_lines), encoding="utf-8")
+
+    return save_path
 
 
 # ── 大画面ポップアップ ──
@@ -355,271 +796,31 @@ class CollectorApp:
         platform = detect_platform(url)
         try:
             async with async_playwright() as p:
-                context = await p.chromium.launch_persistent_context(
-                    PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
-                    args=["--disable-blink-features=AutomationControlled"],
-                )
+                context = await launch_browser_context(p)
                 page = context.pages[0] if context.pages else await context.new_page()
                 self.update_status(f"[{platform.upper()}] ページを開いています...")
                 await page.goto(url, wait_until="domcontentloaded", timeout=30000)
                 await page.wait_for_timeout(3000)
 
                 if platform == "x" and "/search" in url:
-                    await self._switch_to_latest_tab(page)
+                    await switch_to_latest_tab(page)
 
+                should_continue = lambda: self.is_running
                 if platform == "x":
-                    await self._collect_x(page)
+                    await collect_x(page, should_continue, self.update_status, self._on_new_post)
                 elif platform == "trending":
-                    await self._collect_trending(page)
+                    await collect_trending(page, should_continue, self.update_status, self._on_new_post)
                 else:
-                    await self._collect_instagram(page)
+                    await collect_instagram(page, should_continue, self.update_status, self._on_new_post)
 
                 await context.close()
         except Exception as e:
             self.root.after(0, lambda: messagebox.showerror("エラー", str(e)))
         self._finish()
 
-    # ── トレンドページ収集 ──
-    async def _collect_trending(self, page):
-        self.update_status("トレンドページを解析中...")
-        await page.wait_for_timeout(4000)
-
-        # デバッグ用: ページHTMLをファイル保存
-        debug_path = str(Path(__file__).parent / "trending_debug.html")
-        try:
-            html = await page.content()
-            Path(debug_path).write_text(html, encoding="utf-8")
-        except Exception:
-            pass
-
-        # セレクタ候補を順番に試す
-        selectors = [
-            '[data-testid="trend"]',
-            'div[data-testid="trendingCell"]',
-            'div[role="button"] span[dir="ltr"]',
-        ]
-
-        items = []
-        for sel in selectors:
-            items = await page.query_selector_all(sel)
-            if items:
-                self.update_status(f"セレクタ '{sel}' で {len(items)}件 検出")
-                break
-
-        if not items:
-            self.update_status("トレンド要素が見つかりませんでした。trending_debug.htmlを確認してください。")
-            return
-
-        now_str = datetime.now().strftime("%Y/%m/%d %H:%M")
-        for item in items:
-            try:
-                text = (await item.inner_text()).strip()
-                if not text:
-                    continue
-                post = {"platform": "x", "date": now_str, "text": text, "images": []}
-                self.collected_posts.append(post)
-                self._add_card(len(self.collected_posts), post)
-            except Exception:
-                continue
-
-        self.update_status(f"トレンド取得完了: {len(self.collected_posts)}件")
-
-    # ── 検索結果ページ: 「おすすめ」ではなく「最新」タブに切り替える ──
-    async def _switch_to_latest_tab(self, page):
-        try:
-            tab = page.get_by_role("tab", name="最新")
-            if await tab.count():
-                await tab.first.click()
-                await page.wait_for_timeout(1500)
-        except Exception:
-            pass
-
-    # ── X収集 ──
-    async def _collect_x(self, page):
-        seen = set()
-        scroll_count = 0
-        last_new_time = time.monotonic()
-
-        while self.is_running:
-            articles = await page.query_selector_all('article[data-tweet-id]')
-            prev_article_count = len(articles)
-
-            for article in articles:
-                try:
-                    text_el = await article.query_selector('div[dir="auto"]')
-                    text = (await text_el.inner_text()).strip() if text_el else ""
-
-                    tweet_id = await article.get_attribute("data-tweet-id")
-                    img_els = await article.query_selector_all('img[src*="pbs.twimg.com/media"]')
-                    img_urls = []
-                    for img_el in img_els:
-                        src = await img_el.get_attribute("src")
-                        if src:
-                            img_urls.append(x_full_size_url(src))
-
-                    if not text and not img_urls:
-                        continue
-                    dedup_key = tweet_id or text
-                    if dedup_key in seen:
-                        continue
-                    seen.add(dedup_key)
-
-                    date_str = ""
-                    if tweet_id:
-                        date_el = await article.query_selector(f'a[href$="/status/{tweet_id}"]')
-                        if date_el:
-                            date_str = (await date_el.inner_text()).strip()
-
-                    post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
-                    self.collected_posts.append(post)
-                    self._add_card(len(self.collected_posts), post)
-                    last_new_time = time.monotonic()
-                except Exception:
-                    continue
-
-            await page.evaluate("window.scrollBy(0, 900)")
-            try:
-                await page.wait_for_function(
-                    f"document.querySelectorAll('article[data-tweet-id]').length > {prev_article_count}",
-                    timeout=3000
-                )
-            except Exception:
-                await page.wait_for_timeout(400)
-
-            elapsed = int(time.monotonic() - last_new_time)
-            if elapsed >= 10:
-                break
-            self.update_status(
-                f"[X] 取得済み: {len(self.collected_posts)}件 ／ 新着待機: {elapsed}秒 / 10秒")
-            scroll_count += 1
-
-    # ── インスタのポップアップを自動で閉じる ──
-    async def _dismiss_instagram_popups(self, page):
-        for text in ["後で", "今はしない", "キャンセル"]:
-            try:
-                btn = page.get_by_role("button", name=text)
-                if await btn.is_visible():
-                    await btn.click()
-                    await page.wait_for_timeout(500)
-            except Exception:
-                pass
-        # 「登録する/ログイン」の未ログイン向け誘導ダイアログはEscapeで閉じる
-        # (閉じるボタンは固定ヘッダーに遮られてクリックできないため)。
-        # 投稿詳細ダイアログには「登録する」の文言がないので誤って閉じない。
-        try:
-            signup_dialog = page.locator('div[role="dialog"]', has_text="登録する")
-            if await signup_dialog.count():
-                await page.keyboard.press("Escape")
-                await page.wait_for_timeout(500)
-        except Exception:
-            pass
-
-    # ── Instagram収集（グリッドを左上から順にクリック） ──
-    async def _collect_instagram(self, page):
-        processed = set()
-
-        if "instagram.com/accounts/" in page.url:
-            self.update_status("Instagramにログインしてください（ログイン完了まで待機します）...")
-            for _ in range(180):
-                if not self.is_running:
-                    return
-                await page.wait_for_timeout(1000)
-                if "instagram.com/accounts/" not in page.url:
-                    break
-            await page.wait_for_timeout(1500)
-
-        await self._dismiss_instagram_popups(page)
-        last_new_time = time.monotonic()
-
-        while self.is_running:
-            elapsed = int(time.monotonic() - last_new_time)
-            if elapsed >= 10:
-                break
-
-            links = await page.query_selector_all('a[href*="/p/"]')
-            new_links = []
-            for link in links:
-                href = await link.get_attribute("href")
-                if href and href not in processed:
-                    new_links.append((href, link))
-
-            if not new_links:
-                self.update_status(
-                    f"[Instagram] 取得済み: {len(self.collected_posts)}件 ／ 新着待機: {elapsed}秒 / 10秒")
-                await page.evaluate("window.scrollBy(0, 900)")
-                await page.wait_for_timeout(500)
-                continue
-
-            for href, link in new_links:
-                if not self.is_running:
-                    break
-                processed.add(href)
-
-                try:
-                    await self._dismiss_instagram_popups(page)
-                    await link.click()
-                    try:
-                        await page.wait_for_selector('div[role="dialog"]', timeout=5000)
-                    except Exception:
-                        await page.wait_for_timeout(800)
-                    await self._dismiss_instagram_popups(page)
-
-                    dialog = await page.query_selector('div[role="dialog"]')
-                    search_root = dialog if dialog else page
-
-                    img_urls = []
-                    for img in await search_root.query_selector_all("img"):
-                        src = await img.get_attribute("src") or ""
-                        if ("cdninstagram" in src or "fbcdn" in src) and not any(
-                            x in src for x in ["s150x150", "s32x32", "s48x48", "s75x75", "e0/p"]
-                        ):
-                            img_urls.append(src)
-
-                    caption = ""
-                    caption_selectors = [
-                        "ul > li:first-child span[dir='auto']",
-                        "h1",
-                        "article div[dir='auto'] > span",
-                        "ul li:first-child div span",
-                    ]
-                    for sel in caption_selectors:
-                        try:
-                            el = await search_root.query_selector(sel)
-                            if el:
-                                t = (await el.inner_text()).strip()
-                                if t and len(t) > 1:
-                                    caption = t
-                                    break
-                        except Exception:
-                            continue
-
-                    date_str = ""
-                    time_el = await search_root.query_selector("time")
-                    if time_el:
-                        dt_attr = await time_el.get_attribute("datetime")
-                        if dt_attr:
-                            dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
-                            date_str = dt.strftime("%Y/%m/%d %H:%M")
-
-                    if img_urls:
-                        post = {"platform": "instagram", "date": date_str,
-                                "text": caption, "images": img_urls[:4]}
-                        self.collected_posts.append(post)
-                        self._add_card(len(self.collected_posts), post)
-                        last_new_time = time.monotonic()
-                        self.update_status(
-                            f"[Instagram] 取得済み: {len(self.collected_posts)}件")
-
-                    await page.keyboard.press("Escape")
-                    await page.wait_for_timeout(300)
-
-                except Exception:
-                    await page.keyboard.press("Escape")
-                    await page.wait_for_timeout(200)
-                    continue
-
-            await page.evaluate("window.scrollBy(0, 900)")
-            await page.wait_for_timeout(400)
+    def _on_new_post(self, post):
+        self.collected_posts.append(post)
+        self._add_card(len(self.collected_posts), post)
 
     # ── YouTube文字起こし ──
     def _extract_video_id(self, url):
@@ -937,70 +1138,9 @@ class CollectorApp:
             target=lambda: self._run_ai_analysis(api_key), daemon=True).start()
 
     def _run_ai_analysis(self, api_key):
-        MAX_CHARS = 30000
         try:
-            posts_text = ""
-            i = 0
-            for post in self.collected_posts:
-                i += 1
-                platform = post.get("platform", "").upper()
-                posts_text += f"[資料{i}] [{platform}] {post['date']}\n"
-                if post["text"]:
-                    posts_text += post["text"] + "\n"
-                posts_text += "\n"
-            for yt in self.youtube_posts:
-                i += 1
-                posts_text += f"[資料{i}] [YouTube] {yt['title']}\n"
-                posts_text += yt["transcript"] + "\n\n"
-
-            truncated = False
-            if len(posts_text) > MAX_CHARS:
-                posts_text = posts_text[:MAX_CHARS]
-                truncated = True
-
-            prompt = f"""以下はある人物のSNS投稿・YouTube動画の文字起こしです。これらに含まれるプライベート情報をカテゴリ別に整理して抽出してください。
-
-【抽出するカテゴリ】
-1. 学歴（通っていた学校・大学・卒業年など）
-2. 誕生日・年齢
-3. 出身地・居住地・地元
-4. 家族構成（親・兄弟姉妹・子供など）
-5. 交際相手・婚姻状況
-6. 職業・所属・活動歴
-7. その他のプライベート情報
-
-【注意事項】
-- 投稿・動画から読み取れる情報のみ記載し、推測の場合は「（推測）」と明記すること
-- 各情報の根拠となる資料番号を【資料〇】の形式で記載すること
-- 情報が見つからないカテゴリは「情報なし」と記載すること
-- 日本語で回答すること
-
-【SNS投稿・YouTube動画文字起こし一覧】
-{posts_text}"""
-
-            client = google_genai.Client(api_key=api_key)
-
-            result = None
-            for attempt in range(3):
-                try:
-                    if attempt > 0:
-                        wait_sec = attempt * 15
-                        self.root.after(0, lambda s=wait_sec: self.update_status(
-                            f"レート制限のため {s}秒待機してリトライ中..."))
-                        time.sleep(wait_sec)
-                    response = client.models.generate_content(
-                        model="gemini-2.0-flash",
-                        contents=prompt
-                    )
-                    result = response.text
-                    break
-                except Exception as e:
-                    if "429" in str(e) and attempt < 2:
-                        continue
-                    raise
-
-            if truncated:
-                result = f"※ 投稿が多すぎるため先頭{MAX_CHARS}文字のみ分析しました。\n\n" + result
+            status_cb = lambda msg: self.root.after(0, lambda: self.update_status(msg))
+            result = run_ai_analysis_sync(api_key, self.collected_posts, self.youtube_posts, status_cb)
             self.root.after(0, lambda: self._show_ai_results(result))
         except Exception as e:
             self.root.after(0, lambda: messagebox.showerror("AI分析エラー", str(e)))
@@ -1022,48 +1162,91 @@ class CollectorApp:
         if not save_dir:
             return
         save_path = Path(save_dir) / f"posts_{now}"
-        save_path.mkdir(exist_ok=True)
-        img_dir = save_path / "images"
-        img_dir.mkdir(exist_ok=True)
-
-        lines = []
-        for i, post in enumerate(self.collected_posts, 1):
-            platform = post.get("platform", "").upper()
-            lines.append(f"[{i}] [{platform}] {post['date']}")
-            if post["text"]:
-                lines.append(post["text"])
-            for j, img_url in enumerate(post["images"], 1):
-                try:
-                    resp = requests.get(img_url, timeout=15)
-                    img_file = img_dir / f"post_{i}_img_{j}.jpg"
-                    img_file.write_bytes(resp.content)
-                    lines.append(f"  画像: {img_file.name}")
-                except Exception:
-                    pass
-            lines.append("─" * 50)
-
-        (save_path / "posts.txt").write_text("\n".join(lines), encoding="utf-8")
-
-        # AI分析結果も保存
         ai_text = self.ai_result_text.get("1.0", tk.END).strip()
-        if ai_text:
-            (save_path / "ai_analysis.txt").write_text(ai_text, encoding="utf-8")
-
-        # YouTube文字起こし保存
-        if self.youtube_posts:
-            yt_lines = []
-            for yt in self.youtube_posts:
-                yt_lines.append(f"[{yt['index']}] {yt['title']}")
-                yt_lines.append(yt["url"])
-                yt_lines.append(yt["transcript"])
-                yt_lines.append("─" * 50)
-            (save_path / "youtube_transcripts.txt").write_text(
-                "\n".join(yt_lines), encoding="utf-8")
-
+        save_path = save_posts_to_dir(save_path, self.collected_posts, self.youtube_posts, ai_text or None)
         messagebox.showinfo("保存完了", f"{save_path} に保存しました")
 
 
+# ── CLIモード(GUIを介さずキーワード/URL指定で自動収集) ──
+async def run_cli(args):
+    if not PLAYWRIGHT_OK:
+        print("Playwrightが未インストールです: pip install playwright / playwright install chromium")
+        return
+
+    url = args.url if args.url else build_x_search_url(args.keyword, tab=args.tab)
+    platform = detect_platform(url)
+
+    posts = []
+
+    def on_status(msg):
+        print(f"\r{msg}".ljust(80), end="", flush=True)
+
+    def on_post(post):
+        posts.append(post)
+        preview = post["text"][:40].replace("\n", " ")
+        print(f"\n[{len(posts)}] {post['date']} {preview}")
+
+    async with async_playwright() as p:
+        context = await launch_browser_context(p)
+        page = context.pages[0] if context.pages else await context.new_page()
+        print(f"[{platform.upper()}] ページを開いています... {url}")
+        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        await page.wait_for_timeout(3000)
+
+        if platform == "x" and "/search" in url:
+            await switch_to_latest_tab(page)
+
+        should_continue = lambda: True
+        if platform == "x":
+            await collect_x(page, should_continue, on_status, on_post)
+        elif platform == "trending":
+            await collect_trending(page, should_continue, on_status, on_post)
+        else:
+            await collect_instagram(page, should_continue, on_status, on_post)
+
+        await context.close()
+
+    print(f"\n収集完了: {len(posts)}件")
+
+    ai_text = None
+    if posts and not args.no_ai:
+        api_key = load_api_key()
+        if api_key and GEMINI_OK:
+            print("AI分析中...")
+            try:
+                ai_text = run_ai_analysis_sync(api_key, posts, [], status_cb=print)
+            except Exception as e:
+                print(f"AI分析エラー: {e}")
+        else:
+            print("Gemini APIキー未設定のためAI分析はスキップ")
+
+    now = datetime.now().strftime("%Y%m%d_%H%M%S")
+    label = re.sub(r'[\\/:*?"<>|]', "_", args.keyword or "url")[:30]
+    out_dir = Path(args.out) if args.out else Path(__file__).parent / f"posts_{now}_{label}"
+    save_path = save_posts_to_dir(out_dir, posts, [], ai_text)
+    print(f"保存完了: {save_path}")
+
+
+def main_cli():
+    parser = argparse.ArgumentParser(description="Xiy CLI - GUIなしでX/Instagramを収集する")
+    parser.add_argument("--keyword", help="Xでこのキーワードを検索して収集する")
+    parser.add_argument("--url", help="収集対象のURLを直接指定する(--keywordの代わり)")
+    parser.add_argument("--tab", choices=["live", "top"], default="live",
+                         help="X検索のタブ(live=最新, top=話題のツイート。デフォルトlive)")
+    parser.add_argument("--out", help="保存先ディレクトリ(省略時はtools/Xiy配下に自動生成)")
+    parser.add_argument("--no-ai", action="store_true", help="Gemini AI分析をスキップする")
+    args = parser.parse_args()
+
+    if not args.keyword and not args.url:
+        parser.error("--keyword または --url のどちらかを指定してください")
+
+    asyncio.run(run_cli(args))
+
+
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = CollectorApp(root)
-    root.mainloop()
+    if len(sys.argv) > 1:
+        main_cli()
+    else:
+        root = tk.Tk()
+        app = CollectorApp(root)
+        root.mainloop()

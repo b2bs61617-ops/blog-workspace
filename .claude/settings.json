@@ -7,6 +7,11 @@
             "type": "command",
             "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\git-pull.ps1\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\koikeyz-monitor-check.ps1\"",
+            "timeout": 15
           }
         ]
       }
@@ -27,7 +32,9 @@
     "allow": [
       "Read",
       "Edit",
+      "Edit(.claude)",
       "Write",
+      "Write(.claude)",
       "Glob",
       "Grep",
       "WebFetch",
@@ -35,16 +42,23 @@
       "Bash",
       "Agent",
       "TodoWrite",
+      "NotebookEdit",
       "WebFetch(domain:chomoand.com)",
       "WebFetch(domain:chomoand-0.com)",
-      "WebFetch(domain:chomoand-1.com)"
+      "WebFetch(domain:chomoand-1.com)",
+      "PowerShell"
     ],
     "ask": [
       "Bash(Remove-Item *)",
       "Bash(rm *)",
       "Bash(del *)",
       "Bash(rd *)",
-      "Bash(rmdir *)"
+      "Bash(rmdir *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(rm *)",
+      "PowerShell(del *)",
+      "PowerShell(rd *)",
+      "PowerShell(rmdir *)"
     ]
   }
 }
