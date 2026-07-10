@@ -11,7 +11,9 @@
 import argparse
 import asyncio
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -171,6 +173,42 @@ async def collect_trends(max_items=MAX_TRENDS_COLLECT):
     return trends
 
 
+def claude_candidates(home=None, env=None):
+    """claude CLIの実行パス候補を優先順に返す(存在チェックはしない・純粋関数)。
+
+    タスクスケジューラの最小PATH環境ではnpmや ~/.local/bin がPATHに乗らず
+    `claude` を名前で呼べないため、既知のインストール先を明示的に候補に含める。
+    """
+    home = Path(home) if home else Path.home()
+    env = env if env is not None else os.environ
+    cands = []
+    if env.get("CLAUDE_BIN"):
+        cands.append(env["CLAUDE_BIN"])
+    # ネイティブインストーラ(推奨)の既定パス
+    cands.append(str(home / ".local" / "bin" / "claude.exe"))
+    cands.append(str(home / ".local" / "bin" / "claude"))
+    # npmグローバルインストール
+    if env.get("APPDATA"):
+        cands.append(str(Path(env["APPDATA"]) / "npm" / "claude.cmd"))
+    return cands
+
+
+def pick_claude_path(candidates, exists):
+    """候補のうち最初に存在するパスを返す。無ければNone(純粋関数・テスト用)。"""
+    for c in candidates:
+        if c and exists(c):
+            return c
+    return None
+
+
+def resolve_claude_command():
+    """claude CLIの実行パスを解決する。PATH解決を優先し、失敗したら既知の候補を探す。"""
+    found = shutil.which("claude")
+    if found:
+        return found
+    return pick_claude_path(claude_candidates(), lambda p: Path(p).exists())
+
+
 def run_claude_pipeline(report_path):
     """ヘッドレスClaudeでx-trend-articleスキルの自動記事化を起動する。標準出力はログに保存。"""
     prompt = (
@@ -178,10 +216,24 @@ def run_claude_pipeline(report_path):
         "記事は下書きまで(絶対に公開しない)、完了・見送りはLINE通知で報告するルールだワン。"
     )
     log_path = Path(str(report_path).replace(".json", ".claude.log"))
+    claude_cmd = resolve_claude_command()
+    if not claude_cmd:
+        log_path.write_text(
+            "claude CLIが見つからなかった。PATHが通っていないか未インストール。"
+            "CLAUDE_BIN環境変数でフルパスを明示できる。",
+            encoding="utf-8",
+        )
+        return False
+    # .cmd/.batはcmd経由でないと実行できない。.exeは直接呼べる
+    lower = claude_cmd.lower()
+    if lower.endswith(".cmd") or lower.endswith(".bat"):
+        cmd = ["cmd", "/c", claude_cmd, "-p", prompt, "--dangerously-skip-permissions"]
+    else:
+        cmd = [claude_cmd, "-p", prompt, "--dangerously-skip-permissions"]
     LOCK_FILE.write_text(datetime.now().isoformat(), encoding="utf-8")
     try:
         result = subprocess.run(
-            ["cmd", "/c", "claude", "-p", prompt, "--dangerously-skip-permissions"],
+            cmd,
             cwd=str(REPO_ROOT),
             capture_output=True, text=True, encoding="utf-8", errors="replace",
             timeout=CLAUDE_TIMEOUT_SEC,

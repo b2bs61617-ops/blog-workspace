@@ -2,9 +2,11 @@
 from datetime import datetime
 
 from trend_monitor import (
+    claude_candidates,
     filter_new_trends,
     mark_seen,
     parse_trend_lines,
+    pick_claude_path,
     prune_state,
     should_notify_failure,
 )
@@ -88,3 +90,29 @@ class TestShouldNotifyFailure:
     def test_old_failure_notifies_again(self):
         state = {"_last_failure_notify": "2026-07-10T01:00:00"}  # 11時間前 > 6h
         assert should_notify_failure(state, now=NOW) is True
+
+
+class TestClaudeResolution:
+    def test_env_bin_takes_priority(self):
+        cands = claude_candidates(home="/home/u", env={"CLAUDE_BIN": "/custom/claude.exe"})
+        assert cands[0] == "/custom/claude.exe"
+
+    def test_native_install_path_included(self):
+        cands = claude_candidates(home="/home/u", env={})
+        assert "/home/u/.local/bin/claude.exe" in [c.replace("\\", "/") for c in cands]
+
+    def test_npm_path_added_when_appdata_present(self):
+        cands = claude_candidates(home="/home/u", env={"APPDATA": "/roaming"})
+        assert any(c.replace("\\", "/") == "/roaming/npm/claude.cmd" for c in cands)
+
+    def test_npm_path_absent_without_appdata(self):
+        cands = claude_candidates(home="/home/u", env={})
+        assert not any("npm" in c for c in cands)
+
+    def test_pick_returns_first_existing(self):
+        existing = {"/b/claude.exe"}
+        picked = pick_claude_path(["/a/claude.exe", "/b/claude.exe"], lambda p: p in existing)
+        assert picked == "/b/claude.exe"
+
+    def test_pick_returns_none_when_missing(self):
+        assert pick_claude_path(["/a", "/b"], lambda p: False) is None
