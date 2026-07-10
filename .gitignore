@@ -16,6 +16,11 @@ tools/Xiy/*/x_session/
 tools/koikeyz-monitor/monitor_state.json
 tools/koikeyz-monitor/monitor_reports/
 
+# Xトレンド監視ツールのローカル生成データ(PCごとの状態・収集結果・ロック)
+tools/x-trend-monitor/monitor_state.json
+tools/x-trend-monitor/reports/
+tools/x-trend-monitor/pipeline.lock
+
 # Pythonキャッシュ
 __pycache__/
 *.pyc
