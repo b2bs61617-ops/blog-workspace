@@ -2,6 +2,8 @@
 from datetime import datetime
 
 from trend_monitor import (
+    CLAUDE_MODEL,
+    build_claude_cmd,
     claude_candidates,
     filter_new_trends,
     mark_seen,
@@ -116,3 +118,29 @@ class TestClaudeResolution:
 
     def test_pick_returns_none_when_missing(self):
         assert pick_claude_path(["/a", "/b"], lambda p: False) is None
+
+
+class TestBuildClaudeCmd:
+    def test_exe_is_called_directly(self):
+        cmd = build_claude_cmd(r"C:\u\.local\bin\claude.exe", "やあ")
+        assert cmd[0].endswith("claude.exe")
+        assert cmd[1] == "-p" and cmd[2] == "やあ"
+
+    def test_cmd_file_goes_through_cmd_shell(self):
+        cmd = build_claude_cmd(r"C:\npm\claude.cmd", "やあ")
+        assert cmd[:3] == ["cmd", "/c", r"C:\npm\claude.cmd"]
+
+    def test_model_flag_included(self):
+        cmd = build_claude_cmd("/bin/claude", "p", model="claude-sonnet-5")
+        assert "--model" in cmd
+        assert cmd[cmd.index("--model") + 1] == "claude-sonnet-5"
+
+    def test_default_model_is_not_opus(self):
+        # トークン節約のためデフォルトはOpusでないこと
+        assert "opus" not in CLAUDE_MODEL.lower()
+        cmd = build_claude_cmd("/bin/claude", "p")
+        assert cmd[cmd.index("--model") + 1] == CLAUDE_MODEL
+
+    def test_skip_permissions_flag_present(self):
+        cmd = build_claude_cmd("/bin/claude", "p")
+        assert "--dangerously-skip-permissions" in cmd

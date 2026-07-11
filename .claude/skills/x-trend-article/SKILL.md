@@ -5,7 +5,7 @@ description: Xトレンド監視ツール(tools/x-trend-monitor/)が検知した
 
 # Xトレンド自動記事化スキル
 
-`tools/x-trend-monitor/trend_monitor.py`(30分おきのタスクスケジューラ実行)が新トレンドを検知すると、
+`tools/x-trend-monitor/trend_monitor.py`(6時間おきのタスクスケジューラ実行)が新トレンドを検知すると、
 `claude -p` 経由でこのスキルが呼ばれる。**フェーズ1運用: 下書きまで全自動、公開はユーザー承認制**(2026-07-10開始)。
 
 ## 絶対ルール(フェーズ1)
@@ -100,4 +100,4 @@ description: Xトレンド監視ツール(tools/x-trend-monitor/)が検知した
 ## 運用メモ
 
 - フェーズ2(確認なし全自動公開)への切り替えはユーザーが判断する。指示があるまで下書き止め。
-- 監視ツール側の仕様(30分間隔・同一トレンド24時間クールダウン・1回最大3件)は[tools/x-trend-monitor/trend_monitor.py](../../../tools/x-trend-monitor/trend_monitor.py)参照。
+- 監視ツール側の仕様(6時間間隔・同一トレンド24時間クールダウン・1回最大3件)は[tools/x-trend-monitor/trend_monitor.py](../../../tools/x-trend-monitor/trend_monitor.py)参照。

@@ -1,6 +1,6 @@
 """X(Twitter)のトレンドを定期取得し、新しいトレンドが出たら記事化パイプライン(ヘッドレスClaude)を起動する。
 
-- タスクスケジューラ(タスク名: X-Trend-Monitor)で30分おきに実行される想定
+- タスクスケジューラ(タスク名: X-Trend-Monitor)で6時間おきに実行される想定
 - トレンド取得はkoikeyz-monitorと同じ「ログイン済みブラウザプロファイル+Playwright」方式
   (初回のみ login_x.py を手動実行してXにログインしておくこと。プロファイルは独立)
 - 新トレンドを検知したら reports/trends_*.json にレポートを書き出し、
@@ -35,6 +35,7 @@ COOLDOWN_HOURS = 24        # 同じトレンド語を再処理しない間隔
 MAX_HANDOFF = 3            # 1回の実行でClaudeに渡すトレンド数の上限(コスト対策)
 MAX_TRENDS_COLLECT = 30    # ページから拾うトレンドの最大数
 CLAUDE_TIMEOUT_SEC = 45 * 60
+CLAUDE_MODEL = "claude-sonnet-5"  # 記事化パイプラインのモデル(トークン節約のためOpusではなくSonnet)
 LOCK_STALE_MIN = 90        # これより古いロックは異常終了の残骸とみなして無視する
 FAILURE_NOTIFY_INTERVAL_HOURS = 6  # 取得失敗のLINE通知は6時間に1回まで(スパム防止)
 STATE_META_PREFIX = "_"    # stateのメタ情報キー(トレンド名と衝突しないよう_始まり)
@@ -209,6 +210,16 @@ def resolve_claude_command():
     return pick_claude_path(claude_candidates(), lambda p: Path(p).exists())
 
 
+def build_claude_cmd(claude_path, prompt, model=CLAUDE_MODEL):
+    """claude実行パスからsubprocess用のコマンド配列を組み立てる。
+    .cmd/.batはcmd経由でないと実行できない。.exeは直接呼べる(純粋関数)。"""
+    args = ["-p", prompt, "--model", model, "--dangerously-skip-permissions"]
+    lower = claude_path.lower()
+    if lower.endswith(".cmd") or lower.endswith(".bat"):
+        return ["cmd", "/c", claude_path, *args]
+    return [claude_path, *args]
+
+
 def run_claude_pipeline(report_path):
     """ヘッドレスClaudeでx-trend-articleスキルの自動記事化を起動する。標準出力はログに保存。"""
     prompt = (
@@ -224,12 +235,7 @@ def run_claude_pipeline(report_path):
             encoding="utf-8",
         )
         return False
-    # .cmd/.batはcmd経由でないと実行できない。.exeは直接呼べる
-    lower = claude_cmd.lower()
-    if lower.endswith(".cmd") or lower.endswith(".bat"):
-        cmd = ["cmd", "/c", claude_cmd, "-p", prompt, "--dangerously-skip-permissions"]
-    else:
-        cmd = [claude_cmd, "-p", prompt, "--dangerously-skip-permissions"]
+    cmd = build_claude_cmd(claude_cmd, prompt)
     LOCK_FILE.write_text(datetime.now().isoformat(), encoding="utf-8")
     try:
         result = subprocess.run(
