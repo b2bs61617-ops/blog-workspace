@@ -4,13 +4,13 @@
 
 | サイト | URL | 用途 | 認証情報(.envのキー) |
 |---|---|---|---|
-| トレンドブログ | https://chomoand.com | 時事・話題の記事 | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
+| 恋リアブログ | https://chomoand.com | **恋愛リアリティ番組の出演者wiki**(2026-07-14〜)。旧「トレンドブログ」。`.env`のキー名は`WP_TREND_*`のまま(改名すると全PCの`.env`更新が必要なため据え置き) | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
 | ジャニオタブログ | https://chomoand-0.com | ジャニーズ系記事全般(オーディション番組系だけでなく、グループ・メンバー個人の話題・ファンクラブ情報なども含む) | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。
 
-**どのサイトに投稿するかは記事の文脈で判断する**: トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com。
+**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事→chomoand-0.com、コイキーズ記事→chomoand-1.com。
 
 ## カテゴリID(判明分)
 
@@ -27,6 +27,26 @@
 | 4 | 日プ4 |
 
 グループ・メンバー全体の話題(メンカラ・絵文字まとめなど)は`[66, 62]`(KO1KEYZ+まとめ)を使うとよい。
+
+### chomoand.com(恋リアブログ)
+
+2026-07-14時点のカテゴリと記事数。**恋リア用のカテゴリはまだ無い**ので、1本目の投稿時に番組名カテゴリ(例:「今日、好きになりました。」)を新設する必要がある。
+
+| ID | 名前 | 記事数 |
+|---|---|---|
+| 1 | 未分類 | 55 |
+| 13 | 現役歌王 | 17 |
+| 18 | DREAM STAGE | 17 |
+| 17 | TAGRIGHT | 10 |
+| 30 | トレンド | 8 |
+| 16 | NAZE | 8 |
+| 19 | TORINNER | 6 |
+| 31 | キンパとおにぎり | 4 |
+| 28 | WORLD SCOUT | 3 |
+| 33 | Youtuber | 0 |
+| 20 | ドラマ | 0 |
+
+既存記事はオーディション番組系(現役歌王・DREAM STAGE・TAGRIGHTなど)が中心で、元々「番組出演者wiki」寄りの資産がある。恋リア転換はこの延長線上にあたる。既存記事は削除しない(そもそも削除は絶対厳守で禁止)。
 
 ## REST API
 
