@@ -40,10 +40,12 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 ## STEP 4: アイキャッチ画像の生成
 
-- **chomoand-1.com(コイキーズブログ)の記事は必ず統一テンプレを使う**。サイト全記事が同じCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと:
-  ```
-  python tools/eyecatch_koikeyz.py --top "上段の問いかけ" --main "KO1KEYZ" --bottom "下段1行目" --bottom "下段2行目" --out images/xxx_eyecatch.png
-  ```
+- **chomoand-1.com(コイキーズブログ)の記事は必ずCanva MCPで作る**([docs/canva-mcp.md](../../../docs/canva-mcp.md)の運用フローに従う)。サイト全記事がトモキのCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと。要点:
+  - 元デザイン`DAG_zqaJE_8`の**ページ36だけ**を`copy-design`で複製する(他ページは`find_and_replace_text`がサイレント失敗するので使わない)
+  - 4行のテキストを`find_and_replace_text`で**行ごとに1回ずつ**置換する(`replace_text`はフォントサイズが飛ぶので禁止)
+  - **背景のブラシストロークを毎回ランダムな色に差し替える**(`update_fill` + `resize_element`/`position_element`)。サイトのアイキャッチは全記事で色が違うのが売りなので、**色替えは必須**(2026-07-15トモキ指示)
+  - `export-design`で1200×675のPNGにして`images/`に保存
+  - Canva MCPが認証切れ等で使えないときだけ、フォールバックとして`python tools/eyecatch_koikeyz.py`(HTML再現版・フォントが別物)を使う
 - それ以外のサイト(chomoand.com / chomoand-0.com)のデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
