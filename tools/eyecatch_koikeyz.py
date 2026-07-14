@@ -135,7 +135,7 @@ def render(html_text: str, out_path: Path) -> Path:
     """HTMLをPNGに書き出す."""
     from playwright.sync_api import sync_playwright
 
-    out_path = Path(out_path)
+    out_path = Path(out_path).resolve()  # file:// URIにするため絶対パス化
     out_path.parent.mkdir(parents=True, exist_ok=True)
     html_path = out_path.with_suffix(".html")
     html_path.write_text(html_text, encoding="utf-8")
