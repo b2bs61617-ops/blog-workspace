@@ -40,7 +40,11 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 ## STEP 4: アイキャッチ画像の生成
 
-- デザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
+- **chomoand-1.com(コイキーズブログ)の記事は必ず統一テンプレを使う**。サイト全記事が同じCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと:
+  ```
+  python tools/eyecatch_koikeyz.py --top "上段の問いかけ" --main "KO1KEYZ" --bottom "下段1行目" --bottom "下段2行目" --out images/xxx_eyecatch.png
+  ```
+- それ以外のサイト(chomoand.com / chomoand-0.com)のデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定

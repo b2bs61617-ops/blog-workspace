@@ -8,7 +8,8 @@
 トレンドブログの作業場です。人物・話題の記事を調査・執筆し、WordPressに投稿します。
 運営サイトは3つあります(詳細は [docs/wordpress.md](docs/wordpress.md)):
 
-- **chomoand.com** — 「TikTok/YouTube発バズインフルエンサーの学歴・経歴wiki」路線(2026-07-06方針転換)。旬な人物の発見は[youtube-trending](.claude/skills/youtube-trending/SKILL.md)、記事は学歴・家族構成・彼女彼氏などプライベート情報を軸に[wiki-article](.claude/skills/wiki-article/SKILL.md)/[gakureki-kazoku-kanojo](.claude/skills/gakureki-kazoku-kanojo/SKILL.md)スキルを流用する。経緯・詳細は[docs/chomoand-pivot.md](docs/chomoand-pivot.md)参照。
+- **chomoand.com** — **「恋愛リアリティ番組の出演者wiki」特化サイト**(2026-07-14方針転換)。ABEMA『今日、好きになりました。』『オオカミくん』系、Netflix『ボーイフレンド』『あいの里』系、Amazon『バチェラー』系など**配信プラットフォーム横断**で、出演者の学歴・家族構成・彼氏彼女・本名を掘る。作業手順は[koi-real](.claude/skills/koi-real/SKILL.md)スキル。**最大の勝ち筋は「新シーズンの出演者発表直後」に最速で書くこと**(まだ誰も学歴を書いていない空白期間が2〜4週間ある)。出演者は一般人・未成年が多いためプライバシーの線引きが必須(koi-realスキル参照)。経緯は[docs/chomoand-pivot.md](docs/chomoand-pivot.md)。
+  - ※2026-07-06に一度「TikTok/YouTube発インフルエンサーwiki」路線に決めたが、2026-07-14に**完全撤回**して恋リア特化に切り替えた。トレンド速報路線もこの時に終了。
 - **chomoand-0.com** — ジャニオタブログ
 - **chomoand-1.com** — コイキーズブログ
 
@@ -49,9 +50,10 @@
 
 | スキル | 用途 |
 |---|---|
+| [koi-real](.claude/skills/koi-real/SKILL.md) | **chomoand.comの主力**。恋愛リアリティ番組の出演者wiki記事(番組の追跡・出演者発表の検知・記事の型・プライバシーの線引き) |
 | [trend-research](.claude/skills/trend-research/SKILL.md) | 今日のトレンド・話題を調査する |
 | [tv-research](.claude/skills/tv-research/SKILL.md) | テレビ番組表から旬な出演者を調査する |
-| [youtube-trending](.claude/skills/youtube-trending/SKILL.md) | YouTube急上昇動画から旬なYouTuber/TikTokerを発見する(chomoand.com新方針用) |
+| [youtube-trending](.claude/skills/youtube-trending/SKILL.md) | YouTube急上昇動画から旬なYouTuber/TikTokerを発見する(※chomoand.comの旧方針用。2026-07-14に路線撤回したため現在は未使用。ツール自体は残してある) |
 | [trend-title](.claude/skills/trend-title/SKILL.md) | トレンド記事のタイトル・ずらし記事戦略 |
 | [sns-research](.claude/skills/sns-research/SKILL.md) | Xiyツールでネットにない人物情報をSNSから掘る |
 | [youtube-transcript](.claude/skills/youtube-transcript/SKILL.md) | YouTube動画の文字起こし取得(リサーチ用) |
@@ -71,7 +73,8 @@
   - YouTube文字起こしは「字幕優先(youtube-transcript-api)→無ければWhisper(faster-whisper)で音声文字起こし」の2段構成。GPUがあれば自動でCUDAを使い(無ければCPU int8)、複数動画処理時は字幕チェックの並列化・音声DLと文字起こしのパイプライン化で高速化してある(2026-07-02改良)。
 - **Codex**: 記事・文書生成に使用。詳細は codex-writing スキル参照。
 - **LINE通知**(`tools/line_notify.py`): 記事の更新・リライト提案時、および`koikeyz-monitor`の毎朝の監視結果報告でLINEへプッシュ通知するツール(2026-07-05追加)。LINE Notifyは2025年3月にサービス終了済みのため、LINE公式アカウント(Messaging API)のチャネルアクセストークンを使う方式。`.env`の`LINE_CHANNEL_ACCESS_TOKEN`/`LINE_USER_ID`が未設定の場合は通知だけスキップされ、他の処理は止まらない。初回セットアップ手順は[docs/line-notify-setup.md](docs/line-notify-setup.md)を参照(フォロワーID一覧APIは無料プランだと使えないため要注意)。呼び出し元はkoikeyz-rewriteスキル(リライト提案時・更新完了時・Gemini失敗時のフォールバック要約)と`tools/koikeyz-monitor/x_monitor.py`(毎朝、結果に関わらず必ず通知)。なお「LINE返信でマツが自動執筆する」パイプラインは本番ドメインのDNS移行リスクを理由に見送り済み([docs/line-notify-setup.md](docs/line-notify-setup.md)参照)。
-- **YouTube急上昇取得**(`tools/youtube_trending.py`): chomoand.com新方針(TikTok/YouTube発バズインフルエンサーのwiki記事)のネタ探し用。YouTube Data API v3で日本の急上昇動画を取得する。`.env`の`YOUTUBE_API_KEY`が必要(2026-07-06追加)。セットアップ手順は[docs/youtube-api-setup.md](docs/youtube-api-setup.md)、使い方は[youtube-trendingスキル](.claude/skills/youtube-trending/SKILL.md)参照。YouTube急上昇ページ・TikTok Creative CenterはどちらもJS描画でWebFetchでは中身が取れないため、API経由で取得する方式にした。TikTok側は現時点で自動取得の手段なし。
+- **KO1KEYZアイキャッチ生成**(`tools/eyecatch_koikeyz.py`): chomoand-1.com(コイキーズブログ)専用のアイキャッチ生成ツール(2026-07-15追加)。既存記事はすべてトモキがCanvaの「Webinar/Keynote Presentation」テンプレで作ったデザインで統一されているため、マツが記事を書くときも同じ見た目になるようHTML+Playwrightで再現する。フォント(M PLUS Rounded 1c Black、OFL)は`assets/fonts/`に同梱済み。使い方・デザイン仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md)参照。**コイキーズ記事のアイキャッチを勝手に別デザインで作らないこと。**
+- **YouTube急上昇取得**(`tools/youtube_trending.py`): **2026-07-14に路線撤回したため現在は未使用**(chomoand.comは恋リア特化へ。ツールとスキルは消さずに残してある)。以下は当時の説明。chomoand.com旧方針(TikTok/YouTube発バズインフルエンサーのwiki記事)のネタ探し用。YouTube Data API v3で日本の急上昇動画を取得する。`.env`の`YOUTUBE_API_KEY`が必要(2026-07-06追加)。セットアップ手順は[docs/youtube-api-setup.md](docs/youtube-api-setup.md)、使い方は[youtube-trendingスキル](.claude/skills/youtube-trending/SKILL.md)参照。YouTube急上昇ページ・TikTok Creative CenterはどちらもJS描画でWebFetchでは中身が取れないため、API経由で取得する方式にした。TikTok側は現時点で自動取得の手段なし。
 - **Xトレンド監視**(`tools/x-trend-monitor/`): **2026-07-14にユーザー指示で停止中**(タスクスケジューラの`X-Trend-Monitor`を`Disable-ScheduledTask`で無効化。削除はしていないので`Enable-ScheduledTask`で復帰できる)。再開の指示があるまで勝手に有効化しないこと。以下は仕組みの説明。chomoand.com(トレンドブログ)の全自動記事化パイプラインの入口(2026-07-10追加)。タスクスケジューラ(タスク名: `X-Trend-Monitor`)で6時間おきに`trend_monitor.py`がXのトレンドページ(x.com/explore/tabs/trending)を取得し、新トレンド(同一語24時間クールダウン、1回最大3件、プロモーション枠除外)を検知すると`claude -p`でヘッドレスClaudeを起動して[x-trend-articleスキル](.claude/skills/x-trend-article/SKILL.md)の自動記事化(リサーチ→執筆→**下書き**投稿→LINE通知)を実行する。トークン節約のため、実行間隔は当初の30分から6時間に延ばし、パイプラインが呼ぶClaudeも`--model claude-sonnet-5`(定数`CLAUDE_MODEL`)でSonnet指定にしてある(2026-07-11、ユーザー指示)。`claude`はネイティブインストール(`~/.local/bin/claude.exe`)でタスクスケジューラの最小PATH環境では名前解決できないため、`resolve_claude_command()`がフルパスで解決する(PATH非依存)。フェーズ1運用のため**公開は必ずユーザー承認制**(LINE通知を見て「公開して」と指示)。koikeyz-monitorと同じログイン済みプロファイル方式だがプロファイルは独立(`%USERPROFILE%\x_trend_monitor_profile`、初回にPCごとに`login_x.py`を手動実行)。多重起動は`pipeline.lock`とタスク側`IgnoreNew`で防止。`monitor_state.json`・`reports/`はGit管理外。ログイン状態とタスク登録がPC固有なため、登録したPC上でのみ動作する。
 - **Googleインデックス登録**(`tools/google_indexing.py`): 記事公開時にURLをGoogle Indexing APIへ送信し、即時インデックス登録をリクエストするツール(2026-07-09追加)。[publishスキル](.claude/skills/publish/SKILL.md)から自動で呼ばれる。サービスアカウントのJSON鍵が必要で、`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`が未設定の場合は通知だけスキップされ、公開処理自体は止まらない(LINE通知と同じフェイルセーフ方式)。セットアップ手順は[docs/google-indexing-setup.md](docs/google-indexing-setup.md)参照。Indexing APIは規約上Job Posting/BroadcastEvent専用が本来の用途で、ブログ記事への利用は黙認されている状態である点に注意。
 
