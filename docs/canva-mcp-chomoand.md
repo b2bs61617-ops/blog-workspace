@@ -78,3 +78,10 @@ KO1KEYZと**全く同じCanva標準ストックアセット**(「Glowy Gradient 
   - 内容: 「今日、好きになりました / 出演者名 / 学歴は？出身高校を調査 / 家族構成や彼氏の噂も解説！」
   - 背景: `MAEn_VZqPFM`
   - 3要素とも`replace_text`・`find_and_replace_text`双方で正常に置換できることを確認(2026-07-16)
+
+- 「今日、好きになりました。夏休み編2026」記事3本(chomoand.com、2026-07-17)
+  - 記事ID 11553(ハブ記事): `images/kyousuki_natsuyasumi2026_member_eyecatch_canva.png` → メディアID 11577
+  - 記事ID 11554(福住真里): `images/fukuzumi_mari_wiki_eyecatch_canva.png` → メディアID 11578
+  - 記事ID 11555(藤村みのり): `images/fujimura_minori_wiki_eyecatch_canva.png` → メディアID 11579
+  - 3本とも背景ブラシストロークの色が異なることを確認済み。`featured_media`のみ更新し、記事本体・ステータス(`publish`)は変更していないことも確認済み。
+  - ⚠️ **既知の挙動**: 3〜4行目のトピック要素に含まれる英字は、テンプレートのテキストスタイル(全角英数字用のスタイル)により**自動的に大文字化される**(例: 「wiki」→「WIKI」、「sweet16」→「SWEET16」)。見た目は太字強調っぽくなり違和感はないが、意図的に小文字を保ちたい場合はCanva UI側で該当要素のスタイルを個別調整する必要がある。
