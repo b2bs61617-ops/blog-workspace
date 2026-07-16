@@ -2,6 +2,8 @@
 
 chomoand-1.com(コイキーズブログ)のアイキャッチは、トモキがCanvaの「Webinar/Keynote Presentation」テンプレで作ったデザインで全記事統一されている。マツが記事を書くときも**同じ見た目**にする必要がある(2026-07-15)。
 
+**chomoand.com(恋愛リアリティ番組の出演者wiki)も2026-07-16からCanva MCPを使う。** ただしKO1KEYZとは別系統の独自マスターデザイン。手順は[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md)を参照。
+
 ## なぜCanva MCPを使うのか
 
 当初は`tools/eyecatch_koikeyz.py`(HTML+Playwright)で見た目を再現したが、**フォントがCanvaの本物と違う**ためトモキから「Canvaを使って作ってほしい」と指示があった。そこでCanva公式のリモートMCPサーバーを接続し、マツがCanva上で直接デザインを作って書き出す方式に切り替えた。**2026-07-15に動作検証済み。以下のフローで本物と完全に同じアイキャッチが作れる。**
