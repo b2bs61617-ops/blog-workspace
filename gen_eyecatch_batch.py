@@ -1,9 +1,24 @@
 import sys, os, base64, json, urllib.request
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
-WP_URL = "https://chomoand.com/wp-json/wp/v2"
-WP_USER = "b2bs61617@gmail.com"
-WP_PASS = "yXsF iR9W C8bS lQRz KQfO ynwD"
+def load_env(path):
+    env = {}
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            env[k.strip()] = v.strip()
+    return env
+
+ROOT = Path(__file__).parent
+ENV = {**load_env(ROOT / ".env"), **os.environ}
+
+WP_URL = ENV["WP_TREND_URL"].rstrip("/") + "/wp-json/wp/v2"
+WP_USER = ENV["WP_TREND_USERNAME"]
+WP_PASS = ENV["WP_TREND_APP_PASSWORD"]
 AUTH = base64.b64encode(f"{WP_USER}:{WP_PASS}".encode()).decode()
 HEADERS = {"Authorization": f"Basic {AUTH}"}
 

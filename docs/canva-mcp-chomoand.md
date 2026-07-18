@@ -1,6 +1,12 @@
-# Canva MCP連携(chomoand.comのアイキャッチ作成)
+# Canva MCP連携(chomoand.comのアイキャッチ作成)※2026-07-19に運用停止
 
-chomoand.com(恋愛リアリティ番組の出演者wiki)のアイキャッチも、chomoand-1.com(コイキーズ)と同じ運用でCanva MCPを使う(2026-07-16)。Canva MCPの基本的な仕組み・認証手順は[docs/canva-mcp.md](canva-mcp.md)を参照。ここにはchomoand.com専用の差分だけ書く。
+**chomoand.comのアイキャッチは2026-07-19に`tools/eyecatch_chomoand.py`(独自HTML+Playwright生成)へ移行し、このCanva MCP方式は使わなくなった。** 理由は下記「運用停止の経緯」を参照。このファイルは経緯の記録として残す。**新規記事のアイキャッチ作成は[docs/eyecatch-style.md](eyecatch-style.md)の「chomoand.com統一テンプレ」を見ること。**
+
+chomoand-1.com(コイキーズ)のアイキャッチは引き続きCanva MCPを使う(変更なし)。Canva MCPの基本的な仕組み・認証手順は[docs/canva-mcp.md](canva-mcp.md)を参照。
+
+## 運用停止の経緯(2026-07-19)
+
+chomoand.comを「恋愛リアリティ番組の出演者wiki」から「恋リア専門サイト」として運用していく方針の中で、出演者の顔写真を(ぼかして)アイキャッチ背景に使うアイデアがトモキから出た。出演者は一般人・未成年が多いため肖像権・プライバシーリスクを理由にマツが懸念を伝え、実写は使わない方向で合意。代わりにトモキがAI生成したカップルシルエットの背景画像を使う独自デザインに切り替えることになった。Canva MCP自体の技術的な問題ではなく、**サイトのデザイン路線の見直し**が理由。
 
 ## 元になるデザイン(chomoand.com専用の新規マスター)
 

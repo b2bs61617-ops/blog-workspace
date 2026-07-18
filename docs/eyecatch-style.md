@@ -5,8 +5,31 @@
 | サイト | 使うテンプレ |
 |---|---|
 | **chomoand-1.com(コイキーズブログ)** | **KO1KEYZ統一テンプレ必須**(下記)。既存記事が全部このデザインで揃っているので勝手に変えない |
-| **chomoand.com(恋愛リアリティ番組の出演者wiki)** | **Canva MCP必須**(2026-07-16〜)。専用マスターデザイン(design_id: `DAHPjgiBOTI`)を使う。手順は[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md)参照。以下の「汎用テンプレ」節はCanva MCPが使えないときのフォールバックとして残す |
+| **chomoand.com(恋愛リアリティ番組の出演者記事)** | **`tools/eyecatch_chomoand.py`必須**(2026-07-19〜)。詳細は下記「chomoand.com統一テンプレ」参照。Canva MCP版(design_id: `DAHPjgiBOTI`、[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md))は2026-07-19に運用停止(経緯は同docs参照) |
+| chomoand.com(恋リア以外の旧カテゴリ記事) | 対象外。第2次転換([docs/chomoand-pivot.md](chomoand-pivot.md))で凍結済みの旧記事(トレンド系・未分類など)はそのまま放置。新デザインを適用するのは恋リア記事のみ |
 | chomoand-0.com | 汎用テンプレ(1200×630px、後述) |
+
+## chomoand.com統一テンプレ(恋愛リアリティ番組の出演者記事専用)
+
+トモキ提供のAI生成背景(ピンク×カップルシルエット×白いハート/ライン装飾、`assets/chomoand_eyecatch_bg.png`)に、KO1KEYZと同じ「3段・横幅いっぱいに自動フィット」の黒太文字を重ねる。`tools/eyecatch_chomoand.py`(HTML+Playwright)で生成する。
+
+```bash
+python tools/eyecatch_chomoand.py \
+  --top "wiki、プロフィール、出身" \
+  --top "高校・子役時代など重要な内容" \
+  --main "福住真里" \
+  --bottom "出身地・高校を調査" \
+  --bottom "子役時代の経歴も解説!" \
+  --hue 140 \
+  --out images/fukuzumi_mari_wiki_eyecatch_chomoand.png
+```
+
+- `--top`/`--bottom`は複数指定で複数行になる。
+- **背景色は`--hue`(0〜359の色相回転)で毎回変える**。未指定ならランダム。同じ特集記事内の複数記事(例: 1シーズンの出演者複数人)は色がかぶらないように手動で離れた値を選ぶ(例: 0/140/280のように120度ずつ離す)。
+- 構成は3段: **上=記事の属性キーワード(wiki・プロフィール・学歴など、タイトルから該当するものを2行程度) → 中央=主役(出演者名、または特集記事なら「メンバー一覧」等のテーマ) → 下=タイトルの具体的な内容(2行程度)**。
+- サイズは1200×675px(16:9、既存chomoand.comアイキャッチと同じ比率)。
+- 背景に写っているのはAI生成のイラスト(実写ではない)なので、出演者本人の顔写真を使うリスク(肖像権・未成年のプライバシー)を回避できる。**出演者の実写・SNS画像を背景に使うのは禁止**(2026-07-18〜19の検討で不採用と判断)。
+- 元背景は1枚のみ(`assets/chomoand_eyecatch_bg.png`)。バリエーションはCSSの`hue-rotate`で色相を変えるだけで作る(PIL等での事前色違い生成はしない)。
 
 ## KO1KEYZ統一テンプレ(chomoand-1.com専用)
 
