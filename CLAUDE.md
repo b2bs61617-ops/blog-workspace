@@ -50,6 +50,7 @@
 | スキル | 用途 |
 |---|---|
 | [koi-real](.claude/skills/koi-real/SKILL.md) | **chomoand.comの主力**。恋愛リアリティ番組の出演者wiki記事(番組の追跡・出演者発表の検知・記事の型・プライバシーの線引き) |
+| [content-gap-research](.claude/skills/content-gap-research/SKILL.md) | 競合サイトの記事のうち内容が薄いものを見つけ、chomoandがより詳しく書き直す機会を探す(サブエージェントに委任してトークン節約) |
 | [trend-research](.claude/skills/trend-research/SKILL.md) | 今日のトレンド・話題を調査する(**2026-07-17よりトモキの指示で使用停止**。恋愛リアリティ番組の出演者調査に注力する方針) |
 | [tv-research](.claude/skills/tv-research/SKILL.md) | テレビ番組表から旬な出演者を調査する |
 | [youtube-trending](.claude/skills/youtube-trending/SKILL.md) | YouTube急上昇動画から旬なYouTuber/TikTokerを発見する(現在未使用。詳細は[docs/tools.md](docs/tools.md)) |
