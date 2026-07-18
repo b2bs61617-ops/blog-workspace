@@ -130,3 +130,49 @@ notepad $env:USERPROFILE\.claude\settings.json
 }
 ```
 セッション(5時間)・週間の使用率はPro/Maxプランで、最初のAPI応答後から表示される。
+
+## 11. マツの永続ルール・スキルを毎セッション自動同期(任意・PCごとの個人設定)
+
+このリポジトリ以外のフォルダでマツ(Claude Code)を起動したときも、毎回自動でこのリポジトリを`git pull`して最新化し、「マツのルール・スキルはここにあるワン」という一言をマツに伝えるようにする設定。これがないと、他のPCで新しく教えたスキルやルールに、別フォルダで作業しているセッションが気づかないことがある。
+
+セクション10と同じく、これも`~/.claude/settings.json`というPC個人の設定ファイルに書くもの(リポジトリでは共有されない)。スクリプト本体のテンプレートのみリポジトリ管理(`tools/blog-workspace-sync.ps1.example`)。
+
+1. テンプレートをコピーして、このPCでのリポジトリの絶対パスに書き換える:
+```powershell
+Copy-Item tools\blog-workspace-sync.ps1.example $env:USERPROFILE\.claude\blog-workspace-sync.ps1
+notepad $env:USERPROFILE\.claude\blog-workspace-sync.ps1
+```
+1行目付近の`$repo = "<このPCでのリポジトリの絶対パス>"`を、実際のクローン先(例: `C:\Users\s30se\Desktop\blog-workspace`)に書き換える。
+
+2. 保存後、UTF-8 with BOMになっているか確認(Windows PowerShell 5.1は日本語を含むスクリプトがBOM無しだと文字化けすることがあるため):
+```powershell
+$path = "$env:USERPROFILE\.claude\blog-workspace-sync.ps1"
+$content = Get-Content -Raw -Encoding UTF8 $path
+$enc = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText($path, $content, $enc)
+```
+
+3. `~/.claude/settings.json`に`SessionStart`フックを追加(既存の設定があればマージする。`hooks`が無ければ新規作成):
+```powershell
+notepad $env:USERPROFILE\.claude\settings.json
+```
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \"%USERPROFILE%\\.claude\\blog-workspace-sync.ps1\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+`%USERPROFILE%`部分は実際の絶対パス(例: `C:\\Users\\s30se\\.claude\\blog-workspace-sync.ps1`)に書き換える。
+
+4. 次に新しいセッションを開いたときから有効になる(今開いているセッションには反映されない)。

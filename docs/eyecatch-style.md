@@ -5,7 +5,8 @@
 | サイト | 使うテンプレ |
 |---|---|
 | **chomoand-1.com(コイキーズブログ)** | **KO1KEYZ統一テンプレ必須**(下記)。既存記事が全部このデザインで揃っているので勝手に変えない |
-| chomoand.com / chomoand-0.com | 汎用テンプレ(1200×630px、後述) |
+| **chomoand.com(恋愛リアリティ番組の出演者wiki)** | **Canva MCP必須**(2026-07-16〜)。専用マスターデザイン(design_id: `DAHPjgiBOTI`)を使う。手順は[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md)参照。以下の「汎用テンプレ」節はCanva MCPが使えないときのフォールバックとして残す |
+| chomoand-0.com | 汎用テンプレ(1200×630px、後述) |
 
 ## KO1KEYZ統一テンプレ(chomoand-1.com専用)
 
@@ -24,7 +25,7 @@ python tools/eyecatch_koikeyz.py \
 - 構成は3段: **上=問いかけや所属 → 中央=主役(グループ名・メンバー名を超大きく) → 下=説明1〜2行**。各行はブラウザ側で横幅いっぱいに自動フィットされる(Canva版の「文字が画面いっぱい」の質感)。
 - メンバー個人の記事は`--top "KO1KEYZ" --main "YUKI"`のように、上段にグループ名・中央に個人名を置くのが既存記事の型。
 
-## 汎用テンプレ(chomoand.com / chomoand-0.com)
+## 汎用テンプレ(chomoand-0.com / chomoand.comのフォールバック用)
 
 サイズ: 1200×630px(OGP/WordPress標準)。人物名を超大きく中央に、グラデーションblobの背景、色はランダムで毎回変える。
 

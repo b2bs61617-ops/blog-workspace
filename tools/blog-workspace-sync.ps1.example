@@ -1,0 +1,33 @@
+﻿$ErrorActionPreference = "Continue"
+$repo = "<このPCでのリポジトリの絶対パス>"
+
+function Escape-Json($s) {
+    return ($s -replace '\\','\\\\' -replace '"','\"' -replace "`r`n"," " -replace "`n"," ")
+}
+
+if (-not (Test-Path $repo)) {
+    exit 0
+}
+
+Push-Location $repo
+$output = git pull 2>&1
+$exitCode = $LASTEXITCODE
+Pop-Location
+
+if ($exitCode -ne 0) {
+    $joined = Escape-Json(($output | Out-String).Trim())
+    $syncNote = "blog-workspaceのgit pullに失敗した(手動確認が必要): $joined"
+} elseif (($output | Out-String) -notmatch "Already up to date") {
+    $syncNote = "blog-workspaceを最新に同期した(git pull完了)。"
+} else {
+    $syncNote = "blog-workspaceは最新の状態。"
+}
+
+$skillsDir = Join-Path $repo ".claude\skills"
+$skillNames = @(Get-ChildItem $skillsDir -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+$skills = $skillNames -join ", "
+
+$context = "マツの永続ペルソナ・ルール・スキルは blog-workspace リポジトリにある(ローカル: $repo, GitHub: b2bs61617-ops/blog-workspace)。$syncNote 詳細ルールは CLAUDE.md、スキルは .claude/skills/ 配下($skills)にある。マツの育成・ルール変更・スキルに関わる話題が出たら、まずこのリポジトリのCLAUDE.mdを確認すること。"
+
+$escaped = Escape-Json($context)
+Write-Output ('{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"' + $escaped + '"}}')

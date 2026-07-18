@@ -40,11 +40,19 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 ## STEP 4: アイキャッチ画像の生成
 
-- **chomoand-1.com(コイキーズブログ)の記事は必ず統一テンプレを使う**。サイト全記事が同じCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと:
-  ```
-  python tools/eyecatch_koikeyz.py --top "上段の問いかけ" --main "KO1KEYZ" --bottom "下段1行目" --bottom "下段2行目" --out images/xxx_eyecatch.png
-  ```
-- それ以外のサイト(chomoand.com / chomoand-0.com)のデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
+- **chomoand-1.com(コイキーズブログ)の記事は必ずCanva MCPで作る**([docs/canva-mcp.md](../../../docs/canva-mcp.md)の運用フローに従う)。サイト全記事がトモキのCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと。要点:
+  - 元デザイン`DAG_zqaJE_8`の**ページ36だけ**を`copy-design`で複製する(他ページは`find_and_replace_text`がサイレント失敗するので使わない)
+  - 4行のテキストを`find_and_replace_text`で**行ごとに1回ずつ**置換する(`replace_text`はフォントサイズが飛ぶので禁止)
+  - **背景のブラシストロークを毎回ランダムな色に差し替える**(`update_fill` + `resize_element`/`position_element`)。サイトのアイキャッチは全記事で色が違うのが売りなので、**色替えは必須**(2026-07-15トモキ指示)
+  - `export-design`で1200×675のPNGにして`images/`に保存
+  - Canva MCPが認証切れ等で使えないときだけ、フォールバックとして`python tools/eyecatch_koikeyz.py`(HTML再現版・フォントが別物)を使う
+- **chomoand.comの記事も必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
+  - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)
+  - 3つの独立したテキスト要素(1行目=番組名/2行目=出演者名/3〜4行目=疑問形+補足)を`replace_text`で置換する(KO1KEYZと違い要素が分かれているのでフォントサイズが飛ぶ心配はない)
+  - **背景のブラシストロークを毎回ランダムな色に差し替える**(KO1KEYZと同じアセット一覧を使い回せる)
+  - `export-design`で1200×675のPNGにして`images/`に保存
+  - Canva MCPが使えないときのフォールバックは[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の汎用テンプレ(1200×630px)
+- chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定
