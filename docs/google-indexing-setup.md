@@ -1,5 +1,7 @@
 # Google Indexing APIのセットアップ手順
 
+**現在の状態(2026-07-19)**: 稼働中。サービスアカウント`chomoand-477@model-gearing-465707-d6.iam.gserviceaccount.com`を3サイトのSearch Consoleオーナーとして登録済み。経緯は[docs/history.md](history.md)参照。新しいPCでセットアップする場合、鍵ファイル(`google-indexing-key.json`)を安全な経路でコピーして`.env`にパスを設定するだけでよい(1〜2章のCloud Console/Search Console作業を毎回やり直す必要はない)。
+
 記事公開時に投稿URLをGoogleへ即時通知し、インデックス登録をリクエストする仕組み(`tools/google_indexing.py`)の初回セットアップ手順。[publishスキル](../.claude/skills/publish/SKILL.md)から呼ばれる。
 
 **Why:** Google Search ConsoleのUI上の「インデックス登録をリクエスト」は手動操作のみでAPIが無い。一方Indexing APIならURLを送信するだけで即時インデックス登録をリクエストできる。
