@@ -6,6 +6,8 @@ tools/koikeyz-monitor/monitor_config.json
 client_secret_*.json
 token.json
 .claude/settings.local.json
+google-indexing-key.json
+*-service-account*.json
 
 # ブラウザ自動化プロファイル・キャッシュ(Cookie/ログイン情報を含む)
 x_session/
