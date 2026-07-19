@@ -12,6 +12,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - `articles/` 配下の対象`.md`ファイルを読み込む
 - マークダウン→HTML変換ルール:
   - H1(タイトル行)は除去(WordPressの`title`フィールドで設定するため)
+  - 冒頭の`<!-- TITLE: ... -->`・`<!-- KEYWORDS: ... -->`・`<!-- STRUCTURE: ... -->`コメント([docs/rules.mdの記録ルール](../../../docs/rules.md)参照)も本文から除去してから投稿する
   - `## ` → `<h2>`、`### ` → `<h3>`
   - `---` → `<hr>`
   - `**text**` → `<strong>text</strong>`
