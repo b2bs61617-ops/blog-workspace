@@ -11,6 +11,8 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 
 **Why:** 大手・強いブロガーはSNSやYouTubeを深掘りしない。ここに差別化の余地がある。
 
+**新規性の出どころ(2026-07-20・トモキ明言)**: WebSearchで出てくるテキスト情報(まとめサイト・ニュース記事など)には基本的に新規性がない。本人が発信した一次情報は結局X・Instagram・YouTubeの投稿(画像・動画そのもの)にしかない。既存記事のリライト・深掘り(薄い記事を厚くする作業)でも同じで、WebSearchで追加の文章を探すのではなく、Xiyで本人のX/Instagram投稿を掘り、YouTube出演動画があれば[youtube-transcriptスキル](../youtube-transcript/SKILL.md)で文字起こしして画像・発言から拾う。
+
 ## 調査ツール: Xiy
 
 `tools/Xiy/起動.bat` で起動するX/Instagram投稿収集ツール(詳細は[reference/Xiyツール](#xiyツールの詳細)を参照)。人物のアカウントを指定すると投稿・画像・日時を一括収集できる。
