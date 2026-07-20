@@ -124,10 +124,12 @@ chomoand.comは2026-07-14に**「恋愛リアリティ番組の出演者wiki」�
 
 **迷ったら書かない。** 1記事のPVより、削除要請・炎上でサイトごと失うほうが損害が大きい。
 
+**例外(成人・非未成年の番組限定)**: 『ラヴ上等』のように出演者が全員成人の番組では、トモキの個別承認があれば「書いてよい情報源」を第三者ブログ・SNSの噂・憶測まで拡張し、犯罪歴も含めて出典明記の上で書いてよい(トモキが最終確認する前提、経緯は[docs/history.md](../../../docs/history.md)参照)。**この拡張は今日好き等の未成年出演者には絶対に適用しない。**
+
 ## 投稿先・カテゴリ
 
 - 投稿先は**chomoand.com**(`.env`の`WP_TREND_*`。キー名は旧トレンドブログ時代のまま)
-- 恋リア用カテゴリは**まだ無い**。番組名ごとにカテゴリを新設する(例:「今日、好きになりました。」)。最新のカテゴリID一覧は[docs/wordpress.md](../../../docs/wordpress.md)、または `GET https://chomoand.com/wp-json/wp/v2/categories?per_page=100` で確認
+- 恋リア用カテゴリは番組名ごとに新設する運用(2026-07-20時点で既存: 今日、好きになりました。=ID34 / シャッフルアイランド=ID35 / ラヴ上等=ID36)。新しい番組は同じ要領でカテゴリを新設する。最新のカテゴリID一覧は[docs/wordpress.md](../../../docs/wordpress.md)、または `GET https://chomoand.com/wp-json/wp/v2/categories?per_page=100` で確認
 - 投稿は[blog-uploadスキル](../blog-upload/SKILL.md)、公開は[publishスキル](../publish/SKILL.md)
 
 ## 関連スキル
