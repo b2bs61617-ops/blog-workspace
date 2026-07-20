@@ -60,10 +60,15 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)
 - 取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 
+## STEP 6(chomoand-1.com限定): 韓国語版下書きの自動生成
+
+コイキーズブログ(chomoand-1.com)の記事は、STEP5完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方・韓国語アイキャッチ生成の手順は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。
+
 ## 完了報告
 
 全STEP終了後、以下をユーザーに報告する:
 - 記事ID・スラッグ・確認URL(`{サイトURL}/?p={id}`)
 - アイキャッチ画像のメディアID
+- (chomoand-1.comの場合)韓国語下書きのID・スラッグ・アイキャッチのメディアID
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜5を順番に実行する。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.com以外はSTEP1〜5)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。

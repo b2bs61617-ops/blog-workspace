@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face {
+  font-family: 'KoikeyzRounded';
+  src: url('file:///C:/Users/ti071/Desktop/AI%E4%BD%9C%E6%A5%AD%E5%A0%B4/%E3%83%96%E3%83%AD%E3%82%B0%E4%BD%9C%E6%A5%AD%E5%A0%B4/assets/fonts/MPLUSRounded1c-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 675px; overflow: hidden; }
+.canvas {
+  position: relative;
+  width: 1200px; height: 675px;
+  background: #f2efe9;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px;
+  font-family: 'KoikeyzRounded', 'Yu Gothic', sans-serif;
+  font-weight: 900;
+  color: #1c1c1c;
+  text-align: center;
+}
+.smoke { position: absolute; border-radius: 50%; filter: blur(80px); }
+.fit { position: relative; z-index: 1; white-space: nowrap; line-height: 1.35; }
+.main { letter-spacing: 0.02em; line-height: 1.05; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="smoke" style="width:583px;height:583px;left:196px;top:-55px;background:radial-gradient(circle,rgba(240,150,160,0.95) 0%,transparent 66%);"></div><div class="smoke" style="width:609px;height:609px;left:266px;top:-12px;background:radial-gradient(circle,rgba(246,178,130,0.85) 0%,transparent 66%);"></div><div class="smoke" style="width:477px;height:477px;left:263px;top:180px;background:radial-gradient(circle,rgba(196,165,220,0.80) 0%,transparent 66%);"></div><div class="smoke" style="width:446px;height:446px;left:486px;top:29px;background:radial-gradient(circle,rgba(186,214,170,0.70) 0%,transparent 66%);"></div><div class="smoke" style="width:571px;height:571px;left:361px;top:-47px;background:radial-gradient(circle,rgba(250,205,205,0.85) 0%,transparent 66%);"></div>
+  <div class="fit top" data-max="90">일본 팬 이벤트 개최!</div>
+  <div class="fit main" data-max="200">첸 리키</div>
+  <div class="fit bottom" data-max="78">인스타 라이브 발음 실수가<br>레전드 짤로?</div>
+</div>
+<script>
+// 各行を横幅いっぱい(1090px)まで拡大する(Canvaテンプレの「文字が画面いっぱい」の質感を再現)
+document.fonts.ready.then(() => {
+  for (const el of document.querySelectorAll('.fit')) {
+    const max = parseInt(el.dataset.max, 10);
+    let size = max;
+    el.style.fontSize = size + 'px';
+    while (size > 20 && el.getBoundingClientRect().width > 1090) {
+      size -= 2;
+      el.style.fontSize = size + 'px';
+    }
+  }
+  document.body.dataset.fitted = '1';
+});
+</script>
+</body>
+</html>
