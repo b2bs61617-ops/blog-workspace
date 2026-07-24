@@ -38,15 +38,10 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - 送信は`[System.Text.Encoding]::UTF8.GetBytes($json)`でバイト列化してから`Invoke-RestMethod -Body`に渡す
 - Python(`wp_upload_batch.py`)を使う場合は`.env`から`WP_<SITE>_URL`等を読み込む実装済みなのでそのまま使える
 
-## STEP 4: アイキャッチ画像の生成
+## STEP 4: アイキャッチ画像の生成(chomoand-1.comは対象外)
 
-- **chomoand-1.com(コイキーズブログ)の記事は必ずCanva MCPで作る**([docs/canva-mcp.md](../../../docs/canva-mcp.md)の運用フローに従う)。サイト全記事がトモキのCanvaテンプレの見た目で揃っているため、勝手に別デザインを作らないこと。要点:
-  - 元デザイン`DAG_zqaJE_8`の**ページ36だけ**を`copy-design`で複製する(他ページは`find_and_replace_text`がサイレント失敗するので使わない)
-  - 4行のテキストを`find_and_replace_text`で**行ごとに1回ずつ**置換する(`replace_text`はフォントサイズが飛ぶので禁止)
-  - **背景のブラシストロークを毎回ランダムな色に差し替える**(`update_fill` + `resize_element`/`position_element`)。サイトのアイキャッチは全記事で色が違うのが売りなので、**色替えは必須**(2026-07-15トモキ指示)
-  - `export-design`で1200×675のPNGにして`images/`に保存
-  - Canva MCPが認証切れ等で使えないときだけ、フォールバックとして`python tools/eyecatch_koikeyz.py`(HTML再現版・フォントが別物)を使う
-- **chomoand.comの記事も必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
+- **chomoand-1.com(コイキーズブログ)の記事はアイキャッチを作らない**(2026-07-24〜トモキ指示。それまではCanva MCP必須だったが方針転換)。STEP4・STEP5・STEP6内のアイキャッチ関連処理はすべてスキップし、STEP3の下書き投稿だけで完了とする。
+- **chomoand.comの記事は必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
   - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)
   - 3つの独立したテキスト要素(1行目=番組名/2行目=出演者名/3〜4行目=疑問形+補足)を`replace_text`で置換する(KO1KEYZと違い要素が分かれているのでフォントサイズが飛ぶ心配はない)
   - **背景のブラシストロークを毎回ランダムな色に差し替える**(KO1KEYZと同じアセット一覧を使い回せる)
@@ -55,20 +50,20 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
-## STEP 5: アイキャッチをWordPressにアップロード・設定
+## STEP 5: アイキャッチをWordPressにアップロード・設定(chomoand-1.comは対象外)
 
 - 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)
 - 取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 
 ## STEP 6(chomoand-1.com限定): 韓国語版下書きの自動生成
 
-コイキーズブログ(chomoand-1.com)の記事は、STEP5完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方・韓国語アイキャッチ生成の手順は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。
+コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**韓国語版もアイキャッチは作らない**(2026-07-24〜)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。
 
 ## 完了報告
 
 全STEP終了後、以下をユーザーに報告する:
 - 記事ID・スラッグ・確認URL(`{サイトURL}/?p={id}`)
-- アイキャッチ画像のメディアID
-- (chomoand-1.comの場合)韓国語下書きのID・スラッグ・アイキャッチのメディアID
+- アイキャッチ画像のメディアID(chomoand-1.com以外)
+- (chomoand-1.comの場合)韓国語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.com以外はSTEP1〜5)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.comはSTEP4・5を省略してSTEP3→STEP6、それ以外のサイトはSTEP1〜5)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。

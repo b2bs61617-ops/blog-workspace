@@ -76,8 +76,8 @@
 | Xiy(`tools/Xiy/`) | X/Instagram投稿収集 + YouTube文字起こし。`tools/Xiy/起動.bat`で起動。sns-researchスキルで使用 |
 | Codex | 記事・文書生成に使用(codex-writingスキル参照) |
 | LINE通知(`tools/line_notify.py`) | 記事更新・監視結果をLINEへ通知。未設定でも他の処理は止まらない。セットアップは[docs/line-notify-setup.md](docs/line-notify-setup.md) |
-| Canva MCP | **コイキーズ(chomoand-1.com)記事のアイキャッチは必ずこれで作る**。**背景色は毎回ランダムに変える**。PCごとに`/mcp`認証が必要。手順は[docs/canva-mcp.md](docs/canva-mcp.md)。**chomoand.comでの使用は2026-07-19に停止**(下記参照) |
-| KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`) | Canva MCPの**フォールバック**(認証切れ時のみ使用)。**勝手に別デザインで作らないこと**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
+| Canva MCP | chomoand.com記事のアイキャッチ生成に使用。**背景色は毎回ランダムに変える**。PCごとに`/mcp`認証が必要。手順は[docs/canva-mcp.md](docs/canva-mcp.md)。**コイキーズ(chomoand-1.com)での使用は2026-07-24に停止**(下記参照) |
+| KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`) | **2026-07-24〜未使用**(コイキーズブログはアイキャッチ自体を作らない方針に変更されたため)。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md)に残すのみ |
 | chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。トモキ提供のAI生成背景(カップルシルエット、実写ではない)+3段黒太文字。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
