@@ -41,7 +41,11 @@ COLOR_PAIRS = [
 
 
 def build_html(top: str, main: str, bottom_lines: list[str], seed: int | None = None) -> str:
-    """アイキャッチのHTMLを組み立てる(副作用なし)."""
+    """アイキャッチのHTMLを組み立てる(副作用なし).
+
+    main は "|" 区切りで複数行に分けられる(例: "橋本将生|猪俣周杜|篠塚大輝")。
+    区切り指定がない場合はブラウザの自動改行に任せる。
+    """
     rng = random.Random(seed)
     color1, color2 = rng.choice(COLOR_PAIRS)
     color3, _ = rng.choice(COLOR_PAIRS)
@@ -51,6 +55,11 @@ def build_html(top: str, main: str, bottom_lines: list[str], seed: int | None = 
     if bottom_lines:
         lines = "<br>".join(html_mod.escape(line) for line in bottom_lines)
         bottom_html = f'<div class="bottom-text">{lines}</div>'
+
+    main_lines = main.split("|")
+    main_html_text = "<br>".join(html_mod.escape(line) for line in main_lines)
+    # 行数が多いほど1行あたりの文字量は減るため、行数に応じて最大フォントサイズを調整する
+    main_max_size = {1: 84, 2: 76}.get(len(main_lines), 62)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -79,7 +88,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden;
   opacity: 0.4; left: -80px; bottom: -80px; filter: blur(40px);
 }}
 .top-text {{ font-size: 36px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.1em; z-index: 1; text-align: center; }}
-.name {{ font-size: 84px; font-weight: 900; color: {TEXT_COLOR}; letter-spacing: 0.04em; z-index: 1; text-align: center; line-height: 1.25; max-width: 1080px; }}
+.name {{ font-size: {main_max_size}px; font-weight: 900; color: {TEXT_COLOR}; letter-spacing: 0.04em; z-index: 1; text-align: center; line-height: 1.3; max-width: 1080px; }}
 .bottom-text {{ font-size: 38px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.05em; z-index: 1; text-align: center; line-height: 1.6; }}
 </style>
 </head>
@@ -88,7 +97,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden;
   <div class="blob1"></div>
   <div class="blob2"></div>
   {top_html}
-  <div class="name">{html_mod.escape(main)}</div>
+  <div class="name">{main_html_text}</div>
   {bottom_html}
 </div>
 </body>
