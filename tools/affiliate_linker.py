@@ -4,6 +4,7 @@ koikeyz-affiliateスキルから、記事本文中に見つけたブランド・
 
 事前準備(初回のみ、.envに設定):
   RAKUTEN_APP_ID       楽天ウェブサービスで発行したアプリID (https://webservice.rakuten.co.jp/)
+  RAKUTEN_ACCESS_KEY   同アプリ作成時に発行されるアクセスキー(2026年5月のAPI仕様移行でapplicationIdと併せて必須になった)
   RAKUTEN_AFFILIATE_ID 楽天アフィリエイトで発行したアフィリエイトID (https://affiliate.rakuten.co.jp/)
   AMAZON_ASSOCIATE_TAG Amazonアソシエイトのトラッキングタグ
 
@@ -16,8 +17,11 @@ import urllib.request
 import urllib.parse
 from pathlib import Path
 
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).parent.parent
-RAKUTEN_ITEM_SEARCH_URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
+RAKUTEN_ITEM_SEARCH_URL = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601"
 AMAZON_SEARCH_URL = "https://www.amazon.co.jp/s"
 
 
@@ -63,9 +67,10 @@ def parse_rakuten_items(raw_items):
     return candidates
 
 
-def fetch_rakuten_items(app_id, affiliate_id, keyword, hits=5):
+def fetch_rakuten_items(app_id, access_key, affiliate_id, keyword, hits=5):
     params = {
         "applicationId": app_id,
+        "accessKey": access_key,
         "keyword": keyword,
         "hits": hits,
         "sort": "standard",
@@ -89,12 +94,15 @@ def search_product(keyword, env=None):
     result = {"keyword": keyword, "rakuten": [], "amazon_search_url": None, "rakuten_error": None}
 
     app_id = env.get("RAKUTEN_APP_ID")
+    access_key = env.get("RAKUTEN_ACCESS_KEY")
     affiliate_id = env.get("RAKUTEN_AFFILIATE_ID")
-    if app_id:
+    if app_id and access_key:
         try:
-            result["rakuten"] = fetch_rakuten_items(app_id, affiliate_id, keyword)
+            result["rakuten"] = fetch_rakuten_items(app_id, access_key, affiliate_id, keyword)
         except Exception as e:
             result["rakuten_error"] = str(e)
+    elif app_id:
+        result["rakuten_error"] = "RAKUTEN_ACCESS_KEYが.envに未設定のため楽天検索はスキップしたワン"
     else:
         result["rakuten_error"] = "RAKUTEN_APP_IDが.envに未設定のため楽天検索はスキップしたワン"
 

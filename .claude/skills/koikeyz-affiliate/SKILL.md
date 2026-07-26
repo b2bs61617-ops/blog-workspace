@@ -44,7 +44,7 @@ KO1KEYZメンバーの私服・着用アイテムとしてブランド名・商�
 
 `tools/affiliate_linker.py`の実行には`.env`に以下が必要(未設定でもエラーにはならず、楽天側は候補なし・Amazonはタグなしリンクにフォールバックする):
 
-- `RAKUTEN_APP_ID` / `RAKUTEN_AFFILIATE_ID`(楽天ウェブサービス・楽天アフィリエイトで発行)
+- `RAKUTEN_APP_ID` / `RAKUTEN_ACCESS_KEY` / `RAKUTEN_AFFILIATE_ID`(楽天ウェブサービス・楽天アフィリエイトで発行。2026年5月のAPI仕様移行でアクセスキーも必須になった)
 - `AMAZON_ASSOCIATE_TAG`(Amazonアソシエイトのトラッキングタグ)
 
 未設定の場合はユーザーに「.envに設定してほしいワン」と伝えて止まる(値の代筆・チャットへの入力要求はしない。[CLAUDE.mdの秘密情報の方針](../../../CLAUDE.md)に準ずる)。

@@ -76,6 +76,11 @@ class TestSearchProduct:
         assert result.get("amazon_tag_missing") is True
         assert "tag=" not in result["amazon_search_url"]
 
+    def test_skips_rakuten_when_access_key_missing(self):
+        result = search_product("ネックレス", env={"RAKUTEN_APP_ID": "dummy-app-id"})
+        assert result["rakuten"] == []
+        assert "RAKUTEN_ACCESS_KEY" in result["rakuten_error"]
+
     def test_builds_amazon_url_with_configured_tag(self):
         result = search_product("ネックレス", env={"AMAZON_ASSOCIATE_TAG": "mytag-22"})
         assert "tag=mytag-22" in result["amazon_search_url"]

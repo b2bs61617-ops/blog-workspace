@@ -67,7 +67,7 @@ chomoand.com(トレンドブログ)の全自動記事化パイプラインの入
 
 コイキーズブログ(chomoand-1.com)の既存記事に載っているブランド・商品の言及に、楽天/Amazonのアフィリエイトリンクを付けるための候補取得ツール(2026-07-26追加)。使い方・対象範囲・承認フローは[koikeyz-affiliateスキル](../.claude/skills/koikeyz-affiliate/SKILL.md)参照。
 
-- 楽天は楽天商品検索API(要`RAKUTEN_APP_ID`)でキーワード検索し、`RAKUTEN_AFFILIATE_ID`を渡すことでレスポンスの`affiliateUrl`がそのままトラッキング付きリンクになる。
+- 楽天は楽天商品検索API(要`RAKUTEN_APP_ID`+`RAKUTEN_ACCESS_KEY`。2026年5月の仕様移行でエンドポイントが`openapi.rakuten.co.jp/ichibams/api/...`に変わり、`accessKey`パラメータが必須になった)でキーワード検索し、`RAKUTEN_AFFILIATE_ID`を渡すことでレスポンスの`affiliateUrl`がそのままトラッキング付きリンクになる。アプリ登録時は「アプリケーションタイプ: バックエンドサービス」を選び、実行環境のグローバルIPを許可リストに登録する必要がある(動的IPだと変わるたびに更新が必要)。
 - Amazonは商品ページの個別特定はせず、検索結果ページへの`AMAZON_ASSOCIATE_TAG`付きリンク(`https://www.amazon.co.jp/s?k=...&tag=...`)を作るだけ。PA-API(要審査・直近実績)は使わない方針。
 - どちらのキーも`.env`未設定なら例外を投げずにスキップ・フォールバックする(他ツールと同じフェイルセーフ方式)。
 - 実行例: `python tools/affiliate_linker.py "BADBLOOD DO YOU WANT IT Tシャツ"`
