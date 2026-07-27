@@ -250,12 +250,14 @@ async def collect_x(page, should_continue, on_status, on_post):
                 text = (await text_el.inner_text()).strip() if text_el else ""
 
                 tweet_id = None
+                tweet_url = None
                 status_link = await article.query_selector('a[href*="/status/"]')
                 if status_link:
                     href = await status_link.get_attribute("href")
                     m = re.search(r'/status/(\d+)', href or "")
                     if m:
                         tweet_id = m.group(1)
+                        tweet_url = "https://x.com" + href if href and href.startswith("/") else href
 
                 img_els = await article.query_selector_all('img[src*="pbs.twimg.com/media"]')
                 img_urls = []
@@ -279,7 +281,7 @@ async def collect_x(page, should_continue, on_status, on_post):
                         dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
                         date_str = dt.strftime("%Y/%m/%d %H:%M")
 
-                post = {"platform": "x", "date": date_str, "text": text, "images": img_urls}
+                post = {"platform": "x", "date": date_str, "text": text, "images": img_urls, "url": tweet_url}
                 count += 1
                 on_post(post)
                 last_new_time = time.monotonic()
@@ -487,6 +489,8 @@ def save_posts_to_dir(save_path, posts, youtube_posts, ai_text=None):
     for i, post in enumerate(posts, 1):
         platform = post.get("platform", "").upper()
         lines.append(f"[{i}] [{platform}] {post['date']}")
+        if post.get("url"):
+            lines.append(f"  URL: {post['url']}")
         if post["text"]:
             lines.append(post["text"])
         for j, img_url in enumerate(post["images"], 1):
