@@ -19,6 +19,21 @@ description: 「ブログにアップして」「アップして」「WordPress�
   - 通常段落 → `<p>`タグで囲む(句点で`<br>`改行、[docs/rules.md](../../../docs/rules.md)参照)
   - SNS由来の画像を記事に埋め込む場合は[docs/rules.mdの画像埋め込みルール](../../../docs/rules.md)に従う(メディアライブラリの自動生成サイズ+`max-width:100%`でレスポンシブにする、`<figcaption>`で出典を明記する)。絵文字は使わない。
 
+## STEP 1.5: Gutenbergブロック形式への変換(chomoand-1.com限定、2026-07-27〜)
+
+**KO1KEYZ(コイキーズブログ=chomoand-1.com)の記事は、STEP3でPOSTする前に必ずこのSTEPを行う。** それ以外のサイト(chomoand.com・chomoand-0.com)は対象外(従来どおり素のHTMLのままでよい)。
+
+背景: STEP1で作るcontentはこれまで素のHTMLタグ(`<p>`・`<h2>`・`<div class="swell-block-capbox">`など)を並べただけで、Gutenbergのブロックコメント(`<!-- wp:xxx -->`)が付いていなかった。フロント表示はSWELLのCSSクラスが効くので問題ないが、管理画面のブロックエディタで開くと個別ブロックとして認識・編集できない(丸ごと1個の塊として扱われる)。これをトモキの指示で解消する。
+
+変換ルール(素のHTML→ブロックコメント付き):
+- `<h2 class="wp-block-heading">...</h2>` → `<!-- wp:heading -->` と `<!-- /wp:heading -->` で挟む
+- `<h3 class="wp-block-heading">...</h3>` → `<!-- wp:heading {"level":3} -->` と `<!-- /wp:heading -->` で挟む
+- 装飾クラスなしの通常`<p>...</p>` → `<!-- wp:paragraph -->` と `<!-- /wp:paragraph -->` で挟む
+- `<hr>` → `<!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->` に置き換え
+- **SWELL独自の装飾HTML(`swell-block-capbox`のdiv、`is-style-dent_box`/`is-style-onborder_ttl`などのスタイル付き`<p>`、`swl-marker`の`<span>`、Googleマップiframe埋め込み、画像`<figure>`+`<figcaption>`など)は、正確なブロックJSON仕様(SWELL側の実際のブロック登録定義)が不明なため無理にコアブロックへ変換しない。まとまりごと`<!-- wp:html -->` 〜 `<!-- /wp:html -->` で囲む**(WordPressの「カスタムHTML」ブロックとして扱われ、見た目は今までと変わらず、かつ常に有効なブロックとして保存される。ブロックエディタ上では生HTMLとして編集する形になる)。
+
+**初回運用時の確認**: このルールは実際にSWELLのブロック仕様を検証した上でのものではなく、標準的なGutenbergブロックコメント構文に基づく最善の推測。次にこのSTEPを使って記事を投稿したら、`context=edit`でPOST後の`content.raw`を確認し、可能であればユーザーに管理画面のブロックエディタで開いて崩れ(「不正なコンテンツ」警告など)が出ていないか確認してもらう。問題があればこのSTEPのルールを修正する。
+
 ## STEP 2: スラッグの生成
 
 - Google翻訳API(client=gtx)でタイトルを英語に翻訳: `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=en&dt=t&q={encoded_title}`
@@ -66,4 +81,4 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.comはSTEP4・5を省略してSTEP3→STEP6、それ以外のサイトはSTEP1〜5)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.comはSTEP1.5→STEP2→STEP3→STEP6、それ以外のサイトはSTEP1〜5、STEP1.5は行わない)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。

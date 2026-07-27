@@ -20,7 +20,7 @@ KO1KEYZが韓国でもデビューするため、chomoand-1.comを多言語化�
 [blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)でchomoand-1.com(コイキーズブログ)の記事を投稿したら、STEP5完了後に**必ず自動で**以下を行う(トモキから「今後は日本語記事を作成したら自動でここまでやって欲しい」と指示あり、確認不要)。
 
 1. **元記事の取得**: `GET {サイトURL}/wp-json/wp/v2/posts/{元記事ID}` で日本語版の`title`・`content`を取得する。
-2. **韓国語ローカライズ**: 直訳ではなく韓国語読者に自然な言い回し・見出しでローカライズする。元記事のHTMLブロック構造(`wp-block-paragraph`・`is-style-dent_box`(引用/コメント紹介)・`is-style-icon_announce`・`swell-block-capbox`(プロフィール枠)・`<figure>`画像+`<figcaption>`)はそのまま維持し、テキスト部分だけ韓国語に置き換える(SWELLテーマのスタイルがこれらのクラスに依存しているため)。
+2. **韓国語ローカライズ**: 直訳ではなく韓国語読者に自然な言い回し・見出しでローカライズする。元記事のHTMLブロック構造(`wp-block-paragraph`・`is-style-dent_box`(引用/コメント紹介)・`is-style-icon_announce`・`swell-block-capbox`(プロフィール枠)・`<figure>`画像+`<figcaption>`)はそのまま維持し、テキスト部分だけ韓国語に置き換える(SWELLテーマのスタイルがこれらのクラスに依存しているため)。**元記事が[blog-uploadスキルSTEP1.5](../.claude/skills/blog-upload/SKILL.md)でGutenbergブロックコメント(`<!-- wp:xxx -->`)付きになっている場合は、そのコメント構造(`<!-- wp:heading -->`/`<!-- wp:paragraph -->`/`<!-- wp:html -->`など)もテキスト同様にそのまま維持する**(2026-07-27〜)。
 3. **下書き投稿**: `POST {サイトURL}/wp-json/wp/v2/posts` で新規作成する。ボディに以下を含める:
    - `title`(韓国語)・`content`(韓国語、ブロック構造維持)
    - `status: "draft"`(絶対に`publish`にしない)
