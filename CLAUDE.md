@@ -63,6 +63,7 @@
 | [blog-upload](.claude/skills/blog-upload/SKILL.md) | 「ブログにアップして」で投稿まで自動実行 |
 | [publish](.claude/skills/publish/SKILL.md) | 「公開して」で下書きを公開する |
 | [koikeyz-rewrite](.claude/skills/koikeyz-rewrite/SKILL.md) | コイキーズブログの既存記事リライト(対象範囲・実行フロー・監視ツール) |
+| [koikeyz-affiliate](.claude/skills/koikeyz-affiliate/SKILL.md) | コイキーズ記事のブランド・商品の言及に楽天/Amazonのアフィリエイトリンクを自動提案・挿入 |
 | [x-trend-article](.claude/skills/x-trend-article/SKILL.md) | Xトレンド監視が検知した新トレンドの自動記事化(リサーチ→執筆→chomoand.com下書きまで)。ヘッドレスClaudeから起動される |
 
 アイキャッチ画像のデザインは [docs/eyecatch-style.md](docs/eyecatch-style.md) を参照。
@@ -82,6 +83,7 @@
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
+| 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
 
 ## テスト
 
