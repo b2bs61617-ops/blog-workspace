@@ -29,6 +29,11 @@ tools/youtube-talent-monitor/monitor_state.json
 tools/youtube-talent-monitor/reports/
 tools/youtube-talent-monitor/frames/
 
+# KO1KEYZ YouTube監視ツールのローカル生成データ(PCごとの状態・収集結果)
+tools/koikeyz-youtube-monitor/monitor_state.json
+tools/koikeyz-youtube-monitor/reports/
+tools/koikeyz-youtube-monitor/frames/
+
 # Pythonキャッシュ
 __pycache__/
 *.pyc

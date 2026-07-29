@@ -1,0 +1,7 @@
+{
+  "_comment": "chomoand-1(コイキーズブログ)監視対象のKO1KEYZ関連公式YouTubeチャンネル一覧。2026-07-30にWeb調査+チャンネルページのexternalId抽出で解決(YouTube Data APIキー不要)。メンバー12人は2026年7月30日時点でデビュー前(2026-10-07デビュー予定)のため個人チャンネルは確認できず、対象は公式2チャンネルのみ。",
+  "channels": [
+    {"name": "KO1KEYZ公式", "category": "official", "channel_id": "UCU23GMwI7z5zSMCHIanbSkQ", "note": "@KO1KEYZOFFICIAL"},
+    {"name": "PRODUCE 101 JAPAN公式", "category": "official", "channel_id": "UC-smiHPuMela07NTmpF6hZw", "note": "@PRODUCE101JAPAN。番組公式チャンネル。練習生時代の映像も含む"}
+  ]
+}
