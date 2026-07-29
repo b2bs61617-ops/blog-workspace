@@ -34,6 +34,7 @@ import sys
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
@@ -50,6 +51,7 @@ ATOM_NS = {"atom": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/
 
 MAX_NOTIFY_LINES = 20        # LINE通知に載せる動画数の上限(超過分は件数のみ表示)
 MAX_TRANSCRIPT_CHARS = 4000  # レポートに保存する文字起こしの上限(肥大化防止)
+FIRST_RUN_LOOKBACK_DAYS = 7  # 新規チャンネル初回チェック時、何日前までの動画を「新着」扱いにするか
 RSS_RETRIES = 3              # RSSフィードが断続的に404/500を返すことがあるためのリトライ回数
 RSS_RETRY_WAIT_SEC = 3       # リトライ間隔
 CHANNEL_INTERVAL_SEC = 0.5   # チャンネル間の待機(連続アクセスによる一時的なブロックを避ける)
@@ -105,11 +107,24 @@ def fetch_channel_videos(channel_id, retries=RSS_RETRIES, retry_wait=RSS_RETRY_W
     raise last_error
 
 
-def diff_new_videos(videos, last_seen_id):
+def diff_new_videos(videos, last_seen_id, now=None):
     """フィード(新しい順)のうち、last_seen_idより新しい(=まだ見ていない)動画だけを返す。
-    last_seen_idがNone(初回)の場合は最新1件だけを「新着」とし、いきなり大量通知しない。"""
+    last_seen_idがNone(初回)の場合、「最新1件だけ」だと監視開始直前に投稿された動画を
+    永久に見逃す(2026-07-29に発覚。河合郁人の仙台/小樽古着ロケ等、初回起動の数日前に
+    投稿された動画が拾えていなかった)。そのため初回はFIRST_RUN_LOOKBACK_DAYS日以内に
+    投稿された分をまとめて「新着」として返す(該当が無い長期休止チャンネルは最新1件のみ)。"""
     if last_seen_id is None:
-        return videos[:1]
+        now = now or datetime.now(timezone.utc)
+        cutoff = now - timedelta(days=FIRST_RUN_LOOKBACK_DAYS)
+        recent = []
+        for v in videos:
+            try:
+                pub = datetime.fromisoformat(v["published_at"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if pub >= cutoff:
+                recent.append(v)
+        return recent or videos[:1]
     new = []
     for v in videos:
         if v["video_id"] == last_seen_id:
@@ -216,7 +231,6 @@ def main():
                     v["frame_paths"] = visual["frame_paths"]
 
     REPORTS_DIR.mkdir(exist_ok=True)
-    from datetime import datetime
     stamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
     report_path = REPORTS_DIR / f"videos_{stamp}.json"
     report_path.write_text(json.dumps({

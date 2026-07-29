@@ -1,4 +1,6 @@
 """tools/youtube-talent-monitor/video_monitor.py の純粋関数のテスト。"""
+from datetime import datetime, timezone
+
 from video_monitor import diff_new_videos, format_notification, parse_feed_xml, MAX_NOTIFY_LINES
 
 VIDEOS = [
@@ -6,11 +8,28 @@ VIDEOS = [
     {"video_id": "v2", "title": "動画2", "published_at": "2026-07-28T10:00:00Z"},
     {"video_id": "v1", "title": "動画1", "published_at": "2026-07-27T10:00:00Z"},
 ]
+NOW = datetime(2026, 7, 29, 12, 0, 0, tzinfo=timezone.utc)
 
 
 class TestDiffNewVideos:
-    def test_first_run_only_latest_one(self):
-        assert diff_new_videos(VIDEOS, None) == [VIDEOS[0]]
+    def test_first_run_returns_all_within_lookback_window(self):
+        # VIDEOS(07-27〜07-29)はNOW(07-29 12:00)からFIRST_RUN_LOOKBACK_DAYS(7日)以内なので全件
+        assert diff_new_videos(VIDEOS, None, now=NOW) == VIDEOS
+
+    def test_first_run_excludes_videos_older_than_lookback(self):
+        old = {"video_id": "vold", "title": "8日前の動画", "published_at": "2026-07-01T10:00:00Z"}
+        result = diff_new_videos(VIDEOS + [old], None, now=NOW)
+        assert result == VIDEOS
+        assert old not in result
+
+    def test_first_run_falls_back_to_latest_when_channel_dormant(self):
+        # 直近1週間に投稿が無いチャンネルは、最新1本だけは拾う(空振りにしない)
+        old = [{"video_id": "vold", "title": "8日前の動画", "published_at": "2026-07-01T10:00:00Z"}]
+        assert diff_new_videos(old, None, now=NOW) == old
+
+    def test_first_run_skips_unparseable_published_at(self):
+        bad = [{"video_id": "vbad", "title": "日付なし"}]
+        assert diff_new_videos(bad, None, now=NOW) == bad  # recentが空になりフォールバック
 
     def test_no_new_video_when_latest_already_seen(self):
         assert diff_new_videos(VIDEOS, "v3") == []
