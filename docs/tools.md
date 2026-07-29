@@ -65,15 +65,18 @@ chomoand.com(トレンドブログ)の全自動記事化パイプラインの入
 
 ## YouTubeタレント監視(`tools/youtube-talent-monitor/`)
 
-chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・出身タレントの公式YouTubeチャンネルを毎日チェックし、新着動画が出たらLINEに通知するツール(2026-07-29追加、フェーズ1=検知・通知まで)。
+chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・出身タレントの公式YouTubeチャンネルを毎日チェックし、新着動画が出たら文字起こし付きでLINEに通知するツール(2026-07-29追加、フェーズ1=検知・通知・文字起こし保存まで)。
 
 **Why:** タレント自身が発信するYouTube動画にはロケ地・着用ファッション・食べたものなど、ファンが知りたい一次情報が豊富に含まれる。テレビ番組表監視([tv-researchスキル](../.claude/skills/tv-research/SKILL.md))より速報性・掘りやすさで優れるとユーザー判断([[chomoand0-youtube-monitor-strategy]]の経緯で導入)。
 
-- 監視対象は`tools/youtube-talent-monitor/channels.json`(グループ公式・現役個人・退所済み元タレント個人の各チャンネル。2026-07-29時点で約27チャンネル)。`channel_id`が未確定の項目は`handle`または`search_query`から初回実行時にYouTube Data APIで自動解決し、このファイルに書き戻す。
+- 監視対象は`tools/youtube-talent-monitor/channels.json`(グループ公式・現役個人・退所済み元タレント個人の各チャンネル。2026-07-29時点で29チャンネル解決済み、4チャンネルはハンドル未確認で`channel_id: null`のままスキップ)。
+- **新着検知はYouTube Data APIを使わず、チャンネルごとの公開RSSフィード**(`https://www.youtube.com/feeds/videos.xml?channel_id=...`)**を使う。APIキー不要・無料枠の心配なし**(2026-07-29、当初はYouTube Data API案だったが「Xiyで文字起こしできるならAPI要らないのでは」というユーザー指摘でRSS方式に切り替え)。
+- **文字起こしはリポジトリ直下の`youtube_transcript.py`をそのまま再利用**([youtube-transcriptスキル](../.claude/skills/youtube-transcript/SKILL.md)と共通コード)。新着動画ごとにベストエフォードで取得し(字幕が無ければNone、失敗しても通知は止めない)、`reports/`のJSONに保存する(1本あたり最大4,000字に切り詰め)。
 - 新着判定は`monitor_state.json`(channel_id→最後に見た動画ID、Git管理外)で行う。初回実行時は既存の最新動画1本だけを「新着」とし、いきなり大量通知しない。
-- `.env`の`YOUTUBE_API_KEY`(セットアップは[docs/youtube-api-setup.md](youtube-api-setup.md))と`LINE_CHANNEL_ACCESS_TOKEN`(未設定なら通知だけスキップ)を使う。
-- 実行: `python tools/youtube-talent-monitor/video_monitor.py`(`--dry-run`で状態を書き換えず新着表示のみ)
-- **現時点では検知・通知までで、記事化の自動起動はしない**(ロケ地・ファッション特定は人間の目利きが必要なため)。タスクスケジューラへの定期実行登録もまだ未設定。
+- `LINE_CHANNEL_ACCESS_TOKEN`(未設定なら通知だけスキップ)を使う。LINE通知には動画タイトル・URLのみ載せ、文字起こし本文は`reports/`のJSONを見る。
+- 実行: `python tools/youtube-talent-monitor/video_monitor.py`(`--dry-run`で状態を書き換えず新着表示のみ、`--no-transcript`で文字起こしを取得せず速報のみ)
+- **現時点では検知・通知・文字起こし保存までで、記事化の自動起動はしない**(ロケ地・ファッション特定は人間の目利きが必要なため)。タスクスケジューラへの定期実行登録もまだ未設定。
+- `channel_id`が`null`のまま残っている4チャンネル(Johnny's official本体、ジュニアCHANNEL、Johnny's Gaming Room、SUPER EIGHT)はハンドルが確認できず自動解決できなかった。特にSUPER EIGHT(旧関ジャニ∞)は名称が一般的すぎて誤同定リスクがあるため見送った。確認でき次第`channels.json`に手動で追記する。
 
 ## 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`)
 

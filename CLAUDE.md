@@ -82,7 +82,7 @@
 | chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。トモキ提供のAI生成背景(カップルシルエット、実写ではない)+3段黒太文字。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
-| YouTubeタレント監視(`tools/youtube-talent-monitor/`) | chomoand-0向け。旧ジャニーズ所属・出身タレントの公式YouTube新着をチェックしLINE通知(2026-07-29〜、検知・通知までのフェーズ1)。監視対象は`channels.json`、詳細は[docs/tools.md](docs/tools.md) |
+| YouTubeタレント監視(`tools/youtube-talent-monitor/`) | chomoand-0向け。旧ジャニーズ所属・出身タレントの公式YouTube新着を**RSS(APIキー不要)**でチェックし文字起こし付きでLINE通知(2026-07-29〜、検知・通知までのフェーズ1)。監視対象は`channels.json`、詳細は[docs/tools.md](docs/tools.md) |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
 
