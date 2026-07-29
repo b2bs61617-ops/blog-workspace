@@ -80,14 +80,12 @@ chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・�
 - タスクスケジューラに`YouTube-Talent-Monitor`というタスク名で登録済み(2026-07-29、1台のPCで毎日**23:00 JST**実行)。実行時刻は直近8日間・76件の投稿時刻を集計して決めた(0〜6時台の投稿はゼロ、ピークは18時と21時、23時までに当日投稿の100%が出揃う。**当初は8時に登録していたが、それだと当日投稿の96%がまだ上がっていない状態でチェックしてしまうことが分析で判明し23時に変更**)。1日1回のみのため投稿からチェックまで最大約23時間のラグがあるが、「最速で書く」を優先してチェック頻度を増やす場合はx-trend-monitorと同じ複数回/日方式への変更を検討する。
 - `channel_id`が`null`のまま残っている4チャンネル(Johnny's official本体、ジュニアCHANNEL、Johnny's Gaming Room、SUPER EIGHT)はハンドルが確認できず自動解決できなかった。特にSUPER EIGHT(旧関ジャニ∞)は名称が一般的すぎて誤同定リスクがあるため見送った。確認でき次第`channels.json`に手動で追記する。
 
-## KO1KEYZ YouTube監視(`tools/koikeyz-youtube-monitor/`)
+## KO1KEYZ YouTube監視(`tools/koikeyz-youtube-monitor/`)【2026-07-30〜未使用】
 
-chomoand-1.com(コイキーズブログ)向け。上記YouTubeタレント監視(chomoand-0向け)と同じ設計をそのまま流用したツール(2026-07-30追加、トモキ指示)。設計・仕組みの詳細は上記セクション参照、ここでは差分のみ記載する。
+chomoand-1.com(コイキーズブログ)向けに、上記YouTubeタレント監視(chomoand-0向け)と同じ設計を流用して試作したツール(2026-07-30作成)。**同日中にユーザー判断でKO1KEYZには使わない方針となり、タスクスケジューラ登録(`KO1KEYZ-YouTube-Monitor`)は削除済み。** KO1KEYZの情報収集は引き続き下記の「KO1KEYZ監視ツール」(X監視)を主軸とする。コード自体は動作確認済み(KO1KEYZ公式のダンス練習動画で画像解析による服装・アクセサリー・ロケーション抽出を確認済み)のまま、将来また使う可能性に備えて残置している。
 
-- 監視対象は`tools/koikeyz-youtube-monitor/channels.json`。KO1KEYZ公式(`@KO1KEYZOFFICIAL`)とPRODUCE 101 JAPAN公式(`@PRODUCE101JAPAN`、練習生時代の映像を含む)の2チャンネルのみ。メンバー12人は2026-07-30時点でデビュー前(2026-10-07デビュー予定)のため個人チャンネルは未確認。デビュー後に個人チャンネルが出来たら追加すること。
-- RSSフィード・文字起こし・画像解析(Gemini `gemini-flash-latest`)・LINE通知・実行方法(`--dry-run`/`--no-transcript`/`--no-visuals`)はYouTubeタレント監視と全く同じ仕組み(コードはディレクトリごとに独立、`koikeyz-monitor`と`Xiy`が別物であるのと同じ方針)。
-- Gemini Visionのプロンプトのみ「KO1KEYZ(コイキーズ)メンバーまたはPRODUCE 101 JAPAN新世界出演者」向けに文言を調整。木村拓哉での実地テストと同様、KO1KEYZ公式のダンス練習動画で服装・アクセサリー・ロケーションが正しく抽出されることを確認済み。
-- タスクスケジューラに`KO1KEYZ-YouTube-Monitor`というタスク名で登録済み(2026-07-30、1台のPCで毎日**23:10 JST**実行)。YouTubeタレント監視(23:00)と同一プロセスでのRSS/Gemini呼び出しが重ならないよう10分ずらしている。
+- 監視対象は`tools/koikeyz-youtube-monitor/channels.json`。KO1KEYZ公式(`@KO1KEYZOFFICIAL`)とPRODUCE 101 JAPAN公式(`@PRODUCE101JAPAN`)の2チャンネル(channel_id解決済み)。
+- 仕組み自体はYouTubeタレント監視と同じ(RSS新着検知・文字起こし・Gemini Vision画像解析・LINE通知)。再度使う場合は`schtasks /Create`でタスク再登録すればよい(登録コマンドはこのセッションの会話履歴参照、またはyoutube-talent-monitor側の登録内容を参考に時刻をずらして作成)。
 
 ## 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`)
 
