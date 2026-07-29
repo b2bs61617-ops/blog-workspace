@@ -6,7 +6,7 @@
 ffmpeg不要の設計: yt-dlpで低解像度(480p以下)の直リンクを取得し、opencv-pythonの
 VideoCapture.set(CAP_PROP_POS_MSEC)でシークしてキャプチャする(動画をディスクに
 フルダウンロードしない)。Gemini呼び出しはkoikeyz-monitor(x_monitor.py)と同じ
-google-genai SDK・gemini-2.5-flashを流用(トモキ指示によりClaude/マツは介さず、
+google-genai SDK・gemini-flash-latestを流用(トモキ指示によりClaude/マツは介さず、
 このスクリプト単体で完結させる。日次の自動監視から直接呼ばれる想定)。
 
 抽出したフレームは frames/{video_id}/ に保存して残す(2026-07-29時点の方針。
@@ -20,6 +20,9 @@ import json
 import sys
 from pathlib import Path
 
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).parent
 REPO_ROOT = ROOT.parent.parent
 FRAMES_DIR = ROOT / "frames"
@@ -28,7 +31,7 @@ FRAME_COUNT = 12            # 1動画あたり抽出するフレーム数
 FRAME_MIN_FRACTION = 0.05   # 動画の最初(オープニング)は情報価値が低いため除外
 FRAME_MAX_FRACTION = 0.95   # 動画の最後(エンディング)も同様に除外
 STREAM_FORMAT = "best[height<=480][ext=mp4]/best[height<=480]"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-flash-latest"  # 固定バージョン名だとGoogle側の廃止で突然404になることがあるため、常に最新のflashを指すエイリアスを使う(2026-07-29、gemini-2.5-flash廃止で切り替え)
 
 VISION_PROMPT_TEMPLATE = """以下はYouTube動画「{title}」から一定間隔で抜き出した{count}枚の画像です。
 この動画に出演している旧ジャニーズ/STARTO所属タレントについて、ブログ記事の参考情報として次の観点を日本語で箇条書きにしてください。
