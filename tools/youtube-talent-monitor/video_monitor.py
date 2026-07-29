@@ -10,16 +10,23 @@ chomoand-0(ジャニオタブログ)向け。タレント自身のYouTube動画�
 心配がない)。文字起こしはリポジトリ直下の youtube_transcript.py(youtube-transcript-api、
 sns-research/youtube-transcriptスキルと共通)をそのまま再利用する。
 
+服装・アクセサリー・訪問場所は文字起こしだけでは分からないため、visual_analysis.py
+(同ディレクトリ)でフレーム画像を抽出しGemini Visionに解析させる(2026-07-29導入)。
+この処理はClaude/マツを介さずスクリプト単体で完結する(トモキ指示。日次の自動実行で
+Claude Codeのトークンを消費しないようにするため)。
+
 - 監視対象は channels.json(name, category, channel_id)。channel_idがnullの項目は
   ハンドルが確認できていないので自動ではスキップする(手動で埋めてから対象に入れる)
 - 新着判定は monitor_state.json(channel_id -> 最後に見た動画ID)で管理
-- 現時点では検知・通知・文字起こし保存まで(ロケ地/ファッション特定そのものは
-  まだ自動化していない。reports/配下のJSONを見て人間かAIが確認するフェーズ1運用)
+- 検知・通知・文字起こし・画像解析まで自動化済み(2026-07-29〜)。ロケ地・私服の
+  特定そのもの(記事執筆)はまだ自動化しておらず、reports/配下のJSON+frames/配下の
+  画像を人間かAI(記事執筆時)が見て判断するフェーズ1.5運用
 
 実行:
-  python tools/youtube-talent-monitor/video_monitor.py            # 通常実行
-  python tools/youtube-talent-monitor/video_monitor.py --dry-run  # 状態を書き換えず新着を表示するだけ
+  python tools/youtube-talent-monitor/video_monitor.py               # 通常実行
+  python tools/youtube-talent-monitor/video_monitor.py --dry-run     # 状態を書き換えず新着を表示するだけ
   python tools/youtube-talent-monitor/video_monitor.py --no-transcript  # 文字起こしを取得しない(速報のみ)
+  python tools/youtube-talent-monitor/video_monitor.py --no-visuals  # 画像解析をしない(文字起こしのみ)
 """
 import argparse
 import json
@@ -129,6 +136,13 @@ def format_notification(new_by_channel):
     return "\n".join(lines)
 
 
+def analyze_visuals_safe(video_id, title):
+    """visual_analysis.pyはimport時にcv2/yt_dlp等の重い依存を読み込むため、
+    使うときだけ遅延importする(pytest収集やno-visuals時の起動を軽くする)。"""
+    from visual_analysis import analyze_video_visuals
+    return analyze_video_visuals(video_id, title)
+
+
 def fetch_transcript_safe(video_id):
     """文字起こしをベストエフォートで取得する。字幕が無い等で失敗したらNone(呼び出し側で通知は止めない)。
     youtube_transcript.py はimport時にsys.stdoutをUTF-8ラップし直す副作用があるため、
@@ -146,6 +160,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="状態を書き換えず新着を表示するだけ")
     parser.add_argument("--no-transcript", action="store_true", help="文字起こしを取得しない(速報のみ)")
+    parser.add_argument("--no-visuals", action="store_true", help="画像解析(服装・アクセサリー・ロケ地)をしない")
     args = parser.parse_args()
 
     channels_data = load_channels()
@@ -191,6 +206,14 @@ def main():
         for name, videos in new_by_channel.items():
             for v in videos:
                 v["transcript"] = fetch_transcript_safe(v["video_id"])
+
+    if not args.no_visuals:
+        for name, videos in new_by_channel.items():
+            for v in videos:
+                visual = analyze_visuals_safe(v["video_id"], v["title"])
+                if visual:
+                    v["visual_notes"] = visual["visual_notes"]
+                    v["frame_paths"] = visual["frame_paths"]
 
     REPORTS_DIR.mkdir(exist_ok=True)
     from datetime import datetime

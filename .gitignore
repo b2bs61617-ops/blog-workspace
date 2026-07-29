@@ -24,8 +24,10 @@ tools/x-trend-monitor/reports/
 tools/x-trend-monitor/pipeline.lock
 
 # YouTube タレント監視ツールのローカル生成データ(PCごとの状態・収集結果)
+# frames/は動画から抽出した画像(著作権のある動画のフレームのためリポジトリに含めない。ローカルには残す方針)
 tools/youtube-talent-monitor/monitor_state.json
 tools/youtube-talent-monitor/reports/
+tools/youtube-talent-monitor/frames/
 
 # Pythonキャッシュ
 __pycache__/
