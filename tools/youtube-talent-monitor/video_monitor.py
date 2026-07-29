@@ -24,6 +24,7 @@ sns-research/youtube-transcriptスキルと共通)をそのまま再利用する
 import argparse
 import json
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -42,6 +43,9 @@ ATOM_NS = {"atom": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/
 
 MAX_NOTIFY_LINES = 20        # LINE通知に載せる動画数の上限(超過分は件数のみ表示)
 MAX_TRANSCRIPT_CHARS = 4000  # レポートに保存する文字起こしの上限(肥大化防止)
+RSS_RETRIES = 3              # RSSフィードが断続的に404/500を返すことがあるためのリトライ回数
+RSS_RETRY_WAIT_SEC = 3       # リトライ間隔
+CHANNEL_INTERVAL_SEC = 0.5   # チャンネル間の待機(連続アクセスによる一時的なブロックを避ける)
 
 sys.path.insert(0, str(REPO_ROOT / "tools"))
 sys.path.insert(0, str(REPO_ROOT))
@@ -76,12 +80,22 @@ def parse_feed_xml(xml_text):
     return videos
 
 
-def fetch_channel_videos(channel_id):
+def fetch_channel_videos(channel_id, retries=RSS_RETRIES, retry_wait=RSS_RETRY_WAIT_SEC):
+    """RSSフィードを取得してパースする。YouTube側が404/500を断続的に返すことがある
+    (同じchannel_idでも数秒後に再試行すると成功する)ため、軽くリトライする。"""
     url = f"{FEED_URL}?channel_id={channel_id}"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=15) as r:
-        xml_text = r.read().decode("utf-8")
-    return parse_feed_xml(xml_text)
+    last_error = None
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=15) as r:
+                xml_text = r.read().decode("utf-8")
+            return parse_feed_xml(xml_text)
+        except Exception as e:
+            last_error = e
+            if attempt < retries - 1:
+                time.sleep(retry_wait)
+    raise last_error
 
 
 def diff_new_videos(videos, last_seen_id):
@@ -143,8 +157,10 @@ def main():
     state = load_state()
     new_by_channel = {}
 
-    for entry in entries:
+    for i, entry in enumerate(entries):
         name, cid = entry["name"], entry["channel_id"]
+        if i > 0:
+            time.sleep(CHANNEL_INTERVAL_SEC)
         try:
             videos = fetch_channel_videos(cid)
         except Exception as e:
