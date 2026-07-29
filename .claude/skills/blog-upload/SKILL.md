@@ -19,11 +19,11 @@ description: 「ブログにアップして」「アップして」「WordPress�
   - 通常段落 → `<p>`タグで囲む(句点で`<br>`改行、[docs/rules.md](../../../docs/rules.md)参照)
   - SNS由来の画像を記事に埋め込む場合は[docs/rules.mdの画像埋め込みルール](../../../docs/rules.md)に従う(メディアライブラリの自動生成サイズ+`max-width:100%`でレスポンシブにする、`<figcaption>`で出典を明記する)。絵文字は使わない。
 
-## STEP 1.5: Gutenbergブロック形式への変換(chomoand-1.com限定、2026-07-27〜)
+## STEP 1.5: Gutenbergブロック形式への変換(全サイト共通、2026-07-27〜、2026-07-29に全サイトへ拡大)
 
-**KO1KEYZ(コイキーズブログ=chomoand-1.com)の記事は、STEP3でPOSTする前に必ずこのSTEPを行う。** それ以外のサイト(chomoand.com・chomoand-0.com)は対象外(従来どおり素のHTMLのままでよい)。
+**すべてのサイト(chomoand.com・chomoand-0.com・chomoand-1.com)の記事で、STEP3でPOSTする前に必ずこのSTEPを行う。**
 
-背景: STEP1で作るcontentはこれまで素のHTMLタグ(`<p>`・`<h2>`・`<div class="swell-block-capbox">`など)を並べただけで、Gutenbergのブロックコメント(`<!-- wp:xxx -->`)が付いていなかった。フロント表示はSWELLのCSSクラスが効くので問題ないが、管理画面のブロックエディタで開くと個別ブロックとして認識・編集できない(丸ごと1個の塊として扱われる)。これをトモキの指示で解消する。
+背景: STEP1で作るcontentが素のHTMLタグ(`<p>`・`<h2>`・`<div class="swell-block-capbox">`など)を並べただけでGutenbergのブロックコメント(`<!-- wp:xxx -->`)が付いていないと、フロント表示自体はSWELLのCSSクラスで崩れないが、**記事途中への広告差し込みが機能しない**(広告はブロックの区切りに挿入される仕組みのため、ブロックコメントがないと1個の塊として扱われ、途中に広告が出ない)。当初コイキーズ限定で対応していたが、2026-07-29にジャニオタブログ(chomoand-0.com)でも同じ問題が確認されたため、全サイト共通のSTEPに変更した。
 
 変換ルール(素のHTML→ブロックコメント付き):
 - `<h2 class="wp-block-heading">...</h2>` → `<!-- wp:heading -->` と `<!-- /wp:heading -->` で挟む
@@ -81,4 +81,4 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する(chomoand-1.comはSTEP1.5→STEP2→STEP3→STEP6、それ以外のサイトはSTEP1〜5、STEP1.5は行わない)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP1→STEP1.5→STEP2→STEP3→STEP6(STEP4・5はスキップ)、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。

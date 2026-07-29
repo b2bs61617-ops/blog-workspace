@@ -63,6 +63,23 @@ chomoand.com(トレンドブログ)の全自動記事化パイプラインの入
 - 多重起動は`pipeline.lock`とタスク側`IgnoreNew`で防止。`monitor_state.json`・`reports/`はGit管理外。
 - ログイン状態とタスク登録がPC固有なため、登録したPC上でのみ動作する。
 
+## YouTubeタレント監視(`tools/youtube-talent-monitor/`)
+
+chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・出身タレントの公式YouTubeチャンネルを毎日チェックし、新着動画が出たら文字起こし・画像解析付きでLINEに通知するツール(2026-07-29追加)。
+
+**Why:** タレント自身が発信するYouTube動画にはロケ地・着用ファッション・食べたものなど、ファンが知りたい一次情報が豊富に含まれる。テレビ番組表監視([tv-researchスキル](../.claude/skills/tv-research/SKILL.md))より速報性・掘りやすさで優れるとユーザー判断([[chomoand0-youtube-monitor-strategy]]の経緯で導入)。
+
+- 監視対象は`tools/youtube-talent-monitor/channels.json`(グループ公式・現役個人・退所済み元タレント個人の各チャンネル。2026-07-29時点で29チャンネル解決済み、4チャンネルはハンドル未確認で`channel_id: null`のままスキップ)。
+- **新着検知はYouTube Data APIを使わず、チャンネルごとの公開RSSフィード**(`https://www.youtube.com/feeds/videos.xml?channel_id=...`)**を使う。APIキー不要・無料枠の心配なし**(2026-07-29、当初はYouTube Data API案だったが「Xiyで文字起こしできるならAPI要らないのでは」というユーザー指摘でRSS方式に切り替え)。
+- **文字起こしはリポジトリ直下の`youtube_transcript.py`をそのまま再利用**([youtube-transcriptスキル](../.claude/skills/youtube-transcript/SKILL.md)と共通コード)。新着動画ごとにベストエフォードで取得し(字幕が無ければNone、失敗しても通知は止めない)、`reports/`のJSONに保存する(1本あたり最大4,000字に切り詰め)。
+- 新着判定は`monitor_state.json`(channel_id→最後に見た動画ID、Git管理外)で行う。初回実行時は既存の最新動画1本だけを「新着」とし、いきなり大量通知しない。
+- **画像解析(`visual_analysis.py`)**: 文字起こしでは分からない服装・アクセサリー・訪問場所を補うため、新着動画1本ごとにyt-dlpで低解像度(480p以下)の直リンクを取得し、`opencv-python-headless`の`VideoCapture.set(CAP_PROP_POS_MSEC)`でシークして代表フレームを12枚キャプチャする(**ffmpeg不要の設計**。動画をディスクにフルダウンロードしない)。抽出したフレームは`frames/{video_id}/`に保存して残す(2026-07-29時点の方針、著作権のある動画フレームのためGit管理外)。保存したフレームをGemini 2.5 Flash(`GEMINI_API_KEY`、`koikeyz-monitor`と同じ`google-genai`SDKを流用)に渡し、服装・アクセサリー・ロケーション(画面に映る看板・地名などの文字情報含む)を箇条書きで要約させる。**この処理はClaude/マツを介さずスクリプト単体・Gemini APIのみで完結する**(2026-07-29、トモキ指示。日次の自動監視でClaude Codeのトークンを消費しないようにするため)。
+- `LINE_CHANNEL_ACCESS_TOKEN`(未設定なら通知だけスキップ)を使う。LINE通知には動画タイトル・URLのみ載せ、文字起こし・画像解析結果は`reports/`のJSONと`frames/`の画像を見る。
+- 実行: `python tools/youtube-talent-monitor/video_monitor.py`(`--dry-run`で状態を書き換えず新着表示のみ、`--no-transcript`で文字起こしを取得せず速報のみ、`--no-visuals`で画像解析をしない)
+- **現時点では検知・通知・文字起こし・画像解析までで、記事執筆の自動化はしない**(ロケ地・私服の最終的な特定・記事化は人間かAIが`reports/`と`frames/`を見て判断する)。
+- タスクスケジューラに`YouTube-Talent-Monitor`というタスク名で登録済み(2026-07-29、1台のPCで毎日**23:00 JST**実行)。実行時刻は直近8日間・76件の投稿時刻を集計して決めた(0〜6時台の投稿はゼロ、ピークは18時と21時、23時までに当日投稿の100%が出揃う。**当初は8時に登録していたが、それだと当日投稿の96%がまだ上がっていない状態でチェックしてしまうことが分析で判明し23時に変更**)。1日1回のみのため投稿からチェックまで最大約23時間のラグがあるが、「最速で書く」を優先してチェック頻度を増やす場合はx-trend-monitorと同じ複数回/日方式への変更を検討する。
+- `channel_id`が`null`のまま残っている4チャンネル(Johnny's official本体、ジュニアCHANNEL、Johnny's Gaming Room、SUPER EIGHT)はハンドルが確認できず自動解決できなかった。特にSUPER EIGHT(旧関ジャニ∞)は名称が一般的すぎて誤同定リスクがあるため見送った。確認でき次第`channels.json`に手動で追記する。
+
 ## 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`)
 
 コイキーズブログ(chomoand-1.com)の既存記事に載っているブランド・商品の言及に、楽天/Amazonのアフィリエイトリンクを付けるための候補取得ツール(2026-07-26追加)。使い方・対象範囲・承認フローは[koikeyz-affiliateスキル](../.claude/skills/koikeyz-affiliate/SKILL.md)参照。
