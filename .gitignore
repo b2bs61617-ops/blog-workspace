@@ -23,6 +23,10 @@ tools/x-trend-monitor/monitor_state.json
 tools/x-trend-monitor/reports/
 tools/x-trend-monitor/pipeline.lock
 
+# YouTube タレント監視ツールのローカル生成データ(PCごとの状態・収集結果)
+tools/youtube-talent-monitor/monitor_state.json
+tools/youtube-talent-monitor/reports/
+
 # Pythonキャッシュ
 __pycache__/
 *.pyc

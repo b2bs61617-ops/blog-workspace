@@ -1,0 +1,41 @@
+{
+  "_comment": "chomoand-0(ジャニオタブログ)監視対象のSTARTO ENTERTAINMENT関連公式YouTubeチャンネル一覧。2026-07-29にWeb調査で作成。channel_idが未確定のものはhandle/search_queryから video_monitor.py が自動解決してこのファイルに書き戻す。",
+  "channels": [
+    {"name": "Johnny's official", "category": "official", "channel_id": null, "search_query": "Johnny's official STARTO"},
+    {"name": "ジュニアCHANNEL", "category": "official", "channel_id": null, "search_query": "ジュニアCHANNEL STARTO"},
+    {"name": "+81 DANCE STUDIO", "category": "official", "channel_id": null, "search_query": "+81 DANCE STUDIO"},
+    {"name": "Johnny's Shop Channel", "category": "official", "channel_id": "UCVwVSRV0XZ6CdUlk67_oG9g"},
+    {"name": "Johnny's Gaming Room", "category": "official", "channel_id": null, "search_query": "Johnny's Gaming Room"},
+
+    {"name": "KinKi Kids", "category": "group", "channel_id": "UCexu4C8IfBuC5CH7R4PLHFQ"},
+    {"name": "嵐(ARASHI)", "category": "group", "channel_id": null, "handle": "ARASHI_5_Official"},
+    {"name": "SUPER EIGHT", "category": "group", "channel_id": null, "search_query": "SUPER EIGHT 関ジャニ STARTO"},
+    {"name": "Hey! Say! JUMP", "category": "group", "channel_id": null, "handle": "heysayjump"},
+    {"name": "Kis-My-Ft2", "category": "group", "channel_id": null, "handle": "KisMyFt2"},
+    {"name": "WEST.", "category": "group", "channel_id": null, "handle": "JohnnysWEST"},
+    {"name": "King & Prince", "category": "group", "channel_id": "UCSxwcQnzA5K6DvofvBn6ATA"},
+    {"name": "SixTONES", "category": "group", "channel_id": null, "handle": "SixTONES_official"},
+    {"name": "Snow Man", "category": "group", "channel_id": null, "handle": "SnowMan.official.9"},
+    {"name": "なにわ男子", "category": "group", "channel_id": null, "handle": "naniwadanshi"},
+    {"name": "Travis Japan", "category": "group", "channel_id": null, "handle": "TravisJapan_official"},
+    {"name": "Aぇ! group", "category": "group", "channel_id": null, "handle": "Aegroup_official"},
+
+    {"name": "山田涼介(LEOの遊び場)", "category": "individual", "channel_id": "UCLmqOGpWDsqqoXcww4-Y7dQ"},
+    {"name": "ジャにのちゃんねる", "category": "individual", "channel_id": "UC2alHD2WkakOiTxCxF-uMAg"},
+    {"name": "亀梨和也", "category": "individual", "channel_id": "UCMFkwHT8vezg-06EAgL1QNA"},
+    {"name": "中丸雄一(中丸銀河ちゃんねる)", "category": "individual", "channel_id": "UCYTrZoOfDgoQo7Bdbttv9qw"},
+    {"name": "河合郁人(かわいたちチャンネル)", "category": "individual", "channel_id": "UCjeLh8KgFo4N8SoiYiTzDHw"},
+    {"name": "八乙女光", "category": "individual", "channel_id": "UCpAJ8xggbvtsLSvl_G8vEyg"},
+
+    {"name": "木村拓哉", "category": "alumni", "channel_id": "UCE-lBtQTa3A8gYgbl8xRMig"},
+    {"name": "手越祐也", "category": "alumni", "channel_id": "UCSEoj94-efoQhREyRWRySKA"},
+    {"name": "草彅剛", "category": "alumni", "channel_id": "UCMo5MECD5pwhUVLaMqZo5Xg"},
+    {"name": "香取慎吾", "category": "alumni", "channel_id": "UCL8CKq7dCJFfKTaTv0O81Rw"},
+    {"name": "山下智久", "category": "alumni", "channel_id": "UCtZqEq6oqfdpneuSdAsEkkA"},
+    {"name": "赤西仁", "category": "alumni", "channel_id": "UCcjITSsIHHn6UEXgQDj9S_g"},
+    {"name": "錦戸亮", "category": "alumni", "channel_id": "UCRrWJhf76B88FpXsxxl4Jwg"},
+    {"name": "田中聖", "category": "alumni", "channel_id": "UCb0ow45id-MnKHmq7neApWw"},
+    {"name": "渋谷すばる", "category": "alumni", "channel_id": "UCEnfP3pvnv2N0Tj-moqslsA"},
+    {"name": "岩橋玄樹", "category": "alumni", "channel_id": "UCa3JxAKZdvWhRCmoOyXHpiA"}
+  ]
+}

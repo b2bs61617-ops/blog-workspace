@@ -63,6 +63,18 @@ chomoand.com(トレンドブログ)の全自動記事化パイプラインの入
 - 多重起動は`pipeline.lock`とタスク側`IgnoreNew`で防止。`monitor_state.json`・`reports/`はGit管理外。
 - ログイン状態とタスク登録がPC固有なため、登録したPC上でのみ動作する。
 
+## YouTubeタレント監視(`tools/youtube-talent-monitor/`)
+
+chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・出身タレントの公式YouTubeチャンネルを毎日チェックし、新着動画が出たらLINEに通知するツール(2026-07-29追加、フェーズ1=検知・通知まで)。
+
+**Why:** タレント自身が発信するYouTube動画にはロケ地・着用ファッション・食べたものなど、ファンが知りたい一次情報が豊富に含まれる。テレビ番組表監視([tv-researchスキル](../.claude/skills/tv-research/SKILL.md))より速報性・掘りやすさで優れるとユーザー判断([[chomoand0-youtube-monitor-strategy]]の経緯で導入)。
+
+- 監視対象は`tools/youtube-talent-monitor/channels.json`(グループ公式・現役個人・退所済み元タレント個人の各チャンネル。2026-07-29時点で約27チャンネル)。`channel_id`が未確定の項目は`handle`または`search_query`から初回実行時にYouTube Data APIで自動解決し、このファイルに書き戻す。
+- 新着判定は`monitor_state.json`(channel_id→最後に見た動画ID、Git管理外)で行う。初回実行時は既存の最新動画1本だけを「新着」とし、いきなり大量通知しない。
+- `.env`の`YOUTUBE_API_KEY`(セットアップは[docs/youtube-api-setup.md](youtube-api-setup.md))と`LINE_CHANNEL_ACCESS_TOKEN`(未設定なら通知だけスキップ)を使う。
+- 実行: `python tools/youtube-talent-monitor/video_monitor.py`(`--dry-run`で状態を書き換えず新着表示のみ)
+- **現時点では検知・通知までで、記事化の自動起動はしない**(ロケ地・ファッション特定は人間の目利きが必要なため)。タスクスケジューラへの定期実行登録もまだ未設定。
+
 ## 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`)
 
 コイキーズブログ(chomoand-1.com)の既存記事に載っているブランド・商品の言及に、楽天/Amazonのアフィリエイトリンクを付けるための候補取得ツール(2026-07-26追加)。使い方・対象範囲・承認フローは[koikeyz-affiliateスキル](../.claude/skills/koikeyz-affiliate/SKILL.md)参照。
