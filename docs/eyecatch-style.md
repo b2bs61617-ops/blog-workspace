@@ -11,7 +11,7 @@
 
 ## chomoand.com統一テンプレ(恋愛リアリティ番組の出演者記事専用)
 
-トモキ提供のAI生成背景(ピンク×カップルシルエット×白いハート/ライン装飾、`assets/chomoand_eyecatch_bg.png`)に、KO1KEYZと同じ「3段・横幅いっぱいに自動フィット」の黒太文字を重ねる。`tools/eyecatch_chomoand.py`(HTML+Playwright)で生成する。
+ピンク×カップルシルエット×白いハート/ライン装飾のイラスト背景に、KO1KEYZと同じ「3段・横幅いっぱいに自動フィット」の黒太文字を重ねる。`tools/eyecatch_chomoand.py`(HTML+Playwright)で生成する。
 
 ```bash
 python tools/eyecatch_chomoand.py \
@@ -29,7 +29,8 @@ python tools/eyecatch_chomoand.py \
 - 構成は3段: **上=記事の属性キーワード(wiki・プロフィール・学歴など、タイトルから該当するものを2行程度) → 中央=主役(出演者名、または特集記事なら「メンバー一覧」等のテーマ) → 下=タイトルの具体的な内容(2行程度)**。
 - サイズは1200×675px(16:9、既存chomoand.comアイキャッチと同じ比率)。
 - 背景に写っているのはAI生成のイラスト(実写ではない)なので、出演者本人の顔写真を使うリスク(肖像権・未成年のプライバシー)を回避できる。**出演者の実写・SNS画像を背景に使うのは禁止**(2026-07-18〜19の検討で不採用と判断)。
-- 元背景は1枚のみ(`assets/chomoand_eyecatch_bg.png`)。バリエーションはCSSの`hue-rotate`で色相を変えるだけで作る(PIL等での事前色違い生成はしない)。
+- **背景画像は記事ごとにPollinations.ai(APIキー不要・無料の画像生成API)で毎回新規生成する**(2026-07-30〜)。カップルシルエットが右側・左側は文字用に空けるプロンプトで固定し、ポーズや装飾の細部だけ毎回変わる。生成失敗時(タイムアウト等)は静的背景(`assets/chomoand_eyecatch_bg.png`)に自動フォールバックするため、ネット不通でも記事生成は止まらない。`--no-ai-bg`で静的背景に固定できる(検証用)。色相の変化は引き続きCSSの`hue-rotate`で行う(生成画像・静的背景どちらにも同じ仕組みが乗る)。
+- 検討の経緯: 最初はMidjourney連携を検討したが公式APIが無くTOS的にグレーなため不採用。次にGemini(Nano Banana、`gemini-2.5-flash-image`)で静的背景を参照画像にした編集生成を試したが、画像生成モデルは無料枠が0で課金必須と判明し断念。無課金で使えるPollinations.aiに切り替えた。
 
 ## KO1KEYZ統一テンプレ(chomoand-1.com専用)
 

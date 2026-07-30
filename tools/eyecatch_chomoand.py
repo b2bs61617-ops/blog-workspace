@@ -1,9 +1,14 @@
 """chomoand.com(恋愛リアリティ番組の出演者wiki)統一アイキャッチ生成ツール.
 
-トモキ提供のピンク×カップルシルエットのAI生成背景(assets/chomoand_eyecatch_bg.png)に、
-KO1KEYZ(tools/eyecatch_koikeyz.py)と同じ「3段・横幅いっぱいに自動フィット」の
-黒太文字を重ねてHTML+Playwrightで書き出す。背景色はCSSのhue-rotateで毎回ランダムに変える
-(元のピンク×白ハートのトーン感は保ったまま色相だけ回す)。
+ピンク×カップルシルエットのイラスト背景に、KO1KEYZ(tools/eyecatch_koikeyz.py)と同じ
+「3段・横幅いっぱいに自動フィット」の黒太文字を重ねてHTML+Playwrightで書き出す。
+背景色はCSSのhue-rotateで毎回ランダムに変える(元のピンク×白ハートのトーン感は保ったまま色相だけ回す)。
+
+背景画像は記事ごとにPollinations.ai(https://image.pollinations.ai 、APIキー不要・無料)で新規生成する
+(2026-07-30〜。当初Gemini(Nano Banana)の画像生成モデルで実装したが、画像生成モデルは
+無料枠が0で課金必須と判明し、無課金で使えるPollinations.aiに切り替えた)。
+生成失敗時(タイムアウト・非2xx等)は静的背景(assets/chomoand_eyecatch_bg.png)に
+フォールバックする(他の.env依存ツールと同じフェイルセーフ方式)。
 
 使い方:
     python tools/eyecatch_chomoand.py \
@@ -13,6 +18,7 @@ KO1KEYZ(tools/eyecatch_koikeyz.py)と同じ「3段・横幅いっぱいに自動
         --out images/oshima_kuga_eyecatch_chomoand.png
 
 --bottom は複数指定で複数行になる。--hue で色相の回転角(0〜360)を固定できる(未指定ならランダム)。
+--no-ai-bg で背景AI生成をスキップして静的背景を強制する(検証用・オフライン時用)。
 """
 
 from __future__ import annotations
@@ -20,6 +26,10 @@ from __future__ import annotations
 import argparse
 import html as html_mod
 import random
+import tempfile
+import urllib.parse
+import urllib.request
+import uuid
 from pathlib import Path
 
 CANVAS_W = 1200
@@ -27,6 +37,16 @@ CANVAS_H = 675  # 16:9(既存chomoand.comアイキャッチと同じ比率)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BG_PATH = REPO_ROOT / "assets" / "chomoand_eyecatch_bg.png"
+
+POLLINATIONS_BASE_URL = "https://image.pollinations.ai/prompt/"
+POLLINATIONS_MODEL = "flux"
+POLLINATIONS_TIMEOUT_SEC = 45
+BG_GEN_PROMPT = (
+    "soft pastel pink watercolor illustration, romantic couple silhouette standing close "
+    "together on the right side of the frame, backlit, no facial details, white thin line "
+    "heart doodles, soft bokeh light circles, left half of image is plain empty pastel "
+    "gradient with no subject, blog banner background, non-photorealistic, flat illustration style"
+)
 
 TEXT_COLOR = "#111111"
 
@@ -37,7 +57,13 @@ MAX_SIZE_BOTTOM = 56
 FIT_WIDTH = 1080  # テキストを収める横幅(左右に少し余白)
 
 
-def build_html(top_lines: list[str], main: str, bottom_lines: list[str], hue: int | None = None) -> str:
+def build_html(
+    top_lines: list[str],
+    main: str,
+    bottom_lines: list[str],
+    hue: int | None = None,
+    bg_path: Path = BG_PATH,
+) -> str:
     """アイキャッチのHTMLを組み立てる(副作用なし)."""
     rng = random.Random()
     hue_deg = hue if hue is not None else rng.randint(0, 359)
@@ -52,7 +78,7 @@ def build_html(top_lines: list[str], main: str, bottom_lines: list[str], hue: in
         lines = "<br>".join(html_mod.escape(line) for line in bottom_lines)
         bottom_html = f'<div class="fit bottom" data-max="{MAX_SIZE_BOTTOM}">{lines}</div>'
 
-    bg_url = BG_PATH.as_uri()
+    bg_url = bg_path.as_uri()
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -111,6 +137,48 @@ document.fonts.ready.then(() => {{
 """
 
 
+def build_pollinations_url(seed: int) -> str:
+    """Pollinations.aiのリクエストURLを組み立てる(副作用なし)."""
+    encoded_prompt = urllib.parse.quote(BG_GEN_PROMPT)
+    query = urllib.parse.urlencode({
+        "width": CANVAS_W,
+        "height": CANVAS_H,
+        "model": POLLINATIONS_MODEL,
+        "seed": seed,
+        "nologo": "true",
+    })
+    return f"{POLLINATIONS_BASE_URL}{encoded_prompt}?{query}"
+
+
+def generate_ai_background(seed: int) -> bytes:
+    """Pollinations.ai(APIキー不要)で新しい背景バリエーションを1枚生成する.
+    既定のPython-urllib User-Agentは403で弾かれるため、ブラウザ相当のUser-Agentを付ける。"""
+    url = build_pollinations_url(seed)
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=POLLINATIONS_TIMEOUT_SEC) as resp:
+        if resp.status != 200:
+            raise RuntimeError(f"Pollinations.aiがHTTP {resp.status}を返した")
+        return resp.read()
+
+
+def resolve_background(use_ai: bool, seed: int | None = None) -> tuple[Path, Path | None]:
+    """使用する背景パスを決める。戻り値は(背景パス, 生成した場合は削除すべき一時ファイルパス)。
+    AI生成が無効・生成失敗のいずれかの場合は静的背景にフォールバックする。"""
+    if not use_ai:
+        return BG_PATH, None
+    try:
+        image_bytes = generate_ai_background(seed if seed is not None else random.randint(0, 2**31 - 1))
+        if not image_bytes:
+            raise RuntimeError("Pollinations.aiから画像データが返らなかった")
+        tmp_path = Path(tempfile.gettempdir()) / f"chomoand_ai_bg_{uuid.uuid4().hex}.jpg"
+        tmp_path.write_bytes(image_bytes)
+        print(f"AI背景生成: {tmp_path}")
+        return tmp_path, tmp_path
+    except Exception as e:
+        print(f"AI背景生成失敗({type(e).__name__}: {e})、静的背景にフォールバック")
+        return BG_PATH, None
+
+
 def render(html_text: str, out_path: Path) -> Path:
     """HTMLをPNGに書き出す."""
     from playwright.sync_api import sync_playwright
@@ -137,10 +205,20 @@ def main() -> None:
     parser.add_argument("--bottom", action="append", default=[], help="下段(複数指定で複数行)")
     parser.add_argument("--out", required=True, help="出力PNGパス")
     parser.add_argument("--hue", type=int, default=None, help="背景の色相回転角(0-359)を固定する場合に指定")
+    parser.add_argument(
+        "--ai-bg", action=argparse.BooleanOptionalAction, default=True,
+        help="背景をPollinations.aiで毎回AI生成する(既定で有効)。--no-ai-bgで静的背景に固定",
+    )
+    parser.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
     args = parser.parse_args()
 
-    path = render(build_html(args.top, args.main, args.bottom, args.hue), Path(args.out))
-    print(f"done: {path}")
+    bg_path, tmp_bg = resolve_background(args.ai_bg, args.seed)
+    try:
+        path = render(build_html(args.top, args.main, args.bottom, args.hue, bg_path), Path(args.out))
+        print(f"done: {path}")
+    finally:
+        if tmp_bg is not None:
+            tmp_bg.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

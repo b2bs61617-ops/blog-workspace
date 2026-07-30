@@ -79,7 +79,7 @@
 | LINE通知(`tools/line_notify.py`) | 記事更新・監視結果をLINEへ通知。未設定でも他の処理は止まらない。セットアップは[docs/line-notify-setup.md](docs/line-notify-setup.md) |
 | Canva MCP | chomoand.com記事のアイキャッチ生成に使用。**背景色は毎回ランダムに変える**。PCごとに`/mcp`認証が必要。手順は[docs/canva-mcp.md](docs/canva-mcp.md)。**コイキーズ(chomoand-1.com)での使用は2026-07-24に停止**(下記参照) |
 | KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`) | **2026-07-24〜未使用**(コイキーズブログはアイキャッチ自体を作らない方針に変更されたため)。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md)に残すのみ |
-| chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。トモキ提供のAI生成背景(カップルシルエット、実写ではない)+3段黒太文字。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
+| chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。カップルシルエット背景(実写ではない)+3段黒太文字。**背景はPollinations.ai(APIキー不要・無料)で記事ごとに毎回AI生成**(2026-07-30〜、失敗時は静的背景に自動フォールバック)。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
 | YouTubeタレント監視(`tools/youtube-talent-monitor/`) | chomoand-0向け。旧ジャニーズ所属・出身タレントの公式YouTube新着を**RSS(APIキー不要)**でチェックし、文字起こし+**画像解析(服装・アクセサリー・ロケ地をGemini Visionで解析、フレームは`frames/`に保存)**付きでLINE通知(2026-07-29〜、タスクスケジューラで毎日23:00実行)。画像解析はClaude/マツを介さずスクリプト単体で完結(トークン消費防止)。監視対象は`channels.json`、詳細は[docs/tools.md](docs/tools.md) |
