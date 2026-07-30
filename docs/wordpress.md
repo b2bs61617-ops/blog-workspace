@@ -101,10 +101,20 @@ GSCで「ページがインデックスに登録されていない(noindexタグ
 
 ## SNS自動連携(記事公開時にX/Instagram/Threadsへ自動投稿したい場合)
 
-2026-07-05にユーザーから相談があり調査した内容。3サイトとも同じ構成で使える。
+2026-07-05にユーザーから相談があり調査した内容。3サイトとも同じ構成で使える。2026-07-30にトモキの依頼で本格導入を開始した(具体的なセットアップ手順は[docs/sns-auto-post-setup.md](sns-auto-post-setup.md)参照)。
 
 - **Instagram・Threads**: WordPress.com公式の「Jetpack Social」で自動投稿できる。WordPress.com管理画面 →「設定」→「共有(Jetpack Social)」からInstagram Business/Threadsアカウントを接続すれば、記事公開時にタイトル+抜粋+アイキャッチ画像+リンクが自動シェアされる。
   - 注意: Instagramはアイキャッチ画像が必須(画像なしの記事は投稿不可)。1枚画像のみ対応で、複数画像のカルーセル投稿は不可。
+  - この制約のため、chomoand-1.com(KO1KEYZ)の「アイキャッチを作らない」方針(2026-07-24〜)は2026-07-30に終了し、SNS投稿を兼ねてアイキャッチ生成を復活させた([blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)参照)。
 - **X(旧Twitter)**: Jetpack Socialは2023年5月にX API規約・料金変更を理由に自動シェア機能を廃止しており、2026年現在も非対応(対応しているのはFacebook Pages・Instagram Business・Threads・LinkedIn・Bluesky・Nextdoor・Tumblr・Mastodonの8つでXは含まれない)。Xへの自動投稿はZapier/Make/IFTTTなど外部連携サービスで別途構築する必要がある(「WordPress New Post」トリガー→「X Create Tweet」アクション)。外部サービス側がAPI契約を持つため、ユーザー自身がX Developerアカウントを契約する必要はない。
 
-**How to apply:** 記事公開時のSNS自動投稿について聞かれたら、Instagram/ThreadsはJetpack Social、XはZapier等の外部連携、という切り分けで案内する。
+**How to apply:** 記事公開時のSNS自動投稿について聞かれたら、Instagram/ThreadsはJetpack Social、XはZapier等の外部連携、という切り分けで案内する。実際のセットアップ手順・進捗チェックリストは[docs/sns-auto-post-setup.md](sns-auto-post-setup.md)を参照・更新すること。
+
+## 既知の問題: chomoand-0.comのDNS誤設定(2026-07-30発見)
+
+2026-07-30、SNS自動投稿の作業中にchomoand-0.comへの外部接続が全てSSLハンドシケエラー(`SSL: WRONG_VERSION_NUMBER`)で失敗する事象を発見。Anthropic側のネットワーク経由(WebFetch)でも同じ結果だったため、ローカル環境固有の問題ではなくサーバー/DNS側の問題と判明。
+
+- **原因**: `chomoand-0.com`のDNS Aレコードが誤って`18.204.152.241`(AWS上の無関係なHerokuアプリ、`Server: nginx`+`X-Powered-By: Express`+`heroku-router`のレスポンスが返る)を指していた。本来のWordPress実体は`chomoand.com`・`chomoand-1.com`と同じ`85.131.207.35`で正常に生きていることを、Hostヘッダーを`chomoand-0.com`にして直接そのIPへHTTPSアクセスし確認済み(正常なWordPress REST APIレスポンス、サイト名「ちょものJr.情報局」が返った)。
+- **確認手段**: 3ドメインとも同じXserverネームサーバー(`ns1〜5.xserver.jp`)を使っているが、chomoand.com・chomoand-1.comは正しく`85.131.207.35`を指し、chomoand-0.comだけ異なるIPを指していたことをGoogle Public DNS(8.8.8.8)・Cloudflare(1.1.1.1)の両方で確認し、DNS伝播遅延ではなく実際のレコード誤りであると特定した。
+- **復旧方法**: Xserverの「サーバーパネル」→DNS設定で、chomoand-0.comのAレコードを`85.131.207.35`に修正する(WordPress本体・記事データは無事なため、DNS修正のみで復旧する見込み)。ドメイン管理系の変更のためユーザー本人が対応する必要がある(マツはXserverの認証情報を持っていない)。
+- **How to apply**: 同様に特定サイトだけ接続できない相談が来たら、まずDNSのAレコードが他の正常なサイトと同じIPを指しているか(`nslookup`で複数の公開DNSリゾルバから確認)を疑うこと。HTTP(非SSL)でアクセスして返ってくるレスポンスのServerヘッダー等から、無関係な別サービスに繋がっていないか確認するのも有効。

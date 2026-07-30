@@ -53,9 +53,9 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - 送信は`[System.Text.Encoding]::UTF8.GetBytes($json)`でバイト列化してから`Invoke-RestMethod -Body`に渡す
 - Python(`wp_upload_batch.py`)を使う場合は`.env`から`WP_<SITE>_URL`等を読み込む実装済みなのでそのまま使える
 
-## STEP 4: アイキャッチ画像の生成(chomoand-1.comは対象外)
+## STEP 4: アイキャッチ画像の生成
 
-- **chomoand-1.com(コイキーズブログ)の記事はアイキャッチを作らない**(2026-07-24〜トモキ指示。それまではCanva MCP必須だったが方針転換)。STEP4・STEP5・STEP6内のアイキャッチ関連処理はすべてスキップし、STEP3の下書き投稿だけで完了とする。
+- **chomoand-1.com(コイキーズブログ)は`tools/eyecatch_koikeyz.py`で生成する**(2026-07-24〜「アイキャッチを作らない」方針だったが、2026-07-30にSNS自動投稿(Instagram/Jetpack Social)の画像必須要件のため方針終了・復活。詳細は[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`)。生成した画像はSTEP5で通常通りfeatured_mediaに設定する(記事ページ上にも表示される)。
 - **chomoand.comの記事は必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
   - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)
   - 3つの独立したテキスト要素(1行目=番組名/2行目=出演者名/3〜4行目=疑問形+補足)を`replace_text`で置換する(KO1KEYZと違い要素が分かれているのでフォントサイズが飛ぶ心配はない)
@@ -65,14 +65,14 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
-## STEP 5: アイキャッチをWordPressにアップロード・設定(chomoand-1.comは対象外)
+## STEP 5: アイキャッチをWordPressにアップロード・設定
 
 - 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)
 - 取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 
 ## STEP 6(chomoand-1.com限定): 韓国語版下書きの自動生成
 
-コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**韓国語版もアイキャッチは作らない**(2026-07-24〜)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。
+コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**韓国語版も日本語版と同じアイキャッチ画像をfeatured_mediaに設定する**(2026-07-30〜、日本語版のアイキャッチ復活に合わせて変更)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。
 
 ## 完了報告
 
@@ -81,4 +81,4 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP1→STEP1.5→STEP2→STEP3→STEP6(STEP4・5はスキップ)、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP1→STEP1.5→STEP2→STEP3→STEP4→STEP5→STEP6、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Instagram/Jetpack Social・X/Zapier)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。

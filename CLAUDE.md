@@ -78,7 +78,7 @@
 | Codex | 記事・文書生成に使用(codex-writingスキル参照) |
 | LINE通知(`tools/line_notify.py`) | 記事更新・監視結果をLINEへ通知。未設定でも他の処理は止まらない。セットアップは[docs/line-notify-setup.md](docs/line-notify-setup.md) |
 | Canva MCP | chomoand.com記事のアイキャッチ生成に使用。**背景色は毎回ランダムに変える**。PCごとに`/mcp`認証が必要。手順は[docs/canva-mcp.md](docs/canva-mcp.md)。**コイキーズ(chomoand-1.com)での使用は2026-07-24に停止**(下記参照) |
-| KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`) | **2026-07-24〜未使用**(コイキーズブログはアイキャッチ自体を作らない方針に変更されたため)。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md)に残すのみ |
+| KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`) | **2026-07-30〜復活**。SNS自動投稿(Instagram/Jetpack Social)が画像必須のため、2026-07-24からの「アイキャッチ作らない」方針を終了しblog-uploadスキルSTEP4で使用する。詳細は[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)・[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。カップルシルエット背景(実写ではない)+3段黒太文字。**背景はPollinations.ai(APIキー不要・無料)で記事ごとに毎回AI生成**(2026-07-30〜、失敗時は静的背景に自動フォールバック)。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
@@ -86,6 +86,7 @@
 | KO1KEYZ YouTube監視(`tools/koikeyz-youtube-monitor/`) | **2026-07-30〜未使用**(試作したがユーザー判断でKO1KEYZはX監視主軸の方針に決定、タスクスケジューラ登録は削除済み)。コードのみ将来用に残置。KO1KEYZの情報収集は`tools/koikeyz-monitor/`(X監視)を参照 |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
+| SNS自動投稿 | 記事を**公開(publish)したタイミング**で3ブログ全てX/Instagramへ自動投稿(2026-07-30〜導入)。Instagram=Jetpack Socialプラグイン(chomoand.com・chomoand-1.comは導入済み、chomoand-0.comはDNS障害復旧後に導入)、X=Zapier等の外部連携。自前のAPIコードは持たずプラグイン+SaaS連携のみで構成。セットアップ手順・進捗は[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照 |
 
 ## テスト
 

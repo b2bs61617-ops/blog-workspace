@@ -34,9 +34,9 @@ chomoand-1.com(コイキーズブログ)のアイキャッチを作るための�
 
 ## KO1KEYZアイキャッチ生成(`tools/eyecatch_koikeyz.py`)
 
-上記Canva MCPの**フォールバック**(2026-07-15追加)。Canvaが認証切れなどで使えないときだけ使う。HTML+Playwrightで見た目を再現するがフォントだけ本物と違う(M PLUS Rounded 1c Black)。使い方・デザイン仕様は[docs/eyecatch-style.md](eyecatch-style.md)参照。
+当初はCanva MCPの**フォールバック**(2026-07-15追加、Canvaが認証切れなどで使えないときだけ使う想定)。HTML+Playwrightで見た目を再現するがフォントだけ本物と違う(M PLUS Rounded 1c Black)。使い方・デザイン仕様は[docs/eyecatch-style.md](eyecatch-style.md)参照。
 
-**コイキーズ記事のアイキャッチを勝手に別デザインで作らないこと。**
+2026-07-24〜「KO1KEYZはアイキャッチを作らない」方針で未使用になっていたが、**2026-07-30にSNS自動投稿(Instagram/Jetpack Social)の画像必須要件のため復活**([docs/sns-auto-post-setup.md](sns-auto-post-setup.md)参照)。[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)STEP4でKO1KEYZ記事にもこのツールでアイキャッチ(兼SNS投稿用画像)を生成し、featured_mediaとして設定する。
 
 ## YouTube急上昇取得(`tools/youtube_trending.py`)— 現在未使用
 
