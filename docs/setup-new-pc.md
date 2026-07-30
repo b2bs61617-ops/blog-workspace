@@ -91,12 +91,12 @@ py -3 login_x.py
 ```
 ブラウザが開くのでXにログインし、ターミナルでEnterキーを押す。
 
-その後、Windowsタスクスケジューラで`tools\koikeyz-monitor\x_monitor.py`を毎朝7時に自動実行するタスク(`KO1KEYZ-Monitor`)を登録する。セットアップ済みのPCの設定を参考にするか、以下で登録できる:
+その後、Windowsタスクスケジューラで`tools\koikeyz-monitor\x_monitor.py`を毎晩23時に自動実行するタスク(`KO1KEYZ-Monitor`)を登録する(2026-07-31、ユーザー指示で朝7時から夜23時に変更)。セットアップ済みのPCの設定を参考にするか、以下で登録できる:
 ```powershell
 $pyPath = (Get-Command py).Source
 $action = New-ScheduledTaskAction -Execute $pyPath -Argument '-3 "x_monitor.pyへのフルパス"' -WorkingDirectory "tools\koikeyz-monitorへのフルパス"
-$trigger = New-ScheduledTaskTrigger -Daily -At 7:00AM
-Register-ScheduledTask -TaskName "KO1KEYZ-Monitor" -Action $action -Trigger $trigger -Description "KO1KEYZメンバー12人のX新着投稿を毎日チェック"
+$trigger = New-ScheduledTaskTrigger -Daily -At 11:00PM
+Register-ScheduledTask -TaskName "KO1KEYZ-Monitor" -Action $action -Trigger $trigger -Description "KO1KEYZメンバー12人のX新着投稿を毎日23時にチェック"
 ```
 
 ## 8. 動作確認
