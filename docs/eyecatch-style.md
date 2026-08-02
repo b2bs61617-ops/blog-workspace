@@ -7,7 +7,7 @@
 | **chomoand-1.com(コイキーズブログ)** | **KO1KEYZ統一テンプレ必須**(下記)。既存記事が全部このデザインで揃っているので勝手に変えない |
 | **chomoand.com(恋愛リアリティ番組の出演者記事)** | **`tools/eyecatch_chomoand.py`必須**(2026-07-19〜)。詳細は下記「chomoand.com統一テンプレ」参照。Canva MCP版(design_id: `DAHPjgiBOTI`、[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md))は2026-07-19に運用停止(経緯は同docs参照) |
 | chomoand.com(恋リア以外の旧カテゴリ記事) | 対象外。第2次転換([docs/chomoand-pivot.md](chomoand-pivot.md))で凍結済みの旧記事(トレンド系・未分類など)はそのまま放置。新デザインを適用するのは恋リア記事のみ |
-| chomoand-0.com | 汎用テンプレ(1200×630px、後述) |
+| chomoand-0.com | **`tools/eyecatch_chomoand0.py`必須**(HTML+Playwrightで汎用テンプレを自動生成。手動でHTML/PowerShellを組む必要はない)。詳細は下記「汎用テンプレ」参照 |
 
 ## chomoand.com統一テンプレ(恋愛リアリティ番組の出演者記事専用)
 

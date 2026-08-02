@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 630px; overflow: hidden;
+  font-family: 'Yu Gothic', 'Meiryo', 'Hiragino Kaku Gothic ProN', sans-serif; }
+.container {
+  width: 1200px; height: 630px;
+  background: #fdf6e3;
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 18px;
+  overflow: hidden;
+}
+.blob1 {
+  position: absolute; width: 750px; height: 750px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,183,77,0.7) 0%, rgba(239,154,154,0.5) 40%, transparent 70%);
+  opacity: 0.6; right: -180px; top: -180px; filter: blur(58px);
+}
+.blob2 {
+  position: absolute; width: 450px; height: 450px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(197,225,165,0.65) 0%, transparent 70%);
+  opacity: 0.5; left: -100px; bottom: -100px; filter: blur(45px);
+}
+.blob3 {
+  position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(179,157,219,0.45) 0%, transparent 70%);
+  opacity: 0.4; left: 420px; bottom: -60px; filter: blur(40px);
+}
+.top-text { font-size: 42px; font-weight: 700; color: #374151; letter-spacing: 0.12em; z-index: 1; }
+.name { font-size: 104px; font-weight: 900; color: #111827; letter-spacing: 0.05em; z-index: 1; text-align: center; line-height: 1.05; }
+.bottom-text { font-size: 36px; font-weight: 700; color: #1f2937; letter-spacing: 0.03em; z-index: 1; text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="top-text">KO1KEYZ(コイキーズ)</div>
+  <div class="name">「！」はなぜ12個？</div>
+  <div class="bottom-text">誕生日投稿にみる<br>運営のこだわりを徹底解説</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face {
+  font-family: 'KoikeyzRounded';
+  src: url('file:///C:/Users/s30se/Desktop/blog-workspace/assets/fonts/MPLUSRounded1c-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1200px; height: 675px; overflow: hidden; }
+.canvas {
+  position: relative;
+  width: 1200px; height: 675px;
+  background: #f2efe9;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px;
+  font-family: 'KoikeyzRounded', 'Yu Gothic', sans-serif;
+  font-weight: 900;
+  color: #1c1c1c;
+  text-align: center;
+}
+.smoke { position: absolute; border-radius: 50%; filter: blur(80px); }
+.fit { position: relative; z-index: 1; white-space: nowrap; line-height: 1.35; }
+.main { letter-spacing: 0.02em; line-height: 1.05; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="smoke" style="width:451px;height:451px;left:431px;top:76px;background:radial-gradient(circle,rgba(240,150,160,0.95) 0%,transparent 66%);"></div><div class="smoke" style="width:606px;height:606px;left:149px;top:-10px;background:radial-gradient(circle,rgba(246,178,130,0.85) 0%,transparent 66%);"></div><div class="smoke" style="width:438px;height:438px;left:551px;top:142px;background:radial-gradient(circle,rgba(196,165,220,0.80) 0%,transparent 66%);"></div><div class="smoke" style="width:589px;height:589px;left:360px;top:-27px;background:radial-gradient(circle,rgba(186,214,170,0.70) 0%,transparent 66%);"></div><div class="smoke" style="width:439px;height:439px;left:360px;top:184px;background:radial-gradient(circle,rgba(250,205,205,0.85) 0%,transparent 66%);"></div>
+  <div class="fit top" data-max="90">スケジュール公開</div>
+  <div class="fit main" data-max="200">KO1KEYZ</div>
+  <div class="fit bottom" data-max="78">8月〜10月デビューまでの日程まとめ</div>
+</div>
+<script>
+// 各行を横幅いっぱい(1090px)まで拡大する(Canvaテンプレの「文字が画面いっぱい」の質感を再現)
+document.fonts.ready.then(() => {
+  for (const el of document.querySelectorAll('.fit')) {
+    const max = parseInt(el.dataset.max, 10);
+    let size = max;
+    el.style.fontSize = size + 'px';
+    while (size > 20 && el.getBoundingClientRect().width > 1090) {
+      size -= 2;
+      el.style.fontSize = size + 'px';
+    }
+  }
+  document.body.dataset.fitted = '1';
+});
+</script>
+</body>
+</html>
