@@ -31,6 +31,9 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - 装飾クラスなしの通常`<p>...</p>` → `<!-- wp:paragraph -->` と `<!-- /wp:paragraph -->` で挟む
 - `<hr>` → `<!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->` に置き換え
 - **SWELL独自の装飾HTML(`swell-block-capbox`のdiv、`is-style-dent_box`/`is-style-onborder_ttl`などのスタイル付き`<p>`、`swl-marker`の`<span>`、Googleマップiframe埋め込み、画像`<figure>`+`<figcaption>`など)は、正確なブロックJSON仕様(SWELL側の実際のブロック登録定義)が不明なため無理にコアブロックへ変換しない。まとまりごと`<!-- wp:html -->` 〜 `<!-- /wp:html -->` で囲む**(WordPressの「カスタムHTML」ブロックとして扱われ、見た目は今までと変わらず、かつ常に有効なブロックとして保存される。ブロックエディタ上では生HTMLとして編集する形になる)。
+- **テーブル(`|...|`)は上記の「SWELL独自装飾」には含めない。`<!-- wp:table -->`のコアブロックとして変換する**(2026-08-02判明): `<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>...</tbody></table></figure>`という形にし、`<!-- wp:html -->`では囲まない。既存の公開済み記事(例:chomoand-0.com ID184「けるとめる」)の実データを確認したところ全てこの形式で、SWELL側の`.wp-block-table`用CSSが効いて列幅が均等に割り付けられ見やすく表示される。一方`<!-- wp:html -->`で生の`<table><tbody>`をそのまま囲むと、SWELLの表スタイルが当たらず列幅が詰まって読みにくくなる不具合を確認した(松田元太の私服特定記事で「表が見づらい」とユーザーから指摘され判明)。
+  - Why: STEP1.5導入時は表もSWELL独自装飾の一種として`wp:html`で無難に囲む方針にしていたが、実際にはコアの`wp:table`ブロックのマークアップ(`wp-block-table`クラス+`has-fixed-layout`)がそのまま使えており、既存記事は全てその形式だった。
+  - How to apply: 記事に表を入れるときは`<!-- wp:table -->\n<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>...(各行<tr><td>...</td>...</tr>、見出し行も他行と同じ<td>でよい)...</tbody></table></figure>\n<!-- /wp:table -->`の形式で組み立てる。
 
 **初回運用時の確認**: このルールは実際にSWELLのブロック仕様を検証した上でのものではなく、標準的なGutenbergブロックコメント構文に基づく最善の推測。次にこのSTEPを使って記事を投稿したら、`context=edit`でPOST後の`content.raw`を確認し、可能であればユーザーに管理画面のブロックエディタで開いて崩れ(「不正なコンテンツ」警告など)が出ていないか確認してもらう。問題があればこのSTEPのルールを修正する。
 
