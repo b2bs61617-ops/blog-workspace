@@ -32,6 +32,7 @@
 - ファイル/データの削除以外は原則すべて確認なしで進めてよい(2026-07-06にユーザーから指示)。ただし以下は必ずユーザーに確認してから実行する:
   - ファイル削除(`Remove-Item`/`rm`/`del`/`rd`/`rmdir`)
   - **WordPress記事の削除・ゴミ箱移動**(絶対厳禁。詳細は [docs/wordpress.md](docs/wordpress.md))
+  - **WordPress記事の内容変更**(単発の編集・書き換え。2026-08-02追加。ただし`koikeyz-rewrite`・`publish`など既存の自動化スキル経由の更新は対象外、詳細は[docs/wordpress.md](docs/wordpress.md))
   - WordPressの設定変更(プラグイン・テーマ・サイト設定など)
 
 ## 記事作成の基本方針
