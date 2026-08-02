@@ -1,41 +1,44 @@
-# Naver Search Advisor(네이버 서치어드바이저)のセットアップ手順
+# Naverインデックス登録(IndexNowプロトコル)のセットアップ手順
 
-**現在の状態(2026-08-02)**: 未セットアップ。chomoand-1.com(コイキーズブログ)の韓国語版記事([docs/korea-expansion.md](korea-expansion.md)参照)がNaverにインデックスされているか未確認で、登録もされていない可能性が高い。
+**現在の状態(2026-08-02)**: 未セットアップ。キーは生成済みだが、サイト直下への検証ファイル設置(下記1)がまだ。
 
-**Why:** [Google Indexing API](google-indexing-setup.md)はGoogle向けのインデックス即時通知には使えるが、韓国最大手の検索エンジンであるNaverには効かない。Naverは独自のクローラーを持ち、Googleと同じSEO対策(サイトマップ・構造化データ等)だけでは拾われにくいことで知られている。韓国語読者への露出を狙うなら、Naver独自の登録が別途必要。
+**訂正(2026-08-02):** 当初このドキュメントに「Naverには公開APIが無く手動運用しかない」と書いたが誤りだった。Naverは2023年7月から**IndexNowプロトコル**(Bing・Yandex等と共通の公開API規格)に対応しており、GETリクエスト1本でインデックス登録をリクエストできる。Google Indexing APIのようなOAuth/サービスアカウントも不要で、ログイン・ブラウザ操作も一切不要。
 
-**注意(APIの有無について):** GoogleのIndexing APIのような「URLを送信するだけで即時インデックスをリクエストできる公開API」はNaver Search Advisorには**存在しない**(2026-08-02時点で確認)。サイト所有権確認・サイトマップ提出・個別URLの収集요청(クロール要請)は、いずれもNaver Search Advisorの管理画面上でのマニュアル操作が基本。将来的にPlaywright等でUI操作を自動化する余地はあるが、ログインセッションの扱いが必要になり壊れやすいため、このドキュメントでは手動運用の手順のみ扱う。
+**Why:** [Google Indexing API](google-indexing-setup.md)はGoogle向けで、韓国最大手の検索エンジンであるNaverには効かない。コイキーズブログ(chomoand-1.com)の韓国語記事([docs/korea-expansion.md](korea-expansion.md)参照)をNaverの読者に届けるには別途登録が必要。
 
-## 1. サイト登録・所有権確認(トモキ本人が実施)
+## 1. キー検証ファイルの設置(トモキ本人が実施・初回のみ)
 
-1. [Naver Search Advisor](https://searchadvisor.naver.com/)にアクセスし、Naverアカウントでログイン
-2. 「サイト管理」→「サイト登録」で`https://chomoand-1.com`を追加
-3. 所有権確認方法を選ぶ(いずれか1つ):
-   - **HTMLタグ**: 発行されたmetaタグをWordPressテーマの`<head>`に追加(SWELLテーマなら「外観」→「カスタマイズ」→「head内タグ」に貼り付け可能)
-   - **HTMLファイルアップロード**: 発行されたファイルをサーバーのルート直下に設置
-   - **RSS確認**: サイトのRSSフィードURLを指定
-4. 確認が完了するとダッシュボードにサイトが表示される
+IndexNowは「このキーを知っている=サイトの所有者」という認証方式で、**サイトのドメイン直下に、キー文字列そのものを中身とするtxtファイルを置くだけ**で完了する。
 
-日本語版(chomoand.com・chomoand-0.com)はNaver向けの露出を狙う対象ではないため登録不要。
+1. 生成済みのキー: `ff9c46dd9d99fc9060510f013f108d69`(このドキュメント作成時にマツが生成。値自体は秘密情報ではないのでここに書いてよい)
+2. 中身が`ff9c46dd9d99fc9060510f013f108d69`の1行だけのテキストファイルを作り、ファイル名を`ff9c46dd9d99fc9060510f013f108d69.txt`にする
+3. Xserverのサーバーパネル→ファイルマネージャー(またはFTPクライアント)で、`chomoand-1.com`のドキュメントルート直下(`public_html`等、WordPressの`wp-config.php`があるのと同じ階層)にこのファイルをアップロードする
+4. ブラウザで`https://chomoand-1.com/ff9c46dd9d99fc9060510f013f108d69.txt`にアクセスし、キー文字列だけが表示されればOK
 
-## 2. サイトマップ提出(トモキ本人が実施)
+**マツ(Claude Code)はXserverの認証情報を持っていないため、この設置作業だけはトモキ本人にお願いする必要がある**([docs/wordpress.md](wordpress.md)のDNS障害対応時と同じ理由)。それ以外(下記2・3)はマツが自動で行う。
 
-1. 登録したサイトのダッシュボード→「要請」→「사이트맵 제출(サイトマップ提出)」
-2. `sitemap.xml`(既存の`https://chomoand-1.com/sitemap.xml`をそのまま指定)を提出
-3. 日本語記事・韓国語記事の両方が同じsitemapインデックスに含まれているため、追加のsitemap分割は不要
+## 2. ローカル設定(マツが実施済み)
 
-## 3. 個別記事の収集要請(公開のたびに実施、当面は手動)
+`.env`に以下を追加済み:
+```
+NAVER_INDEXNOW_KEY=ff9c46dd9d99fc9060510f013f108d69
+```
 
-1. ダッシュボード→「요청」→「웹페이지 수집(ウェブページ収集)」
-2. 韓国語記事を公開した直後に、そのURL(`https://chomoand-1.com/ko/記事slug`)を入力して収集要請
-3. 1日あたりのリクエスト上限があるため、公開が重なる日は優先度の高い記事から要請する
+## 3. 動作確認
 
-**将来の自動化案(未実装)**: [publishスキル](../.claude/skills/publish/SKILL.md)でGoogle Indexing APIを呼んでいる箇所と同じタイミングで、Playwrightを使ってNaver Search Advisorにログインし収集要請フォームを自動送信する案はある。ただしログインセッション(Cookie)の保存・失効対応が必要で、`tools/Xiy/`のX収集と同様にUI変更に弱い。優先度が上がった場合はここに追記する。
+1番のファイル設置が終わったら:
+```
+python tools/naver_indexnow.py https://chomoand-1.com/ko/ko1keyz-leader-daiki-kr-10982
+```
+HTTPステータス200が返れば受理成功。Naverの検索ロボットが実際にクロールしてインデックスされるまでは別途時間がかかる(即時反映ではない)。
 
-## 4. 動作確認
-
-Naver検索で`site:chomoand-1.com`を検索し、`/ko/`配下のページがヒットするか確認する。ヒットしない場合は収集要請から反映までに数日〜数週間かかることがあるため、時間を置いて再確認する。
+参考: 単一URL用のエンドポイントは`https://searchadvisor.naver.com/indexnow?url={URL}&key={キー}`(GET)。まとめて送りたい場合は`https://api.searchadvisor.naver.com/indexnow`へPOSTし、ボディに`{"host": "chomoand-1.com", "key": "...", "keyLocation": "https://chomoand-1.com/ff9c46dd9d99fc9060510f013f108d69.txt", "urlList": [...]}`を渡す(最大10,000件/回)。
 
 ## 使われている場所
 
-現時点ではどこからも自動で呼ばれていない(手動運用のみ)。将来Playwright自動化を実装する場合は、[publishスキル](../.claude/skills/publish/SKILL.md)のGoogle Indexing API呼び出し箇所に追記する形になる見込み。
+- `tools/naver_indexnow.py`: IndexNow呼び出し本体
+- [publishスキル](../.claude/skills/publish/SKILL.md): chomoand-1.comの記事を公開した直後、Google Indexing APIの呼び出しに続けて自動実行。`NAVER_INDEXNOW_KEY`未設定の場合は通知だけスキップし、公開処理自体は止まらない(Google Indexing APIと同じフェイルセーフ方式)
+
+## 補足: Naver Search Advisorへのサイト登録自体は別
+
+上記のIndexNowは「個別記事を即座にクロール候補に入れる」ための仕組み。それとは別に、サイト全体の検索パフォーマンス(表示回数・クリック数等の計測)を見たい場合は、従来通り[Naver Search Advisor](https://searchadvisor.naver.com/)でのサイト登録(HTMLタグ確認等)・サイトマップ提出も別途やっておくと良い。ただしインデックス登録のリクエスト自体はIndexNowだけで完結するため、Search Advisor登録は必須ではない。
