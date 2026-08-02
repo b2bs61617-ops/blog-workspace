@@ -230,8 +230,43 @@ async def collect_trending(page, should_continue, on_status, on_post):
     on_status(f"トレンド取得完了: {count}件")
 
 
+async def fetch_x_replies(context, tweet_url, max_replies=10):
+    """ツイート詳細ページを個別に開いてリプライ(コメント)を取得する。
+    タイムライン/検索結果の一覧にはリプライが出ないため、ツイートごとにページ遷移が発生する
+    (収集速度低下・bot検知リスク増のトレードオフはユーザー了承済み)。"""
+    replies = []
+    if not tweet_url:
+        return replies
+    reply_page = None
+    try:
+        reply_page = await context.new_page()
+        await reply_page.goto(tweet_url, wait_until="domcontentloaded", timeout=15000)
+        await reply_page.wait_for_timeout(random.randint(1200, 2000))
+        articles = await reply_page.query_selector_all('article[data-testid="tweet"]')
+        for article in articles[1:1 + max_replies]:
+            try:
+                text_el = await article.query_selector('[data-testid="tweetText"]')
+                text = (await text_el.inner_text()).strip() if text_el else ""
+                if not text:
+                    continue
+                author_el = await article.query_selector('[data-testid="User-Name"]')
+                author = (await author_el.inner_text()).strip().split("\n")[0] if author_el else ""
+                replies.append({"author": author, "text": text})
+            except Exception:
+                continue
+    except Exception:
+        pass
+    finally:
+        if reply_page:
+            try:
+                await reply_page.close()
+            except Exception:
+                pass
+    return replies
+
+
 # ── X収集 ──
-async def collect_x(page, should_continue, on_status, on_post):
+async def collect_x(page, context, should_continue, on_status, on_post):
     await wait_for_x_login(page, should_continue, on_status)
     if not should_continue():
         return
@@ -281,7 +316,11 @@ async def collect_x(page, should_continue, on_status, on_post):
                         dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
                         date_str = dt.strftime("%Y/%m/%d %H:%M")
 
-                post = {"platform": "x", "date": date_str, "text": text, "images": img_urls, "url": tweet_url}
+                on_status(f"[X] リプライ取得中... ({count + 1}件目)")
+                comments = await fetch_x_replies(context, tweet_url)
+
+                post = {"platform": "x", "date": date_str, "text": text, "images": img_urls,
+                        "url": tweet_url, "comments": comments}
                 count += 1
                 on_post(post)
                 last_new_time = time.monotonic()
@@ -390,9 +429,24 @@ async def collect_instagram(page, should_continue, on_status, on_post):
                         dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
                         date_str = dt.strftime("%Y/%m/%d %H:%M")
 
+                comments = []
+                for li in await search_root.query_selector_all("ul > li"):
+                    try:
+                        text_el = await li.query_selector("span[dir='auto']")
+                        if not text_el:
+                            continue
+                        c_text = (await text_el.inner_text()).strip()
+                        if not c_text or c_text == caption:
+                            continue
+                        author_el = await li.query_selector("a[role='link']")
+                        c_author = (await author_el.inner_text()).strip() if author_el else ""
+                        comments.append({"author": c_author, "text": c_text})
+                    except Exception:
+                        continue
+
                 if img_urls:
                     post = {"platform": "instagram", "date": date_str,
-                            "text": caption, "images": img_urls[:4]}
+                            "text": caption, "images": img_urls[:4], "comments": comments}
                     count += 1
                     on_post(post)
                     last_new_time = time.monotonic()
@@ -419,6 +473,9 @@ def build_ai_prompt(posts, youtube_posts, max_chars=30000):
         posts_text += f"[資料{i}] [{platform}] {post['date']}\n"
         if post["text"]:
             posts_text += post["text"] + "\n"
+        for c in post.get("comments", []):
+            author = c.get("author") or "(不明)"
+            posts_text += f"  コメント [{author}]: {c.get('text', '')}\n"
         posts_text += "\n"
     for yt in youtube_posts:
         i += 1
@@ -501,6 +558,9 @@ def save_posts_to_dir(save_path, posts, youtube_posts, ai_text=None):
                 lines.append(f"  画像: {img_file.name}")
             except Exception:
                 pass
+        for c in post.get("comments", []):
+            author = c.get("author") or "(不明)"
+            lines.append(f"  コメント [{author}]: {c.get('text', '')}")
         lines.append("─" * 50)
 
     (save_path / "posts.txt").write_text("\n".join(lines), encoding="utf-8")
@@ -811,7 +871,7 @@ class CollectorApp:
 
                 should_continue = lambda: self.is_running
                 if platform == "x":
-                    await collect_x(page, should_continue, self.update_status, self._on_new_post)
+                    await collect_x(page, context, should_continue, self.update_status, self._on_new_post)
                 elif platform == "trending":
                     await collect_trending(page, should_continue, self.update_status, self._on_new_post)
                 else:
@@ -1202,7 +1262,7 @@ async def run_cli(args):
 
         should_continue = lambda: True
         if platform == "x":
-            await collect_x(page, should_continue, on_status, on_post)
+            await collect_x(page, context, should_continue, on_status, on_post)
         elif platform == "trending":
             await collect_trending(page, should_continue, on_status, on_post)
         else:

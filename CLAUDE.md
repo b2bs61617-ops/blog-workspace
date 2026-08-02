@@ -74,7 +74,7 @@
 
 | ツール | 要点 |
 |---|---|
-| Xiy(`tools/Xiy/`) | X/Instagram投稿収集 + YouTube文字起こし。`tools/Xiy/起動.bat`で起動。sns-researchスキルで使用 |
+| Xiy(`tools/Xiy/`) | X/Instagram投稿収集(2026-08-02〜コメント欄も収集) + YouTube文字起こし。`tools/Xiy/起動.bat`で起動。sns-researchスキルで使用 |
 | Codex | 記事・文書生成に使用(codex-writingスキル参照) |
 | LINE通知(`tools/line_notify.py`) | 記事更新・監視結果をLINEへ通知。未設定でも他の処理は止まらない。セットアップは[docs/line-notify-setup.md](docs/line-notify-setup.md) |
 | Canva MCP | chomoand.com記事のアイキャッチ生成に使用。**背景色は毎回ランダムに変える**。PCごとに`/mcp`認証が必要。手順は[docs/canva-mcp.md](docs/canva-mcp.md)。**コイキーズ(chomoand-1.com)での使用は2026-07-24に停止**(下記参照) |
