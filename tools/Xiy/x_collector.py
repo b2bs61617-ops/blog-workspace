@@ -230,30 +230,64 @@ async def collect_trending(page, should_continue, on_status, on_post):
     on_status(f"トレンド取得完了: {count}件")
 
 
-async def fetch_x_replies(context, tweet_url, max_replies=10):
-    """ツイート詳細ページを個別に開いてリプライ(コメント)を取得する。
+X_BLOCK_TEXT = "JavaScriptを使用できません"
+
+
+async def fetch_x_replies(context, tweet_url, max_replies=40, max_scroll=6):
+    """ツイート詳細ページを個別に開いてリプライ(コメント)を、下までスクロールしながら
+    伸び止まる(新着なし2回)か上限に達するまで取得する。
     タイムライン/検索結果の一覧にはリプライが出ないため、ツイートごとにページ遷移が発生する
-    (収集速度低下・bot検知リスク増のトレードオフはユーザー了承済み)。"""
+    (収集速度低下・bot検知リスク増のトレードオフはユーザー了承済み)。
+    bot検知対策として、遷移前のランダム待機・マウス移動・偽ブロックページ検知時の即撤退を行う。"""
     replies = []
     if not tweet_url:
         return replies
     reply_page = None
     try:
+        await asyncio.sleep(random.uniform(1.5, 3.5))
         reply_page = await context.new_page()
         await reply_page.goto(tweet_url, wait_until="domcontentloaded", timeout=15000)
-        await reply_page.wait_for_timeout(random.randint(1200, 2000))
-        articles = await reply_page.query_selector_all('article[data-testid="tweet"]')
-        for article in articles[1:1 + max_replies]:
-            try:
-                text_el = await article.query_selector('[data-testid="tweetText"]')
-                text = (await text_el.inner_text()).strip() if text_el else ""
-                if not text:
+        await reply_page.wait_for_timeout(random.randint(1500, 2500))
+
+        if X_BLOCK_TEXT in await reply_page.content():
+            return replies
+
+        seen_texts = set()
+        stall = 0
+        for _ in range(max_scroll):
+            articles = await reply_page.query_selector_all('article[data-testid="tweet"]')
+            for article in articles[1:]:
+                if len(replies) >= max_replies:
+                    break
+                try:
+                    text_el = await article.query_selector('[data-testid="tweetText"]')
+                    text = (await text_el.inner_text()).strip() if text_el else ""
+                    if not text or text in seen_texts:
+                        continue
+                    seen_texts.add(text)
+                    author_el = await article.query_selector('[data-testid="User-Name"]')
+                    author = (await author_el.inner_text()).strip().split("\n")[0] if author_el else ""
+                    replies.append({"author": author, "text": text})
+                except Exception:
                     continue
-                author_el = await article.query_selector('[data-testid="User-Name"]')
-                author = (await author_el.inner_text()).strip().split("\n")[0] if author_el else ""
-                replies.append({"author": author, "text": text})
+
+            if len(replies) >= max_replies:
+                break
+
+            prev_count = len(replies)
+            try:
+                await reply_page.mouse.move(random.randint(200, 800), random.randint(200, 600))
             except Exception:
-                continue
+                pass
+            await reply_page.evaluate(f"window.scrollBy(0, {random.randint(500, 900)})")
+            await reply_page.wait_for_timeout(random.randint(1000, 1800))
+
+            if len(replies) == prev_count:
+                stall += 1
+                if stall >= 2:
+                    break
+            else:
+                stall = 0
     except Exception:
         pass
     finally:
@@ -274,6 +308,8 @@ async def collect_x(page, context, should_continue, on_status, on_post):
     seen = set()
     count = 0
     last_new_time = time.monotonic()
+    reply_fetch_count = 0
+    next_cooldown_at = random.randint(10, 15)
 
     while should_continue():
         articles = await page.query_selector_all('article[data-testid="tweet"]')
@@ -318,12 +354,20 @@ async def collect_x(page, context, should_continue, on_status, on_post):
 
                 on_status(f"[X] リプライ取得中... ({count + 1}件目)")
                 comments = await fetch_x_replies(context, tweet_url)
+                reply_fetch_count += 1
 
                 post = {"platform": "x", "date": date_str, "text": text, "images": img_urls,
                         "url": tweet_url, "comments": comments}
                 count += 1
                 on_post(post)
                 last_new_time = time.monotonic()
+
+                if reply_fetch_count >= next_cooldown_at:
+                    cooldown = random.randint(15, 30)
+                    on_status(f"[X] bot検知対策のため{cooldown}秒休憩中...")
+                    await page.wait_for_timeout(cooldown * 1000)
+                    reply_fetch_count = 0
+                    next_cooldown_at = random.randint(10, 15)
             except Exception:
                 continue
 
@@ -346,6 +390,8 @@ async def collect_x(page, context, should_continue, on_status, on_post):
 async def collect_instagram(page, should_continue, on_status, on_post):
     processed = set()
     count = 0
+    opened_count = 0
+    next_cooldown_at = random.randint(10, 15)
 
     if "instagram.com/accounts/" in page.url:
         on_status("Instagramにログインしてください（ログイン完了まで待機します）...")
@@ -382,6 +428,7 @@ async def collect_instagram(page, should_continue, on_status, on_post):
             if not should_continue():
                 break
             processed.add(href)
+            opened_count += 1
 
             try:
                 await dismiss_instagram_popups(page)
@@ -429,6 +476,33 @@ async def collect_instagram(page, should_continue, on_status, on_post):
                         dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
                         date_str = dt.strftime("%Y/%m/%d %H:%M")
 
+                # 「もっと見る」を押しつつスクロールしてコメントを可能な限り読み込む
+                # (伸び止まったら打ち切り。bot検知対策として動作ごとにランダム待機を挟む)
+                prev_li_count = -1
+                for _ in range(6):
+                    li_count = len(await search_root.query_selector_all("ul > li"))
+                    if li_count == prev_li_count:
+                        break
+                    prev_li_count = li_count
+                    try:
+                        more_btn = await search_root.query_selector(
+                            "button:has-text('コメントをもっと見る'), button:has-text('他のコメントを見る'), "
+                            "button:has-text('件のコメントをすべて見る'), button:has-text('View more comments'), "
+                            "button:has-text('Load more comments')"
+                        )
+                        if more_btn:
+                            await more_btn.click()
+                    except Exception:
+                        pass
+                    try:
+                        await search_root.evaluate(
+                            "(el) => { const c = el.querySelector('ul')?.closest('div'); "
+                            "if (c) c.scrollBy(0, 400); }"
+                        )
+                    except Exception:
+                        pass
+                    await page.wait_for_timeout(random.randint(700, 1300))
+
                 comments = []
                 for li in await search_root.query_selector_all("ul > li"):
                     try:
@@ -450,10 +524,17 @@ async def collect_instagram(page, should_continue, on_status, on_post):
                     count += 1
                     on_post(post)
                     last_new_time = time.monotonic()
-                    on_status(f"[Instagram] 取得済み: {count}件")
+                    on_status(f"[Instagram] 取得済み: {count}件（コメント{len(comments)}件）")
 
                 await page.keyboard.press("Escape")
                 await page.wait_for_timeout(300)
+
+                if opened_count >= next_cooldown_at:
+                    cooldown = random.randint(15, 30)
+                    on_status(f"[Instagram] bot検知対策のため{cooldown}秒休憩中...")
+                    await page.wait_for_timeout(cooldown * 1000)
+                    opened_count = 0
+                    next_cooldown_at = random.randint(10, 15)
 
             except Exception:
                 await page.keyboard.press("Escape")
