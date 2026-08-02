@@ -15,7 +15,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
   - `## ` → `<h2>`、`### ` → `<h3>`
   - `---` → `<hr>`
   - `**text**` → `<strong>text</strong>`
-  - テーブル(`|...|`)→ `<table><tbody><tr><td>` に変換
+  - テーブル(`|...|`)→ `<table><tbody><tr><td>` に変換。罫線・背景色は必ずインラインstyleで直接指定する([docs/rules.mdの表のスタイルルール](../../../docs/rules.md)参照。class頼みだと罫線が表示されないことがある)
   - 通常段落 → `<p>`タグで囲む(句点で`<br>`改行、[docs/rules.md](../../../docs/rules.md)参照)
   - SNS由来の画像を記事に埋め込む場合は[docs/rules.mdの画像埋め込みルール](../../../docs/rules.md)に従う(メディアライブラリの自動生成サイズ+`max-width:100%`でレスポンシブにする、`<figcaption>`で出典を明記する)。絵文字は使わない。
 

@@ -91,6 +91,14 @@ WordPress記事本文で絵文字(🔵❤️💚など)がうまく表示され�
 - 日本人メンバー: 「TOWA(濱田永遠)」のように英語表記(漢字)
 - 韓国籍メンバー(パク・シヨン、オ・シンヘン。漢字表記が無い): 「SIYOUNG(パク・シヨン)」のように英語表記(カタカナ)
 
+## 表(テーブル)のスタイルルール(2026-08-03にユーザー指示、既存ルールと統合)
+
+記事内で「表が見づらい」という指摘が来たら、表の種類によって対応が異なる。
+
+- **単独の比較表・一覧表(コーデまとめ表など)**: [blog-uploadスキルSTEP1.5](../.claude/skills/blog-upload/SKILL.md)に既に詳細ルールあり。`<!-- wp:html -->`のCustom HTMLブロックに埋もれさせず、`<!-- wp:table -->`のコアブロックとして`<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>...</tbody></table></figure>`の形にする。既存の公開記事(chomoand-0.com ID184)で実証済みの形式で、SWELL側の`.wp-block-table`用CSSが効いて列幅が均等に割り付けられる。
+- **capbox内の2列表(項目名:値の商品情報表・動画情報表など)**: `swell-block-capbox`のdiv自体がSWELL独自装飾のため`<!-- wp:html -->`で囲む方針は変わらないが、中の`<table>`は罫線・背景色が一切当たらず素のまま表示されることがある。この場合は`<table style="border-collapse:collapse;width:100%;">`とし、各`<td>`に`style="border:1px solid #ccc;padding:8px 12px;"`を直接指定する(項目名側の列は`background:#f0f0f0`などで塗って値の列と区別する)。`wp:table`ブロックに変換すると`swell-block-capbox`の外枠デザインが崩れるため、capbox内はこのインラインstyle方式が現状の最適解。
+- How to apply: 記事に表を入れるときは、独立した一覧表かcapbox内の情報表かをまず見分け、上記どちらの形式かを使い分ける。
+
 ## 文体ルール
 
 - 句点(。)で文が終わったら必ず`<br>`で改行を入れる。
