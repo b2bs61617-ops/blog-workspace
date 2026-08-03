@@ -74,3 +74,8 @@ description: トレンド記事のタイトルを決めるときに使う。himi
 **記事セットの基本:** トレンドが発生したら必ずセットで書く。1) メイン記事(話題の出来事そのもの、競合多いが必要)、2) ずらし記事(個人情報系、競合少・上位取りやすい ← 本命)。
 
 **How to apply:** 記事提案時は必ずメイン1本+ずらし複数本をセットで出す。ずらし記事の情報収集は[sns-researchスキル](../sns-research/SKILL.md)を使う。
+
+## 関連
+
+- 開催日が事前に読める年次イベントの先回り仕込み: [docs/annual-event-calendar.md](../../../docs/annual-event-calendar.md)
+- 競合サイトのタイトルフォーミュラ・内容選定の傾向分析: [docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md)・[docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md)

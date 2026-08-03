@@ -101,3 +101,4 @@ description: Xトレンド監視ツール(tools/x-trend-monitor/)が検知した
 
 - フェーズ2(確認なし全自動公開)への切り替えはユーザーが判断する。指示があるまで下書き止め。
 - 監視ツール側の仕様(6時間間隔・同一トレンド24時間クールダウン・1回最大3件)は[tools/x-trend-monitor/trend_monitor.py](../../../tools/x-trend-monitor/trend_monitor.py)参照。
+- Xトレンドは「反応型」の情報源。開催日が事前に分かっている年次イベント(24時間テレビ等)は反応するだけでは出遅れるため、[docs/annual-event-calendar.md](../../../docs/annual-event-calendar.md)で先回りする。
