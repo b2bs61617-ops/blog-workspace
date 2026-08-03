@@ -51,4 +51,5 @@ Agentツール(`subagent_type: general-purpose`, `run_in_background: true`)で�
 
 - 競合サイトの全体像・記事タイプ・タイトルフォーミュラ(恋リア): [docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md)
 - 競合サイトの全体像・タイトルフォーミュラ(KO1KEYZ・ロケ地等): [docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md)
+- 競合記事を本文まで読んで「なぜこの話題か・どんな検索意図か」を深掘りした調査(薄い/濃い記事の実例つき): [docs/research-notes/competitor-search-intent-analysis.md](../../../docs/research-notes/competitor-search-intent-analysis.md)
 - 記事の書き方・プライバシーの線引き: [koi-real](../koi-real/SKILL.md)

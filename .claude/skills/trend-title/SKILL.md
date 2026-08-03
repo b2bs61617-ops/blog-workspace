@@ -79,3 +79,4 @@ description: トレンド記事のタイトルを決めるときに使う。himi
 
 - 開催日が事前に読める年次イベントの先回り仕込み: [docs/annual-event-calendar.md](../../../docs/annual-event-calendar.md)
 - 競合サイトのタイトルフォーミュラ・内容選定の傾向分析: [docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md)・[docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md)
+- 競合記事本文の検索意図・話題選定の深掘り分析: [docs/research-notes/competitor-search-intent-analysis.md](../../../docs/research-notes/competitor-search-intent-analysis.md)
