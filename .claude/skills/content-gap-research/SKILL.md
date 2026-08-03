@@ -7,6 +7,8 @@ description: 競合サイトが既に書いている記事の中から「内容�
 
 競合(恋愛ふりーくす=fstopics.com、定番ナビ=teiban-navi.com、はぴにゃんブログ=hapinyan.com。詳細は[docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md))が既に書いた話題をそのまま書いてもSEO的価値は無い。しかし競合記事の中には「一応書いてあるが薄い」ものが多数ある(文字数が少ない・SNSリンクが無い・学歴や家族構成が「不明」で終わっている等)。ここを狙えば後発でも上位表示を取れる。
 
+KO1KEYZ・バラエティロケ地など恋リア以外のジャンルでは、Minsu PRESS(minsuaptblog.com)ほか総合トレンドブログ群も調査対象に含む(2026-08-03追加、詳細は[docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md))。
+
 ## なぜサブエージェントに委任するか
 
 この調査は「出演者1人ずつ×3サイトの記事を読んで薄さを判定する」という物量作業で、メインセッションで直接やるとページ本文の読み込みだけで大量にトークンを消費する。**Agentツールでgeneral-purposeサブエージェントを起動し、調査対象を渡して、返信は「機会サイズが大きい上位N件と理由」だけに絞って報告させる。** 詳細(記事本文の引用・比較表)はサブエージェントに`docs/research-notes/`配下のファイルへ直接保存させ、メインセッションには持ち帰らせない。
@@ -19,7 +21,10 @@ description: 競合サイトが既に書いている記事の中から「内容�
 https://fstopics.com/wp-json/wp/v2/posts?search={キーワード}&_fields=id,title,link,date,content
 https://teiban-navi.com/wp-json/wp/v2/posts?search={キーワード}&_fields=id,title,link,date,content
 https://hapinyan.com/wp-json/wp/v2/posts?search={キーワード}&_fields=id,title,link,date,content
+https://minsuaptblog.com/wp-json/wp/v2/posts?search={キーワード}&_fields=id,title,link,date,content
 ```
+
+KO1KEYZ・ロケ地系の追加調査対象(すべてWordPress、同じREST APIが使える。2026-08-03確認)は[docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md)を参照。
 
 全件を俯瞰したい場合は`/wp-json/wp/v2/posts?per_page=100&page=N`でページングして全記事のタイトル・カテゴリを取得する方法もある(既存の競合分析で使用済み。件数が多いサイトは`per_page=100`で数十ページになるためサブエージェント任せにする)。
 
@@ -44,5 +49,6 @@ Agentツール(`subagent_type: general-purpose`, `run_in_background: true`)で�
 
 ## 関連
 
-- 競合サイトの全体像・記事タイプ・タイトルフォーミュラ: [docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md)
+- 競合サイトの全体像・記事タイプ・タイトルフォーミュラ(恋リア): [docs/koi-real-competitor-analysis.md](../../../docs/koi-real-competitor-analysis.md)
+- 競合サイトの全体像・タイトルフォーミュラ(KO1KEYZ・ロケ地等): [docs/trend-blog-competitor-analysis.md](../../../docs/trend-blog-competitor-analysis.md)
 - 記事の書き方・プライバシーの線引き: [koi-real](../koi-real/SKILL.md)
