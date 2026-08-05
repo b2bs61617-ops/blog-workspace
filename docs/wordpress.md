@@ -12,6 +12,18 @@
 
 **どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事→chomoand-0.com、コイキーズ記事→chomoand-1.com。
 
+## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定)
+
+記事のWordPress投稿者(`author`フィールド)は、**どのPCから作業しているかで固定**する運用にした(2026-08-05にユーザーから指示。「このパソコンから書く記事は全部MOMOにして」)。新しいPCで作業する場合は、ユーザーに投稿者名を確認してこの表に追記すること。
+
+| PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com |
+|---|---|---|---|---|
+| USER1 | momo | user id 3(slug: momo) | user id 2(slug: shiori、**momoと同一人物の別ハンドル名**。メールアドレスが同じ`shiori12mei@gmail.com`で確認済み。chomoand-0.comではmomoという名前のユーザーは新規作成せず、既存のshioriをそのまま使う) | user id 2(slug: momo) |
+
+- hostnameは`hostname`コマンドで確認できる。
+- [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
+- 既に投稿済みの記事の投稿者を後から変更したい場合も、DELETEと違って設定変更の確認は不要(著者名の変更は`wordpress.md`の絶対厳守ルールに列挙されている「削除」「単発の内容変更」「サイト設定変更」のいずれにも該当しないため、下書き作成と同様に確認なしで実行してよい)。
+
 ## カテゴリID(判明分)
 
 `GET {サイトURL}/wp-json/wp/v2/categories?per_page=50`で確認できる。投稿時に迷ったら都度確認すればよいが、chomoand-1.com(コイキーズブログ)は以下が判明済み(2026-07-14):

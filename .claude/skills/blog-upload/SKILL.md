@@ -46,7 +46,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 ## STEP 3: WordPressに下書き投稿
 
 - エンドポイント: `POST {サイトURL}/wp-json/wp/v2/posts`
-- 投稿データ: `title`・`content`(HTML)・`slug`(STEP2)・`status: draft`・`categories`(サイト・カテゴリに応じて設定)
+- 投稿データ: `title`・`content`(HTML)・`slug`(STEP2)・`status: draft`・`categories`(サイト・カテゴリに応じて設定)・`author`(作業中のPCのhostnameから[docs/wordpress.mdの投稿者設定表](../../../docs/wordpress.md)を引いて該当ユーザーIDを設定。省略するとサイトの認証ユーザー本人が投稿者になってしまうため必須)
 - 投稿成功後、**記事ID**を控える(STEP5で使用)
 
 **【重要】PowerShell 5.1でJSONを組み立てる際の注意:**
