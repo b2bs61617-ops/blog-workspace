@@ -57,4 +57,12 @@ Zapierの無料プランはアカウント全体で月100タスクまで、か�
 
 - [ ] chomoand.com: Instagram Business接続・自動共有ON・X用Zap作成
 - [ ] chomoand-0.com: DNS復旧後、Jetpack Socialプラグイン導入・Instagram Business接続・自動共有ON・X用Zap作成
-- [ ] chomoand-1.com: Instagram Business接続・自動共有ON・X用Zap作成・blog-uploadスキルでのアイキャッチ生成動作確認
+- [x] chomoand-1.com: Facebookページ「ちょものKo1keys情報局」新規作成・Instagram(@chomoand)連携・Threads(chomoand)連携・Jetpack Social接続完了(2026-08-02)
+- [ ] chomoand-1.com: X用Zap作成
+- [ ] chomoand-1.com: blog-uploadスキルでのアイキャッチ生成動作確認
+
+### chomoand-1.com セットアップでのつまずきポイント(2026-08-02)
+
+- `jetpack-social`プラグインは7/30に有効化した記録があったが、確認時には無効化(inactive)状態に戻っていた。原因不明だが、REST API経由で再度有効化して対応した。今後同様の相談が来たら、まずプラグイン一覧(`GET /wp-json/wp/v2/plugins`)で`status`を確認すること。
+- Jetpack Socialの「アカウントに接続」を最初に試した際「No accounts/pages found」エラーになった。原因はKO1KEYZ用のFacebookページが存在しなかったこと(個人のFacebookプロフィールだけでは接続先として認識されない)。Facebookページを新規作成し、Instagramをそのページにリンク(プロアカウント化)してから再接続したら解消した。
+- `.env`の`WP_KOIKEYS_APP_PASSWORD`に、WordPressの**通常ログインパスワード**を入れてしまい401エラーになったことがあった。REST API認証には`wp-admin`のプロフィール画面で発行する**アプリケーションパスワード**(`xxxx xxxx xxxx xxxx xxxx xxxx`形式)が必要で、別物。
