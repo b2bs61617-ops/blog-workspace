@@ -66,3 +66,21 @@ Zapierの無料プランはアカウント全体で月100タスクまで、か�
 - `jetpack-social`プラグインは7/30に有効化した記録があったが、確認時には無効化(inactive)状態に戻っていた。原因不明だが、REST API経由で再度有効化して対応した。今後同様の相談が来たら、まずプラグイン一覧(`GET /wp-json/wp/v2/plugins`)で`status`を確認すること。
 - Jetpack Socialの「アカウントに接続」を最初に試した際「No accounts/pages found」エラーになった。原因はKO1KEYZ用のFacebookページが存在しなかったこと(個人のFacebookプロフィールだけでは接続先として認識されない)。Facebookページを新規作成し、Instagramをそのページにリンク(プロアカウント化)してから再接続したら解消した。
 - `.env`の`WP_KOIKEYS_APP_PASSWORD`に、WordPressの**通常ログインパスワード**を入れてしまい401エラーになったことがあった。REST API認証には`wp-admin`のプロフィール画面で発行する**アプリケーションパスワード**(`xxxx xxxx xxxx xxxx xxxx xxxx`形式)が必要で、別物。
+
+### X用Zap作成が「403 Forbidden」で詰まっている件(2026-08-06、未解決・作業中)
+
+ZapierでWordPressアカウントを接続しようとすると、毎回同じ`認証に失敗しました: 403 Forbidden: アクセスが拒否されました`で失敗する。以下は全て確認済みで、原因ではないと判明したもの:
+
+- WordPress REST API自体の認証は正常(`WP_KOIKEYS_*`の資格情報で直接APIを叩くと`AUTH_OK`、ログイン名`anco`)
+- Zapier公式の「Zapier for WordPress」プラグイン(スラッグ`zapier`)は正規品・インストール済み・active(2026-08-06にマツがREST API経由で導入)
+- CloudSecure WP Securityの「シンプルWAF」→検知履歴は空、無関係
+- CloudSecure WP Securityの「XML-RPC無効化」→一時OFFにして再試行しても改善せず、再度ONに戻し済み
+- CloudSecure WP Securityの「ログイン無効化」(ブルートフォース対策)→ロック時間は最大60秒設定なので長時間の詰まりの説明にならない。「ログイン履歴」に出てくる大量の失敗ログイン(XML-RPC、ユーザー名`momo`等)は無関係な外部からの一般的な攻撃ノイズで、Zapierとは無関係(そもそもZapierはREST API経由でこのログには載らない)
+- XserverサーバーパネルのWAF設定(シンプルWAF)→全項目OFF、無関係
+- WordPress一般設定のサイトURLが`http://`のままだった件、およびXserverの常時SSL化(HTTPS転送設定)が未設定だった件→両方修正済み(2026-08-06)だが403は解消せず
+
+**現在の最有力説**: [Zapier公式ヘルプ](https://help.zapier.com/hc/en-us/articles/8495969550989-Common-Problems-with-WordPress)に、「Jetpack Protectモジュールが、ZapierがアクセスしてくるAWS us-east-1のIP帯を自動ブロックすることがある」という既知の問題が明記されている。chomoand-1.comには単体の「Jetpack Protect」プラグインは入っていないが、今回Jetpack SocialのWordPress.comアカウント接続をした際に、Jetpackの共有クラウド側で同種の保護機能が自動有効化された可能性がある。
+
+**次にやること**: `wp-admin`→「Jetpack」→「My Jetpack」、または`https://cloud.jetpack.com/`のダッシュボードで「Protect」「ブルートフォース攻撃対策」的な項目を探し、一時OFFにしてZapier再接続を試す。改善したら、Protect自体は再度ONに戻しつつAWS us-east-1のIP帯だけホワイトリスト登録する(公式ヘルプに手順あり)。
+
+2026-08-06時点でこの続きは別セッション(スマホ)で継続予定。
