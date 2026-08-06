@@ -12,13 +12,15 @@
 
 **どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事→chomoand-0.com、コイキーズ記事→chomoand-1.com。
 
-## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定)
+## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定/2026-08-06、chomoand-0.comは例外指定)
 
 記事のWordPress投稿者(`author`フィールド)は、**どのPCから作業しているかで固定**する運用にした(2026-08-05にユーザーから指示。「このパソコンから書く記事は全部MOMOにして」)。新しいPCで作業する場合は、ユーザーに投稿者名を確認してこの表に追記すること。
 
+**例外: chomoand-0.com(ジャニオタブログ)だけはPCによらず投稿者を`b2bs61617@gmail.com`(user id 1、認証に使っているアカウント本人)に固定する**(2026-08-06にユーザーから指示。「ジャニーズブログに関しては投稿者はb2bs61617@gmail.comでおっけー」)。下表の「chomoand-0.com」列はこの例外指定の対象外(chomoand.com・chomoand-1.comは引き続き下表のPCごとの名義を使う)。
+
 | PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com |
 |---|---|---|---|---|
-| USER1 | momo | user id 3(slug: momo) | user id 2(slug: shiori、**momoと同一人物の別ハンドル名**。メールアドレスが同じ`shiori12mei@gmail.com`で確認済み。chomoand-0.comではmomoという名前のユーザーは新規作成せず、既存のshioriをそのまま使う) | user id 2(slug: momo) |
+| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) |
 
 - hostnameは`hostname`コマンドで確認できる。
 - [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
