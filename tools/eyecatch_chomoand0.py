@@ -2,7 +2,7 @@
 
 docs/eyecatch-style.md の「汎用テンプレ(chomoand-0.com / chomoand.comのフォールバック用)」を
 HTML+Playwrightで再現する。1200x630px、人物名を中央に超大きく、
-グラデーションblobの背景(色は毎回ランダム)。
+グラデーションblobの背景(色は毎回ランダム。ただしTravis Japan記事は--color-keyで固定可)。
 
 使い方:
     python tools/eyecatch_chomoand0.py \
@@ -13,6 +13,8 @@ HTML+Playwrightで再現する。1200x630px、人物名を中央に超大きく�
         --out images/timelesz_donani_eyecatch.png
 
 --bottom は複数指定で複数行になる。--seed で色パターンを固定できる(未指定ならランダム)。
+Travis Japanの記事は --color-key "松倉海斗" のようにメンバー名(個人記事)/"group"(グループ記事)
+を指定すると、メンバーカラーのパステル配色で固定される(docs/eyecatch-style.md参照)。
 """
 
 from __future__ import annotations
@@ -39,16 +41,44 @@ COLOR_PAIRS = [
     ("rgba(255,204,188,0.7)", "rgba(179,157,219,0.6)"),  # ピーチ×ラベンダー
 ]
 
+# Travis Japanメンバーカラー(公式カラーをパステル調に薄めたもの)。
+# 個人記事は該当メンバー名、グループ全体の記事は "group"(グループカラーの紫)を --color-key に指定する。
+# 2026-08-09にユーザー指示: 現職の強い色味ではなく見やすい/おしゃれなパステル調にすること。
+TRAVIS_JAPAN_COLORS: dict[str, tuple[str, str, str]] = {
+    "宮近海斗": ("rgba(239,154,154,0.65)", "rgba(255,205,178,0.55)", "rgba(239,154,154,0.5)"),  # 赤
+    "中村海人": ("rgba(165,214,167,0.65)", "rgba(200,230,201,0.55)", "rgba(165,214,167,0.5)"),  # 緑
+    "七五三掛龍也": ("rgba(248,187,208,0.65)", "rgba(255,205,210,0.55)", "rgba(248,187,208,0.5)"),  # ピンク
+    "川島如恵留": ("rgba(224,224,224,0.6)", "rgba(207,216,220,0.5)", "rgba(224,224,224,0.45)"),  # 白(シルバーグレー)
+    "吉澤閑也": ("rgba(255,241,118,0.6)", "rgba(255,249,196,0.5)", "rgba(255,241,118,0.45)"),  # 黄
+    "松田元太": ("rgba(144,202,249,0.65)", "rgba(179,229,252,0.55)", "rgba(144,202,249,0.5)"),  # 青
+    "松倉海斗": ("rgba(255,204,128,0.65)", "rgba(255,224,178,0.55)", "rgba(255,204,128,0.5)"),  # オレンジ
+    "group": ("rgba(179,157,219,0.65)", "rgba(206,190,234,0.55)", "rgba(179,157,219,0.5)"),  # グループカラー(紫)
+}
 
-def build_html(top: str, main: str, bottom_lines: list[str], seed: int | None = None) -> str:
+
+def build_html(
+    top: str,
+    main: str,
+    bottom_lines: list[str],
+    seed: int | None = None,
+    color_key: str | None = None,
+) -> str:
     """アイキャッチのHTMLを組み立てる(副作用なし).
 
     main は "|" 区切りで複数行に分けられる(例: "橋本将生|猪俣周杜|篠塚大輝")。
     区切り指定がない場合はブラウザの自動改行に任せる。
+
+    color_key を指定すると TRAVIS_JAPAN_COLORS の固定配色を使う(未指定ならランダム)。
     """
-    rng = random.Random(seed)
-    color1, color2 = rng.choice(COLOR_PAIRS)
-    color3, _ = rng.choice(COLOR_PAIRS)
+    if color_key:
+        if color_key not in TRAVIS_JAPAN_COLORS:
+            known = ", ".join(TRAVIS_JAPAN_COLORS)
+            raise ValueError(f"unknown color_key: {color_key!r} (known: {known})")
+        color1, color2, color3 = TRAVIS_JAPAN_COLORS[color_key]
+    else:
+        rng = random.Random(seed)
+        color1, color2 = rng.choice(COLOR_PAIRS)
+        color3, _ = rng.choice(COLOR_PAIRS)
 
     top_html = f'<div class="top-text">{html_mod.escape(top)}</div>' if top else ""
     bottom_html = ""
@@ -130,9 +160,18 @@ def main() -> None:
     parser.add_argument("--bottom", action="append", default=[], help="下段(複数指定で複数行)")
     parser.add_argument("--out", required=True, help="出力PNGパス")
     parser.add_argument("--seed", type=int, default=None, help="色パターンを固定する乱数シード")
+    parser.add_argument(
+        "--color-key",
+        default=None,
+        choices=sorted(TRAVIS_JAPAN_COLORS),
+        help="Travis Japanメンバーカラー(個人記事はメンバー名、グループ記事は'group')を固定で使う",
+    )
     args = parser.parse_args()
 
-    path = render(build_html(args.top, args.main, args.bottom, args.seed), Path(args.out))
+    path = render(
+        build_html(args.top, args.main, args.bottom, args.seed, args.color_key),
+        Path(args.out),
+    )
     print(f"done: {path}")
 
 
