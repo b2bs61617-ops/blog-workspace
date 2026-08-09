@@ -1,5 +1,7 @@
 # SNS自動投稿セットアップ(X/Instagram)
 
+**2026-08-09追記: X(旧Twitter)部分は廃止・置き換え済み。** ZapierのCreate Tweetアクションは本文にURLを含めると読まれてしまいXのアルゴリズム上リーチが落ちる上、リプライスレッド(URLを2件目のリプライに逃がす形)も組めないという制約があったため、自前のPythonスクリプトに置き換えた。**X関連のセットアップは[docs/x-auto-post-setup.md](x-auto-post-setup.md)を参照**(このページのSTEP B以下は廃止済みの記録として残すのみ)。Instagram部分(下記STEP A)は引き続き有効。
+
 記事を**公開(publish)したタイミング**で、X(旧Twitter)・Instagramへ自動投稿するための設定手順。2026-07-30にトモキから依頼があり、既存調査([docs/wordpress.mdのSNS自動連携](wordpress.md)、2026-07-05実施)をベースに本格導入した。
 
 対象は3ブログ全て(chomoand.com・chomoand-0.com・chomoand-1.com)。投稿文は**タイトル+URLのシンプル型**。
@@ -9,7 +11,7 @@
 | SNS | 方式 | 理由 |
 |---|---|---|
 | Instagram | Jetpack Social(WordPress公式プラグイン) | 公開時に自動シェアする公式機能があり、外部サービス契約不要 |
-| X(旧Twitter) | Zapier/Make/IFTTT等の外部連携 | Jetpack Socialは2023年にX対応を廃止済み。「WordPress New Post」→「X Create Tweet」で構築する |
+| X(旧Twitter) | ~~Zapier/Make/IFTTT等の外部連携~~ **→廃止、[docs/x-auto-post-setup.md](x-auto-post-setup.md)の自作スクリプトに置き換え(2026-08-09)** | Jetpack Socialは2023年にX対応を廃止済み。「WordPress New Post」→「X Create Tweet」で構築する予定だったが、リンク減点回避とリプライスレッドを実現するため自作に切り替えた |
 
 どちらもOAuth接続やアカウント作成はブラウザ操作が必要なため、**トモキ本人が手動で行う**(マツはAPI経由のプラグインインストールまでは実行済み・以降の接続作業はできない)。
 
@@ -29,7 +31,9 @@
 5. 接続後、「新規投稿時に自動共有」を有効にする
 6. 各サイトで下書き記事を1本publishし、実際にInstagramへ投稿されるか動作確認する
 
-## STEP B: X(旧Twitter)の自動投稿 — Zapier等の外部連携
+## STEP B: X(旧Twitter)の自動投稿 — Zapier等の外部連携【廃止済み・2026-08-09】
+
+**このSTEP Bは実施不要。** [docs/x-auto-post-setup.md](x-auto-post-setup.md)の自作スクリプトに置き換えたため、Zapierのセットアップ自体を行う必要はなくなった。既にZapを作成済みの場合は重複投稿を避けるためオフにすること。以下は廃止前の記録として残す。
 
 Zapierを例に記載(Make.com・IFTTTでも同様の構成)。
 

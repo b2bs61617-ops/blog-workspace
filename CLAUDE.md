@@ -88,7 +88,7 @@
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | Naverインデックス登録(`tools/naver_indexnow.py`) | コイキーズブログの記事公開時に自動送信(publishスキルから、2026-08-02〜)。IndexNowプロトコル使用、OAuth不要でGETのみ。**サイト直下へのキー検証ファイル設置だけトモキ本人が未実施**。未設定でも公開処理は止まらない。セットアップは[docs/naver-search-advisor-setup.md](docs/naver-search-advisor-setup.md) |
 | 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
-| SNS自動投稿 | 記事を**公開(publish)したタイミング**で3ブログ全てX/Instagramへ自動投稿(2026-07-30〜導入)。Instagram=Jetpack Socialプラグイン(chomoand.com・chomoand-1.comは導入済み、chomoand-0.comはDNS障害復旧後に導入)、X=Zapier等の外部連携。自前のAPIコードは持たずプラグイン+SaaS連携のみで構成。セットアップ手順・進捗は[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照 |
+| SNS自動投稿 | 記事を**公開(publish)したタイミング**で3ブログ全てX/Instagramへ自動投稿(2026-07-30〜導入)。Instagram=Jetpack Socialプラグイン(chomoand.com・chomoand-1.comは導入済み、chomoand-0.comはDNS障害復旧後に導入)、セットアップは[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照。**X=`tools/x_auto_post.py`による自作投稿(2026-08-09〜、Zapierから移行)**。本文にURLを含めるとリーチが落ちる問題とリプライスレッドが組めない問題を解決するため、1件目=画像+フック文+タグ(URL無し)→2件目=1件目へのリプライでURLのみ、の2連投を自前実装。publishスキルから呼ばれる。サイトごとに別のXアカウント・別のDeveloper Appが必要、セットアップは[docs/x-auto-post-setup.md](docs/x-auto-post-setup.md)参照 |
 
 ## テスト
 
