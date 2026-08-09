@@ -34,6 +34,10 @@ tools/koikeyz-youtube-monitor/monitor_state.json
 tools/koikeyz-youtube-monitor/reports/
 tools/koikeyz-youtube-monitor/frames/
 
+# 記事本文用に公式YouTube動画から手動で切り出したフレーム画像(著作権のある動画のフレームのためリポジトリに含めない。ローカル・WordPressメディアライブラリには残す方針)
+images/*_video_frame.jpg
+images/*_video_frame.png
+
 # Pythonキャッシュ
 __pycache__/
 *.pyc
