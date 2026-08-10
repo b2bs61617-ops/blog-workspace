@@ -1,8 +1,8 @@
-# SNS自動投稿セットアップ(X/Instagram)
+# SNS自動投稿セットアップ(Facebook/Instagram/Threads/X)
 
-**2026-08-09追記: X(旧Twitter)部分は廃止・置き換え済み。** ZapierのCreate Tweetアクションは本文にURLを含めると読まれてしまいXのアルゴリズム上リーチが落ちる上、リプライスレッド(URLを2件目のリプライに逃がす形)も組めないという制約があったため、自前のPythonスクリプトに置き換えた。**X関連のセットアップは[docs/x-auto-post-setup.md](x-auto-post-setup.md)を参照**(このページのSTEP B以下は廃止済みの記録として残すのみ)。Instagram部分(下記STEP A)は引き続き有効。
+**2026-08-09追記: X(旧Twitter)部分は廃止・置き換え済み。** ZapierのCreate Tweetアクションは本文にURLを含めると読まれてしまいXのアルゴリズム上リーチが落ちる上、リプライスレッド(URLを2件目のリプライに逃がす形)も組めないという制約があったため、自前のPythonスクリプトに置き換えた。**X関連のセットアップは[docs/x-auto-post-setup.md](x-auto-post-setup.md)を参照**(このページのSTEP B以下は廃止済みの記録として残すのみ)。Facebook/Instagram/Threads部分(下記STEP A)は引き続き有効で、**2026-08-10〜chomoand.com・chomoand-0.comへの展開作業中**。
 
-記事を**公開(publish)したタイミング**で、X(旧Twitter)・Instagramへ自動投稿するための設定手順。2026-07-30にトモキから依頼があり、既存調査([docs/wordpress.mdのSNS自動連携](wordpress.md)、2026-07-05実施)をベースに本格導入した。
+記事を**公開(publish)したタイミング**で、Facebook・Instagram・Threads・X(旧Twitter)へ自動投稿するための設定手順。2026-07-30にトモキから依頼があり、既存調査([docs/wordpress.mdのSNS自動連携](wordpress.md)、2026-07-05実施)をベースに本格導入した。
 
 対象は3ブログ全て(chomoand.com・chomoand-0.com・chomoand-1.com)。投稿文は**タイトル+URLのシンプル型**。
 
@@ -10,26 +10,37 @@
 
 | SNS | 方式 | 理由 |
 |---|---|---|
-| Instagram | Jetpack Social(WordPress公式プラグイン) | 公開時に自動シェアする公式機能があり、外部サービス契約不要 |
-| X(旧Twitter) | ~~Zapier/Make/IFTTT等の外部連携~~ **→廃止、[docs/x-auto-post-setup.md](x-auto-post-setup.md)の自作スクリプトに置き換え(2026-08-09)** | Jetpack Socialは2023年にX対応を廃止済み。「WordPress New Post」→「X Create Tweet」で構築する予定だったが、リンク減点回避とリプライスレッドを実現するため自作に切り替えた |
+| Facebook / Instagram / Threads | Jetpack Social(WordPress公式プラグイン) | 1つのプラグイン接続で3ネットワークとも公開時に自動シェアできる公式機能があり、外部サービス契約不要 |
+| X(旧Twitter) | ~~Zapier/Make/IFTTT等の外部連携~~ **→廃止、[docs/x-auto-post-setup.md](x-auto-post-setup.md)の自作スクリプトに置き換え(2026-08-09)、さらにAPI課金化により2026-08-10〜手動投稿運用に変更** | Jetpack Socialは2023年にX対応を廃止済み |
 
-どちらもOAuth接続やアカウント作成はブラウザ操作が必要なため、**トモキ本人が手動で行う**(マツはAPI経由のプラグインインストールまでは実行済み・以降の接続作業はできない)。
+Facebook・Instagram・Threadsいずれも、アカウント連携・OAuth接続はブラウザ操作が必要なため**トモキ本人が手動で行う**(マツはAPI経由のプラグインインストール/有効化までは実行できるが、以降のOAuth接続作業はできない)。
 
-## 前提: プラグイン導入状況(2026-07-30時点)
+## サイトごとの現状(2026-08-10時点)
 
-- **chomoand.com**: `jetpack-social`プラグイン導入・有効化済み(既にJetpack接続もisActive:true)。Instagram連携が済んでいるかは要確認。
-- **chomoand-1.com**: 2026-07-30にマツがREST API経由で`jetpack-social`をインストール・有効化済み。Instagram連携は未実施。
-- **chomoand-0.com**: **DNS障害で外部から一時接続不可**(2026-07-30発見、原因と復旧手順は[docs/wordpress.md](wordpress.md)参照)。復旧後にプラグイン導入状況を確認すること。
+| サイト | プラグイン導入 | Facebook Page | Instagram | Threads | 自動共有ON |
+|---|---|---|---|---|---|
+| chomoand-1.com(コイキーズ) | ✅ | ✅ 「ちょものKo1keys情報局」 | ✅ @chomoand | ✅ chomoand | ✅(2026-08-02完了、稼働中) |
+| chomoand.com(トレンド) | ✅ 導入済み | 未着手 | 未接続 | 未接続 | ー |
+| chomoand-0.com(ジャニオタ) | 要確認(DNS障害で長期間確認不可だったが解消済み) | 未着手 | 未接続 | 未接続 | ー |
 
-## STEP A: Jetpack Social(Instagram)の接続 — サイトごとに実施
+chomoand-0.comのDNS障害(2026-07-30発見)は、実際にはXserver側ではなくトモキ自宅Wi-Fi回線(ZAQ/J:COM)のISP側DNS横取りが原因と判明し解消済み([docs/history.md](history.md)参照)。2026-08-10時点で`https://chomoand-0.com/wp-json/`への外部接続は正常(HTTP 200)なので、プラグイン導入から着手できる。
+
+## STEP A: Jetpack Social(Facebook/Instagram/Threads)の接続 — サイトごとに実施
+
+chomoand-1.comで実際にこの手順で接続できている(2026-08-02完了)。chomoand.com・chomoand-0.comも同じ手順で進める。
 
 1. 対象サイトの`wp-admin`にログイン(ユーザー: `b2bs61617@gmail.com`)
-2. 左メニュー「Jetpack」→「Social」(または「設定」→「共有」)を開く
-3. まだの場合、WordPress.comアカウントへの接続を求められるので接続する(Jetpackプラグイン自体の登録はAPI経由で完了済みだが、ソーシャル共有機能はWordPress.comアカウントとの紐付けが別途必要)
-4. 「Instagram Businessアカウントを接続」を選択し、Facebook経由でログイン
-   - **前提条件**: Instagramアカウントが「ビジネスアカウント」または「クリエイターアカウント」になっていて、Facebookページと連携済みであること。個人アカウントのままだと接続できない。未対応の場合はInstagramアプリの「設定」→「アカウントの種類とツール」からプロアカウントに切り替え、Facebookページと連携する
-5. 接続後、「新規投稿時に自動共有」を有効にする
-6. 各サイトで下書き記事を1本publishし、実際にInstagramへ投稿されるか動作確認する
+2. `jetpack-social`プラグインが未導入/無効化の場合はマツがREST API経由でインストール・有効化する(`.env`に該当サイトの`WP_*_USERNAME`/`WP_*_APP_PASSWORD`が必要。このPCの`.env`は現状`WP_TREND_*`・`WP_AUDITION_*`のUSERNAME/APP_PASSWORDが未設定なので、先にトモキが埋める必要あり)
+   - 過去にchomoand-1.comで「有効化したはずが確認時に無効化(inactive)状態に戻っていた」ことがあったので、疑わしい場合は`GET /wp-json/wp/v2/plugins`で`status`を確認すること
+3. 左メニュー「Jetpack」→「Social」(または「設定」→「共有」)を開く
+4. まだの場合、WordPress.comアカウントへの接続を求められるので接続する(Jetpackプラグイン自体の登録はAPI経由で完了済みでも、ソーシャル共有機能はWordPress.comアカウントとの紐付けが別途必要)
+5. **Facebookページを接続**
+   - 対象サイト用のFacebookページが無ければ先に新規作成する(個人のFacebookプロフィールだけでは接続先として認識されない。chomoand-1.comでは「No accounts/pages found」エラーになり、ページ作成後に解消した実績あり)
+6. **Instagram Businessアカウントを接続**
+   - **前提条件**: Instagramアカウントが「ビジネスアカウント」または「クリエイターアカウント」になっていて、上記5で作ったFacebookページと連携済みであること。個人アカウントのままだと接続できない。未対応の場合はInstagramアプリの「設定」→「アカウントの種類とツール」からプロアカウントに切り替え、Facebookページと連携する
+7. **Threadsアカウントを接続**(Instagramアカウントに紐づくThreadsアカウントとして接続される)
+8. 接続後、Facebook/Instagram/Threadsそれぞれについて「新規投稿時に自動共有」を有効にする(ネットワークごとに個別トグルなので、3つとも入れ忘れがないか確認する)
+9. 各サイトで下書き記事を1本publishし、実際にFacebook・Instagram・Threadsへ投稿されるか動作確認する
 
 ## STEP B: X(旧Twitter)の自動投稿 — Zapier等の外部連携【廃止済み・2026-08-09】
 
@@ -59,11 +70,16 @@ Zapierの無料プランはアカウント全体で月100タスクまで、か�
 
 ## 完了確認チェックリスト
 
-- [ ] chomoand.com: Instagram Business接続・自動共有ON・X用Zap作成
-- [ ] chomoand-0.com: DNS復旧後、Jetpack Socialプラグイン導入・Instagram Business接続・自動共有ON・X用Zap作成
+- [ ] chomoand.com: `.env`の`WP_TREND_USERNAME`/`WP_TREND_APP_PASSWORD`をトモキが設定(2026-08-10時点でこのPCの`.env`は未設定、マツがプラグイン状態を確認・操作するために必要)
+- [ ] chomoand.com: Facebookページ新規作成・Instagram Business接続・Threads接続・自動共有ON(3ネットワークとも)
+- [ ] chomoand-0.com: `.env`の`WP_AUDITION_USERNAME`/`WP_AUDITION_APP_PASSWORD`をトモキが設定
+- [ ] chomoand-0.com: Jetpack Socialプラグイン導入状況の確認(DNS障害は解消済み、2026-08-10時点で`https://chomoand-0.com/wp-json/`は正常応答)
+- [ ] chomoand-0.com: Facebookページ新規作成・Instagram Business接続・Threads接続・自動共有ON(3ネットワークとも)
 - [x] chomoand-1.com: Facebookページ「ちょものKo1keys情報局」新規作成・Instagram(@chomoand)連携・Threads(chomoand)連携・Jetpack Social接続完了(2026-08-02)
-- [ ] chomoand-1.com: X用Zap作成
+- [ ] chomoand-1.com: 直近の下書きpublishでFacebook/Instagram/Threadsに実際に投稿されるか再確認(過去にプラグインが無効化状態に戻っていたことがあるため)
 - [ ] chomoand-1.com: blog-uploadスキルでのアイキャッチ生成動作確認
+
+X用Zap作成は2026-08-10時点で対象外(X自動投稿はAPI課金化のため手動運用に変更済み、[docs/x-auto-post-setup.md](x-auto-post-setup.md)参照)。
 
 ### chomoand-1.com セットアップでのつまずきポイント(2026-08-02)
 
