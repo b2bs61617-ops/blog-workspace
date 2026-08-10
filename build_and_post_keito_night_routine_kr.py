@@ -215,43 +215,56 @@ blocks.append(wphtml('''<div class="swell-block-capbox cap_box is-style-small_tt
 아직 KEITO의 뷰티 지식에 익숙하지 않은 분들도, 이번 기회에 본편 영상도 함께 봐 보시는 건 어떨까요!</p>
 </div>
 </div>'''))
-blocks.append(p([
-    "KEITO에 대해서는, 이 블로그의 다른 기사에서도 자세히 소개하고 있습니다.",
-]))
-blocks.append(wphtml('''<ul>
+blocks.append(wphtml('''<div style="border:1px solid #f3caa0;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fff6ea;">
+<p style="margin:0 0 8px 0;"><strong>KEITO에 대해서는, 이 블로그의 다른 기사에서도 자세히 소개하고 있습니다.</strong></p>
+<ul style="margin:0;padding-left:1.2em;">
 <li><a href="https://chomoand-1.com/keito_work-10086" target="_blank" rel="noopener">회사원 시절 근무처를 조사한 기사</a></li>
 <li><a href="https://chomoand-1.com/keito_zoff-7563" target="_blank" rel="noopener">애용 안경 브랜드를 조사한 기사</a></li>
 <li><a href="https://chomoand-1.com/meimon-keitooo-71" target="_blank" rel="noopener">출신 고등학교・대학교 학력을 조사한 기사</a></li>
 <li><a href="https://chomoand-1.com/ono-keito-p101-68" target="_blank" rel="noopener">모델・크리에이터로서의 경력을 정리한 기사</a></li>
 <li><a href="https://chomoand-1.com/keito_no_item-109" target="_blank" rel="noopener">애용 스킨케어 아이템을 정리한 기사</a></li>
-</ul>'''))
+</ul>
+</div>'''))
 
 content = "\n\n".join(blocks)
 print("content chars:", len(content))
 
-JP_POST_ID = 11083
-JP_SLUG = "how-much-does-ko1keyz-keitos-f"
-KR_SLUG = JP_SLUG + "-kr"
-FEATURED_MEDIA = 11084
+EXISTING_KR_POST_ID = 11088
 
-payload = {
-    "title": title,
-    "content": content,
-    "slug": KR_SLUG,
-    "status": "draft",
-    "categories": [74, 78],
-    "author": 2,
-    "featured_media": FEATURED_MEDIA,
-    "lang": "ko",
-    "translations": {"ja": JP_POST_ID},
-}
-r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps(payload).encode("utf-8"),
-)
-r.raise_for_status()
-post = r.json()
-print("KR POST_ID", post["id"])
-print("KR SLUG", post["slug"])
+if EXISTING_KR_POST_ID:
+    payload = {"title": title, "content": content, "status": "draft"}
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_KR_POST_ID}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("UPDATED KR POST_ID", post["id"])
+else:
+    JP_POST_ID = 11083
+    JP_SLUG = "how-much-does-ko1keyz-keitos-f"
+    KR_SLUG = JP_SLUG + "-kr"
+    FEATURED_MEDIA = 11084
+    payload = {
+        "title": title,
+        "content": content,
+        "slug": KR_SLUG,
+        "status": "draft",
+        "categories": [74, 78],
+        "author": 2,
+        "featured_media": FEATURED_MEDIA,
+        "lang": "ko",
+        "translations": {"ja": JP_POST_ID},
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("KR POST_ID", post["id"])
+    print("KR SLUG", post["slug"])
+
 print("KR LINK", post["link"])

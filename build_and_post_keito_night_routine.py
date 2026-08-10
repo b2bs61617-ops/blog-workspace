@@ -245,16 +245,16 @@ blocks.append(wphtml('''<div class="swell-block-capbox cap_box is-style-small_tt
 まだKEITOの美容知識に詳しくないという人も、これをきっかけに本編の動画も見てみてはいかがでしょうか!</p>
 </div>
 </div>'''))
-blocks.append(p([
-    "KEITOについては、このブログの他の記事でも詳しく紹介しています。",
-]))
-blocks.append(wphtml('''<ul>
+blocks.append(wphtml('''<div style="border:1px solid #f3caa0;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fff6ea;">
+<p style="margin:0 0 8px 0;"><strong>KEITOについては、このブログの他の記事でも詳しく紹介しています。</strong></p>
+<ul style="margin:0;padding-left:1.2em;">
 <li><a href="https://chomoand-1.com/keito_work-10086" target="_blank" rel="noopener">会社員時代の勤務先を調査した記事</a></li>
 <li><a href="https://chomoand-1.com/keito_zoff-7563" target="_blank" rel="noopener">愛用メガネのブランドを調査した記事</a></li>
 <li><a href="https://chomoand-1.com/meimon-keitooo-71" target="_blank" rel="noopener">出身高校・大学の学歴を調査した記事</a></li>
 <li><a href="https://chomoand-1.com/ono-keito-p101-68" target="_blank" rel="noopener">モデル・クリエイターとしての経歴をまとめた記事</a></li>
 <li><a href="https://chomoand-1.com/keito_no_item-109" target="_blank" rel="noopener">愛用スキンケアアイテムをまとめた記事</a></li>
-</ul>'''))
+</ul>
+</div>'''))
 
 content = "\n\n".join(blocks)
 
