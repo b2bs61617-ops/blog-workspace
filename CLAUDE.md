@@ -88,7 +88,7 @@
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | Naverインデックス登録(`tools/naver_indexnow.py`) | コイキーズブログの記事公開時に自動送信(publishスキルから、2026-08-02〜)。IndexNowプロトコル使用、OAuth不要でGETのみ。**サイト直下へのキー検証ファイル設置だけトモキ本人が未実施**。未設定でも公開処理は止まらない。セットアップは[docs/naver-search-advisor-setup.md](docs/naver-search-advisor-setup.md) |
 | 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
-| SNS自動投稿 | 記事を**公開(publish)したタイミング**で3ブログ全てX/Instagramへ自動投稿(2026-07-30〜導入)。Instagram=Jetpack Socialプラグイン(chomoand.com・chomoand-1.comは導入済み、chomoand-0.comはDNS障害復旧後に導入)、セットアップは[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照。**X=`tools/x_auto_post.py`による自作投稿(2026-08-09〜、Zapierから移行)**。本文にURLを含めるとリーチが落ちる問題とリプライスレッドが組めない問題を解決するため、1件目=画像+フック文+タグ(URL無し)→2件目=1件目へのリプライでURLのみ、の2連投を自前実装。publishスキルから呼ばれる。サイトごとに別のXアカウント・別のDeveloper Appが必要、セットアップは[docs/x-auto-post-setup.md](docs/x-auto-post-setup.md)参照 |
+| SNS自動投稿 | 記事を**公開(publish)したタイミング**で自動投稿する仕組み(2026-07-30〜導入)。Instagram=Jetpack Socialプラグイン(chomoand.com・chomoand-1.comは導入済み、chomoand-0.comはDNS障害復旧後に導入)、セットアップは[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照。**X=`tools/x_auto_post.py`を実装済みだが2026-08-10時点で意図的に未使用(手動投稿運用)**。2026年のX API Pay-Per-Use化で「URL付き投稿$0.20/件」という単価になったため、ユーザー判断で自動投稿は当面見送り、publishスキルが手動投稿用のフック文・ハッシュタグ案を提示する運用にした。経緯・料金詳細・手動投稿手順は[docs/x-auto-post-setup.md](docs/x-auto-post-setup.md)参照。次の自動化ターゲットはInstagram(カルーセル対応)を検討中 |
 
 ## テスト
 
