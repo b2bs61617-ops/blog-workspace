@@ -127,6 +127,35 @@ How to apply: ロケ地特定・グルメ特定・複数の出来事を時系列
 
 `x.com`のツイートURLはWebFetchで直接取得しようとすると402エラーになりやすい。1件のツイートのテキスト・投稿者名・投稿日時・画像URル(原寸)だけサクッと知りたい場合は、Xiyツールを起動しなくても`https://api.fxtwitter.com/{ユーザー名}/status/{ID}`をWebFetchすれば取得できる。画像は`https://pbs.twimg.com/media/xxxxx.jpg?name=orig`の形で原寸URLが返る。複数投稿をまとめて深掘りする調査には引き続き[sns-researchスキル](../.claude/skills/sns-research/SKILL.md)のXiyツールを使う。
 
+## 本文中の強調・ボックス装飾ルール(2026-08-11追加)
+
+結論・重要な数字など、本文中で目立たせたい箇所を強調する際のルール。
+
+- **強調はSWELLの「マーカー」機能(`<span class="swl-marker mark_◯◯">`)を使う。** `border-bottom`など独自CSSでの下線は使わない(宮近海斗のカルティエ腕時計記事で最初`border-bottom`のインラインstyleを使ったところ、ユーザーから「線これじゃない、色付きのやつ」と指摘され、SWELL標準のマーカーに差し替えて解決した)。基本形は`<strong><span class="swl-marker mark_◯◯">テキスト</span></strong>`(`<p>`内、`wp:paragraph`のままでよく`wp:html`で囲む必要はない。マーカーはCSSのみで動作するため、`swell-block-capbox`のようなJS依存のブロックとは違い`wp:html`内でも問題なく表示される)。
+- **SWELL標準のマーカー色は黄(`mark_yellow`)・オレンジ(`mark_orange`)・ピンク(`mark_pink`)・青(`mark_blue`)・緑(`mark_green`)の5色のみ。赤(`mark_red`)は存在しない。**
+- **Travis Japanメンバーの記事で強調色を選ぶときは、[docs/eyecatch-style.mdのメンバーカラー表](eyecatch-style.md#travis-japanメンバーカラー適用2026-08-09ユーザー指示)に対応するマーカー色を使う(赤は非対応のためピンクで代用)。**
+  | メンバー | 公式カラー | マーカークラス |
+  |---|---|---|
+  | 宮近海斗 | 赤 | `mark_pink`(赤が無いため代用) |
+  | 中村海人 | 緑 | `mark_green` |
+  | 七五三掛龍也 | ピンク | `mark_pink` |
+  | 川島如恵留 | 白 | 該当色なし。強調したい場合はオレンジ等で代用するかユーザーに確認 |
+  | 吉澤閑也 | 黄 | `mark_yellow` |
+  | 松田元太 | 青 | `mark_blue` |
+  | 松倉海斗 | オレンジ | `mark_orange` |
+- さらに目立たせたい場合は`style="font-size:1.15em;"`をマーカーの`<span>`に追加してよい(太字+マーカー+一回り大きい文字の3点セット)。
+- **関連記事の内部リンクが3件以上並ぶ文章は、地の文に埋め込まず箱(ボーダー+左アクセント線+薄い背景色)+箇条書きに変える方が読みやすい。** Travis Japanメンバーの記事では、この箱の配色もメンバーカラーのパステル版に合わせる(例: 宮近海斗なら`border:1px solid #f3d6d6;border-left:4px solid #ef9a9a;background:#fdf3f3;`)。まとめセクションの箇条書きも同じ箱スタイルで統一してよい。
+  ```html
+  <div style="border:1px solid #f3d6d6;border-left:4px solid #ef9a9a;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fdf3f3;">
+  <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">◯◯の私物特定記事</p>
+  <ul style="margin:0;padding-left:1.3em;">
+  <li><a href="...">記事名</a></li>
+  </ul>
+  </div>
+  ```
+- Why: 宮近海斗のカルティエ腕時計記事(chomoand-0.com記事ID689)で、結論部分の強調・関連記事リンクの見せ方・まとめの箱について複数回のユーザー指示でこのスタイルに固まった。「メンバーカラーに絡めて」という指示があったため、以降Travis Japan記事全般でこの配色ルールを標準にする。
+- How to apply: Travis Japanメンバー個人の記事で本文強調・関連記事ボックス・まとめボックスを作るときは、上記マーカー色表とパステル配色をデフォルトとして使う。他グループ(KO1KEYZなど)の記事でメンバーカラーを絡めた強調をしたい場合も同じ考え方(マーカー色を公式カラーに一番近いものへ寄せる)を援用してよい。
+
 ## 絵文字について
 
 WordPress記事本文で絵文字(🔵❤️💚など)がうまく表示されない場合がある。色や項目を表す際は絵文字ではなく、文字(色名・太字・括弧書きなど)で表現する。
