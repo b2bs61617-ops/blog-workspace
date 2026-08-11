@@ -68,6 +68,23 @@ Zapierの無料プランはアカウント全体で月100タスクまで、か�
 
 2026-07-24〜「アイキャッチ画像は作らない」方針だったが、Instagram自動投稿にはアイキャッチ画像(featured_media)が実質必須なため、2026-07-30に**方針を終了し、SNS投稿を兼ねてアイキャッチを復活**させた。[blog-uploadスキルSTEP4](../.claude/skills/blog-upload/SKILL.md)で`tools/eyecatch_koikeyz.py`を使い生成し、featured_mediaとして設定する(記事ページ上にも表示されることを許容する判断)。
 
+## SNS投稿の画像・投稿文カスタマイズ(2026-08-11〜、コイキーズで試験導入)
+
+トモキから「SNS投稿の画像は記事内の写真、投稿文は内容の要約にしたい」と依頼があり、調査した結果を踏まえてコイキーズ限定で導入した。
+
+**調査結果:**
+- Jetpack Socialには投稿ごとに共有文をカスタマイズできる無料の仕組みがある(post meta `jetpack_publicize_message`。未設定時はWordPressの自動抜粋が使われる)
+- 一方、**featured_media(アイキャッチ)とは別の画像をSNS共有専用に指定する機能は、Jetpack Socialの有料プラン(1サイト月$4.95〜9.95)限定**と判明([jetpack.com公式サポート](https://jetpack.com/support/jetpack-social-organic-content-sharing/)で確認)
+- さらに無料プランは**月間30シェアまでの上限**があると判明([WP Tavernの記事](https://wptavern.com/jetpack-social-plugin-adds-paid-plan-free-users-now-limited-to-30-shares-per-month)。1記事を3ネットワークに共有すると3シェア消費するため、3ネットワーク接続済みのコイキーズは実質月10記事程度で無料枠に達する計算)
+- 有料プラン加入も選択肢として提示したが、トモキの判断で**無料の代替案(featured_media自体を記事内の写真に差し替える)を採用**
+
+**採用した方式:**
+- 投稿文: `jetpack_publicize_message`にマツが書いた要約文(100〜140字)をセット。[blog-uploadスキルSTEP3.5](../.claude/skills/blog-upload/SKILL.md)参照
+- 画像: 記事本文中に埋め込んだ写真([画像埋め込みルール](rules.md#画像埋め込みルール必ずxの画像を使う2026-07-27にユーザー指示)でメディアライブラリにアップロード済みのもの)のうち、本文中に最初に登場する1枚をfeatured_mediaとして使う。記事ページ自体のアイキャッチ表示もこの写真に変わる(ブランド統一グラフィックではなくなる)
+- 本文中に使える写真が無い記事(文章のみのwiki記事など)は、従来通り`tools/eyecatch_koikeyz.py`の生成アイキャッチにフォールバックする
+- **2026-08-11時点でコイキーズ(chomoand-1.com)限定の試験導入**。動作確認(実際にFacebook/Instagram/Threadsで記事内写真+要約文が投稿されるか)ができたら、chomoand.com・chomoand-0.comへの展開を検討する。両サイトは各サイトごとのFacebook/Instagram/Threads接続自体もこれから([前述の完了確認チェックリスト](#完了確認チェックリスト)参照)なので、接続完了後に改めて判断する
+- 月間30シェア上限は無料のまま運用する場合、記事本数が多い月に上限を超える可能性がある。超えた場合の挙動(超過分は共有されないだけか、エラーになるか)は未検証。上限超過が頻発するようなら改めて有料プラン加入をトモキに相談すること
+
 ## 完了確認チェックリスト
 
 - [ ] chomoand.com: `.env`の`WP_TREND_USERNAME`/`WP_TREND_APP_PASSWORD`をトモキが設定(2026-08-10時点でこのPCの`.env`は未設定、マツがプラグイン状態を確認・操作するために必要)

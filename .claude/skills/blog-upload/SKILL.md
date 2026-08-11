@@ -60,9 +60,19 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - 送信は`[System.Text.Encoding]::UTF8.GetBytes($json)`でバイト列化してから`Invoke-RestMethod -Body`に渡す
 - Python(`wp_upload_batch.py`)を使う場合は`.env`から`WP_<SITE>_URL`等を読み込む実装済みなのでそのまま使える
 
+## STEP 3.5: SNS投稿文の作成(コイキーズ限定・試験導入、2026-08-11〜)
+
+Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socialが実行)で使われる投稿文をカスタマイズする。未設定のままだとWordPressが本文の先頭を機械的に切っただけの文(自動抜粋)が使われてしまうため、記事内容を踏まえてマツが100〜140字程度の簡潔な要約文を作成する。
+
+- 要約文は記事の結論・一番の見どころを冒頭に置き、タイトルの言い換えで終わらせない(タイトルはSNS投稿の別枠で自動的に見えるプラットフォームもあるため、要約文自体に情報量を持たせる)
+- 絵文字は使わない([docs/rules.md](../../../docs/rules.md)の文体ルールに準拠)
+- STEP3の投稿データに`meta`フィールドとして含める: `{ ..., "meta": { "jetpack_publicize_message": "{要約文}" } }`(STEP3のPOST時に一緒に送るか、STEP3完了後に記事IDへ`POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ`{ "meta": { "jetpack_publicize_message": "{要約文}" } }`で追送してもよい)
+- 試験導入としてコイキーズのみ対象。他2サイトはこの後の動作確認次第で拡大する
+
 ## STEP 4: アイキャッチ画像の生成
 
-- **chomoand-1.com(コイキーズブログ)は`tools/eyecatch_koikeyz.py`で生成する**(2026-07-24〜「アイキャッチを作らない」方針だったが、2026-07-30にSNS自動投稿(Instagram/Jetpack Social)の画像必須要件のため方針終了・復活。詳細は[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`)。生成した画像はSTEP5で通常通りfeatured_mediaに設定する(記事ページ上にも表示される)。
+- **chomoand-1.com(コイキーズブログ)は、記事本文中に[画像埋め込みルール](../../../docs/rules.md#画像埋め込みルール必ずxの画像を使う2026-07-27にユーザー指示)で埋め込んだ写真があれば、その中で本文中に最初に登場する1枚をfeatured_mediaとして使う(2026-08-11〜、SNS自動投稿の画像をブランド統一グラフィックではなく記事内の実写真にする方針変更。試験導入としてコイキーズのみ対象、他2サイトはこの後の動作確認次第で拡大)。その写真はSTEP1で画像埋め込みルールに従いWordPressメディアライブラリへアップロード済みのため、**新たに画像を生成・アップロードする必要はない**。既に控えてあるそのメディアIDをそのままSTEP5で使う
+  - **本文中に使える写真が1枚もない記事(文章のみのwiki記事など)は、従来通り`tools/eyecatch_koikeyz.py`で生成する**(2026-07-24〜「アイキャッチを作らない」方針だったが、2026-07-30にSNS自動投稿(Instagram/Jetpack Social)の画像必須要件のため方針終了・復活。詳細は[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`)
 - **chomoand.comの記事は必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
   - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)
   - 3つの独立したテキスト要素(1行目=番組名/2行目=出演者名/3〜4行目=疑問形+補足)を`replace_text`で置換する(KO1KEYZと違い要素が分かれているのでフォントサイズが飛ぶ心配はない)
@@ -74,8 +84,8 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定
 
-- 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)
-- 取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
+- **STEP4で記事内の写真を使うことになった場合(コイキーズ・写真ありの記事)**: 新規アップロードは不要。STEP1で取得済みのそのメディアIDをそのままSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
+- **STEP4で生成アイキャッチを使うことになった場合(それ以外)**: 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)。取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 
 ## STEP 0(chomoand-1.com限定・作業開始時に1回): 韓国語版の抜け漏れチェック
 
@@ -92,4 +102,4 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP2→STEP3→STEP4→STEP5→STEP6、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Instagram/Jetpack Social・X/Zapier)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
