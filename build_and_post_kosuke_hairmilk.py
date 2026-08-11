@@ -101,35 +101,34 @@ def wphtml(raw):
     return f"<!-- wp:html -->\n{raw}\n<!-- /wp:html -->"
 
 
+ACCENT = "#d94f4f"  # KOSUKEのメンバーカラー(赤)
+
+
 def capbox(ttl, rows, style="is-style-small_ttl"):
     tds = "\n".join(
         f'<tr><td style="border:1px solid #ccc;padding:8px 12px;background:#f0f0f0;white-space:nowrap;">{k}</td>'
         f'<td style="border:1px solid #ccc;padding:8px 12px;">{v}</td></tr>'
         for k, v in rows
     )
-    return wphtml(f'''<div class="swell-block-capbox cap_box {style}">
-<div class="cap_box_ttl">{ttl}</div>
-<div class="cap_box_content">
+    return wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{ttl}</p>
 <table style="border-collapse:collapse;width:100%;"><tbody>
 {tds}
 </tbody></table>
-</div>
 </div>''')
 
 
 def capbox_list(ttl, items, style="is-style-small_ttl"):
     lis = "\n".join(f"<li>「{t}」</li>" for t in items)
-    return wphtml(f'''<div class="swell-block-capbox cap_box {style}">
-<div class="cap_box_ttl">{ttl}</div>
-<div class="cap_box_content">
-<ul>
+    return wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{ttl}</p>
+<ul style="margin:0;padding-left:1.2em;">
 {lis}
 </ul>
-</div>
 </div>''')
 
 
-title = "KO1KEYZ康祐のヘアミルクは?ナイトルーティンで判明"
+title = "KO1KEYZ KOSUKEのヘアミルクは?ナイトルーティンで判明"
 
 blocks = []
 
@@ -233,18 +232,16 @@ blocks.append(p([
 blocks.append(hr())
 
 blocks.append(h2("まとめ"))
-blocks.append(wphtml('''<div class="swell-block-capbox cap_box is-style-small_ttl">
-<div class="cap_box_ttl">KOSUKEのヘアミルクまとめ</div>
-<div class="cap_box_content">
-<p class="has-border -border02 wp-block-paragraph">
+blocks.append(wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">KOSUKEのヘアミルクまとめ</p>
+<p style="margin:0 0 10px 0;">
 ✔ <strong>使用アイテム</strong>:&PAIR コントロール リペア 2in1 ヘアミルクミスト(150mL・1,595円)<br>
 ✔ <strong>使い方</strong>:ドライヤー前にミルク状でうるおいキープ、朝はミスト状で寝癖直しにも使える2way式<br>
 ✔ <strong>ブランド背景</strong>:『PRODUCE 101 JAPAN 新世界』の協賛パートナー、練習生時代から馴染みのあるアイテム<br>
 ✔ <strong>ルーティンの見どころ</strong>:シートパックやDAIKIから借りたクリームなど、丁寧なスキンケアとメンバー同士の交流
 </p>
-<p>ダンス実力派のイメージが強いKOSUKEですが、ナイトルーティンでは美容にも手を抜かない丁寧さが印象的でした。<br>
+<p style="margin:0;">ダンス実力派のイメージが強いKOSUKEですが、ナイトルーティンでは美容にも手を抜かない丁寧さが印象的でした。<br>
 気になった人は、ぜひ本編の動画もチェックしてみてはいかがでしょうか!</p>
-</div>
 </div>'''))
 blocks.append(wphtml('''<div style="border:1px solid #f0b4b4;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fdecec;">
 <p style="margin:0 0 8px 0;"><strong>KOSUKEやKO1KEYZについては、このブログの他の記事でも詳しく紹介しています。</strong></p>
@@ -283,7 +280,7 @@ EXISTING_POST_ID = 11136
 SUMMARY = "KO1KEYZ照井康祐のナイトルーティン動画で判明したヘアミルクは&PAIR製。150mL1,595円の2way式で、ドライヤー前はミルク状、朝はミスト状と使い分けられる人気アイテムです。"
 
 if EXISTING_POST_ID:
-    payload = {"content": content, "status": "draft"}
+    payload = {"title": title, "content": content, "status": "draft"}
     r = requests.post(
         f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_POST_ID}",
         headers={**HEADERS_AUTH, "Content-Type": "application/json"},
@@ -316,13 +313,15 @@ else:
 
 print("PREVIEW", f"{WP_URL}/?p={post['id']}")
 
+EYECATCH_MEDIA_ID = 11154  # tools/eyecatch_koikeyz.pyで生成したデザインアイキャッチ
+
 featured_r = requests.post(
     f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps({"featured_media": img1_media["id"], "status": "draft"}).encode("utf-8"),
+    data=json.dumps({"featured_media": EYECATCH_MEDIA_ID, "status": "draft"}).encode("utf-8"),
 )
 featured_r.raise_for_status()
-print("FEATURED_MEDIA set to", img1_media["id"])
+print("FEATURED_MEDIA set to", EYECATCH_MEDIA_ID)
 
 with open(ROOT / "tmp_kosuke_hairmilk_postid.txt", "w", encoding="utf-8") as f:
     f.write(str(post["id"]))

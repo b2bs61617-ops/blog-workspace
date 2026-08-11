@@ -45,31 +45,30 @@ def wphtml(raw):
     return f"<!-- wp:html -->\n{raw}\n<!-- /wp:html -->"
 
 
+ACCENT = "#d94f4f"  # KOSUKE의 멤버컬러(빨강)
+
+
 def capbox(ttl, rows, style="is-style-small_ttl"):
     tds = "\n".join(
         f'<tr><td style="border:1px solid #ccc;padding:8px 12px;background:#f0f0f0;white-space:nowrap;">{k}</td>'
         f'<td style="border:1px solid #ccc;padding:8px 12px;">{v}</td></tr>'
         for k, v in rows
     )
-    return wphtml(f'''<div class="swell-block-capbox cap_box {style}">
-<div class="cap_box_ttl">{ttl}</div>
-<div class="cap_box_content">
+    return wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{ttl}</p>
 <table style="border-collapse:collapse;width:100%;"><tbody>
 {tds}
 </tbody></table>
-</div>
 </div>''')
 
 
 def capbox_list(ttl, items, style="is-style-small_ttl"):
     lis = "\n".join(f"<li>「{t}」</li>" for t in items)
-    return wphtml(f'''<div class="swell-block-capbox cap_box {style}">
-<div class="cap_box_ttl">{ttl}</div>
-<div class="cap_box_content">
-<ul>
+    return wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{ttl}</p>
+<ul style="margin:0;padding-left:1.2em;">
 {lis}
 </ul>
-</div>
 </div>''')
 
 
@@ -102,7 +101,7 @@ img1_html = build_img_html(11133, "KOSUKE가 머리에 헤어밀크를 바르고
 img2_html = build_img_html(11134, "KOSUKE가 시트팩을 붙이고 있는 장면", VIDEO_CAPTION)
 img3_html = build_img_html(11135, "KOSUKE가 DAIKI에게 빌린 크림을 바르는 장면", VIDEO_CAPTION)
 
-title = "KO1KEYZ 코스케의 헤어밀크는?나이트루틴서 공개"
+title = "KO1KEYZ KOSUKE의 헤어밀크는?나이트루틴서 공개"
 
 blocks = []
 
@@ -206,18 +205,16 @@ blocks.append(p([
 blocks.append(hr())
 
 blocks.append(h2("정리"))
-blocks.append(wphtml('''<div class="swell-block-capbox cap_box is-style-small_ttl">
-<div class="cap_box_ttl">KOSUKE 헤어밀크 정리</div>
-<div class="cap_box_content">
-<p class="has-border -border02 wp-block-paragraph">
+blocks.append(wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">KOSUKE 헤어밀크 정리</p>
+<p style="margin:0 0 10px 0;">
 ✔ <strong>사용 아이템</strong>:&PAIR 컨트롤 리페어 2in1 헤어밀크 미스트(150mL・1,595엔)<br>
 ✔ <strong>사용법</strong>:드라이어 전 밀크 타입으로 보습 유지, 아침에는 미스트 타입으로 헝클어진 머리 정리에도 사용 가능한 2way 방식<br>
 ✔ <strong>브랜드 배경</strong>:『PRODUCE 101 JAPAN 新世界』의 공식 협찬 파트너, 연습생 시절부터 익숙한 아이템<br>
 ✔ <strong>루틴의 볼거리</strong>:시트팩과 DAIKI에게 빌린 크림 등, 꼼꼼한 스킨케어와 멤버 간의 교류
 </p>
-<p>댄스 실력파의 이미지가 강한 KOSUKE지만, 나이트루틴에서는 뷰티에도 소홀하지 않은 꼼꼼함이 인상적이었습니다.<br>
+<p style="margin:0;">댄스 실력파의 이미지가 강한 KOSUKE지만, 나이트루틴에서는 뷰티에도 소홀하지 않은 꼼꼼함이 인상적이었습니다.<br>
 관심이 생긴 분들은, 꼭 본편 영상도 확인해 보시는 건 어떨까요!</p>
-</div>
 </div>'''))
 blocks.append(wphtml('''<div style="border:1px solid #f0b4b4;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fdecec;">
 <p style="margin:0 0 8px 0;"><strong>KOSUKE와 KO1KEYZ에 대해서는, 이 블로그의 다른 기사에서도 자세히 소개하고 있습니다.</strong></p>
@@ -233,8 +230,9 @@ content = "\n\n".join(blocks)
 print("content chars:", len(content))
 
 EXISTING_KR_POST_ID = 11139
+EYECATCH_MEDIA_ID = 11154  # tools/eyecatch_koikeyz.pyで生成したデザインアイキャッチ(JP版と共通)
 
-payload = {"title": title, "content": content, "status": "draft"}
+payload = {"title": title, "content": content, "status": "draft", "featured_media": EYECATCH_MEDIA_ID}
 r = requests.post(
     f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_KR_POST_ID}",
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
