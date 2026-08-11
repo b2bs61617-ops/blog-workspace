@@ -37,9 +37,9 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 **初回運用時の確認**: このルールは実際にSWELLのブロック仕様を検証した上でのものではなく、標準的なGutenbergブロックコメント構文に基づく最善の推測。次にこのSTEPを使って記事を投稿したら、`context=edit`でPOST後の`content.raw`を確認し、可能であればユーザーに管理画面のブロックエディタで開いて崩れ(「不正なコンテンツ」警告など)が出ていないか確認してもらう。問題があればこのSTEPのルールを修正する。
 
-**既知の不具合(2026-08-06判明): chomoand-0.comで`swell-block-capbox`が`<!-- wp:html -->`内だと無枠で表示される**。宮近海斗のApple Watch記事(記事ID428)で、`is-style-small_ttl`・`is-style-onborder_ttl`のどちらも、タイトル行+本文が枠線・背景色なしのただのプレーンテキストとして表示される不具合をユーザーがプレビュー画面で確認・報告した。SWELLのcapbox用CSS/JSが、実際の`swell/capbox`ブロックがページ内に存在する場合のみ読み込まれ、`wp:html`(カスタムHTMLブロック)経由で流し込んだ生divには適用されない可能性が高い。
-- **回避策**: capbox風の見た目が欲しい箇所は、クラス名(`swell-block-capbox`等)に頼らず、`<div style="border:1px solid #ddd;border-left:4px solid #1a3c4c;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">`のようなインラインstyleで直接枠・背景を指定する(タイトル部分は`<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">`)。表(`swl-marker`ではなくtable)側で既にインラインstyle方式に切り替え済みなのと同じ考え方。
-- **How to apply**: chomoand-0.com向けに新しくcapboxを使う記事を書くときは、まずこのインラインstyle版を使う。もし将来的に`swell-block-capbox`のクラスベースで正常表示されるケースを確認できたら(例えばテーマ側の対応が入った等)、この回避策の要否を見直す。chomoand-1.com(コイキーズ)側で同じ不具合が起きるかは未確認(2026-08-06時点)。
+**既知の不具合(2026-08-06判明、2026-08-11にchomoand-1.comでも確認): `swell-block-capbox`が`<!-- wp:html -->`内だと無枠で表示される**。宮近海斗のApple Watch記事(chomoand-0.com記事ID428)で、`is-style-small_ttl`・`is-style-onborder_ttl`のどちらも、タイトル行+本文が枠線・背景色なしのただのプレーンテキストとして表示される不具合をユーザーがプレビュー画面で確認・報告した。SWELLのcapbox用CSS/JSが、実際の`swell/capbox`ブロックがページ内に存在する場合のみ読み込まれ、`wp:html`(カスタムHTMLブロック)経由で流し込んだ生divには適用されない可能性が高い。**2026-08-11、KO1KEYZの部屋割り予想記事(chomoand-1.com記事ID11122/11125)でも同じ無枠表示になることをユーザーが確認**しており、chomoand-0.com限定の不具合ではなく両サイト(SWELLテーマ共通)の問題と判明した。
+- **回避策**: capbox風の見た目が欲しい箇所は、クラス名(`swell-block-capbox`等)に頼らず、`<div style="border:1px solid #ddd;border-left:4px solid {アクセント色};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">`のようなインラインstyleで直接枠・背景を指定する(タイトル部分は`<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">`)。タイトルバー型(見出し行に背景色を敷くパターン)も同様に`<p style="...;padding:10px 18px;background:{アクセント色};color:#fff;">`+その下に`<ul>`/`<div>`をインラインstyleで続ける形にする。表(`swl-marker`ではなくtable)側で既にインラインstyle方式に切り替え済みなのと同じ考え方。KO1KEYZ記事でアクセント色を選ぶときは[docs/rules.mdの「UIボックスのアクセントカラーはメンバーカラーと被らせない」](../../../docs/rules.md#uiボックスのアクセントカラーはメンバーカラーと被らせないko1keyz2026-08-11追加)を参照。
+- **How to apply**: chomoand-0.com・chomoand-1.comどちらでも、新しくcapboxを使う記事を書くときは最初からこのインラインstyle版を使う(クラスベースの`swell-block-capbox`は`wp:html`経由では使わない)。もし将来的にクラスベースで正常表示されるケースを確認できたら(テーマ側の対応が入った等)、この回避策の要否を見直す。
 
 ## STEP 2: スラッグの生成
 
