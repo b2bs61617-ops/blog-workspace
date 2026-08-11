@@ -6,7 +6,8 @@ STEP3で使う。各クリップを1080x1920にスケール+パディングし�
 場合のみミックスする(著作権フリー音源は同梱していないので、トモキが用意したファイルを
 指定する運用)。
 
-前提: ffmpegが必要(`brew install ffmpeg`)。セットアップ手順はdocs/shorts-video-setup.md参照。
+前提: ffmpegが必要。標準の`ffmpeg`フォーミュラにはdrawtextフィルタ(freetype)が
+入っていないため`brew install ffmpeg-full`を使うこと。セットアップ手順はdocs/shorts-video-setup.md参照。
 
 使い方:
   python tools/shorts/video_maker.py --clips tools/shorts/downloads/xxx/clip_01.mp4 \\

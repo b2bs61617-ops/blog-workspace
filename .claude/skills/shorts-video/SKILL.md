@@ -11,7 +11,7 @@ description: 「ショート動画にして」「TikTok用の動画作って」�
 
 ## 前提条件
 
-`ffmpeg`・`yt-dlp`が必要。未セットアップの場合は先に[docs/shorts-video-setup.md](../../../docs/shorts-video-setup.md)の手順を案内する。
+`ffmpeg-full`(標準の`ffmpeg`だとdrawtextフィルタが無く失敗する)・`yt-dlp`が必要。このMacは2026-08-11にセットアップ・動作確認済み。他のPCで未セットアップの場合は先に[docs/shorts-video-setup.md](../../../docs/shorts-video-setup.md)の手順を案内する。
 
 ## 著作権・規約についての注記(毎回必ず伝える)
 

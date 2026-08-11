@@ -1,48 +1,60 @@
 # ショート動画生成パイプラインのセットアップ手順
 
-**現在の状態(2026-08-11)**: 未セットアップ。このMacには`Homebrew`・`ffmpeg`・`yt-dlp`のいずれも入っていない。実装([tools/shorts/](../tools/shorts/)・[shorts-videoスキル](../.claude/skills/shorts-video/SKILL.md))は完了しているが、下記1・2のインストールをまだ実行していない。
+**現在の状態(2026-08-11)**: セットアップ完了・動作確認済み。このMacにHomebrew・`ffmpeg-full`・`yt-dlp`を導入し、実際にKO1KEYZ関連のX投稿動画1本でダウンロード→縦型変換→テキスト焼き込みの一連の流れを確認した(下記3の実績)。
 
 **Why:** [shorts-videoスキル](../.claude/skills/shorts-video/SKILL.md)でKO1KEYZ(chomoand-1.com)の記事をTikTok/YouTube Shorts向け動画に変換するための前提ツール。動画ダウンロードに`yt-dlp`、縦型変換・テキスト焼き込み・BGMミックスに`ffmpeg`を使う。
 
-## 1. Homebrewのインストール(未実施・要トモキ確認)
+## 1. Homebrewのインストール
 
-このMacにはHomebrew自体が入っていない。インストールはシステム全体に影響する操作(`/opt/homebrew`配下にツール群が入る)なので、**マツが実行する前に一声かけてから進める**。
+システム全体に影響する操作(`/opt/homebrew`配下にツール群が入る)で、かつ管理者(sudo)権限が必要なため、**トモキ本人がターミナルで実行する**(2026-08-11実施済み・このMacでは完了)。
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-インストール後、ターミナルの案内に従って`PATH`にHomebrewを追加する(Apple Siliconなら`/opt/homebrew/bin`)。
+新しいPCでセットアップする場合、インストール後に`~/.zprofile`へ以下を追加する(このMacでは追加済み):
+```
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
 
-## 2. ffmpeg・yt-dlpのインストール
+## 2. ffmpeg-full・yt-dlpのインストール
 
-Homebrewが使えるようになったら:
+**注意: 標準の`ffmpeg`フォーミュラには`drawtext`フィルタ(テキスト焼き込みに必須)が入っていない**(freetype/fontconfigがビルドに含まれていないため、`brew install ffmpeg`だけだと`No such filter: 'drawtext'`で失敗する。2026-08-11判明)。必ず`ffmpeg-full`を入れる。
 
 ```
-brew install ffmpeg
+brew install ffmpeg-full
 pip3 install yt-dlp
+```
+
+`ffmpeg-full`は`ffmpeg`と衝突するためkeg-only(自動でPATHに乗らない)。`~/.zshrc`へ以下を追加する(このMacでは追加済み):
+```
+export PATH="/opt/homebrew/opt/ffmpeg-full/bin:$PATH"
 ```
 
 確認:
 ```
 ffmpeg -version
+ffmpeg -filters | grep drawtext   # 何か表示されればOK
 yt-dlp --version
 ```
 
-## 3. 動作確認
+## 3. 動作確認(2026-08-11実施済み)
 
-KO1KEYZの動画付きX投稿を1件用意し、一連の流れを通してみる:
+KO1KEYZ関連のX投稿(KEITOナイトルーティン動画の転載、69.9秒)で実際に通した:
 
 ```
 python tools/shorts/clip_downloader.py --url "https://x.com/xxx/status/xxx" --slug test_sample
 python tools/shorts/video_maker.py --clips tools/shorts/downloads/test_sample/clip_01.mp4 \
-    --text "テスト動画だワン" --out tools/shorts/output/test_sample.mp4
+    --text "美顔器がスゴい:これマジ!?" --out tools/shorts/output/test_sample.mp4
 ```
 
-`tools/shorts/output/test_sample.mp4`をQuickLook等で再生し、以下を確認する:
-- 縦型(9:16、1080x1920)になっているか
-- 冒頭にテキストが読める形で焼き込まれているか
-- 尺が60秒以内に収まっているか
+`ffprobe`で出力(`tools/shorts/output/test_sample.mp4`)を確認した結果:
+- 1080x1920(縦型9:16)、h264、59.97秒(60秒トリム通り)
+- フレームを切り出して目視確認、冒頭のテキストオーバーレイ(コロン込みのエスケープ処理も含め)が正しく焼き込まれていることを確認済み
+
+**注意点(判明した制約)**:
+- 全てのX投稿に動画があるわけではない(画像のみの投稿も多い)。事前にXiyの収集データや投稿を目視で確認してから動画付きの投稿URLを選ぶこと
+- 一部のツイート(KO1KEYZ公式アカウントの投稿で発生)で`HTTP Error 403: Forbidden`になるケースを確認した。原因未特定(投稿ごとに発生有無が変わる、ログイン必須の設定やyt-dlp側の一時的な問題の可能性)。失敗した場合は別の投稿URLで試すか、時間を置いて再試行する
 
 ## Instagram投稿がダウンロードできない場合
 
