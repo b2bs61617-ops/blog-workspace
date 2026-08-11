@@ -128,7 +128,7 @@ def capbox_list(ttl, items, style="is-style-small_ttl"):
 </div>''')
 
 
-title = "KO1KEYZ KOSUKEのヘアミルクは?ナイトルーティンで判明"
+title = "【KO1KEYZ】KOSUKEのヘアミルクは?ナイトルーティンで判明"
 
 blocks = []
 

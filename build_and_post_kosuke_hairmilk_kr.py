@@ -101,7 +101,7 @@ img1_html = build_img_html(11133, "KOSUKE가 머리에 헤어밀크를 바르고
 img2_html = build_img_html(11134, "KOSUKE가 시트팩을 붙이고 있는 장면", VIDEO_CAPTION)
 img3_html = build_img_html(11135, "KOSUKE가 DAIKI에게 빌린 크림을 바르는 장면", VIDEO_CAPTION)
 
-title = "KO1KEYZ KOSUKE의 헤어밀크는?나이트루틴서 공개"
+title = "【KO1KEYZ】KOSUKE의 헤어밀크는?나이트루틴서 공개"
 
 blocks = []
 
