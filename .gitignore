@@ -38,6 +38,10 @@ tools/koikeyz-youtube-monitor/frames/
 images/*_video_frame.jpg
 images/*_video_frame.png
 
+# ショート動画パイプライン(tools/shorts/)のダウンロード素材・生成物(著作権のある動画のためリポジトリに含めない。ローカルのみ残す方針)
+tools/shorts/downloads/
+tools/shorts/output/
+
 # Pythonキャッシュ
 __pycache__/
 *.pyc
