@@ -13,7 +13,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - マークダウン→HTML変換ルール:
   - H1(タイトル行)は除去(WordPressの`title`フィールドで設定するため)
   - `## ` → `<h2>`、`### ` → `<h3>`
-  - `---` → `<hr>`
+  - `---` → `<hr>`(**リード文の直後には`---`を書かない**。`wp:separator`ブロックに変換されSWELLテーマで薄い横線として表示されるため、リード文→本文の間に不要な区切りが入って見える。詳細は[docs/rules.mdの記事構成スタイル](../../../docs/rules.md#記事構成スタイル2026-08-04にユーザー指示chomoand-0comchomoand-1com共通)参照)
   - `**text**` → `<strong>text</strong>`
   - テーブル(`|...|`)→ `<table><tbody><tr><td>` に変換。罫線・背景色は必ずインラインstyleで直接指定する([docs/rules.mdの表のスタイルルール](../../../docs/rules.md)参照。class頼みだと罫線が表示されないことがある)
   - 通常段落 → `<p>`タグで囲む(句点で`<br>`改行、[docs/rules.md](../../../docs/rules.md)参照)
