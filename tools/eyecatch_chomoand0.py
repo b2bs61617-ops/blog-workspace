@@ -89,7 +89,7 @@ def build_html(
     main_lines = main.split("|")
     main_html_text = "<br>".join(html_mod.escape(line) for line in main_lines)
     # 行数が多いほど1行あたりの文字量は減るため、行数に応じて最大フォントサイズを調整する
-    main_max_size = {1: 84, 2: 76}.get(len(main_lines), 62)
+    main_max_size = {1: 100, 2: 92}.get(len(main_lines), 78)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -117,9 +117,9 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden;
   background: radial-gradient(circle, {color3} 0%, transparent 70%);
   opacity: 0.4; left: -80px; bottom: -80px; filter: blur(40px);
 }}
-.top-text {{ font-size: 36px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.1em; z-index: 1; text-align: center; }}
+.top-text {{ font-size: 44px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.1em; z-index: 1; text-align: center; }}
 .name {{ font-size: {main_max_size}px; font-weight: 900; color: {TEXT_COLOR}; letter-spacing: 0.04em; z-index: 1; text-align: center; line-height: 1.3; max-width: 1080px; }}
-.bottom-text {{ font-size: 38px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.05em; z-index: 1; text-align: center; line-height: 1.6; }}
+.bottom-text {{ font-size: 46px; font-weight: 700; color: {SUB_TEXT_COLOR}; letter-spacing: 0.05em; z-index: 1; text-align: center; line-height: 1.6; }}
 </style>
 </head>
 <body>
