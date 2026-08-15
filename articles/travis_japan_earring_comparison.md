@@ -5,9 +5,9 @@ Travis Japanのメンバーはそれぞれ個性的なピアス姿で知られ�
 さらに、松倉海斗・松田元太・七五三掛龍也・吉澤閑也の4人は<strong>そろって両耳1個ずつの計2個</strong>という共通点があることも分かりました。<br>
 この記事では、川島如恵留・中村海人・松倉海斗・松田元太・七五三掛龍也・吉澤閑也・宮近海斗の7人について、ピアスの本数・位置・エピソードを一人ずつ比較していきます。
 
-<div style="border:1px solid #cddbe9;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
-<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:#6a8caf;color:#fff;">この記事でわかること</p>
-<ul style="margin:0;padding:14px 18px 14px 34px;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
+<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:#9575cd;color:#fff;">この記事でわかること</p>
+<ul style="margin:0;padding:14px 18px 14px 34px;background:#f6f3fb;">
 <li>7人それぞれのピアスの本数と位置</li>
 <li>ピアスを開けた時期やきっかけのエピソード</li>
 <li>普段よく着けているブランド・デザインの傾向</li>
@@ -22,51 +22,51 @@ Travis Japanのメンバーはそれぞれ個性的なピアス姿で知られ�
 <table style="border-collapse:collapse;width:100%;">
 <tbody>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#6a8caf;color:#fff;font-weight:bold;">メンバー</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#6a8caf;color:#fff;font-weight:bold;">本数</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#6a8caf;color:#fff;font-weight:bold;">位置の特徴</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#9575cd;color:#fff;font-weight:bold;">メンバー</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#9575cd;color:#fff;font-weight:bold;">本数</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#9575cd;color:#fff;font-weight:bold;">位置の特徴</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">川島如恵留</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">耳に計7個+へそ1個</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">メンバー7人分の誕生石ピアス、メンバー最多</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">川島如恵留</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">耳に計7個+へそ1個</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">メンバー7人分の誕生石ピアス、メンバー最多</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">中村海人</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">0個</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">未開通。イヤーカフで代用</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">中村海人</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">0個</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">未開通。イヤーカフで代用</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">松倉海斗</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">2個(両耳1個ずつ)</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">ハイブランドのピアスを日替わりで愛用</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">松倉海斗</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">2個(両耳1個ずつ)</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">ハイブランドのピアスを日替わりで愛用</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">松田元太</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">2個(両耳1個ずつ)</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">松倉と同時期に開けた両耳派</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">松田元太</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">2個(両耳1個ずつ)</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">松倉と同時期に開けた両耳派</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">七五三掛龍也</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">2個(両耳1個ずつ)</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">左耳中心に高級ジュエリーを愛用</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">七五三掛龍也</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">2個(両耳1個ずつ)</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">左耳中心に高級ジュエリーを愛用</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">吉澤閑也</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">2個(両耳1個ずつ)</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;background:#f7f9fb;">2024年2月デビュー、フープが定番</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">吉澤閑也</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">2個(両耳1個ずつ)</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;background:#f9f7fc;">2024年2月デビュー、フープが定番</td>
 </tr>
 <tr>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">宮近海斗</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">5個(右耳3・左耳2)</td>
-<td style="border:1px solid #cddbe9;padding:8px 12px;">川島に次ぐ本数、軟骨ピアスも</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">宮近海斗</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">5個(右耳3・左耳2)</td>
+<td style="border:1px solid #d9cfee;padding:8px 12px;">川島に次ぐ本数、軟骨ピアスも</td>
 </tr>
 </tbody>
 </table>
 
 ## 川島如恵留はメンバー最多、耳に7個+へそピ
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>耳たぶに計7個(左耳4・右耳3)、さらにへそにも1個</p>
 </div>
 
@@ -93,7 +93,7 @@ Travis Japanのメンバーはそれぞれ個性的なピアス姿で知られ�
 
 ## 中村海人はピアスホールがない唯一のメンバー
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>0個(ピアスホールなし)</p>
 </div>
 
@@ -103,16 +103,16 @@ Travis Japanのメンバーはそれぞれ個性的なピアス姿で知られ�
 
 耳元を華やかにしたいときは、穴を開けずに装着できるイヤーカフを愛用しています。<br>
 雑誌「美的」のソロ表紙でも、ピアスの代わりにイヤーカフを着けたスタイリングが披露され、「ピアスをしないうみくんのイヤーカフの破壊力」とファンの間で好評でした。<br>
-ドラマ出演時に共演者が中村のメンバーカラーである緑のイヤーカフを片耳だけ着けていたことがあり、これは中村不在の代役としての演出だったのではとファンの間で推測されていました。
+出演ドラマ『ミッドナイト屋台2』のイベントでは、中村が演じる役の隣に立つはずの共演者が、この日欠席していた中村のメンバーカラー(緑)にちなんでか、緑のピアスを左耳だけに着けていたことがあり、ファンの間で話題になりました。
 
 ## 松倉海斗は元太と一緒に留学先で開けた
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>2個(両耳に1個ずつ)</p>
 </div>
 
 松倉海斗のファーストピアスは、アメリカ留学中に松田元太と2人でそろって開けたというエピソードで知られています。<br>
-バラエティ番組「踊る!さんま御殿!!」で本人たちが語ったところによると、現地の病院で「3・2・1・go」のかけ声のはずが実際には2カウントで開けられてしまい、費用は300〜400ドルほどだったそうです。<br>
+バラエティ番組「踊る!さんま御殿!!」で本人たちが語ったところによると、現地の病院で「3・2・1・go」のかけ声のはずが実際には2カウントで開けられてしまい、費用は300〜400ドル(1ドル150円換算で目安、約4万5,000円〜6万円)ほどだったそうです。<br>
 本数は両耳に1個ずつの計2個とみられます。2024年2月のコンサートMCで、川島如恵留がメンバー全員のピアスの本数を聞いて回った際に「松松2ずつ」と数えられていたという実況投稿がX上に複数見つかりました。<br>
 2022年ごろのSNS投稿でも「まちゅファーストピアス(両耳)」と紹介されており、Travis Japanとしてのデビュー前から両耳にピアスを着けるスタイルだったことがうかがえます。<br>
 TiffanyのT One フープピアス(ホワイトゴールド)やクロムハーツのクロスボールスタッドなど、複数の高価なピアスを日によって使い分けている様子がSNSでたびたび確認できます。
@@ -122,12 +122,12 @@ TiffanyのT One フープピアス(ホワイトゴールド)やクロムハー�
 
 ## 松田元太も松倉と同時に開けた両耳派
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>2個(両耳に1個ずつ)</p>
 </div>
 
 松田元太も、前述の松倉海斗との「ファーストピアスを2人で開けた」エピソードの当事者です。<br>
-「踊る!さんま御殿!!」では、留学中にアメリカの病院でピアスを開けた話が「松松ピアス」として盛り上がり、今でもファンの間で語り継がれるエピソードのひとつになっています。<br>
+「踊る!さんま御殿!!」では、留学中にアメリカの病院でピアスを開けた話が<strong>「松松ピアス」</strong>として盛り上がり、今でもファンの間で語り継がれるエピソードのひとつになっています。<br>
 本数は松倉と同じく両耳に1個ずつの計2個とみられます。2024年2月のコンサートMCでメンバー全員の本数を数えた際も「松松2ずつ」と申告されていたという実況投稿が複数見つかりました。<br>
 普段から両耳にピアスを着けている姿がよく見られ、ファン考案の等身大ぬいぐるみの特徴にも「ピアス両耳あり」という項目が挙がるほど定着したイメージで、この結果とも一致します。
 
@@ -136,7 +136,7 @@ TiffanyのT One フープピアス(ホワイトゴールド)やクロムハー�
 
 ## 七五三掛龍也は片耳に2つ重ねづけすることも
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>2個(両耳に1個ずつ、左耳中心にジュエリーを愛用)</p>
 </div>
 
@@ -150,12 +150,12 @@ TiffanyのT One フープピアス(ホワイトゴールド)やクロムハー�
 
 ## 吉澤閑也は2024年2月にピアスデビュー
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>2個(両耳に1個ずつ)</p>
 </div>
 
 吉澤閑也は、メンバーの中でも比較的最近ピアスを開けたメンバーです。<br>
-X上では「本日、2月11日は吉澤閑也ピアスホール開通記念日です」といった投稿が毎年見られ、2024年2月11日ごろにピアスデビューしたことがうかがえます。<br>
+X上では「本日、<strong>2月11日は吉澤閑也ピアスホール開通記念日です</strong>」といった投稿が毎年見られ、2024年2月11日ごろにピアスデビューしたことがうかがえます。<br>
 それ以前の番組映像には「ピアスの開いていない吉澤閑也くん」の姿も残っており、開通前後の変化がファンの間で話題になっていました。
 
 ちょうどこのピアスデビュー当日にあたる2024年2月11日のコンサートMCで、川島如恵留がメンバー全員に本数を聞いて回った際、吉澤の分は「2」と数えられていたという実況投稿が複数見つかっています。<br>
@@ -166,7 +166,7 @@ FENDIの「FF」ピアスなど、ブランドが判明した着用アイテム�
 
 ## 宮近海斗は川島に次ぐ5個
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f6f3fb;">
 <p style="margin:0;"><strong>本数・位置:</strong>合計5個(右耳3・左耳2)</p>
 </div>
 
@@ -201,7 +201,7 @@ Travis Japan7人のピアス事情を比較すると、次のような違いが�
 同じグループでも耳元のスタイルはメンバーごとにこれだけ違い、それぞれのファッションセンスやエピソードが反映されているのが分かります。<br>
 ライブや番組を見るときは、ぜひメンバーそれぞれの耳元にも注目してみてください!
 
-<div style="border:1px solid #cddbe9;border-left:4px solid #6a8caf;border-radius:4px;padding:14px 18px;margin:16px 0 0 0;background:#eef3f8;">
+<div style="border:1px solid #d9cfee;border-left:4px solid #9575cd;border-radius:4px;padding:14px 18px;margin:16px 0 0 0;background:#f6f3fb;">
 <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">Travis Japanメンバーのピアス関連記事</p>
 <ul style="margin:0;padding-left:1.3em;">
 <li><a href="https://chomoand-0.com/?p=337">川島如恵留の私物ピアスの正体を調べた記事</a></li>
