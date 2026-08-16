@@ -52,3 +52,21 @@ python tools/google_indexing.py https://chomoand.com/
 
 - `tools/google_indexing.py`: Indexing API呼び出し本体
 - [publishスキル](../.claude/skills/publish/SKILL.md): 記事公開時、公開URL確定後に自動で呼び出す。`GOOGLE_INDEXING_CREDENTIALS_PATH`未設定の場合は通知だけスキップし、公開処理自体は止まらない(LINE通知と同じフェイルセーフ方式)
+
+## 5. Search Console API(URL Inspection、閲覧用)を使う場合(2026-08-16追加)
+
+`tools/check_search_console.py`は、Search Console管理画面の「ページがインデックスに登録されなかった理由」に相当する情報(coverageState)を、サイトマップ上の各URLについてURL Inspection APIで一括取得するスクリプト。サービスアカウントは1〜2章で登録済みのもの(`chomoand-477@...`、3サイトともオーナー登録済み)をそのまま流用でき、2章のSearch Console権限付与をやり直す必要はない。
+
+追加で必要な作業(トモキ本人が実施、初回のみ):
+
+1. [Google Cloud Console](https://console.cloud.google.com/)の「APIとサービス」→「ライブラリ」で「**Search Console API**」(`searchconsole.googleapis.com`)を検索して有効化(Indexing APIとは別のAPIなので個別に有効化が必要)
+2. `.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`はそのまま流用可(鍵ファイルの再発行不要)
+
+実行:
+```
+python tools/check_search_console.py chomoand-1.com --output tools/search_console_report.json
+```
+
+サイトマップ(`https://<domain>/sitemap_index.xml`)から`post-sitemap`を含む子サイトマップのURLを集め、1件ずつURL Inspection APIに問い合わせてcoverageStateを集計・出力する。1リクエスト/秒程度に間引いているので件数が多いサイトは時間がかかる。
+
+**注意:** Search Console上のプロパティが「ドメインプロパティ」(`sc-domain:example.com`形式)で登録されている場合、既定の`https://<domain>/`(URLプレフィックスプロパティ)指定では403になることがある。その場合`--site-url "sc-domain:<domain>"`を指定する。
