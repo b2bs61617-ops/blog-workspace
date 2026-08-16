@@ -13,7 +13,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - マークダウン→HTML変換ルール:
   - H1(タイトル行)は除去(WordPressの`title`フィールドで設定するため)
   - `## ` → `<h2>`、`### ` → `<h3>`
-  - `---` → `<hr>`(**リード文の直後には`---`を書かない**。`wp:separator`ブロックに変換されSWELLテーマで薄い横線として表示されるため、リード文→本文の間に不要な区切りが入って見える。詳細は[docs/rules.mdの記事構成スタイル](../../../docs/rules.md#記事構成スタイル2026-08-04にユーザー指示chomoand-0comchomoand-1com共通)参照)
+  - `---` → `<hr>`(ただしSTEP1.5で機械的に除去される場合がある。下記参照)
   - `**text**` → `<strong>text</strong>`
   - テーブル(`|...|`)→ `<table><tbody><tr><td>` に変換。罫線・背景色は必ずインラインstyleで直接指定する([docs/rules.mdの表のスタイルルール](../../../docs/rules.md)参照。class頼みだと罫線が表示されないことがある)
   - 通常段落 → `<p>`タグで囲む(句点で`<br>`改行、[docs/rules.md](../../../docs/rules.md)参照)
@@ -30,6 +30,9 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - `<h3 class="wp-block-heading">...</h3>` → `<!-- wp:heading {"level":3} -->` と `<!-- /wp:heading -->` で挟む
 - 装飾クラスなしの通常`<p>...</p>` → `<!-- wp:paragraph -->` と `<!-- /wp:paragraph -->` で挟む
 - `<hr>` → `<!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->` に置き換え
+  - **例外(機械的に必ず適用、2026-08-16追加): 記事内で最初に登場する`<hr>`が、記事内で最初の段落(リード文)の直後に置かれている場合は、`wp:separator`に変換せず`<hr>`ごと削除する。** リード文の直後の`<hr>`はSWELLテーマの`.post_content hr`スタイル(`border-bottom:1px solid rgba(0,0,0,.1);margin:2.5em 0`)で薄い横線として表示され、ユーザーから複数回不要だと指摘されている見た目。
+  - Why: 「リード文の直後に`---`を書かない」と執筆時の注意書きだけで対応していた(2026-08-12)が、別セッション・別PCでの執筆時に同じ`---`が再発した(2026-08-16、ID11339/11341/11353)。執筆時の記憶に頼る注意書きは複数セッション運用では機能しないと判明したため、STEP1.5の変換処理自体で機械的に弾く方式に変更した。リード文直後以外(セクションの合間など)の`<hr>`は今まで通り`wp:separator`に変換してよい。
+  - How to apply: STEP1.5を実行する際、変換対象のHTML中で「最初の`<p>`(または`wp:paragraph`)ブロックの直後に`<hr>`がある」パターンを検出したら、そのブロックだけ出力から取り除く(前後の段落・見出しはそのまま)。2つ目以降の`<hr>`(本文中盤の意図的な区切り)には従来通り`wp:separator`変換を適用する。
 - **SWELL独自の装飾HTML(`swell-block-capbox`のdiv、`is-style-dent_box`/`is-style-onborder_ttl`などのスタイル付き`<p>`、`swl-marker`の`<span>`、Googleマップiframe埋め込み、画像`<figure>`+`<figcaption>`など)は、正確なブロックJSON仕様(SWELL側の実際のブロック登録定義)が不明なため無理にコアブロックへ変換しない。まとまりごと`<!-- wp:html -->` 〜 `<!-- /wp:html -->` で囲む**(WordPressの「カスタムHTML」ブロックとして扱われ、見た目は今までと変わらず、かつ常に有効なブロックとして保存される。ブロックエディタ上では生HTMLとして編集する形になる)。
 - **テーブル(`|...|`)は上記の「SWELL独自装飾」には含めない。`<!-- wp:table -->`のコアブロックとして変換する**(2026-08-02判明): `<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>...</tbody></table></figure>`という形にし、`<!-- wp:html -->`では囲まない。既存の公開済み記事(例:chomoand-0.com ID184「けるとめる」)の実データを確認したところ全てこの形式で、SWELL側の`.wp-block-table`用CSSが効いて列幅が均等に割り付けられ見やすく表示される。一方`<!-- wp:html -->`で生の`<table><tbody>`をそのまま囲むと、SWELLの表スタイルが当たらず列幅が詰まって読みにくくなる不具合を確認した(松田元太の私服特定記事で「表が見づらい」とユーザーから指摘され判明)。
   - Why: STEP1.5導入時は表もSWELL独自装飾の一種として`wp:html`で無難に囲む方針にしていたが、実際にはコアの`wp:table`ブロックのマークアップ(`wp-block-table`クラス+`has-fixed-layout`)がそのまま使えており、既存記事は全てその形式だった。
