@@ -29,31 +29,20 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 PURPLE = "#7e57c2"
 PURPLE_BG = "#f5f2fb"
 
-# ---------- STEP A: upload images to WP media library ----------
-def upload_media(filepath: Path, filename: str, content_type: str):
-    data = filepath.read_bytes()
-    headers = {
-        **HEADERS_AUTH,
-        "Content-Type": content_type,
-        "Content-Disposition": f'attachment; filename="{filename}"',
-    }
-    r = requests.post(f"{WP_URL}/wp-json/wp/v2/media", headers=headers, data=data)
+# ---------- STEP A: reuse already-uploaded images (post 823 was created in a prior run) ----------
+def get_media(media_id: int):
+    r = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{media_id}", headers=HEADERS_AUTH)
     r.raise_for_status()
     return r.json()
 
 
-TWEET_IMG_PATH = ROOT / "tools" / "Xiy" / "posts_merchcompany_20260816" / "images" / "post_1_img_1.jpg"
+EXISTING_POST_ID = 823
 TWEET_URL = "https://x.com/MerchCompany_jp/status/2088189132866769113"
 
-tweet_media = upload_media(
-    TWEET_IMG_PATH, "travis_japan_famiclastore_ambassador_goods_making.jpg", "image/jpeg"
-)
+tweet_media = get_media(821)
 print("tweet media id:", tweet_media["id"], tweet_media["source_url"])
 
-eyecatch_path = ROOT / "images" / "travis_japan_famiclastore_ambassador_eyecatch.png"
-eyecatch_media = upload_media(
-    eyecatch_path, "travis_japan_famiclastore_ambassador_eyecatch.png", "image/png"
-)
+eyecatch_media = get_media(822)
 print("eyecatch media id:", eyecatch_media["id"])
 
 sizes = tweet_media.get("media_details", {}).get("sizes", {})
@@ -134,6 +123,20 @@ def reaction_box(category, quotes):
 </div>''')
 
 
+def team_box(ttl, rows):
+    tds = "\n".join(
+        f'<tr><td style="border:1px solid #ccc;padding:8px 12px;background:#f0f0f0;width:140px;"><strong>{k}</strong></td>'
+        f'<td style="border:1px solid #ccc;padding:8px 12px;">{v}</td></tr>'
+        for k, v in rows
+    )
+    return wphtml(f'''<div style="border:1px solid #ddd;border-left:4px solid {PURPLE};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:{PURPLE_BG};">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{ttl}</p>
+<table style="border-collapse:collapse;width:100%;"><tbody>
+{tds}
+</tbody></table>
+</div>''')
+
+
 def image_block(alt):
     return wphtml(f'''<figure class="wp-block-image size-large">
 <img src="{img_src}" alt="{alt}" width="{img_w}" height="{img_h}"
@@ -154,6 +157,11 @@ blocks.append(p([
     "この記事では、メンバー自らアイロンビーズを使ってデザインを手作りした制作の裏側や、5代目アンバサダーとしてのTravis Japanの立ち位置まで詳しく紹介します。",
 ]))
 
+blocks.append(team_box("アイロンビーズ制作のチーム編成", [
+    ("Aチーム(4人)", "川島如恵留・宮近海斗・中村海人・七五三掛龍也"),
+    ("Bチーム(3人)", "松田元太・松倉海斗・吉澤閑也"),
+]))
+
 blocks.append(info_box("新グッズ情報", [
     ("商品", "クリアポーチ・シール帳(アンバサダープロデュースグッズ)"),
     ("発売時期", "2026年秋頃予定"),
@@ -164,7 +172,7 @@ blocks.append(info_box("新グッズ情報", [
 
 blocks.append(wakaru_box([
     "新グッズ「クリアポーチ」「シール帳」の発売時期・企画意図",
-    "アイロンビーズでのデザイン制作の舞台裏",
+    "アイロンビーズ制作のチーム編成(Aチーム・Bチーム)と舞台裏",
     "ファミクラストアアンバサダーとは何か・歴代アンバサダー",
 ]))
 
@@ -186,18 +194,19 @@ blocks.append(hr())
 blocks.append(h2("メンバー自らアイロンビーズでデザイン制作！舞台裏を紹介"))
 blocks.append(mini_box([
     ("制作アイテム", "アイロンビーズ"),
-    ("作ったモチーフ", "ハート・ダイヤモンド・ひまわり・花冠 など"),
+    ("Aチーム", "川島如恵留・宮近海斗・中村海人・七五三掛龍也(4人)"),
+    ("Bチーム", "松田元太・松倉海斗・吉澤閑也(3人)"),
 ]))
 blocks.append(p([
     "グッズに使われるデザインのモチーフは、メンバーが童心に返って取り組んだアイロンビーズ作りから生まれました。",
-    "2チームに分かれての制作となり、動画の説明ではAチームがトークを楽しみながら順調に作業を進める一方、Bチームはハプニング続出のわちゃわちゃした展開になったと紹介されています。",
+    "2チームに分かれての制作となり、川島如恵留・宮近海斗・中村海人・七五三掛龍也のAチームがトークを楽しみながら順調に作業を進める一方、松田元太・松倉海斗・吉澤閑也のBチームはハプニング続出のわちゃわちゃした展開になったと紹介されています。",
     "色の指定はあるもののモチーフの形は自由とのことで、ハートやダイヤモンド、ひまわり、花冠風のモチーフなど、メンバーそれぞれの個性が出た作品が並びました。",
-    "なかでもハート型を選んだメンバーには「キャラに似合ってる」という声が上がる場面もあり、担当パートを決める過程そのものも和気あいあいとした雰囲気だったようです。",
+    "Aチームでは七五三掛龍也がハート型を選び、周囲から「キャラに似合ってる」という声が上がる場面もあり、担当パートを決める過程そのものも和気あいあいとした雰囲気だったようです。",
 ]))
 blocks.append(p([
     "Bチームでは、せっかく組み上げたビーズがアイロンの熱でバラバラになってしまうアクシデントも発生。",
-    "作り直しになったメンバーにほかのメンバーが手を貸し、最終的にひまわりのモチーフを一緒に完成させる一幕もあり、制作を通してメンバー同士の掛け合いが存分に楽しめる内容になっていました。",
-    "作業の合間には子どもの頃の手芸経験についてのトークも展開され、あるメンバーが5人兄弟の末っ子で妹がいないと話す場面など、グッズ制作をきっかけにした素顔のやり取りも垣間見えました。",
+    "作り直しになったメンバーに松倉海斗が手を貸し、最終的にひまわりのモチーフを一緒に完成させる一幕もあり、制作を通してメンバー同士の掛け合いが存分に楽しめる内容になっていました。",
+    "作業の合間には子どもの頃の手芸経験についてのトークも展開され、吉澤閑也が5人兄弟の末っ子で妹がいないと話す場面など、グッズ制作をきっかけにした素顔のやり取りも垣間見えました。",
 ]))
 
 blocks.append(hr())
@@ -274,7 +283,7 @@ def get_slug(title_text):
 slug = get_slug(title)
 print("slug:", slug)
 
-# ---------- STEP D: create draft post ----------
+# ---------- STEP D: update existing draft post ----------
 payload = {
     "title": title,
     "content": content,
@@ -285,7 +294,7 @@ payload = {
     "featured_media": eyecatch_media["id"],
 }
 r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
+    f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_POST_ID}",
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
     data=json.dumps(payload).encode("utf-8"),
 )
