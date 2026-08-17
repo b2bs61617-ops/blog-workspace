@@ -44,6 +44,20 @@
 게이트에는 'KO1 WORLD' 로고가 걸려 있고, 뒤로는 조명이 켜진 대관람차와 롤러코스터가 늘어서 있는 모습을 확인할 수 있습니다.</p>
 <!-- /wp:paragraph -->
 
+<!-- wp:paragraph -->
+<p>이 버스의 앞면을 자세히 보면 'KO1KEYZ' 로고와 함께 번호판이 보이는데, 여기에는 'KKZ 1007'이라는 문자가 적혀 있습니다.<br>
+KKZ는 KO1KEYZ의 약칭으로 팬들 사이에서도 자주 쓰이는 표기이며, 1007은 공식 데뷔일인 <strong>2026년 10월 7일</strong>을 연상시키는 숫자입니다.<br>
+배경 세트뿐 아니라 이런 소품 하나하나에도 멤버와 그룹에 얽힌 장치를 담아낸, 디테일이 살아있는 연출이라 할 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG5_URL}}" alt="KO1KEYZ MV 버스 번호판 'KKZ 1007'" width="{{IMG5_W}}" height="{{IMG5_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:KO1KEYZ 'KO1KEYZ' Official MV(https://youtu.be/75MEFldsJKc)</figcaption>
+</figure>
+<!-- /wp:html -->
+
 <!-- wp:html -->
 <figure class="wp-block-image size-large">
   <img src="{{IMG1_URL}}" alt="KO1KEYZ MV 'KO1 WORLD' 게이트" width="{{IMG1_W}}" height="{{IMG1_H}}"

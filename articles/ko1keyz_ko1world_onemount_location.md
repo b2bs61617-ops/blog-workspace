@@ -44,6 +44,20 @@
 ゲートには「KO1 WORLD」のロゴが掲げられ、背景には観覧車やジェットコースターがライトアップされた状態でずらりと並んでいるのが確認できます。</p>
 <!-- /wp:paragraph -->
 
+<!-- wp:paragraph -->
+<p>このバスの正面をよく見ると、「KO1KEYZ」のロゴと一緒にナンバープレートが映り、そこには「KKZ 1007」の文字が入っています。<br>
+KKZはKO1KEYZの略称としてファンの間でもよく使われる表記で、1007は正式なデビュー日である<strong>2026年10月7日</strong>を連想させる数字です。<br>
+背景のセットだけでなく、こうした小道具の細部にまでメンバーやグループにまつわる仕掛けを詰め込む、こだわりの効いた演出と言えそうです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG5_URL}}" alt="KO1KEYZ MV バスのナンバープレート「KKZ 1007」" width="{{IMG5_W}}" height="{{IMG5_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">出典:KO1KEYZ「KO1KEYZ」Official MV(https://youtu.be/75MEFldsJKc)</figcaption>
+</figure>
+<!-- /wp:html -->
+
 <!-- wp:html -->
 <figure class="wp-block-image size-large">
   <img src="{{IMG1_URL}}" alt="KO1KEYZ MV「KO1 WORLD」ゲート" width="{{IMG1_W}}" height="{{IMG1_H}}"
