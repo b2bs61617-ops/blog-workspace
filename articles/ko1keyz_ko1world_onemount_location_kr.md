@@ -160,5 +160,16 @@
 <p>KO1KEYZ의 데뷔곡 'KO1KEYZ' MV에 등장하는 'KO1 WORLD'는 한국 경기도 고양시에 있는 실내형 테마파크 '원마운트 스노우파크'에서 촬영되었을 가능성이 높다는 것을 알 수 있었습니다.<br>
 회전목마의 디자인부터 간판의 위치까지 세부적인 부분이 일치해, 실제 시설을 촬영지로 사용한 것으로 보입니다.<br>
 안무를 맡은 인물에 대해서는 아직 공식 발표가 없지만, 'Neko' 챌린지로 잘 알려진 YUMEKI 씨와의 연관성이 화제가 되고 있어 앞으로의 소식이 궁금해집니다.<br>
-KO1KEYZ의 데뷔곡에 대해 더 자세히 알고 싶다면, <a href="https://chomoand-1.com/ko/?p=11341">가사 한국어 버전을 소개한 기사</a>도 함께 확인해보세요!</p>
+MV를 다시 볼 때는 배경의 디테일에도 한번 주목해보세요!</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ccc;border-left:4px solid #8a8378;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">관련 기사</p>
+<ul style="margin:0;padding-left:1.3em;">
+<li><a href="https://chomoand-1.com/ko/?p=11341">데뷔곡 'KO1KEYZ' 가사 한국어 버전을 소개한 기사</a></li>
+<li><a href="https://chomoand-1.com/ko/?p=11313">새 프로그램 Lemino 공개를 소개한 기사</a></li>
+<li><a href="https://chomoand-1.com/ko/?p=11312">데뷔 기념 이벤트 내용을 정리한 기사</a></li>
+</ul>
+</div>
+<!-- /wp:html -->
