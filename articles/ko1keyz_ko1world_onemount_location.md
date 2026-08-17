@@ -1,8 +1,14 @@
 # KO1KEYZ MVの「KO1WORLD」ロケ地は韓国と判明！
 
+<!-- wp:paragraph -->
+<p>2026年8月16日に配信がスタートしたKO1KEYZのデビュー曲「KO1KEYZ」のMVでは、後半にメンバーたちが「KO1 WORLD」という名前の遊園地に登場します。<br>
+実在するのか気になった人も多いはずですが、<strong>韓国・京畿道高陽市にある屋内型テーマパーク「원마운트 스노우파크(ワンマウント・スノーパーク)」</strong>と同じ場所で撮影された可能性が高いことが分かりました。<br>
+この記事では、MVの映像と現地の写真を見比べながらその根拠を紹介するとともに、撮影のきっかけになったある人物の投稿についても掘り下げます。</p>
+<!-- /wp:paragraph -->
+
 <!-- wp:html -->
-<div style="border:1px solid #ddd;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
-<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:#8a8378;color:#fff;">「KO1KEYZ」基本情報</p>
+<div style="border:1px solid #ccc;border-radius:4px;padding:16px 18px;margin:0 0 16px 0;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 10px 0;">「KO1KEYZ」基本情報</p>
 <table style="border-collapse:collapse;width:100%;">
 <tr><td style="background:#f0f0f0;border:1px solid #ccc;padding:8px 12px;width:35%;">楽曲名</td><td style="border:1px solid #ccc;padding:8px 12px;">KO1KEYZ(デビューシングル)</td></tr>
 <tr><td style="background:#f0f0f0;border:1px solid #ccc;padding:8px 12px;">配信開始</td><td style="border:1px solid #ccc;padding:8px 12px;">2026年8月16日</td></tr>
@@ -10,12 +16,6 @@
 </table>
 </div>
 <!-- /wp:html -->
-
-<!-- wp:paragraph -->
-<p>2026年8月16日に配信がスタートしたKO1KEYZのデビュー曲「KO1KEYZ」のMVでは、後半にメンバーたちが「KO1 WORLD」という名前の遊園地に登場します。<br>
-実在するのか気になった人も多いはずですが、<strong>韓国・京畿道高陽市にある屋内型テーマパーク「원마운트 스노우파크(ワンマウント・スノーパーク)」</strong>と同じ場所で撮影された可能性が高いことが分かりました。<br>
-この記事では、MVの映像と現地の写真を見比べながらその根拠を紹介するとともに、撮影のきっかけになったある人物の投稿についても掘り下げます。</p>
-<!-- /wp:paragraph -->
 
 <!-- wp:html -->
 <div style="border:1px solid #ddd;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
