@@ -74,8 +74,8 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 
 ## STEP 4: アイキャッチ画像の生成
 
-- **chomoand-1.com(コイキーズブログ)は、記事本文中に[画像埋め込みルール](../../../docs/rules.md#画像埋め込みルール必ずxの画像を使う2026-07-27にユーザー指示)で埋め込んだ写真があれば、その中で本文中に最初に登場する1枚をfeatured_mediaとして使う(2026-08-11〜、SNS自動投稿の画像をブランド統一グラフィックではなく記事内の実写真にする方針変更。試験導入としてコイキーズのみ対象、他2サイトはこの後の動作確認次第で拡大)。その写真はSTEP1で画像埋め込みルールに従いWordPressメディアライブラリへアップロード済みのため、**新たに画像を生成・アップロードする必要はない**。既に控えてあるそのメディアIDをそのままSTEP5で使う
-  - **本文中に使える写真が1枚もない記事(文章のみのwiki記事など)は、従来通り`tools/eyecatch_koikeyz.py`で生成する**(2026-07-24〜「アイキャッチを作らない」方針だったが、2026-07-30にSNS自動投稿(Instagram/Jetpack Social)の画像必須要件のため方針終了・復活。詳細は[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`)
+- **chomoand-1.com(コイキーズブログ)は、記事本文の写真の有無にかかわらず必ず`tools/eyecatch_koikeyz.py`の文字入りテンプレで生成する**(2026-08-17にユーザーが再確認・上書き。[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の「KO1KEYZ統一テンプレ必須、既存記事が全部このデザインで揃っているので勝手に変えない」が現行ルール)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`、KR下書きは`--lang kr`で韓国語版を別途生成し[[feedback-koikeyz-kr-eyecatch-language]]、JPと同じ画像を使い回さない)。
+  - **(誤った過去の試験導入・現在は無効)2026-08-11〜08-17の一時期のみ、「本文中に埋め込んだ写真の1枚目をfeatured_mediaに使い、テキストeyecatchは作らない」という運用を試したことがあるが、2026-08-17にユーザーから「ちがうよ基本文字入れだよアイキャッチは」と明確に否定された。** KO1KEYZ「KO1WORLD」ロケ地特定記事(下書きID11410)でこの旧ルールに従い本文写真をfeatured_mediaにしたところ即座に修正指示が入り、テキスト入りeyecatchへ差し替えた実例あり。今後このSTEP4を読むときは本項目(文字入り必須)を正としてそのまま使うこと。
 - **chomoand.comの記事は必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
   - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)
   - 3つの独立したテキスト要素(1行目=番組名/2行目=出演者名/3〜4行目=疑問形+補足)を`replace_text`で置換する(KO1KEYZと違い要素が分かれているのでフォントサイズが飛ぶ心配はない)
