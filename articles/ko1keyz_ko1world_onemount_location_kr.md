@@ -1,0 +1,164 @@
+# KO1KEYZ MV 속 'KO1WORLD' 촬영지는 한국으로 밝혀져!
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
+<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:#8a8378;color:#fff;">'KO1KEYZ' 기본 정보</p>
+<table style="border-collapse:collapse;width:100%;">
+<tr><td style="background:#f0f0f0;border:1px solid #ccc;padding:8px 12px;width:35%;">곡명</td><td style="border:1px solid #ccc;padding:8px 12px;">KO1KEYZ(데뷔 싱글)</td></tr>
+<tr><td style="background:#f0f0f0;border:1px solid #ccc;padding:8px 12px;">공개일</td><td style="border:1px solid #ccc;padding:8px 12px;">2026년 8월 16일</td></tr>
+<tr><td style="background:#f0f0f0;border:1px solid #ccc;padding:8px 12px;">MV</td><td style="border:1px solid #ccc;padding:8px 12px;">유튜브 공식 채널에서 공개</td></tr>
+</table>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>2026년 8월 16일 공개된 KO1KEYZ의 데뷔곡 'KO1KEYZ' MV 후반부에는 멤버들이 'KO1 WORLD'라는 이름의 놀이공원에 등장합니다.<br>
+실제로 존재하는 곳인지 궁금해하는 팬들이 많았는데요, <strong>한국 경기도 고양시에 있는 실내형 테마파크 '원마운트 스노우파크(One Mount Snow Park)'</strong>와 같은 장소에서 촬영되었을 가능성이 높다는 사실이 확인되었습니다.<br>
+이 글에서는 MV 영상과 실제 현장 사진을 비교하며 그 근거를 살펴보고, 촬영지를 알아내는 계기가 된 한 인물의 게시물도 함께 짚어보겠습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">
+<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:#8a8378;color:#fff;">이 글에서 알 수 있는 것</p>
+<ul style="margin:0;padding:14px 18px 14px 34px;background:#f7f7f7;">
+<li>MV에 등장하는 'KO1 WORLD'의 정체</li>
+<li>실제 장소와 일치하는 포인트</li>
+<li>촬영 계기가 된 게시물과 안무가 소문</li>
+</ul>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">MV 후반부에 등장하는 'KO1 WORLD'란?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="margin:0;"><strong>촬영지:</strong>한국 경기도 고양시의 실내형 테마파크 '원마운트 스노우파크(One Mount Snow Park)'로 추정</p>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>MV 초반, 멤버들을 태운 버스 차창 너머로 노을 진 하늘에 떠 있는 대관람차가 살짝 스쳐 지나갑니다.<br>
+그리고 밤이 되자 버스는 커다란 게이트 앞에 도착합니다.<br>
+게이트에는 'KO1 WORLD' 로고가 걸려 있고, 뒤로는 조명이 켜진 대관람차와 롤러코스터가 늘어서 있는 모습을 확인할 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG1_URL}}" alt="KO1KEYZ MV 'KO1 WORLD' 게이트" width="{{IMG1_W}}" height="{{IMG1_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:KO1KEYZ 'KO1KEYZ' Official MV(https://youtu.be/75MEFldsJKc)</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>물론 'KO1 WORLD'라는 이름 자체는 MV를 위해 붙여진 가상의 이름으로, 실제로 이런 이름의 놀이공원이 존재하는 것은 아닙니다.<br>
+다만 게이트 안쪽 건물 배치나 대관람차의 위치, 가로등이 늘어선 모습까지 세밀하게 구현되어 있어, 실제 존재하는 테마파크를 그대로 촬영지로 사용했을 가능성이 높은 구조입니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">실제 '원마운트 스노우파크'와의 일치 포인트</h2>
+<!-- /wp:heading -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="margin:0;"><strong>시설명:</strong>원마운트 스노우파크(One Mount Snow Park)<br>
+<strong>주소:</strong>경기도 고양시 일산서구 한류월드로 300</p>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>MV 중반에는 멤버들이 회전목마 앞에서 춤을 추는 장면이 나옵니다.<br>
+배경에 나오는 회전목마와 계단, 크리스마스트리 장식을 실제 원마운트 스노우파크의 내부 사진과 비교해보면 세부적인 부분까지 상당히 닮아 있다는 것을 알 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG2_URL}}" alt="KO1KEYZ MV 회전목마 앞 댄스 장면" width="{{IMG2_W}}" height="{{IMG2_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:KO1KEYZ 'KO1KEYZ' Official MV(https://youtu.be/75MEFldsJKc)</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG4_URL}}" alt="원마운트 스노우파크의 회전목마" width="{{IMG4_W}}" height="{{IMG4_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:https://x.com/wmk_translation/status/2081009317210391021</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>두 사진을 비교해보면 <strong><span class="swl-marker mark_yellow" style="font-size:1.15em;">흰색 말과 금색 지붕으로 장식된 회전목마, 그 뒤에 있는 'SANTA'S POST OFFICE' 간판, 파란색 울타리의 위치</span></strong>까지 정확히 일치한다는 것을 알 수 있습니다.<br>
+우연의 일치로 보기는 어려우며, 같은 장소에서 촬영되었다고 봐도 무방할 것 같습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG3_URL}}" alt="KO1KEYZ MV 멤버와 회전목마" width="{{IMG3_W}}" height="{{IMG3_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:KO1KEYZ 'KO1KEYZ' Official MV(https://youtu.be/75MEFldsJKc)</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">촬영 계기가 된 게시물과 안무가 소문</h2>
+<!-- /wp:heading -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="margin:0;"><strong>안무가:</strong>YUMEKI(댄서·안무가)</p>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>이 장소가 원마운트 스노우파크라는 사실을 알게 된 계기는 한 댄서 겸 안무가의 게시물이었습니다.<br>
+2026년 7월 하순, 팬 소통 앱에 '작업 중'이라며 같은 시설로 보이는 사진을 올린 인물이 있었는데요.<br>
+바로 댄서 겸 안무가인 YUMEKI 씨입니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>YUMEKI 씨는 'PRODUCE 101 JAPAN 신세계'의 콘셉트 평가곡에서 화제를 모은 'Neko(네코)' 챌린지의 안무를 맡은 것으로 알려진 댄서 겸 안무가입니다.<br>
+틱톡에서 'Neko' 챌린지가 널리 퍼지면서 이름을 알게 된 팬들도 많을 것입니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>YUMEKI 씨가 '작업 중'이라며 올린 장소와 KO1KEYZ 'KO1KEYZ' MV 촬영지가 같은 원마운트 스노우파크였다는 사실이 알려지면서, SNS에서는 'KO1KEYZ의 안무도 YUMEKI 씨가 맡은 것 아니냐'는 이야기가 퍼지고 있습니다.<br>
+'안무 유메키인가?' 같은 반응도 보이며, 기대감을 나타내는 팬들도 적지 않습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>2026년 8월 17일 기준으로는 공식적인 안무가 크레딧 발표는 아직 나오지 않았습니다.<br>
+현장에 있었을 가능성이 높다는 정황상의 추측에 머무르며, 여러 명이 함께 안무를 맡았을 가능성도 있어 단정하기는 이른 단계입니다.<br>
+앞으로 공식 발표나 메이킹 영상 등을 통해 자세한 내용이 밝혀지기를 기대해봅니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">원마운트 스노우파크는 어떤 시설?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>원마운트 스노우파크는 실내에서 사계절 내내 눈과 얼음을 즐길 수 있는 한국 최대급 실내 테마파크입니다.<br>
+위치한 곳은 '한류월드'라 불리는 지역으로, K-POP과 드라마 관련 시설이 모여 있는 일대입니다.<br>
+드라마나 MV 촬영지로도 자주 활용되는 곳으로, 이번에 KO1KEYZ가 촬영 장소로 선택한 것도 납득이 가는 곳이라 할 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<iframe
+  src="https://maps.google.com/maps?q=%EC%9B%90%EB%A7%88%EC%9A%B4%ED%8A%B8%20%EC%8A%A4%EB%85%B8%EC%9A%B0%ED%8C%8C%ED%81%AC&t=&z=15&ie=UTF8&iwloc=&output=embed"
+  width="100%" height="350" frameborder="0" scrolling="no"
+  style="border:0;" loading="lazy">
+</iframe>
+<!-- /wp:html -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">마무리</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>KO1KEYZ의 데뷔곡 'KO1KEYZ' MV에 등장하는 'KO1 WORLD'는 한국 경기도 고양시에 있는 실내형 테마파크 '원마운트 스노우파크'에서 촬영되었을 가능성이 높다는 것을 알 수 있었습니다.<br>
+회전목마의 디자인부터 간판의 위치까지 세부적인 부분이 일치해, 실제 시설을 촬영지로 사용한 것으로 보입니다.<br>
+안무를 맡은 인물에 대해서는 아직 공식 발표가 없지만, 'Neko' 챌린지로 잘 알려진 YUMEKI 씨와의 연관성이 화제가 되고 있어 앞으로의 소식이 궁금해집니다.<br>
+KO1KEYZ의 데뷔곡에 대해 더 자세히 알고 싶다면, <a href="https://chomoand-1.com/ko/?p=11341">가사 한국어 버전을 소개한 기사</a>도 함께 확인해보세요!</p>
+<!-- /wp:paragraph -->
