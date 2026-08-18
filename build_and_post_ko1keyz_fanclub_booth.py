@@ -160,7 +160,7 @@ FANMEETING_PREDICT_URL = "https://chomoand-1.com/ko1keyz-live-10270"
 DEBUT_EVENTS_URL = "https://chomoand-1.com/what-events-will-be-held-to-co-2-11307"
 SCHEDULE_URL = "https://chomoand-1.com/what-is-ko1keyzs-future-schedu-10860"
 
-title = "KO1KEYZファンミFCブースはチケットなしで参加できる?"
+title = "KO1KEYZファンミFCブースでトレカ・くじがもらえる?"
 
 blocks = []
 

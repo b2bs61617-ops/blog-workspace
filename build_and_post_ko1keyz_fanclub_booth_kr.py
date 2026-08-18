@@ -123,7 +123,7 @@ FANMEETING_PREDICT_URL_KR = "https://chomoand-1.com/ko/ko1keyz-live-kr-10755"
 DEBUT_EVENTS_URL_KR = "https://chomoand-1.com/ko/what-events-will-be-held-to-co-2-kr-11312"
 SCHEDULE_URL_KR = "https://chomoand-1.com/ko/what-is-ko1keyzs-future-schedu-kr-10863"
 
-title = "KO1KEYZ 팬미팅 FC부스, 티켓 없이 참여 가능할까?"
+title = "KO1KEYZ 팬미팅 FC부스에서 포토카드・복권 받을 수 있을까?"
 
 blocks = []
 
@@ -149,7 +149,6 @@ blocks.append(p([
     f"개최 개요 자체에 대해서는 이전에 예상 기사로 정리한 <a href=\"{FANMEETING_PREDICT_URL_KR}\" target=\"_blank\" rel=\"noopener\">KO1KEYZ 라이브・팬미팅은 언제? 라포네 성향으로 일정 대예상!</a>도 참고해보세요.",
     "그리고 개막을 코앞에 둔 8월 18일, 공식 측에서 새롭게 FANCLUB BOOTH 진행을 발표한 것이 이번 글의 내용입니다.",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("새 특전①FC 포토카드(월회비 일괄결제 코스 한정)"))
 blocks.append(img_trekka_html)
@@ -164,13 +163,12 @@ blocks.append(capbox("참여 방법", [
     ("③", "스태프 확인 후, 포토카드를 랜덤으로 1장 증정"),
 ]))
 blocks.append(p([
-    "대상은 회장에 방문한 「월회비 일괄결제 코스」회원이며, 당일 이 코스에 신규 가입・코스 변경한 사람도 대상에 포함됩니다.",
-    "공연 티켓이 없는 사람도 참여할 수 있지만, 참여 가능 횟수는 1인 1일 1회까지로, 하루 2공연이 있는 날짜에도 1회까지만 교환할 수 있습니다.",
+    "<strong>대상은 회장에 방문한 「월회비 일괄결제 코스」회원이며, 당일 이 코스에 신규 가입・코스 변경한 사람도 대상에 포함됩니다.</strong>",
+    "공연 티켓이 없는 사람도 참여할 수 있지만, <strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;\">참여 가능 횟수는 1인 1일 1회까지</span></strong>로, <strong>하루 2공연이 있는 날짜에도 1회까지만 교환할 수 있습니다.</strong>",
 ]))
 blocks.append(notebox('''<p style="margin:0;"><strong>참여 시 유의사항</strong><br>
 ・본인이 직접 교환 버튼을 눌러 FANCLUB BOOTH에서 교환하기 전에 「교환 완료」 화면이 된 경우, 이유를 불문하고 교환이 불가능합니다.<br>
 ・당일 회장 주변의 혼잡 상황이나 전파 상황, 부스 종료 시간에 따라 기획 참여나 특전 교환이 불가능할 수 있습니다.</p>'''))
-blocks.append(hr())
 
 blocks.append(h2("새 특전②KO1LY 복권(FC 회원 한정・코스 무관)"))
 blocks.append(minibox('<p style="margin:0;"><strong>대상:</strong>「KO1KEYZ OFFICIAL FANCLUB」회원(코스 무관・티켓 불필요・당일 가입도 가능)</p>'))
@@ -187,7 +185,6 @@ blocks.append(p([
     "꽝인 경우 상품이 없는 대신 FANCLUB BOOTH를 방문할 필요도 없습니다.",
     "복권을 뽑는 것만이라면 누구나 가볍게 도전할 수 있는 기획입니다.",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("티켓이 없어도 참여할 수 있을까?"))
 blocks.append(img_kuji_html)
@@ -197,7 +194,6 @@ blocks.append(p([
     "다만 참여하려면 회장 주변에 있어야 한다는 조건이 있으며, 공식 측에서는 스마트폰의 위치 정보를 미리 켜두도록 안내하고 있습니다.",
     "먼 지역에서 참여하지 못하는 사람을 위한 구제책이 아니라, 어디까지나 「회장에는 오지만 티켓은 없는」 사람을 위한 기획이라는 점을 기억해두면 좋겠습니다.",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("CD 예약 추첨회와는 무엇이 다를까?"))
 blocks.append(p([
@@ -205,7 +201,6 @@ blocks.append(p([
     "이쪽도 티켓 없이 참여할 수 있으며, 구매하면 반드시 복권과 포토카드를 받을 수 있는 방식이지만, FC 회원 한정인 FANCLUB BOOTH와 달리 CD 예약 추첨회는 누구나 참여할 수 있습니다.",
     f"CD 예약 추첨회의 자세한 참여 방법・특전 내용은 <a href=\"{DEBUT_EVENTS_URL_KR}\" target=\"_blank\" rel=\"noopener\">KO1KEYZ 데뷔 기념 이벤트, 어떤 게 있을까? 타워레코드 한정 사인회＆팬미팅 예약 추첨회 총정리</a>에서 소개하고 있으니, 두 특전을 모두 노리고 싶은 사람은 함께 확인해보세요.",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("정리"))
 blocks.append(notebox(f'''<p style="font-weight:bold;font-size:1.05em;margin:0 0 10px 0;">KO1KEYZ 팬미팅 FANCLUB BOOTH 정리</p>
@@ -227,46 +222,60 @@ blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>KO1KEYZ에 대해
 content = "\n\n".join(blocks)
 print("content chars:", len(content))
 
-slug = f"{JP_SLUG}-kr"
+EXISTING_KR_POST_ID = 11472
+EXISTING_KR_EYECATCH_MEDIA_ID = 11471
 
-# KR版アイキャッチ(--lang krで生成した専用画像)をアップロード
-eyecatch_path = ROOT / "images" / "ko1keyz_fanclub_booth_eyecatch_kr.png"
-with open(eyecatch_path, "rb") as f:
-    eyecatch_data = f.read()
-media_r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/media",
-    headers={
-        **HEADERS_AUTH,
-        "Content-Type": "image/png",
-        "Content-Disposition": 'attachment; filename="ko1keyz_fanclub_booth_eyecatch_kr.png"',
-    },
-    data=eyecatch_data,
-)
-media_r.raise_for_status()
-eyecatch_media = media_r.json()
-print("KR EYECATCH_MEDIA_ID", eyecatch_media["id"])
+if EXISTING_KR_POST_ID:
+    payload = {"title": title, "content": content, "status": "draft"}
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_KR_POST_ID}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("UPDATED KR POST_ID", post["id"])
+else:
+    slug = f"{JP_SLUG}-kr"
 
-payload = {
-    "title": title,
-    "content": content,
-    "status": "draft",
-    "slug": slug,
-    "lang": "ko",
-    "translations": {"ja": JP_POST_ID},
-    "featured_media": eyecatch_media["id"],
-    "categories": [66, 62],
-    "author": 2,
-}
-r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps(payload).encode("utf-8"),
-)
-r.raise_for_status()
-post = r.json()
-print("KR POST_ID", post["id"])
-print("KR SLUG", post["slug"])
-print("KR LINK", post["link"])
+    # KR版アイキャッチ(--lang krで生成した専用画像)をアップロード
+    eyecatch_path = ROOT / "images" / "ko1keyz_fanclub_booth_eyecatch_kr.png"
+    with open(eyecatch_path, "rb") as f:
+        eyecatch_data = f.read()
+    media_r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/media",
+        headers={
+            **HEADERS_AUTH,
+            "Content-Type": "image/png",
+            "Content-Disposition": 'attachment; filename="ko1keyz_fanclub_booth_eyecatch_kr.png"',
+        },
+        data=eyecatch_data,
+    )
+    media_r.raise_for_status()
+    eyecatch_media = media_r.json()
+    print("KR EYECATCH_MEDIA_ID", eyecatch_media["id"])
+
+    payload = {
+        "title": title,
+        "content": content,
+        "status": "draft",
+        "slug": slug,
+        "lang": "ko",
+        "translations": {"ja": JP_POST_ID},
+        "featured_media": eyecatch_media["id"],
+        "categories": [66, 62],
+        "author": 2,
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("KR POST_ID", post["id"])
+    print("KR SLUG", post["slug"])
+print("KR LINK", post.get("link", f"{WP_URL}/ko/?p={post['id']}"))
 
 with open(ROOT / "tmp_ko1keyz_fanclub_booth_kr_postid.txt", "w", encoding="utf-8") as f:
     f.write(str(post["id"]))
