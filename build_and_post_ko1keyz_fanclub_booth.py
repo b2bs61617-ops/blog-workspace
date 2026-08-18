@@ -63,18 +63,32 @@ def build_img_html(media, alt, caption):
 </figure>'''
 
 
-print("uploading images...")
-img_trekka = upload_image(
-    ROOT / "tools" / "Xiy" / "posts_temp_tweet2" / "images" / "post_1_img_1.jpg",
-    "ko1keyz_fanclub_booth_trekka_sample.jpg",
-)
-print("trekka sample media id", img_trekka["id"])
+EXISTING_POST_ID = 11468
+EXISTING_TREKKA_MEDIA_ID = 11466
+EXISTING_KUJI_MEDIA_ID = 11467
+EXISTING_EYECATCH_MEDIA_ID = 11469
 
-img_kuji = upload_image(
-    ROOT / "tools" / "Xiy" / "posts_temp_tweet3" / "images" / "post_1_img_1.jpg",
-    "ko1keyz_fanclub_booth_kuji_overview.jpg",
-)
-print("kuji overview media id", img_kuji["id"])
+if EXISTING_POST_ID:
+    print("reusing already-uploaded images (update run)...")
+    r1 = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_TREKKA_MEDIA_ID}", headers=HEADERS_AUTH)
+    r1.raise_for_status()
+    img_trekka = r1.json()
+    r2 = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_KUJI_MEDIA_ID}", headers=HEADERS_AUTH)
+    r2.raise_for_status()
+    img_kuji = r2.json()
+else:
+    print("uploading images...")
+    img_trekka = upload_image(
+        ROOT / "tools" / "Xiy" / "posts_temp_tweet2" / "images" / "post_1_img_1.jpg",
+        "ko1keyz_fanclub_booth_trekka_sample.jpg",
+    )
+    print("trekka sample media id", img_trekka["id"])
+
+    img_kuji = upload_image(
+        ROOT / "tools" / "Xiy" / "posts_temp_tweet3" / "images" / "post_1_img_1.jpg",
+        "ko1keyz_fanclub_booth_kuji_overview.jpg",
+    )
+    print("kuji overview media id", img_kuji["id"])
 
 TREKKA_CAPTION = '出典:<a href="https://x.com/KO1KEYZofficial/status/2089630884013961359" target="_blank" rel="noopener">https://x.com/KO1KEYZofficial/status/2089630884013961359</a>'
 img_trekka_html = f"<!-- wp:html -->\n{build_img_html(img_trekka, 'KO1KEYZ FANCLUB BOOTH FCトレカのサンプル画像(12種ランダム1枚)', TREKKA_CAPTION)}\n<!-- /wp:html -->"
@@ -172,7 +186,6 @@ blocks.append(p([
     f"開催概要そのものについては、以前予想記事としてまとめた<a href=\"{FANMEETING_PREDICT_URL}\" target=\"_blank\" rel=\"noopener\">KO1KEYZのライブ・ファンミはいつ？ラポネ傾向から日程を大予想！</a>も参考にしてみてください。",
     "そして開幕が目前に迫った8月18日、公式から新たにFANCLUB BOOTHの実施が発表された、というのが今回の記事の内容です。",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("新特典①FCトレカ(月会費まとめて払いコース限定)"))
 blocks.append(img_trekka_html)
@@ -187,13 +200,12 @@ blocks.append(capbox("参加方法", [
     ("③", "スタッフの確認後、トレカをランダムで1枚プレゼント"),
 ]))
 blocks.append(p([
-    "対象となるのは会場に来た「月会費まとめて払いコース」会員で、当日そのコースに新規入会・コース変更した人も対象に含まれます。",
-    "公演チケットを持っていない人でも参加できますが、参加できる回数は1人1日1回までで、1日2公演がある日程でも1回までしか引き換えられません。",
+    "<strong>対象となるのは会場に来た「月会費まとめて払いコース」会員で、当日そのコースに新規入会・コース変更した人も対象に含まれます。</strong>",
+    "公演チケットを持っていない人でも参加できますが、<strong><span class=\"swl-marker mark_orange\" style=\"font-size:1.15em;\">参加できる回数は1人1日1回まで</span></strong>で、<strong>1日2公演がある日程でも1回までしか引き換えられません。</strong>",
 ]))
 blocks.append(notebox('''<p style="margin:0;"><strong>参加にあたっての注意事項</strong><br>
 ・自分で引き換えボタンを押してしまい、FANCLUB BOOTHでの引き換え前に「引き換え完了」画面になっている場合、理由を問わず引き換えはできません。<br>
 ・当日の会場周辺の混雑状況や電波状況、ブースの終了時間によっては、企画への参加や特典の引き換えができないことがあります。</p>'''))
-blocks.append(hr())
 
 blocks.append(h2("新特典②KO1LYくじ(FC会員限定・コース不問)"))
 blocks.append(minibox('<p style="margin:0;"><strong>対象:</strong>「KO1KEYZ OFFICIAL FANCLUB」会員(コース不問・チケット不要・当日入会でもOK)</p>'))
@@ -210,7 +222,6 @@ blocks.append(p([
     "はずれの場合は賞品がない代わりに、FANCLUB BOOTHへ足を運ぶ必要もありません。",
     "くじを引くだけなら誰でも気軽に挑戦できる企画になっています。",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("チケットがなくても参加できる?"))
 blocks.append(img_kuji_html)
@@ -220,7 +231,6 @@ blocks.append(p([
     "ただし、参加には会場周辺にいることが条件になっており、公式からはスマートフォンの位置情報をあらかじめオンにしておくよう案内されています。",
     "遠方から参加できない人向けの救済ではなく、あくまで「会場には来るがチケットは持っていない」人向けの企画という位置づけです。",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("CD予約抽選会との違いは?"))
 blocks.append(p([
@@ -228,7 +238,6 @@ blocks.append(p([
     "こちらもチケット不要で参加でき、購入すれば必ずくじとトレカがもらえる仕組みですが、対象がFC会員限定のFANCLUB BOOTHとは異なり、CD予約抽選会は誰でも参加できます。",
     f"CD予約抽選会の詳しい参加方法・特典内容は<a href=\"{DEBUT_EVENTS_URL}\" target=\"_blank\" rel=\"noopener\">KO1KEYZデビュー記念イベントは？タワレコ&ファンミ抽選会</a>で紹介しているので、両方の特典を狙いたい人はあわせてチェックしてみてください。",
 ]))
-blocks.append(hr())
 
 blocks.append(h2("まとめ"))
 blocks.append(notebox(f'''<p style="font-weight:bold;font-size:1.05em;margin:0 0 10px 0;">KO1KEYZファンミFANCLUB BOOTHまとめ</p>
@@ -271,54 +280,68 @@ def get_slug(title, fallback):
 
 SUMMARY = "8月21日開幕のKO1KEYZ 1STファンミでFANCLUB BOOTHが実施決定。FCトレカ・KO1LYくじの対象者や参加方法、チケットなしでも参加できるかをまとめました。"
 
-slug = get_slug(title, "ko1keyz-fanmeeting-fanclub-booth")
-print("slug:", slug)
-payload = {
-    "title": title,
-    "content": content,
-    "slug": slug,
-    "status": "draft",
-    "categories": [66, 62],
-    "author": 2,
-    "meta": {"jetpack_publicize_message": SUMMARY},
-}
-r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps(payload).encode("utf-8"),
-)
-r.raise_for_status()
-post = r.json()
-print("POST_ID", post["id"])
-print("SLUG", post["slug"])
+if EXISTING_POST_ID:
+    payload = {"title": title, "content": content, "status": "draft"}
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_POST_ID}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("UPDATED POST_ID", post["id"])
+else:
+    slug = get_slug(title, "ko1keyz-fanmeeting-fanclub-booth")
+    print("slug:", slug)
+    payload = {
+        "title": title,
+        "content": content,
+        "slug": slug,
+        "status": "draft",
+        "categories": [66, 62],
+        "author": 2,
+        "meta": {"jetpack_publicize_message": SUMMARY},
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("POST_ID", post["id"])
+    print("SLUG", post["slug"])
 print("PREVIEW", f"{WP_URL}/?p={post['id']}")
 
 # アイキャッチはKO1KEYZ統一テンプレ(文字入り、tools/eyecatch_koikeyz.pyで生成済み)を使う
-eyecatch_path = ROOT / "images" / "ko1keyz_fanclub_booth_eyecatch.png"
-with open(eyecatch_path, "rb") as f:
-    eyecatch_data = f.read()
-media_r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/media",
-    headers={
-        **HEADERS_AUTH,
-        "Content-Type": "image/png",
-        "Content-Disposition": 'attachment; filename="ko1keyz_fanclub_booth_eyecatch.png"',
-    },
-    data=eyecatch_data,
-)
-media_r.raise_for_status()
-eyecatch_media = media_r.json()
-print("EYECATCH_MEDIA_ID", eyecatch_media["id"])
+if EXISTING_POST_ID:
+    print("EYECATCH already set to", EXISTING_EYECATCH_MEDIA_ID, "(update run, skipping re-upload)")
+else:
+    eyecatch_path = ROOT / "images" / "ko1keyz_fanclub_booth_eyecatch.png"
+    with open(eyecatch_path, "rb") as f:
+        eyecatch_data = f.read()
+    media_r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/media",
+        headers={
+            **HEADERS_AUTH,
+            "Content-Type": "image/png",
+            "Content-Disposition": 'attachment; filename="ko1keyz_fanclub_booth_eyecatch.png"',
+        },
+        data=eyecatch_data,
+    )
+    media_r.raise_for_status()
+    eyecatch_media = media_r.json()
+    print("EYECATCH_MEDIA_ID", eyecatch_media["id"])
 
-featured_r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps({"featured_media": eyecatch_media["id"], "status": "draft"}).encode("utf-8"),
-)
-featured_r.raise_for_status()
-print("FEATURED_MEDIA set to", eyecatch_media["id"])
+    featured_r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps({"featured_media": eyecatch_media["id"], "status": "draft"}).encode("utf-8"),
+    )
+    featured_r.raise_for_status()
+    print("FEATURED_MEDIA set to", eyecatch_media["id"])
 
 with open(ROOT / "tmp_ko1keyz_fanclub_booth_postid.txt", "w", encoding="utf-8") as f:
     f.write(str(post["id"]))
 with open(ROOT / "tmp_ko1keyz_fanclub_booth_eyecatch_mediaid.txt", "w", encoding="utf-8") as f:
-    f.write(str(eyecatch_media["id"]))
+    f.write(str(EXISTING_EYECATCH_MEDIA_ID if EXISTING_POST_ID else eyecatch_media["id"]))
