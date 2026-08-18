@@ -181,6 +181,28 @@ TikTokで「Neko」チャレンジが広く拡散したことをきっかけに�
 <!-- /wp:html -->
 
 <!-- wp:paragraph -->
+<p>他のBefore/Afterのカットも見てみると、合成のビフォーアフターがより分かりやすくなっています。<br>
+メンバーがバスの前で踊るシーンは、加工前は空の色味が控えめですが、加工後は雲や光の演出が加わってより印象的な画になっています。<br>
+また車内から外を眺めるカットは、加工前はメンバーの背後がグリーンバック(合成用の緑色の背景布)になっており、そこに加工後は夕焼けと観覧車の景色が合成されているのがはっきり分かります。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG7_URL}}" alt="KO1KEYZ MV ダンスシーンのBefore/After比較(VFX加工前後)" width="{{IMG7_W}}" height="{{IMG7_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">出典:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG8_URL}}" alt="KO1KEYZ MV 車窓シーンのBefore/After比較(グリーンバック合成前後)" width="{{IMG8_W}}" height="{{IMG8_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">出典:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
 <p>つまり、バスの車窓から見える景色の一部は現地で実際に撮影されたものではなく、後から合成された演出だったということになります。<br>
 一方で、遊園地のゲートやメリーゴーランド前でメンバー全員が一緒に踊るシーンは、複数人の立ち位置や影の向きまで自然に揃っており、実際に원마운트 스노우파크(ウォンマウントゥ・スノウパク(ワンマウント・スノーパーク))で撮影されたとみて良さそうです。<br>
 映像全体がすべてCGというわけではなく、実写のロケ撮影とVFXを組み合わせて作られた作品と言えそうです。</p>

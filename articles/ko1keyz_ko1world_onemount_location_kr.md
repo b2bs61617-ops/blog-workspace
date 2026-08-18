@@ -181,6 +181,28 @@ KKZ는 KO1KEYZ의 약칭으로 팬들 사이에서도 자주 쓰이는 표기이
 <!-- /wp:html -->
 
 <!-- wp:paragraph -->
+<p>다른 Before/After 컷도 살펴보면 합성 전후 차이가 더 뚜렷하게 드러납니다.<br>
+멤버들이 버스 앞에서 춤추는 장면은 가공 전에는 하늘 색감이 차분한 편이지만, 가공 후에는 구름과 빛 연출이 더해져 훨씬 인상적인 화면이 되었습니다.<br>
+또 차 안에서 밖을 바라보는 컷은 가공 전에는 멤버 뒤쪽이 그린백(합성용 초록색 배경천)으로 되어 있었는데, 가공 후에는 노을과 대관람차 풍경이 합성되어 있는 것을 명확히 확인할 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG7_URL}}" alt="KO1KEYZ MV 댄스 장면 Before/After 비교(VFX 가공 전후)" width="{{IMG7_W}}" height="{{IMG7_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG8_URL}}" alt="KO1KEYZ MV 차창 장면 Before/After 비교(그린백 합성 전후)" width="{{IMG8_W}}" height="{{IMG8_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
 <p>즉, 버스 차창 밖으로 보이는 풍경 일부는 현지에서 실제로 촬영된 것이 아니라 후반 작업에서 합성된 연출이었던 것입니다.<br>
 반면 놀이공원 게이트나 회전목마 앞에서 멤버 전원이 함께 춤추는 장면은 여러 명의 위치와 그림자 방향까지 자연스럽게 맞아떨어져, 실제로 원마운트 스노우파크에서 촬영된 것으로 보입니다.<br>
 영상 전체가 전부 CG는 아니며, 실사 로케 촬영과 VFX를 조합해 만들어진 작품이라 할 수 있습니다.</p>
