@@ -149,6 +149,44 @@ KKZ는 KO1KEYZ의 약칭으로 팬들 사이에서도 자주 쓰이는 표기이
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
+<h2 class="wp-block-heading">촬영일은 언제? VFX·AI 영상은 누가 맡았을까?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="margin:0;"><strong>촬영일:</strong>2026년 7월 13일~15일(3일간)<br>
+<strong>감독:</strong>Daehee Han<br>
+<strong>VFX·AI:</strong>bookiee, kisaki(2D VFX), Jeonghoon Yeom(AI)</p>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>MV 제작에 참여한 스태프 정보도 인스타그램 게시물을 통해 공개되었습니다.<br>
+이에 따르면 실제 촬영은 2026년 7월 13일부터 15일까지 3일간 진행되었다고 합니다.<br>
+감독은 Daehee Han, 제작은 MYAMYA가 맡았고, 촬영감독 Jooyoung Ha를 비롯한 많은 스태프의 이름이 크레딧에 올라와 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>그중에서도 눈에 띄는 것은 VFX·AI 영상 제작을 맡은 스태프입니다.<br>
+2D VFX는 bookiee, kisaki가, AI 관련 영상 제작은 Jeonghoon Yeom이 담당한 것으로 크레딧에 표기되어 있습니다.<br>
+공개된 Before/After 비교 게시물을 보면, 극 중 등장하는 클래식한 버스는 원래 심플한 하늘색 단색 차체였고, 여기에 'KO1KEYZ' 로고와 'WHAT'S YOUR NAME?' 문구, 차창 너머로 보이는 노을 진 하늘과 대관람차 풍경 등이 VFX(AI)로 추가되었다는 것을 알 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG6_URL}}" alt="KO1KEYZ MV 버스 Before/After 비교(VFX 가공 전후)" width="{{IMG6_W}}" height="{{IMG6_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">출처:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>즉, 버스 차창 밖으로 보이는 풍경 일부는 현지에서 실제로 촬영된 것이 아니라 후반 작업에서 합성된 연출이었던 것입니다.<br>
+반면 놀이공원 게이트나 회전목마 앞에서 멤버 전원이 함께 춤추는 장면은 여러 명의 위치와 그림자 방향까지 자연스럽게 맞아떨어져, 실제로 원마운트 스노우파크에서 촬영된 것으로 보입니다.<br>
+영상 전체가 전부 CG는 아니며, 실사 로케 촬영과 VFX를 조합해 만들어진 작품이라 할 수 있습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
 <h2 class="wp-block-heading">원마운트 스노우파크는 어떤 시설?</h2>
 <!-- /wp:heading -->
 

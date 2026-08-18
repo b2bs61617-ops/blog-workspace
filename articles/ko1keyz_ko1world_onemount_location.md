@@ -149,6 +149,44 @@ TikTokで「Neko」チャレンジが広く拡散したことをきっかけに�
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
+<h2 class="wp-block-heading">撮影日はいつ?VFX・AI映像を手がけたのは誰?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:html -->
+<div style="border:1px solid #ddd;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f7f7f7;">
+<p style="margin:0;"><strong>撮影日:</strong>2026年7月13日〜15日(3日間)<br>
+<strong>監督:</strong>Daehee Han<br>
+<strong>VFX・AI:</strong>bookiee、kisaki(2D VFX)、Jeonghoon Yeom(AI)</p>
+</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>MVの制作に関わったスタッフの情報も、Instagramの投稿で明らかになっています。<br>
+それによると、実際の撮影は2026年7月13日から15日にかけての3日間で行われたとのことです。<br>
+監督はDaehee Hanさん、制作はMYAMYAが担当し、フォトディレクターにJooyoung Haさんなど、多くのスタッフの名前がクレジットされています。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>中でも注目したいのが、VFX・AI映像制作を手がけたスタッフです。<br>
+2D VFXはbookieeさん・kisakiさん、AI関連の映像制作はJeonghoon Yeomさんが担当したとクレジットされています。<br>
+公開されているBefore/After比較の投稿を見ると、劇中に登場するクラシックなバスは元々シンプルな水色一色の車体で、そこに「KO1KEYZ」のロゴや「WHAT'S YOUR NAME?」の文字、車窓越しに見える夕焼け空や観覧車の景色などがVFX(AI)によって加えられていることが分かります。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+  <img src="{{IMG6_URL}}" alt="KO1KEYZ MV バスのBefore/After比較(VFX加工前後)" width="{{IMG6_W}}" height="{{IMG6_H}}"
+    style="max-width:100%;height:auto;">
+  <figcaption style="text-align:center;font-size:12px;">出典:https://x.com/oshikuma3/status/2089568712508772726</figcaption>
+</figure>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>つまり、バスの車窓から見える景色の一部は現地で実際に撮影されたものではなく、後から合成された演出だったということになります。<br>
+一方で、遊園地のゲートやメリーゴーランド前でメンバー全員が一緒に踊るシーンは、複数人の立ち位置や影の向きまで自然に揃っており、実際に원마운트 스노우파크(ウォンマウントゥ・スノウパク(ワンマウント・スノーパーク))で撮影されたとみて良さそうです。<br>
+映像全体がすべてCGというわけではなく、実写のロケ撮影とVFXを組み合わせて作られた作品と言えそうです。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
 <h2 class="wp-block-heading">원마운트 스노우파크(ウォンマウントゥ・スノウパク(ワンマウント・スノーパーク))とはどんな施設?</h2>
 <!-- /wp:heading -->
 
