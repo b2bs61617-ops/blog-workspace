@@ -201,7 +201,7 @@ blocks.append(capbox("参加方法", [
 ]))
 blocks.append(p([
     "<strong>対象となるのは会場に来た「月会費まとめて払いコース」会員で、当日そのコースに新規入会・コース変更した人も対象に含まれます。</strong>",
-    "公演チケットを持っていない人でも参加できますが、<strong><span class=\"swl-marker mark_orange\" style=\"font-size:1.15em;\">参加できる回数は1人1日1回まで</span></strong>で、<strong>1日2公演がある日程でも1回までしか引き換えられません。</strong>",
+    "公演チケットを持っていない人でも参加できますが、<strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;\">参加できる回数は1人1日1回まで</span></strong>で、<strong>1日2公演がある日程でも1回までしか引き換えられません。</strong>",
 ]))
 blocks.append(notebox('''<p style="margin:0;"><strong>参加にあたっての注意事項</strong><br>
 ・自分で引き換えボタンを押してしまい、FANCLUB BOOTHでの引き換え前に「引き換え完了」画面になっている場合、理由を問わず引き換えはできません。<br>
