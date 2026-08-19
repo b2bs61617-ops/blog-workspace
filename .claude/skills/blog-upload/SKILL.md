@@ -89,19 +89,23 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 - **STEP4で記事内の写真を使うことになった場合(コイキーズ・写真ありの記事)**: 新規アップロードは不要。STEP1で取得済みのそのメディアIDをそのままSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 - **STEP4で生成アイキャッチを使うことになった場合(それ以外)**: 画像をバイナリで読み込み、`POST {サイトURL}/wp-json/wp/v2/media`にアップロード(`Content-Type: image/png`、`Content-Disposition: attachment; filename="xxx.png"`)。取得した**メディアID**をSTEP3の記事に設定: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}` ボディ `{ "featured_media": メディアID }`
 
-## STEP 0(chomoand-1.com限定・作業開始時に1回): 韓国語版の抜け漏れチェック
+## STEP 0(chomoand-1.com限定・作業開始時に1回): 多言語版(韓国語・英語)の抜け漏れチェック
 
-chomoand-1.com向けにこのスキルを実行する**最初に**、`python tools/check_kr_translation_gaps.py`を実行し、過去の記事で韓国語版(下書き含む)が見つからないものがないか確認する。STEP6は同一セッション内の続き処理として動くため、途中で中断すると気づかれないまま韓国語版が抜けることがある(詳細は[docs/korea-expansion.md](../../../docs/korea-expansion.md)の「なぜ抜け漏れが起きるか」参照)。抜け漏れが見つかったら、新規記事の作業に入る前にSTEP6相当の処理(元記事取得→韓国語ローカライズ→下書き投稿)で先に埋める。
+chomoand-1.com向けにこのスキルを実行する**最初に**、`python tools/check_translation_gaps.py`を実行し、過去の記事で韓国語版・英語版(下書き含む)が見つからないものがないか確認する。STEP6・STEP7は同一セッション内の続き処理として動くため、途中で中断すると気づかれないまま抜けることがある(詳細は[docs/korea-expansion.md](../../../docs/korea-expansion.md)の「なぜ抜け漏れが起きるか」参照)。抜け漏れが見つかっても、**英語版の既存記事への一括バックフィルは対象外**(2026-08-19時点、[docs/english-expansion.md](../../../docs/english-expansion.md)参照。適用範囲は2026-08-19以降の新規アップロードのみ)。韓国語版の抜け漏れは、新規記事の作業に入る前にSTEP6相当の処理で先に埋める。
 
 ## STEP 6(chomoand-1.com限定): 韓国語版下書きの自動生成
 
 コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**韓国語版も日本語版と同じアイキャッチ画像をfeatured_mediaに設定する**(2026-07-30〜、日本語版のアイキャッチ復活に合わせて変更)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。STEP6を終えたら、slugが元記事の`-kr`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
+
+## STEP 7(chomoand-1.com限定): 英語版下書きの自動生成(2026-08-19〜)
+
+コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
 
 ## 完了報告
 
 全STEP終了後、以下をユーザーに報告する:
 - 記事ID・スラッグ・確認URL(`{サイトURL}/?p={id}`)
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
-- (chomoand-1.comの場合)韓国語下書きのID・スラッグ
+- (chomoand-1.comの場合)韓国語下書き・英語下書きのID・スラッグ
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜6を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜7を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6→STEP7、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
