@@ -1,12 +1,15 @@
-"""chomoand-1.com(コイキーズブログ)で、日本語記事に韓国語版(下書き含む)が
+"""chomoand-1.com(コイキーズブログ)で、日本語記事に韓国語版・英語版(下書き含む)が
 作られているかをチェックするスクリプト。
 
-blog-uploadスキルSTEP6は「日本語投稿後に自動で韓国語版を作る」設計だが、
+blog-uploadスキルSTEP6(韓国語)・STEP7(英語)は「日本語投稿後に自動で多言語版を作る」設計だが、
 GET /wp-json/wp/v2/posts はPolylangの`lang`/`translations`フィールドを
-返さない(docs/korea-expansion.md参照)ため、これまでSTEP6が本当に実行され
+返さない(docs/korea-expansion.md参照)ため、これまでSTEP6/7が本当に実行され
 成功したかを外から確認する手段がなかった。このスクリプトはslugの命名規則
-(韓国語版は元記事slug + "-kr")で日本語記事と韓国語記事を突き合わせ、
-韓国語版が見つからない日本語記事を一覧化する。
+(韓国語版は元記事slug + "-kr"、英語版は元記事slug + "-en")で日本語記事と
+突き合わせ、各言語版が見つからない日本語記事を一覧化する。
+
+2026-08-19に韓国語専用の check_kr_translation_gaps.py から改名・拡張した
+(英語版導入に伴い、docs/english-expansion.md参照)。
 
 **下書き(status=draft)も含めて取得するため、WordPressの認証情報(.env)が必須。**
 公開済み記事だけを見るサイトマップ等では「下書きのまま止まっている」ケースと
@@ -14,7 +17,7 @@ GET /wp-json/wp/v2/posts はPolylangの`lang`/`translations`フィールドを
 使うこと。
 
 実行:
-  python tools/check_kr_translation_gaps.py
+  python tools/check_translation_gaps.py
 """
 import base64
 import json
@@ -39,6 +42,12 @@ def load_env(path):
 
 ROOT = Path(__file__).parent.parent
 ENV = {**load_env(ROOT / ".env"), **os.environ}
+
+# (Polylang URLセグメント, slugサフィックス, 表示名)
+LANGS = [
+    ("/ko/", "-kr", "韓国語"),
+    ("/en/", "-en", "英語"),
+]
 
 
 def fetch_all_posts(site_url, auth_header):
@@ -67,8 +76,9 @@ def fetch_all_posts(site_url, auth_header):
     return posts
 
 
-def is_korean(post):
-    return "/ko/" in post["link"]
+def is_translation(post):
+    """いずれかの言語版URLセグメントを含むか"""
+    return any(segment in post["link"] for segment, _, _ in LANGS)
 
 
 def main():
@@ -86,27 +96,35 @@ def main():
     auth_header = base64.b64encode(f"{user}:{app_password}".encode()).decode()
     posts = fetch_all_posts(site_url, auth_header)
 
-    jp_posts = [p for p in posts if not is_korean(p)]
-    kr_posts = [p for p in posts if is_korean(p)]
-    kr_slugs = [p["slug"] for p in kr_posts]
+    jp_posts = [p for p in posts if not is_translation(p)]
 
-    gaps = []
-    for jp in jp_posts:
-        jp_slug = jp["slug"]
-        matched = [kr for kr in kr_posts if kr["slug"].startswith(f"{jp_slug}-kr")]
-        if not matched:
-            gaps.append(jp)
+    print(f"日本語記事: {len(jp_posts)}件\n")
 
-    print(f"日本語記事: {len(jp_posts)}件 / 韓国語記事(下書き含む): {len(kr_posts)}件\n")
+    any_gaps = False
+    for segment, suffix, label in LANGS:
+        lang_posts = [p for p in posts if segment in p["link"]]
+        print(f"{label}記事(下書き含む): {len(lang_posts)}件")
 
-    if not gaps:
-        print("韓国語版が見つからない日本語記事はなかったワン。")
-        return
+        gaps = []
+        for jp in jp_posts:
+            jp_slug = jp["slug"]
+            matched = [p for p in lang_posts if p["slug"].startswith(f"{jp_slug}{suffix}")]
+            if not matched:
+                gaps.append(jp)
 
-    print(f"韓国語版が見つからない日本語記事: {len(gaps)}件\n")
-    for jp in sorted(gaps, key=lambda p: p["date"]):
-        print(f"- [{jp['status']}] {jp['date']} id={jp['id']} slug={jp['slug']}")
-        print(f"  {jp['link']}")
+        if not gaps:
+            print(f"  → {label}版が見つからない日本語記事はなかったワン。\n")
+            continue
+
+        any_gaps = True
+        print(f"  → {label}版が見つからない日本語記事: {len(gaps)}件")
+        for jp in sorted(gaps, key=lambda p: p["date"]):
+            print(f"    - [{jp['status']}] {jp['date']} id={jp['id']} slug={jp['slug']}")
+            print(f"      {jp['link']}")
+        print()
+
+    if not any_gaps:
+        print("すべての日本語記事に韓国語版・英語版が揃っているワン。")
 
 
 if __name__ == "__main__":

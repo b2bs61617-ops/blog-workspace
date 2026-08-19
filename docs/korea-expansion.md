@@ -1,6 +1,6 @@
 # コイキーズブログ(chomoand-1.com)の韓国語展開
 
-KO1KEYZが韓国でもデビューするため、chomoand-1.comを多言語化した(2026-07-19、トモキ指示)。海外展開の優先順位は **韓国語 → 英語 → 中国語**(中国語はAdSenseが使えないため後回し。詳細背景は不要ならこのファイルには書かない)。
+KO1KEYZが韓国でもデビューするため、chomoand-1.comを多言語化した(2026-07-19、トモキ指示)。海外展開の優先順位は **韓国語 → 英語 → 中国語**(中国語はAdSenseが使えないため後回し。詳細背景は不要ならこのファイルには書かない)。英語版は2026-08-19に追加、詳細は[english-expansion.md](english-expansion.md)参照。
 
 ## サイト構成
 
@@ -38,7 +38,7 @@ STEP6は「STEP3完了後に同じ作業の続きとして自動実行する」�
 
 **GETでは`lang`/`translations`が返らないため、公開後のサイトマップやフロントページを見ても「下書きのまま止まっているだけ」なのか「本当に作られていない」のか区別できない。** 判定には認証付きで`status=draft`も含めて取得する必要がある。
 
-[`tools/check_kr_translation_gaps.py`](../tools/check_kr_translation_gaps.py)を使うと、chomoand-1.comの全記事(下書き含む)をslugの前方一致で突き合わせ、韓国語版が見つからない日本語記事を一覧化できる。**chomoand-1.com向けにblog-uploadスキルを実行する作業の最初に、まずこのスクリプトを実行して既存の抜け漏れがないか確認し、あれば先にSTEP6相当の処理で埋めてから新規記事の作業に入ること。**
+[`tools/check_translation_gaps.py`](../tools/check_translation_gaps.py)(2026-08-19に韓国語専用の`check_kr_translation_gaps.py`から改名・拡張。英語版のチェックも同時に行う)を使うと、chomoand-1.comの全記事(下書き含む)をslugの前方一致で突き合わせ、韓国語版が見つからない日本語記事を一覧化できる。**chomoand-1.com向けにblog-uploadスキルを実行する作業の最初に、まずこのスクリプトを実行して既存の抜け漏れがないか確認し、あれば先にSTEP6相当の処理で埋めてから新規記事の作業に入ること。**
 
 ### PowerShellでのREST API呼び出しの注意(2026-07-19に確認)
 

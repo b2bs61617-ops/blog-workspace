@@ -51,9 +51,9 @@ chomoand-0.com(ジャニオタブログ)は以下が判明済み(2026-08-10):
 
 グループ・メンバー全体の話題(メンカラ・絵文字まとめなど)は`[66, 62]`(KO1KEYZ+まとめ)を使うとよい。
 
-### 多言語化(2026-07-19〜)
+### 多言語化(2026-07-19〜、2026-08-19に英語追加)
 
-chomoand-1.com(コイキーズブログ)にはPolylangを導入し、韓国語版の展開を進めている。サイト構成・自動生成の運用フローは[docs/korea-expansion.md](korea-expansion.md)を参照。日本語記事アップロード時の韓国語下書き自動生成は[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)のSTEP6に組み込み済み。
+chomoand-1.com(コイキーズブログ)にはPolylangを導入し、韓国語版・英語版の展開を進めている(優先順位は韓国語→英語→中国語)。サイト構成・自動生成の運用フローは[docs/korea-expansion.md](korea-expansion.md)(韓国語・Polylang共通インフラ)・[docs/english-expansion.md](english-expansion.md)(英語)を参照。日本語記事アップロード時の韓国語下書き自動生成は[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)のSTEP6、英語下書き自動生成はSTEP7に組み込み済み。**英語版の自動生成は2026-08-19以降の新規アップロードのみが対象で、既存記事への一括バックフィルは対象外。**
 
 ### chomoand.com(恋リアブログ)
 
