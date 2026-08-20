@@ -122,7 +122,7 @@ def wakaru_box(items, ttl):
 </div>''')
 
 
-title = "Where Was YUKI's KO1NOTE Photo Taken? Enosui, It Turns Out!"
+title = "KO1KEYZ YUKI's KO1NOTE Photo Location: Enosui, It Turns Out!"
 
 blocks = []
 

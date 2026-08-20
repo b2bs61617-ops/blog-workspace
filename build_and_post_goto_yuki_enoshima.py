@@ -155,7 +155,7 @@ def wakaru_box(items):
 # KO1KEYZ記事共通のウォームグレー(メンバーカラーと被らせない、YUKIのメンバーカラーは紫のため特に注意)
 ACCENT = "#8a8378"
 
-title = "YUKI(後藤結)のコイノート写真の場所は?えのすいと判明!"
+title = "KO1KEYZ YUKIのコイノート写真の場所は？えのすいと判明！"
 
 blocks = []
 
