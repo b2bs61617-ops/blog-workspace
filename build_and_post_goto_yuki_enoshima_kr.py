@@ -245,11 +245,14 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>화제의 가족:</strong>신에노시마 수족관의 꽝 없는 "인형 뽑기"(1등~3등 등)로 만날 수 있는 아기수달 인형 "해피 마린"으로 보임<br>
 ✔ <strong>과거 방문 이력:</strong>밤에 촬영된 것으로 보이는 사진도 있어, 이전부터 에노시마를 방문했을 가능성이 있음
 </p>
-<p style="margin:10px 0 0 0;">신에노시마 수족관이나 가나가와현 어딘가에서 우연히 YUKI와 마주치는 건 아닐까…라는 기대를 살짝 품게 될 정도로, 에노시마를 정말 좋아하는 것 같네요!<br>
-공식 사이트에 따르면 이 인형 뽑기는 수량 한정으로, <strong><span class="swl-marker mark_yellow" style="font-size:1.15em;text-decoration:underline;">소진되는 대로 종료</span></strong>된다고 합니다.<br>
-YUKI와 같은 "해피 마린"을 가족으로 맞이하고 싶다면 서둘러 신에노시마 수족관에 다녀오는 수밖에 없겠네요! 저도 당장이라도 가고 싶어졌어요, 관심 있으신 분들은 함께 도전해봐요!</p>
 </div>
 </div>'''))
+
+blocks.append(p([
+    "신에노시마 수족관이나 가나가와현 어딘가에서 우연히 YUKI와 마주치는 건 아닐까…라는 기대를 살짝 품게 될 정도로, 에노시마를 정말 좋아하는 것 같네요!",
+    "공식 사이트에 따르면 이 인형 뽑기는 수량 한정으로, <strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;text-decoration:underline;\">소진되는 대로 종료</span></strong>된다고 합니다.",
+    "YUKI와 같은 \"해피 마린\"을 가족으로 맞이하고 싶다면 서둘러 신에노시마 수족관에 다녀오는 수밖에 없겠네요! 지금 당장이라도 가고 싶을 정도네요・・・관심 있으신 분들은 함께 도전해봐요!",
+]))
 
 blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f6f4;">
 <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">관련 기사</p>

@@ -244,11 +244,14 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>The trending "family member":</strong>Likely "Happy Marine," a small-clawed otter plush won from the New Enoshima Aquarium's no-lose plush prize draw<br>
 ✔ <strong>Past visits:</strong>Night photos suggest he may have visited Enoshima before this trip as well
 </p>
-<p style="margin:10px 0 0 0;">He seems to love Enoshima enough that you half expect to run into him there someday — whether at the aquarium itself or just somewhere around Kanagawa!<br>
-According to the official site, this prize draw has limited quantities and <strong><span class="swl-marker mark_yellow" style="font-size:1.15em;text-decoration:underline;">ends once supplies run out</span></strong>.<br>
-If you want to welcome the same "Happy Marine" into your own family as YUKI did, it sounds like you'll need to head to the New Enoshima Aquarium sooner rather than later! We're already itching to go ourselves — anyone else in, let's go try our luck together!</p>
 </div>
 </div>'''))
+
+blocks.append(p([
+    "He seems to love Enoshima enough that you half expect to run into him there someday — whether at the aquarium itself or just somewhere around Kanagawa!",
+    "According to the official site, this prize draw has limited quantities and <strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;text-decoration:underline;\">ends once supplies run out</span></strong>.",
+    "If you want to welcome the same \"Happy Marine\" into your own family as YUKI did, it sounds like you'll need to head to the New Enoshima Aquarium sooner rather than later! It's making us want to go right now... anyone else in, let's go try our luck together!",
+]))
 
 blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f6f4;">
 <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">Related Articles</p>
