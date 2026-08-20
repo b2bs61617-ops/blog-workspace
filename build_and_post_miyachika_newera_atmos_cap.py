@@ -215,12 +215,14 @@ blocks.append(p([
 ]))
 
 blocks.append(h2("まとめ"))
-blocks.append(wphtml('''<ul>
+blocks.append(wphtml(f'''<div style="border:1px solid {BORDER};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:{BG};">
+<ul style="margin:0;padding-left:1.3em;">
 <li>宮近海斗がかぶっていた帽子はNEW ERA×atmosのコラボ「9FIFTY スナップバック」(参考価格¥7,150)</li>
 <li>atmosの創業25周年を記念した2025年秋冬(25fw)モデルで、記念ピンバッジとバンダナがセットになっている</li>
 <li>生成りのクラウン×黒のブリムに、atmosロゴの立体刺繍が施されたデザイン</li>
 <li>写真は『音楽の日2026』のDREAMダンス企画「楽園ベイベー」で共演した千賀健永・中村海人・七五三掛龍也・松倉海斗との、プライベートな集まりで撮影されたもの</li>
-</ul>'''))
+</ul>
+</div>'''))
 blocks.append(p([
     "グループの垣根を越えた5人の仲の良さが伝わってくる1枚に、思わずほっこりしたファンも多かったのではないでしょうか。",
     "気になる人はぜひ、宮近海斗と同じNEW ERA×atmosの25周年記念キャップをチェックしてみてください!",
