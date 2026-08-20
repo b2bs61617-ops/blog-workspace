@@ -197,7 +197,18 @@ blocks.append(p([
     "As the photo shows, it seems to come in <strong>three colors — light brown, brown, and dark brown</strong> — and lining them up together only makes them cuter.",
     "This particular prize draw is a no-lose draw with tiers such as 1st through 3rd prize, making it an easy, low-pressure game to try while at the aquarium.",
     "According to the \"Otter Shop\" page on the aquarium's official website, the \"Otter\" plush prize draw costs <strong>1,100 yen per try</strong>, and it's a no-lose draw — everyone wins a plush.",
-    "The prize sizes vary quite a bit by tier: <strong>about 90cm for 1st prize, about 57cm for 2nd prize, and about 33cm for 3rd prize</strong>, and quantities are limited, with the draw ending once stock runs out.",
+    "The prize sizes vary quite a bit by tier, as shown below.",
+]))
+blocks.append('''<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
+<tr><td>Prize Tier</td><td>Approx. Size</td></tr>
+<tr><td>1st Prize</td><td>About 90cm</td></tr>
+<tr><td>2nd Prize</td><td>About 57cm</td></tr>
+<tr><td>3rd Prize</td><td>About 33cm</td></tr>
+</tbody></table></figure>
+<!-- /wp:table -->''')
+blocks.append(p([
+    "Quantities are limited, with the draw ending once stock runs out.",
     "It's not known exactly which prize tier (and which size) YUKI actually won, but given how much the sizes differ, it's an intriguing detail to wonder about.",
     "Combined with the aquarium visit, this lines up with our theory that the KO1NOTE photos were taken at the New Enoshima Aquarium, making it quite likely he picked up \"Happy Marine\" there through the prize draw.",
     "That said, YUKI himself hasn't given any details yet — so this remains speculation based on the photos, comments, and product information alone.",

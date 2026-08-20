@@ -233,7 +233,18 @@ blocks.append(p([
     "カラー展開は写真のように<strong>ライトブラウン・ブラウン・ダークブラウンの3色</strong>があるようで、色違いで並べるとさらにかわいさが増す人気ぶりです。",
     "このぬいぐるみクジは1等〜3等などの等級があるハズレなしのクジで、館内で気軽に挑戦できるのも魅力のひとつです。",
     "新江ノ島水族館公式サイトの「オッターショップ」ページによると、ぬいぐるみクジ「カワウソ」は<strong>1回1,100円</strong>、はずれくじなしで必ず当たるクジとなっています。",
-    "賞品のサイズは<strong>1等が約90cm、2等が約57cm、3等が約33cm</strong>とかなりの差があり、数に限りがあるため、<strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;text-decoration:underline;\">なくなり次第終了</span></strong>とのことです。",
+    "賞品のサイズは等級によってかなりの差があり、詳しくは以下の通りです。",
+]))
+blocks.append('''<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
+<tr><td>等級</td><td>サイズ目安</td></tr>
+<tr><td>1等</td><td>約90cm</td></tr>
+<tr><td>2等</td><td>約57cm</td></tr>
+<tr><td>3等</td><td>約33cm</td></tr>
+</tbody></table></figure>
+<!-- /wp:table -->''')
+blocks.append(p([
+    "数に限りがあるため、<strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;text-decoration:underline;\">なくなり次第終了</span></strong>とのことです。",
     "YUKIが実際に何等を引いたのか、どのサイズのぬいぐるみを手に入れたのかまでは分かっていませんが、これだけサイズに差があると考えると気になるポイントです。",
     "コイノートの写真に写っていた場所が新江ノ島水族館だとみられることともぴったり一致しており、館内のぬいぐるみクジでこの「ハッピーマリン」を手に入れた可能性が高そうです。",
     "ただし、YUKI本人からの詳しい説明はまだなく、あくまで写真・コメント・くじの商品情報から推測できる範囲にとどまる点には留意が必要です。",
