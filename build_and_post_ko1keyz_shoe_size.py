@@ -122,7 +122,7 @@ HEYAWARI_URL = "https://chomoand-1.com/what-is-the-room-allocation-at-11122"
 RYUJI_LEFTHANDED_URL = "https://chomoand-1.com/is-ryuji-left-handed-investiga-11388"
 DEBUT_SINGLE_URL = "https://chomoand-1.com/when-will-ko1keyzs-debut-singl-10866"
 
-title = "KO1KEYZメンバーの靴サイズは?新世界衣装展示で判明!"
+title = "KO1KEYZメンバーの靴サイズは？新世界衣装展示で判明！"
 
 blocks = []
 
@@ -249,9 +249,9 @@ print("PREVIEW", f"{WP_URL}/?p={post['id']}")
 EYECATCH_PATH = ROOT / "images" / "ko1keyz_shoe_size_eyecatch.png"
 subprocess.run([
     sys.executable, str(ROOT / "tools" / "eyecatch_koikeyz.py"),
-    "--top", "メンバーの靴サイズは?",
+    "--top", "メンバーの靴サイズは？",
     "--main", "KO1KEYZ",
-    "--bottom", "新世界衣装展示でタグが判明!",
+    "--bottom", "新世界衣装展示でタグが判明！",
     "--out", str(EYECATCH_PATH),
     "--seed", str(post["id"]),
 ], check=True)
