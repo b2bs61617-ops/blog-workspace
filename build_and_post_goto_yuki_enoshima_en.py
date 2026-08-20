@@ -183,13 +183,15 @@ blocks.append(p([
 ]))
 
 blocks.append(h2("What about the \"new family member\" otter?"))
-blocks.append(minibox('<p style="margin:0;"><strong>Likely identity of the new family member:</strong>A plush called "Happy Marine - Otter," an item available from lottery-style prize draws or gift shops at the New Enoshima Aquarium and other aquariums/zoos</p>'))
+blocks.append(minibox('<p style="margin:0;"><strong>Likely identity of the new family member:</strong>"Happy Marine," a small-clawed otter plush won from the New Enoshima Aquarium\'s no-lose plush prize draw (1st through 3rd prize, etc.)</p>'))
 blocks.append(p([
     "Alongside the aquarium theory, fans have also been talking about a \"new family member\" that YUKI apparently welcomed.",
     "Comments such as \"So glad you welcomed a cute new family member, thanks to you I'm happy today too\" and \"The new family member is so cute\" suggest that YUKI picked up some kind of plush toy or merchandise.",
-    "On social media, some pointed out that this otter plush appears to be a product called \"Happy Marine - Otter,\" which is sold through lottery-style prize draws or gift shops at the New Enoshima Aquarium and other aquariums and zoos.",
-    "Combined with the aquarium visit, this lines up with our theory that the KO1NOTE photos were taken at the New Enoshima Aquarium, making it quite likely he picked up the plush there through a prize draw or at the gift shop.",
-    "That said, YUKI himself hasn't given any details yet — so this remains speculation based on the photos, comments, and social media discussion alone.",
+    "Looking into it, this plush appears to be <strong>\"Happy Marine,\" a small-clawed otter plush that's a popular prize from the New Enoshima Aquarium's (\"Enosui\") plush prize draw</strong>.",
+    "With its round eyes, plump and adorable shape, and squishy, soft texture, it's a popular souvenir and comfort item among visitors.",
+    "This particular prize draw is a no-lose draw with tiers such as 1st through 3rd prize, making it an easy, low-pressure game to try while at the aquarium.",
+    "Combined with the aquarium visit, this lines up with our theory that the KO1NOTE photos were taken at the New Enoshima Aquarium, making it quite likely he picked up \"Happy Marine\" there through the prize draw.",
+    "That said, YUKI himself hasn't given any details yet — so this remains speculation based on the photos, comments, and product information alone.",
 ]))
 
 blocks.append(h2("Has YUKI always been fond of Enoshima?"))
@@ -230,7 +232,7 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>Date:</strong>Shared in the KO1NOTE update on August 19, 2026<br>
 ✔ <strong>Background:</strong>Likely Enoshima in Fujisawa City, Kanagawa Prefecture, with the white tower likely being the "Enoshima Sea Candle" observation lighthouse<br>
 ✔ <strong>Likely location:</strong>The New Enoshima Aquarium ("Enosui"), which has a seaside deck facing Enoshima<br>
-✔ <strong>The trending "family member":</strong>Likely the "Happy Marine - Otter" plush, available from prize draws/gift shops at the New Enoshima Aquarium and other aquariums/zoos<br>
+✔ <strong>The trending "family member":</strong>Likely "Happy Marine," a small-clawed otter plush won from the New Enoshima Aquarium's no-lose plush prize draw<br>
 ✔ <strong>Past visits:</strong>Night photos suggest he may have visited Enoshima before this trip as well
 </p>
 <p style="margin:10px 0 0 0;">He seems to love Enoshima enough that you half expect to run into him there someday — whether at the aquarium itself or just somewhere around Kanagawa!</p>
