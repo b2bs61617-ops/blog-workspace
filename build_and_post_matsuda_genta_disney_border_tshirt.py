@@ -101,7 +101,7 @@ if __name__ == "__main__":
     ]))
     print("SELFIE", selfie["id"], s_large["source_url"])
 
-    TITLE = "松田元太のディズニー私服ボーダーTシャツはMMIC?価格は?"
+    TITLE = "【松田元太】ディズニー私服ボーダーTシャツはMMIC?価格は?"
     SLUG = "matsuda-genta-disney-border-tshirt-mmic"
 
     CONTENT = f"""<!-- wp:paragraph -->
@@ -220,6 +220,6 @@ if __name__ == "__main__":
     print("Setting featured image...")
     eyecatch_path = ROOT / "images" / "matsuda_genta_disney_border_tshirt_eyecatch.png"
     eyecatch = upload_media(eyecatch_path, "matsuda_genta_disney_border_tshirt_eyecatch.png",
-                             alt="松田元太のディズニー私服ボーダーTシャツはMMIC?価格は?")
+                             alt="【松田元太】ディズニー私服ボーダーTシャツはMMIC?価格は?")
     set_featured(post_id, eyecatch["id"])
     print("DONE. Post ID:", post_id, "Edit URL:", f"{SITE}/wp-admin/post.php?post={post_id}&action=edit")
