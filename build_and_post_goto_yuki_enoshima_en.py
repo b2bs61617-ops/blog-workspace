@@ -186,7 +186,6 @@ blocks.append(h2("What about the \"new family member\" otter?"))
 blocks.append(minibox('<p style="margin:0;"><strong>Likely identity of the new family member:</strong>"Happy Marine," a small-clawed otter plush won from the New Enoshima Aquarium\'s no-lose plush prize draw (1st through 3rd prize, etc.)</p>'))
 blocks.append(p([
     "Alongside the aquarium theory, fans have also been talking about a \"new family member\" that YUKI apparently welcomed.",
-    "Comments such as \"So glad you welcomed a cute new family member, thanks to you I'm happy today too\" and \"The new family member is so cute\" suggest that YUKI picked up some kind of plush toy or merchandise.",
     "Looking into it, this plush appears to be <strong>\"Happy Marine,\" a small-clawed otter plush that's a popular prize from the New Enoshima Aquarium's (\"Enosui\") plush prize draw</strong>.",
     "With its round eyes, plump and adorable shape, and squishy, soft texture, it's a popular souvenir and comfort item among visitors.",
     "This particular prize draw is a no-lose draw with tiers such as 1st through 3rd prize, making it an easy, low-pressure game to try while at the aquarium.",
@@ -239,7 +238,7 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>Past visits:</strong>Night photos suggest he may have visited Enoshima before this trip as well
 </p>
 <p style="margin:10px 0 0 0;">He seems to love Enoshima enough that you half expect to run into him there someday — whether at the aquarium itself or just somewhere around Kanagawa!<br>
-According to the official site, this prize draw has limited quantities and ends once supplies run out.<br>
+According to the official site, this prize draw has limited quantities and <strong><span class="swl-marker mark_yellow" style="font-size:1.15em;text-decoration:underline;">ends once supplies run out</span></strong>.<br>
 If you want to welcome the same "Happy Marine" into your own family as YUKI did, it sounds like you'll need to head to the New Enoshima Aquarium sooner rather than later! We're already itching to go ourselves — anyone else in, let's go try our luck together!</p>
 </div>
 </div>'''))
