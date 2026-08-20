@@ -123,7 +123,7 @@ def wakaru_box(items, ttl):
 </div>''')
 
 
-title = "KO1KEYZ YUKI(고토 유이) 코이노트 사진 장소는? 에노스이로 판명!"
+title = "【KO1KEYZ】YUKI(고토 유이) 코이노트 사진 장소는? 에노스이로 판명!"
 
 blocks = []
 
