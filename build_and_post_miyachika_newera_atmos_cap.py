@@ -90,7 +90,7 @@ closeup_src, closeup_w, closeup_h, closeup_srcset = img_urls(closeup_media)
 product_src, product_w, product_h, product_srcset = img_urls(product_media)
 
 # ---------- content builders ----------
-title = "千賀健永らとの夏休みで宮近海斗の帽子はNEW ERA×atmos?"
+title = "【キストラ】千賀健永と宮近海斗の帽子はNEW ERA×atmos?"
 
 BORDER = "#f3d6d6"
 ACCENT = "#ef9a9a"
