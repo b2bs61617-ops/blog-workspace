@@ -190,8 +190,9 @@ blocks.append(p([
     "Looking into it, this plush appears to be <strong>\"Happy Marine,\" a small-clawed otter plush that's a popular prize from the New Enoshima Aquarium's (\"Enosui\") plush prize draw</strong>.",
     "With its round eyes, plump and adorable shape, and squishy, soft texture, it's a popular souvenir and comfort item among visitors.",
     "This particular prize draw is a no-lose draw with tiers such as 1st through 3rd prize, making it an easy, low-pressure game to try while at the aquarium.",
-    "According to the aquarium's official TikTok account, the plush prize draw lineup also includes seals and hammerhead sharks alongside the otter, and it's run for <strong>1,000 yen per try at the \"Otter Shop\" on the 2nd floor</strong>.",
-    "The plush size seems to vary by prize tier, though it's not known exactly which prize (and which size) YUKI actually won.",
+    "According to the \"Otter Shop\" page on the aquarium's official website, the \"Otter\" plush prize draw costs <strong>1,100 yen per try</strong>, and it's a no-lose draw — everyone wins a plush.",
+    "The prize sizes vary quite a bit by tier: <strong>about 90cm for 1st prize, about 57cm for 2nd prize, and about 33cm for 3rd prize</strong>, and quantities are limited, with the draw ending once stock runs out.",
+    "It's not known exactly which prize tier (and which size) YUKI actually won, but given how much the sizes differ, it's an intriguing detail to wonder about.",
     "Combined with the aquarium visit, this lines up with our theory that the KO1NOTE photos were taken at the New Enoshima Aquarium, making it quite likely he picked up \"Happy Marine\" there through the prize draw.",
     "That said, YUKI himself hasn't given any details yet — so this remains speculation based on the photos, comments, and product information alone.",
 ]))
