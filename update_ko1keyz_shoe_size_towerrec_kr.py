@@ -103,7 +103,7 @@ new5 = f'''<figcaption style="text-align:center;font-size:12px;">출처:<a href=
 <!-- /wp:html -->
 
 <!-- wp:paragraph -->
-<p>이어서 2026년 8월 21일에는 타워레코드 시부야점의 전시를 보고 왔다는 다른 팬이 "타워 시부야 다녀왔어요"라며 KOSUKE・DAIKI・SIYOUNG・RYOGA의 신발 사이즈 태그를 촬영한 게시글을 올렸어요.<br>
+<p>이어서 2026년 8월 21일에는 타워레코드 시부야점의 전시를 보고 왔다는 다른 팬이 KOSUKE・DAIKI・SIYOUNG・RYOGA의 신발 사이즈 태그를 촬영한 게시글을 올렸어요.<br>
 이 게시글에 따르면 KOSUKE와 DAIKI는 둘 다 27.5cm, SIYOUNG은 27.0cm, RYOGA는 26.5cm(태그의 US 사이즈 표기로 추정)라고 해요.<br>
 작성자에 따르면 각도상 YUKI와 KEITO의 태그만은 끝내 확인하지 못했다고 해요.</p>
 <!-- /wp:paragraph -->

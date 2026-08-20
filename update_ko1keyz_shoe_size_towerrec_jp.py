@@ -103,7 +103,7 @@ new5 = f'''<figcaption style="text-align:center;font-size:12px;">出典:<a href=
 <!-- /wp:html -->
 
 <!-- wp:paragraph -->
-<p>続いて2026年8月21日には、タワーレコード渋谷店の展示を見てきたという別のファンから、「タワ渋見てきました」として、KOSUKE・DAIKI・SIYOUNG・RYOGAのシューズサイズタグを写した投稿がありました。<br>
+<p>続いて2026年8月21日には、タワーレコード渋谷店の展示を見てきたという別のファンから、KOSUKE・DAIKI・SIYOUNG・RYOGAのシューズサイズタグを写した投稿がありました。<br>
 この投稿によると、KOSUKEとDAIKIはともに27.5cm、SIYOUNGは27.0cm、RYOGAは26.5cm(タグのUSサイズ表記から推定)とのことです。<br>
 投稿者いわく、角度の都合でYUKIとKEITOのタグだけはどうしても確認できなかったとのことでした。</p>
 <!-- /wp:paragraph -->
