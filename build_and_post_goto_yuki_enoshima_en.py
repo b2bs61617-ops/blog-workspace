@@ -231,7 +231,7 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>The trending "family member":</strong>Possibly an otter-themed item picked up during the aquarium visit<br>
 ✔ <strong>Past visits:</strong>Night photos suggest he may have visited Enoshima before this trip as well
 </p>
-<p style="margin:10px 0 0 0;">If you ever get the chance to visit the Shonan area, stopping by the New Enoshima Aquarium — the spot YUKI may have visited — to take in the same view could be a fun way to follow in his footsteps!</p>
+<p style="margin:10px 0 0 0;">He seems to love Enoshima enough that you half expect to run into him there someday — whether at the aquarium itself or just somewhere around Kanagawa!</p>
 </div>
 </div>'''))
 
@@ -248,34 +248,52 @@ content = "\n\n".join(blocks)
 print("content length (chars):", len(content))
 
 JP_POST_ID = 11552
+EXISTING_EN_POST_ID = 11562
 slug = "where-is-yukis-goto-yui-koi-no-en"
 
-payload = {
-    "title": title,
-    "content": content,
-    "slug": slug,
-    "status": "draft",
-    "categories": [66],
-    "author": 2,
-    "lang": "en",
-    "translations": {"ja": JP_POST_ID},
-}
-r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps(payload).encode("utf-8"),
-)
-r.raise_for_status()
-post = r.json()
-print("EN_POST_ID", post["id"])
-print("SLUG", post["slug"])
-print("LINK", post.get("link"))
+if EXISTING_EN_POST_ID:
+    payload = {
+        "title": title,
+        "content": content,
+        "status": "draft",
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_EN_POST_ID}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("UPDATED_EN_POST_ID", post["id"])
+    print("SLUG", post["slug"])
+    print("LINK", post.get("link"))
+else:
+    payload = {
+        "title": title,
+        "content": content,
+        "slug": slug,
+        "status": "draft",
+        "categories": [66],
+        "author": 2,
+        "lang": "en",
+        "translations": {"ja": JP_POST_ID},
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("EN_POST_ID", post["id"])
+    print("SLUG", post["slug"])
+    print("LINK", post.get("link"))
 
-r2 = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps({"status": "draft", "featured_media": MEDIA_IDS["eyecatch"]}).encode("utf-8"),
-)
-r2.raise_for_status()
+    r2 = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps({"status": "draft", "featured_media": MEDIA_IDS["eyecatch"]}).encode("utf-8"),
+    )
+    r2.raise_for_status()
 
 print("PREVIEW", f"{WP_URL}/?p={post['id']}")

@@ -54,7 +54,14 @@ def upload_media_from_file(path: Path, filename: str, content_type="image/jpeg")
     return r.json()
 
 
-EXISTING_MEDIA_IDS = {}
+EXISTING_MEDIA_IDS = {
+    "official": 11543,
+    "img2": 11544,
+    "img3": 11545,
+    "img4": 11546,
+    "img5": 11547,
+    "img6": 11548,
+}
 
 def get_or_upload(key, path, filename, content_type="image/jpeg"):
     if key in EXISTING_MEDIA_IDS:
@@ -257,7 +264,7 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>話題の家族:</strong>水族館訪問と合わせてカワウソ関連のグッズを迎えた可能性<br>
 ✔ <strong>過去の訪問歴:</strong>夜に撮影されたとみられる写真もあり、以前から江ノ島を訪れている可能性がある
 </p>
-<p style="margin:10px 0 0 0;">湘南エリアに遊びに行く機会があれば、YUKIが訪れたかもしれない新江ノ島水族館に立ち寄って、同じ景色を眺めてみるのも楽しそうですね!</p>
+<p style="margin:10px 0 0 0;">江ノ島水族館や神奈川県内で、ばったりYUKIに会えるのでは…?と少し期待してしまうくらい、江ノ島がお気に入りのようですね!</p>
 </div>
 </div>'''))
 
@@ -293,23 +300,27 @@ def get_slug(title, fallback):
     return fallback
 
 
-EXISTING_POST_ID = None
+EXISTING_POST_ID = 11552
+EXISTING_EYECATCH_MEDIA_ID = 11550
 
-# アイキャッチ(KO1KEYZ統一テンプレ、文字入り)をアップロード
-with open(EYECATCH_PATH, "rb") as f:
-    eyecatch_bytes = f.read()
-eyecatch_r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/media",
-    headers={
-        **HEADERS_AUTH,
-        "Content-Type": "image/png",
-        "Content-Disposition": 'attachment; filename="goto_yuki_enoshima_eyecatch.png"',
-    },
-    data=eyecatch_bytes,
-)
-eyecatch_r.raise_for_status()
-eyecatch_media = eyecatch_r.json()
-print("eyecatch media id:", eyecatch_media["id"])
+if EXISTING_EYECATCH_MEDIA_ID:
+    eyecatch_media = {"id": EXISTING_EYECATCH_MEDIA_ID}
+    print("reusing eyecatch media id:", eyecatch_media["id"])
+else:
+    with open(EYECATCH_PATH, "rb") as f:
+        eyecatch_bytes = f.read()
+    eyecatch_r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/media",
+        headers={
+            **HEADERS_AUTH,
+            "Content-Type": "image/png",
+            "Content-Disposition": 'attachment; filename="goto_yuki_enoshima_eyecatch.png"',
+        },
+        data=eyecatch_bytes,
+    )
+    eyecatch_r.raise_for_status()
+    eyecatch_media = eyecatch_r.json()
+    print("eyecatch media id:", eyecatch_media["id"])
 
 if EXISTING_POST_ID:
     payload = {

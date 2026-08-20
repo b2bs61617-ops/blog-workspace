@@ -232,7 +232,7 @@ blocks.append(wphtml(f'''<div style="border:1px solid #ddd9d3;border-radius:6px;
 ✔ <strong>화제의 가족:</strong>수족관 방문과 함께 수달 관련 굿즈를 맞이했을 가능성<br>
 ✔ <strong>과거 방문 이력:</strong>밤에 촬영된 것으로 보이는 사진도 있어, 이전부터 에노시마를 방문했을 가능성이 있음
 </p>
-<p style="margin:10px 0 0 0;">쇼난 지역에 놀러 갈 기회가 있다면, YUKI가 방문했을지도 모르는 신에노시마 수족관에 들러 같은 풍경을 바라보는 것도 즐거운 경험이 될 것 같습니다!</p>
+<p style="margin:10px 0 0 0;">신에노시마 수족관이나 가나가와현 어딘가에서 우연히 YUKI와 마주치는 건 아닐까…라는 기대를 살짝 품게 될 정도로, 에노시마를 정말 좋아하는 것 같네요!</p>
 </div>
 </div>'''))
 
@@ -249,28 +249,46 @@ content = "\n\n".join(blocks)
 print("content length (chars):", len(content))
 
 JP_POST_ID = 11552
+EXISTING_KR_POST_ID = 11560
 slug = "where-is-yukis-goto-yui-koi-no-kr"
 
-payload = {
-    "title": title,
-    "content": content,
-    "slug": slug,
-    "status": "draft",
-    "categories": [66],
-    "author": 2,
-    "lang": "ko",
-    "translations": {"ja": JP_POST_ID},
-}
-r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
-    headers={**HEADERS_AUTH, "Content-Type": "application/json"},
-    data=json.dumps(payload).encode("utf-8"),
-)
-r.raise_for_status()
-post = r.json()
-print("KR_POST_ID", post["id"])
-print("SLUG", post["slug"])
-print("LINK", post.get("link"))
+if EXISTING_KR_POST_ID:
+    payload = {
+        "title": title,
+        "content": content,
+        "status": "draft",
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts/{EXISTING_KR_POST_ID}",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("UPDATED_KR_POST_ID", post["id"])
+    print("SLUG", post["slug"])
+    print("LINK", post.get("link"))
+else:
+    payload = {
+        "title": title,
+        "content": content,
+        "slug": slug,
+        "status": "draft",
+        "categories": [66],
+        "author": 2,
+        "lang": "ko",
+        "translations": {"ja": JP_POST_ID},
+    }
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/posts",
+        headers={**HEADERS_AUTH, "Content-Type": "application/json"},
+        data=json.dumps(payload).encode("utf-8"),
+    )
+    r.raise_for_status()
+    post = r.json()
+    print("KR_POST_ID", post["id"])
+    print("SLUG", post["slug"])
+    print("LINK", post.get("link"))
 
 r2 = requests.post(
     f"{WP_URL}/wp-json/wp/v2/posts/{post['id']}",
