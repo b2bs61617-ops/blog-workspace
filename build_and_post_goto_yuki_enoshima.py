@@ -28,9 +28,11 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 
 SOURCE_OFFICIAL = "https://x.com/KO1KEYZofficial/status/2090038569876545590"
 SOURCE_FACE = "https://x.com/G_YUKI_FACE/status/2090076439425241137"
+SOURCE_HOBBYOFF = "https://x.com/hb_hashimoto/status/2083780842472526027"
 
 IMG_DIR1 = ROOT / "tools" / "Xiy" / "posts_goto_yui_enoshima_1" / "images"
 IMG_DIR2 = ROOT / "tools" / "Xiy" / "posts_goto_yui_enoshima_2" / "images"
+IMG_DIR3 = ROOT / "tools" / "Xiy" / "posts_goto_yui_kawauso_photo" / "images"
 
 IMG_OFFICIAL_PATH = IMG_DIR1 / "post_1_img_1.jpg"
 IMG2_PATH = IMG_DIR2 / "post_1_img_2.jpg"
@@ -38,6 +40,7 @@ IMG3_PATH = IMG_DIR2 / "post_1_img_3.jpg"
 IMG4_PATH = IMG_DIR2 / "post_1_img_4.jpg"
 IMG5_PATH = IMG_DIR2 / "post_1_img_5.jpg"
 IMG6_PATH = IMG_DIR2 / "post_1_img_6.jpg"
+IMG7_PATH = IMG_DIR3 / "post_1_img_1.jpg"
 
 EYECATCH_PATH = ROOT / "images" / "goto_yuki_enoshima_eyecatch.png"
 
@@ -61,6 +64,7 @@ EXISTING_MEDIA_IDS = {
     "img4": 11546,
     "img5": 11547,
     "img6": 11548,
+    "img7": 11620,
 }
 
 def get_or_upload(key, path, filename, content_type="image/jpeg"):
@@ -76,7 +80,8 @@ img3_media = get_or_upload("img3", IMG3_PATH, "goto_yuki_enosui_deck2.jpg")
 img4_media = get_or_upload("img4", IMG4_PATH, "goto_yuki_enosui_deck3.jpg")
 img5_media = get_or_upload("img5", IMG5_PATH, "goto_yuki_enoshima_night1.jpg")
 img6_media = get_or_upload("img6", IMG6_PATH, "goto_yuki_enoshima_night2.jpg")
-print("uploaded media ids:", img_official_media["id"], img2_media["id"], img3_media["id"], img4_media["id"], img5_media["id"], img6_media["id"])
+img7_media = get_or_upload("img7", IMG7_PATH, "goto_yuki_happymarine_otter_plush.jpg")
+print("uploaded media ids:", img_official_media["id"], img2_media["id"], img3_media["id"], img4_media["id"], img5_media["id"], img6_media["id"], img7_media["id"])
 
 
 def build_img_html(media, alt, source_url):
@@ -109,6 +114,7 @@ img3_html = wphtml(build_img_html(img3_media, "海沿いのデッキから見え
 img4_html = wphtml(build_img_html(img4_media, "施設内の木製通路、奥に建物と青空が広がる景色", SOURCE_FACE))
 img5_html = wphtml(build_img_html(img5_media, "夜、ヤシの木と駐車場を背景にしたYUKI、奥に青くライトアップされたタワーが見える", SOURCE_FACE))
 img6_html = wphtml(build_img_html(img6_media, "夜、旧車を背景にしたYUKI、奥に同じ青いタワーが見える", SOURCE_FACE))
+img7_html = wphtml(build_img_html(img7_media, "「ハッピーマリン」のカワウソぬいぐるみ3匹、色違いで積み上げられている", SOURCE_HOBBYOFF))
 
 
 def p(text_sentences):
@@ -221,6 +227,10 @@ blocks.append(p([
     "今回のコイノート更新をめぐっては、YUKIが新しく迎えたという「家族」も話題になっています。",
     "調べてみると、このぬいぐるみは<strong><span class=\"swl-marker mark_yellow\">新江ノ島水族館(えのすい)で大人気の「ぬいぐるみクジ」の景品であるコツメカワウソのぬいぐるみ「ハッピーマリン」</span></strong>である可能性が高いことが分かりました。",
     "つぶらな瞳とコロンとした愛らしいフォルム、もちもちとした柔らかな触り心地が特徴で、お土産や癒やしアイテムとして非常に人気があります。",
+]))
+blocks.append(img7_html)
+blocks.append(p([
+    "カラー展開は写真のように<strong>ライトブラウン・ブラウン・ダークブラウンの3色</strong>があるようで、色違いで並べるとさらにかわいさが増す人気ぶりです。",
     "このぬいぐるみクジは1等〜3等などの等級があるハズレなしのクジで、館内で気軽に挑戦できるのも魅力のひとつです。",
     "新江ノ島水族館公式サイトの「オッターショップ」ページによると、ぬいぐるみクジ「カワウソ」は<strong>1回1,100円</strong>、はずれくじなしで必ず当たるクジとなっています。",
     "賞品のサイズは<strong>1等が約90cm、2等が約57cm、3等が約33cm</strong>とかなりの差があり、数に限りがあるため、<strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;text-decoration:underline;\">なくなり次第終了</span></strong>とのことです。",

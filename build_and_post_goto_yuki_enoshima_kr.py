@@ -28,6 +28,7 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 
 SOURCE_OFFICIAL = "https://x.com/KO1KEYZofficial/status/2090038569876545590"
 SOURCE_FACE = "https://x.com/G_YUKI_FACE/status/2090076439425241137"
+SOURCE_HOBBYOFF = "https://x.com/hb_hashimoto/status/2083780842472526027"
 
 # 日本語版アップロード時にすでにアップロード済みのメディアIDを再利用
 MEDIA_IDS = {
@@ -37,6 +38,7 @@ MEDIA_IDS = {
     "img4": 11546,
     "img5": 11547,
     "img6": 11548,
+    "img7": 11620,
     "eyecatch": 11550,
 }
 
@@ -77,6 +79,7 @@ img3_html = wphtml(build_img_html(get_media("img3"), "바닷가 데크에서 보
 img4_html = wphtml(build_img_html(get_media("img4"), "시설 내 목재 통로, 뒤로 건물과 파란 하늘이 펼쳐진 풍경", SOURCE_FACE))
 img5_html = wphtml(build_img_html(get_media("img5"), "밤, 야자수와 주차장을 배경으로 한 YUKI, 뒤로 파랗게 조명이 켜진 타워가 보인다", SOURCE_FACE))
 img6_html = wphtml(build_img_html(get_media("img6"), "밤, 클래식카를 배경으로 한 YUKI, 같은 파란 타워가 보인다", SOURCE_FACE))
+img7_html = wphtml(build_img_html(get_media("img7"), "\"해피 마린\" 수달 인형 3마리, 색깔별로 쌓아 올려져 있다", SOURCE_HOBBYOFF))
 
 
 def p(sentences):
@@ -189,6 +192,10 @@ blocks.append(p([
     "이번 코이노트 업데이트를 둘러싸고, YUKI가 새로 맞이했다는 '가족'도 화제가 되고 있습니다.",
     "찾아보니 이 인형은 <strong><span class=\"swl-marker mark_yellow\">신에노시마 수족관(에노스이)에서 인기가 많은 \"인형 뽑기\"의 경품인 아기수달 인형 \"해피 마린\"</span></strong>일 가능성이 높다는 것을 확인했습니다.",
     "동그란 눈과 통통한 귀여운 외형, 몰캉몰캉한 부드러운 촉감이 특징으로 기념품이나 힐링 아이템으로 큰 인기를 끌고 있습니다.",
+]))
+blocks.append(img7_html)
+blocks.append(p([
+    "사진처럼 <strong>라이트브라운·브라운·다크브라운의 3가지 색상</strong>이 있는 것으로 보이며, 색깔별로 나란히 두면 더욱 귀여움이 배가되는 인기 아이템입니다.",
     "이 인형 뽑기는 1등~3등 등 등급이 있는 '꽝 없는 뽑기'로, 관내에서 부담 없이 도전할 수 있는 것도 매력 중 하나입니다.",
     "신에노시마 수족관 공식 사이트의 \"오터숍\" 페이지에 따르면, 인형 뽑기 \"수달\"은 <strong>1회 1,100엔</strong>으로, 꽝이 없어 반드시 당첨되는 뽑기입니다.",
     "경품 크기는 <strong>1등이 약 90cm, 2등이 약 57cm, 3등이 약 33cm</strong>로 상당한 차이가 있으며, 수량 한정으로 소진되는 대로 종료된다고 합니다.",

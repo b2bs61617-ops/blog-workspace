@@ -28,6 +28,7 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 
 SOURCE_OFFICIAL = "https://x.com/KO1KEYZofficial/status/2090038569876545590"
 SOURCE_FACE = "https://x.com/G_YUKI_FACE/status/2090076439425241137"
+SOURCE_HOBBYOFF = "https://x.com/hb_hashimoto/status/2083780842472526027"
 
 MEDIA_IDS = {
     "official": 11543,
@@ -36,6 +37,7 @@ MEDIA_IDS = {
     "img4": 11546,
     "img5": 11547,
     "img6": 11548,
+    "img7": 11620,
     "eyecatch": 11550,
 }
 
@@ -76,6 +78,7 @@ img3_html = wphtml(build_img_html(get_media("img3"), "A view of the beach and En
 img4_html = wphtml(build_img_html(get_media("img4"), "A wooden walkway inside the facility, with a building and blue sky in the background", SOURCE_FACE))
 img5_html = wphtml(build_img_html(get_media("img5"), "YUKI at night in front of a parking lot lined with palm trees, with a blue-lit tower visible in the distance", SOURCE_FACE))
 img6_html = wphtml(build_img_html(get_media("img6"), "YUKI at night in front of a classic car, with the same blue-lit tower visible in the background", SOURCE_FACE))
+img7_html = wphtml(build_img_html(get_media("img7"), "Three \"Happy Marine\" otter plushes in different colors, stacked on top of each other", SOURCE_HOBBYOFF))
 
 
 def p(sentences):
@@ -188,6 +191,10 @@ blocks.append(p([
     "Alongside the aquarium theory, fans have also been talking about a \"new family member\" that YUKI apparently welcomed.",
     "Looking into it, this plush appears to be <strong>\"Happy Marine,\" a small-clawed otter plush that's a popular prize from the New Enoshima Aquarium's (\"Enosui\") plush prize draw</strong>.",
     "With its round eyes, plump and adorable shape, and squishy, soft texture, it's a popular souvenir and comfort item among visitors.",
+]))
+blocks.append(img7_html)
+blocks.append(p([
+    "As the photo shows, it seems to come in <strong>three colors — light brown, brown, and dark brown</strong> — and lining them up together only makes them cuter.",
     "This particular prize draw is a no-lose draw with tiers such as 1st through 3rd prize, making it an easy, low-pressure game to try while at the aquarium.",
     "According to the \"Otter Shop\" page on the aquarium's official website, the \"Otter\" plush prize draw costs <strong>1,100 yen per try</strong>, and it's a no-lose draw — everyone wins a plush.",
     "The prize sizes vary quite a bit by tier: <strong>about 90cm for 1st prize, about 57cm for 2nd prize, and about 33cm for 3rd prize</strong>, and quantities are limited, with the draw ending once stock runs out.",
