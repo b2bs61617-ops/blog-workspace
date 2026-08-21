@@ -150,7 +150,7 @@ FANCLUB_BOOTH_URL = "https://chomoand-1.com/can-i-participate-in-the-ko1ke-11468
 GOODS_EC_URL = "https://chomoand-1.com/ko1keyz-2026-1st-fan-meeting-g-10726"
 FANMEETING_PREDICT_URL = "https://chomoand-1.com/ko1keyz-live-10270"
 
-title = "KO1KEYZ1stファンミ東京初日レポ！セトリは？"
+title = "KO1KEYZ1stファンミ初日セトリ・座席表・トロッコは？"
 
 blocks = []
 
@@ -258,12 +258,12 @@ blocks.append(p([
 ]))
 blocks.append(build_img_html(
     img_seatmap_official,
-    "TOYOTA ARENA TOKYOアリーナ客席図",
-    '現地の座席案内板の写真をもとに作成(出典:<a href="https://x.com/22everic/status/2090789679465709589" target="_blank" rel="noopener">https://x.com/22everic/status/2090789679465709589</a>)',
+    "TOYOTA ARENA TOKYOアリーナ席の座席表(客席図)",
+    '現地の座席案内板(座席表)の写真をもとに作成(出典:<a href="https://x.com/22everic/status/2090789679465709589" target="_blank" rel="noopener">https://x.com/22everic/status/2090789679465709589</a>)',
     "https://x.com/22everic/status/2090789679465709589",
 ))
 blocks.append(p([
-    "現地の座席案内板を見ると、アリーナ席はステージ側からA列・B列・C列の3列×7ブロック(1〜7)で構成され、最後列側にD2・D6という飛び番のブロックがあり、その間には機材スペースが挟まっている配置でした。",
+    "現地の座席表(座席案内板)を見ると、アリーナ席はステージ側からA列・B列・C列の3列×7ブロック(1〜7)で構成され、最後列側にD2・D6という飛び番のブロックがあり、その間には機材スペースが挟まっている配置でした。",
     "この配置と照らし合わせると、トロッコはステージに向かって左右の外側寄りの通路(A-C1とA-C2の間、A-C6とA-C7の間)を回るルートだったことになります。",
     'スタンドとアリーナの間の外周を回ったという証言もあり、アリーナ席の端に近いブロックほどトロッコが近くを通りやすかったと考えられます。<br>\n各ブロックの座席番号・列数についても参戦者からの報告が集まっており、<strong>Aブロックは最大14列・Bブロックは最大16列・Cブロックは最大13列まで</strong>確認されているようです(あくまでファンの報告に基づく目安のため、実際の座席数と多少ズレる可能性があります)。',
 ]))
