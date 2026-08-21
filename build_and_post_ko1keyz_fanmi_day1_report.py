@@ -27,13 +27,13 @@ AUTH = base64.b64encode(f"{WP_USER}:{WP_PASS}".encode()).decode()
 HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 
 
-def upload_image(local_path, filename, alt_hint):
+def upload_image(local_path, filename, alt_hint, content_type="image/jpeg"):
     data = local_path.read_bytes()
     r = requests.post(
         f"{WP_URL}/wp-json/wp/v2/media",
         headers={
             **HEADERS_AUTH,
-            "Content-Type": "image/jpeg",
+            "Content-Type": content_type,
             "Content-Disposition": f'attachment; filename="{filename}"',
         },
         data=data,
@@ -55,10 +55,13 @@ img_area_map = upload_image(
     "ko1keyz_fanmi_day1_area_map.jpg",
     "KO1KEYZ 1ST FAN MEETING TOYOTA ARENA TOKYO会場エリアマップ",
 )
-img_seat_block = upload_image(
-    XIY / "posts_koikeyz_fanmi_day1_5" / "images" / "post_4_img_1.jpg",
-    "ko1keyz_fanmi_day1_seat_block.jpg",
-    "TOYOTA ARENA TOKYOアリーナ席のブロック図",
+# 現地の座席案内板の写真(https://x.com/22everic/status/2090789679465709589)をもとに
+# tools/gen_ko1keyz_fanmi_day1_seatmap.py で再作図したもの
+img_seatmap_official = upload_image(
+    ROOT / "images" / "ko1keyz_fanmi_day1_seatmap_official.png",
+    "ko1keyz_fanmi_day1_seatmap_official.png",
+    "TOYOTA ARENA TOKYOアリーナ客席図",
+    content_type="image/png",
 )
 img_seat_chart = upload_image(
     XIY / "posts_koikeyz_fanmi_day1_10" / "images" / "post_1_img_1.jpg",
@@ -254,15 +257,15 @@ blocks.append(p([
     "トロッコの通り道について現地で質問が飛び交っていましたが、実際に見た人の回答では、アリーナ席のブロックでいうとA-C1とA-C2の間、A-C6とA-C7の間の通路を通って1周する形だったとのことです。",
 ]))
 blocks.append(build_img_html(
-    img_seat_block,
-    "TOYOTA ARENA TOKYOアリーナ席のブロック配置図",
-    None,
-    "https://x.com/you_ooi10/status/2090776756089393646",
+    img_seatmap_official,
+    "TOYOTA ARENA TOKYOアリーナ客席図",
+    '現地の座席案内板の写真をもとに作成(出典:<a href="https://x.com/22everic/status/2090789679465709589" target="_blank" rel="noopener">https://x.com/22everic/status/2090789679465709589</a>)',
+    "https://x.com/22everic/status/2090789679465709589",
 ))
 blocks.append(p([
-    "上記のブロック図と照らし合わせると、トロッコはステージに向かって左右の外側寄りの通路を回るルートだったことになります。",
+    "現地の座席案内板を見ると、アリーナ席はステージ側からA列・B列・C列の3列×7ブロック(1〜7)で構成され、最後列側にD2・D6という飛び番のブロックがあり、その間には機材スペースが挟まっている配置でした。",
+    "この配置と照らし合わせると、トロッコはステージに向かって左右の外側寄りの通路(A-C1とA-C2の間、A-C6とA-C7の間)を回るルートだったことになります。",
     "スタンドとアリーナの間の外周を回ったという証言もあり、アリーナ席の端に近いブロックほどトロッコが近くを通りやすかったと考えられます。",
-    "アリーナ席の座席ブロックについては、開催前からファンの間で座席番号・列数を持ち寄って予想する動きもあり、Aブロックは最大14列・Bブロックは最大16列・Cブロックは最大13列まで報告があったようです(あくまで参戦者の報告を集めたファン予想のため、実際の座席数と多少前後する可能性があります)。",
 ]))
 blocks.append(build_img_html(
     img_seat_chart,
@@ -271,8 +274,8 @@ blocks.append(build_img_html(
     "https://x.com/22everic/status/2090423408244801931",
 ))
 blocks.append(p([
-    "ブロックごとの座席番号・列数まで書き込まれたこの座席表も、参戦者から寄せられた報告を積み重ねて作られたファン予想です。",
-    "実際の座席数と多少ズレる可能性はありますが、当日の座席位置をイメージする目安として参考になりそうです。",
+    "ブロックの並びに加えて、各ブロックの座席番号・列数まで書き込まれたこちらの座席表は、参戦者から寄せられた報告を積み重ねて作られたファン予想です。",
+    "Aブロックは最大14列・Bブロックは最大16列・Cブロックは最大13列まで報告があったようで、実際の座席数と多少ズレる可能性はあるものの、当日の座席位置をイメージする目安として参考になりそうです。",
 ]))
 blocks.append(p([
     "本編ラストの挨拶タイムでは、RYOGAが涙腺が緩みそうになる場面もあったようです。",
