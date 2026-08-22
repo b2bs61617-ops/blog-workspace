@@ -50,6 +50,11 @@ img_official_rehearsal = upload_image(
     "ko1keyz_fanmi_day1_rehearsal.jpg",
     "KO1KEYZ 1ST FAN MEETING 東京公演のリハーサル後ステージ写真",
 )
+img_ginte = upload_image(
+    XIY / "posts_koikeyz_fanmi_day1_19" / "images" / "post_1_img_1.jpg",
+    "ko1keyz_fanmi_day1_ginte.jpg",
+    "KO1KEYZ 1ST FAN MEETINGの銀テープ、12人全員分のサイン入り",
+)
 img_area_map = upload_image(
     XIY / "posts_koikeyz_fanmi_day1_11" / "images" / "post_1_img_1.jpg",
     "ko1keyz_fanmi_day1_area_map.jpg",
@@ -276,6 +281,16 @@ blocks.append(p([
     "本編ラストの挨拶タイムでは、RYOGAが涙腺が緩みそうになる場面もあったようです。",
     "周りのメンバーから「泣かないで」と声がかかったり、顔を手で覆って止められたりする中、RYOGA自身が首を振ってこらえ、最後は泣かずに終えられて「セーフ…!」となったという、ほほ笑ましいやり取りも現地から伝えられています。",
 ]))
+blocks.append(p([
+    "フィナーレでは銀テープ(紙吹雪演出用のテープ)も飛び、キャッチできたファンからは12人全員分のサインがデザインされたテープだったという報告もありました。",
+    "持ち帰れる記念アイテムとして拾えた人には嬉しいサプライズだったようです。",
+]))
+blocks.append(build_img_html(
+    img_ginte,
+    "KO1KEYZ 1ST FAN MEETINGの銀テープ、12人全員分のサイン入り",
+    None,
+    "https://x.com/arigato___ryg/status/2091036014882222461",
+))
 
 blocks.append(h2("まとめ"))
 blocks.append(notebox('''<p style="font-weight:bold;font-size:1.05em;margin:0 0 10px 0;">KO1KEYZ 1STファンミ東京公演DAY1まとめ</p>
