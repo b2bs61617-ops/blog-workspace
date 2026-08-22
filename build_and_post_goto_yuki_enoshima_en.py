@@ -211,7 +211,8 @@ blocks.append(p([
     "Quantities are limited, with the draw ending once stock runs out.",
     "It's not known exactly which prize tier (and which size) YUKI actually won, but given how much the sizes differ, it's an intriguing detail to wonder about.",
     "Combined with the aquarium visit, this lines up with our theory that the KO1NOTE photos were taken at the New Enoshima Aquarium, making it quite likely he picked up \"Happy Marine\" there through the prize draw.",
-    "That said, YUKI himself hasn't given any details yet — so this remains speculation based on the photos, comments, and product information alone.",
+    "He later posted on the paid chat service \"KO1KEYZ Chat\" holding an otter plush in the same color, suggesting he really did welcome \"Happy Marine\" into his family.",
+    "That said, YUKI himself hasn't directly explained the aquarium visit or \"Happy Marine\" — so this remains speculation based on the photos, comments, and product information alone.",
 ]))
 
 blocks.append(h2("Has YUKI always been fond of Enoshima?"))
