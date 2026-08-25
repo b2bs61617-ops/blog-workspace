@@ -92,6 +92,8 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 1. **セレクタが古かった(本質的な原因)**: `collect_x`が記事要素を`article[data-tweet-id]`で探していたが、Xの現行DOMにはその属性が無く、ログイン状態やBot検知に関係なく常に0件になっていた。正しくは`article[data-testid="tweet"]`(本文は`[data-testid="tweetText"]`)。今後またXのDOM変更で0件病が再発したら、まずここ(実際のページのHTMLをダンプしてセレクタが現行DOMと一致しているか)を疑うこと。
 2. **Bot検知**: 実際にはJSは動いているのに`navigator.webdriver`等の自動化フィンガープリントを見て「JavaScriptを使用できません」という偽のブロックページを返してくることがある。対策として`playwright-stealth`でブラウザ起動時にフィンガープリントを偽装している。それでも0件が続く場合は自動アクセスを一旦止めて、手動でXiy(GUI)からログイン状態のブラウザで普通に閲覧し、しばらく間を空けてから再試行する。
 3. 未ログイン状態で検索すると投稿が表示されないため、`collect_x`/`collect_trending`はログイン済みナビ要素(`SideNav_AccountSwitcher_Button`等)の有無を見て、未ログインなら最大180秒待機してから収集ループに入る(`wait_for_x_login`)。これにより、ログイン画面の入力中にブラウザが自動で閉じることも無くなった。
+4. **実行中に`TargetClosedError`で毎回クラッシュする場合(2026-08-25判明)**: 前回の実行がクラッシュ・強制終了した際、`%USERPROFILE%\x_collector_profile`を使うChromeプロセスが子プロセスごと残り続け、プロファイルのロックを握ったままになることがある。この状態で再実行すると新しいブラウザが起動できず(または起動直後に閉じられ)、収集が数件進んだところで`TargetClosedError`が繰り返し出る。PowerShellで`Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" | Where-Object { $_.CommandLine -like '*x_collector_profile*' }`を実行し、該当プロセス(親プロセス1つ)を`taskkill /PID <該当PID> /F /T`で子プロセスごと終了させてから再実行すると解消する。1袋目の実行だけでツイート本文はコンソール出力に表示されていることが多いので、クラッシュしても慌てず出力を確認する。
+5. **1件のツイートを画像付きでサクッと調べたいだけならXiyより`https://api.fxtwitter.com/{ユーザー名}/status/{ID}`のWebFetchの方が速い**(詳細は[docs/rules.md「Xの投稿を軽く1件だけ調べたい場合」](../../../docs/rules.md)参照)。Xiyの起動・ブラウザ操作を待たずにテキスト・投稿者・投稿日時・画像原寸URLが一括で取れる。複数投稿をまたいで深掘りする調査(コメント欄収集・スクロールでの遡り調査など)は引き続きXiy本体を使う。
 
 ### CLIモード(マツが直接自動実行する場合)
 
