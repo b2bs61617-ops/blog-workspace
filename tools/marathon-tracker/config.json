@@ -26,10 +26,11 @@
   "mapshot_max_age_minutes": 20,
 
   "share_map_enabled": true,
+  "share_map_screenshot": false,
   "danchou_account": "YSB_DANCHO",
   "danchou_map_tweet": "https://x.com/YSB_DANCHO/status/2093633596276060332",
   "share_map_url": "https://maps.app.goo.gl/LNRGLE28rtg6dENf6",
-  "_share_map_note": "毎回 @YSB_DANCHO の最新ポストから Google マップURLを拾って使う(位置共有リンクは時間で切れて貼り直されるため)。取れない回は share_map_url(既定リンク)にフォールバック。webdriver判定を回避して座標を取得し、12分より古い位置/関東外は捨てる。座標→住所は逆ジオコーディング。",
+  "_share_map_note": "毎回 @YSB_DANCHO の最新ポストから Google マップURLを拾って使う(位置共有リンクは時間で切れて貼り直されるため)。取れない回は share_map_url(既定リンク)にフォールバック。webdriver判定を回避して座標を取得し、12分より古い位置/関東外は捨てる。座標→住所は逆ジオコーディング。記事には座標ピンのGoogleマップ埋め込みを貼る。share_map_screenshot=true にすると従来どおり地図スクショも撮って Vision で地名を読み、記事に画像も貼る(2026-08-30 既定off・トモキ指示)。",
 
   "x_enabled": true,
   "x_accounts": ["YSB_DANCHO", "24tv24tv", "yes0724day"],

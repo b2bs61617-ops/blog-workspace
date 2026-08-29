@@ -379,10 +379,10 @@ def main():
     if cfg.get("share_map_enabled", False) and share_url:
         try:
             LOG_DIR.mkdir(exist_ok=True)
-            sm = share_map_fetch.fetch(
-                share_url,
-                shot_path=str(LOG_DIR / "share_map_shot.png"),
-            )
+            # 記事には座標ピンの Google マップ埋め込みを貼るので、既定ではスクショを撮らない
+            # (config.share_map_screenshot=true のときだけ Vision 読み＋画像貼り付け用に撮る)
+            _shot = str(LOG_DIR / "share_map_shot.png") if cfg.get("share_map_screenshot", False) else None
+            sm = share_map_fetch.fetch(share_url, shot_path=_shot)
             log(f"位置共有マップ 読み取り {len(sm)} 件"
                 + (f" -> {sm[0]['text'][:70]}" if sm else " (座標取れず)")
                 + (" [スクショ取得]" if sm and sm[0].get("_shot") else ""))
@@ -564,8 +564,8 @@ def main():
         f" 進行方向='{state.get('direction','')}'")
 
     # 追跡者の位置共有マップのスクショを WP に上げ、今回の最新エントリに紐付ける
-    # (差し替えず、時刻ごとに積み上げる)
-    if not args.dry_run:
+    # (config.share_map_screenshot=true のときだけ。既定は座標ピンの埋め込みのみ)
+    if not args.dry_run and cfg.get("share_map_screenshot", False):
         map_img_url = upload_map_shot(cfg, state, posts, now)
         if map_img_url and state["entries"]:
             state["entries"][0]["map_image"] = map_img_url
