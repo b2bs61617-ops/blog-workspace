@@ -20,8 +20,12 @@
   "screen_map_enabled": true,
   "screen_map_region": null,
 
+  "share_map_enabled": false,
+  "share_map_url": "https://maps.app.goo.gl/LNRGLE28rtg6dENf6",
+  "_share_map_note": "@YSB_DANCHO の位置共有リンク。headlessだとGoogleが座標を隠すため既定off。取れた時だけ補助的に使う。",
+
   "x_enabled": true,
-  "x_accounts": ["24tv24tv", "yes0724day"],
+  "x_accounts": ["YSB_DANCHO", "24tv24tv", "yes0724day"],
   "x_search_fallback": "星野真里 マラソン 現在地",
   "max_tweets_per_account": 30,
 

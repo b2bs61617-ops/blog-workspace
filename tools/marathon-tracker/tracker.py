@@ -27,6 +27,7 @@ sys.path.insert(0, str(HERE))
 import article_updater as au  # noqa: E402
 import llm_extract  # noqa: E402
 import screen_map_fetch  # noqa: E402
+import share_map_fetch  # noqa: E402
 import yt_chat_fetch  # noqa: E402
 
 try:
@@ -252,6 +253,16 @@ def main():
             posts.extend(map_posts)
         except Exception as e:  # noqa: BLE001
             log(f"[warn] Googleマップ画面の読み取り失敗: {e}")
+
+    # --- ソース(実験): 追跡者の Google マップ位置共有リンク ---
+    if cfg.get("share_map_enabled", False) and cfg.get("share_map_url"):
+        try:
+            sm = share_map_fetch.fetch(cfg["share_map_url"])
+            log(f"位置共有マップ 読み取り {len(sm)} 件"
+                + (f" -> {sm[0]['text'][:70]}" if sm else " (座標取れず)"))
+            posts.extend(sm)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] 位置共有マップの読み取り失敗: {e}")
 
     # --- ソース3: X(補助・失敗しても続行) ---
     accounts = [a.lstrip("@").strip() for a in cfg.get("x_accounts", []) if a.strip()]
