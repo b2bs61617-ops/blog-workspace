@@ -2,6 +2,8 @@
 #   pip install -r tools/marathon-tracker/requirements.txt
 yt-dlp>=2026.8.19        # YouTube ライブチャット取得(主軸)
 google-genai>=2.0        # 位置情報の抽出(Gemini)。claude -p が使える環境なら無くても可
+mss>=9.0                 # デスクトップのGoogleマップ画面スクショ(screen_map_enabled 時)
+Pillow>=10.0             # スクショの縮小(screen_map_enabled 時)
 requests>=2.30           # 予備
 
 # --- X(ツイート)ソースを併用する場合のみ ---

@@ -99,7 +99,7 @@ def render_region(current_location, entries, updated_at, map_zoom=15):
     parts.append(f'<p style="margin:0;"><strong>現在地(自動更新):</strong> {loc}</p>')
     parts.append(
         f'<p style="margin:4px 0 0 0;font-size:0.9em;color:#666;">最終更新: {html.escape(updated_at)}'
-        "／YouTube生配信のチャットやXの沿道情報をもとに自動で追記しています。正確な通過地点は番組の公式発表が基準です。</p>"
+        "／地図・YouTube生配信のチャット・Xの沿道情報をもとに自動で追記しています。正確な通過地点は番組の公式発表が基準です。</p>"
     )
     parts.append("</div>")
     parts.append("<!-- /wp:html -->")

@@ -14,6 +14,9 @@
   "yt_capture_seconds": 25,
   "max_yt_messages": 250,
 
+  "screen_map_enabled": true,
+  "screen_map_region": null,
+
   "x_enabled": false,
   "x_accounts": [],
   "x_search_fallback": "星野真里 マラソン 現在地",

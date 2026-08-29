@@ -13,10 +13,13 @@
 ```
 tracker.py (10分おき・タスクスケジューラ)
   ├─ 稼働時間帯(config.active_from〜active_until)外 → 即終了
-  ├─ yt_chat_fetch.py … 監視配信の live_chat を yt-dlp で25秒だけ取得→パース
-  │                     (バックログでほぼ現在時刻まで揃うので daemon 不要・毎回取り直し)
-  ├─ x_fetch.py       … 任意。config.x_enabled=true かつ playwright 導入時のみ
-  ├─ 新着なし         → 記事を触らず終了
+  ├─ yt_chat_fetch.py    … 監視配信の live_chat を yt-dlp で25秒だけ取得→パース
+  │                        (バックログでほぼ現在時刻まで揃うので daemon 不要・毎回取り直し)
+  ├─ screen_map_fetch.py … 任意。config.screen_map_enabled=true のとき。
+  │                        デスクトップに出しっぱなしの Google マップ画面をスクショ→
+  │                        Gemini Vision で「中心付近の地名」を読む(人が地図を合わせる前提)
+  ├─ x_fetch.py          … 任意。config.x_enabled=true かつ playwright 導入時のみ
+  ├─ 新着なし            → 記事を触らず終了
   ├─ llm_extract.py   … 新着メッセージ → {現在地ラベル, 時系列ログ文, 地図クエリ} を JSON 抽出
   │                     primary: config.llm_primary(このPCは "gemini")/ fallback: claude -p
   └─ article_updater.py … 記事の <!-- MARATHON_TRACKER:BEGIN/END --> 領域だけ再生成し
@@ -53,6 +56,18 @@ tracker.py (10分おき・タスクスケジューラ)
    powershell -ExecutionPolicy Bypass -File tools\marathon-tracker\register_task.ps1
    ```
 
+### Googleマップ画面を読ませる(任意・`screen_map_enabled: true`)
+
+**人がやること**: デスクトップに Google マップ(ランナーの現在地を追える地図。位置共有リンクや
+その日の追跡ピンなど)を開いたままにしておく。z=14〜16 くらいで地名が読める状態に。
+PC はスリープ・ロックさせない(ロック中のスクショは真っ黒)。
+
+**ツールがやること**: 10分ごとにプライマリ画面をスクショ(4K→長辺1600pxに縮小)し、
+Gemini Vision に中心付近の地名・駅名・ランドマークを読ませて1件のメッセージとして
+llm_extract に渡す。「判別不可」と返ったら何もしない。最後のスクショは
+`logs/last_map_shot.png` に残る。特定ウィンドウだけ撮りたいときは config の
+`screen_map_region` に `[left, top, width, height]` を入れる。
+
 ### Xの沿道情報も併用したい場合(任意)
 
 ```
@@ -70,6 +85,7 @@ python tools\marathon-tracker\login.py      # ブラウザでXにログイン
 | `youtube_enabled` / `youtube_video_url` | YouTubeチャット監視の on/off と対象URL |
 | `yt_capture_seconds` | 1回あたり yt-dlp を走らせる秒数(既定25) |
 | `max_yt_messages` | 1回で拾うチャット最大件数 |
+| `screen_map_enabled` / `screen_map_region` | デスクトップのGoogleマップ画面をスクショ→Vision で読む on/off と撮影範囲(nullでプライマリ全体) |
 | `x_enabled` / `x_accounts` / `x_search_fallback` | X源(既定off)。アカウント未設定でも検索で動く |
 | `active_from` / `active_until` | 稼働時間帯(JST・ISO8601)。外の時間は即終了 |
 | `section_heading_contains` / `next_heading_contains` | マーカー領域を置く見出しの目印 |

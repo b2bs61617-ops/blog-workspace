@@ -26,6 +26,7 @@ sys.path.insert(0, str(HERE))
 
 import article_updater as au  # noqa: E402
 import llm_extract  # noqa: E402
+import screen_map_fetch  # noqa: E402
 import yt_chat_fetch  # noqa: E402
 
 try:
@@ -132,7 +133,23 @@ def main():
     elif cfg.get("youtube_enabled", True):
         log("[warn] youtube_video_url 未設定(config.json)。YouTubeソースはスキップ。")
 
-    # --- ソース2: X(補助・失敗しても続行) ---
+    # --- ソース2: デスクトップに出したGoogleマップ画面をスクショ→Vision で読む ---
+    if cfg.get("screen_map_enabled", False):
+        try:
+            LOG_DIR.mkdir(exist_ok=True)
+            region = cfg.get("screen_map_region") or None
+            map_posts = screen_map_fetch.fetch(
+                region=region,
+                save_shot_to=str(LOG_DIR / "last_map_shot.png"),
+                model=cfg.get("llm_model_gemini", "gemini-3.5-flash"),
+            )
+            log(f"Googleマップ画面 読み取り {len(map_posts)} 件"
+                + (f" -> {map_posts[0]['text'][:80]}" if map_posts else " (判別不可/失敗)"))
+            posts.extend(map_posts)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] Googleマップ画面の読み取り失敗: {e}")
+
+    # --- ソース3: X(補助・失敗しても続行) ---
     accounts = [a.lstrip("@").strip() for a in cfg.get("x_accounts", []) if a.strip()]
     fallback = cfg.get("x_search_fallback") or None
     if cfg.get("x_enabled", True) and x_fetch is None:
