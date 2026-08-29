@@ -74,7 +74,8 @@ def _build_prompt(runner, course_context, tweets, last_location, recent_entries=
 - 個人の家・特定できる一般人の情報は書かない。ランナーの位置と公共の施設・地名のみ。
 - 各エントリの time は「M/D HH:MM」形式。ポストの投稿時刻(JST)から推定。分からなければ現在時刻でよい。
 - map_query は Googleマップで検索して正しい場所が出る日本語の地名/施設名(例「日産 駒沢店」「二子玉川駅」「府中市 郷土の森公園」)。エリアだけで施設が無ければ市区名+ランドマーク。地図が付けられないなら空文字。
-- current_location は capbox に出す短いラベル。「世田谷区・駒沢エリア(走行中)」のように 場所 + (走行中/休憩中/仮眠中 など) 。
+- current_location は capbox に出す短いラベル。「世田谷区・駒沢エリア(走行中)」のように 場所 + (走行中/休憩中/仮眠中 など) 。※ここには進行方向を書かない(移動判定に使うため場所だけ)。
+- direction は capbox に出す「今どっちへ向かっているか」の短い一文(15〜30字)。「これまでの経路」と「予想コースの前提」から推定する。例:「鶴見川沿いを北上、多摩川方面へ」「中原街道を東進し都心方向へ」。休憩中なら「◯◯で休憩中(再開後は△△方面)」。分からなければ空文字。
 - entries は原則1件だけ。今回の「新しい動き」を1行にまとめる。似た内容を2件に分けない。
 - 新しい位置情報が無ければ update=false。
 
@@ -90,7 +91,7 @@ def _build_prompt(runner, course_context, tweets, last_location, recent_entries=
 {tweets_block}
 
 【出力】次のJSONだけを出力。前後に説明文を付けない。
-{{"update": true/false, "current_location": "...", "entries": [{{"time":"M/D HH:MM","text":"...","map_query":"..."}}], "reason":"..."}}
+{{"update": true/false, "current_location": "...", "direction": "...", "entries": [{{"time":"M/D HH:MM","text":"...","map_query":"..."}}], "reason":"..."}}
 """
 
 
@@ -169,8 +170,10 @@ def _try_gemini(prompt, model, api_key):
 def _normalize(d):
     d.setdefault("update", False)
     d.setdefault("current_location", "")
+    d.setdefault("direction", "")
     d.setdefault("entries", [])
     d.setdefault("reason", "")
+    d["direction"] = (d.get("direction") or "").strip()
     clean = []
     for e in d.get("entries") or []:
         if not isinstance(e, dict):

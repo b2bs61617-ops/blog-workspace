@@ -125,7 +125,7 @@ def _map_iframe(query, zoom=15):
 
 def render_region(current_location, entries, updated_at, map_zoom=15,
                   heading="星野真里は今どこ？（リアルタイム更新）",
-                  map_image_url="", map_image_caption=""):
+                  map_image_url="", map_image_caption="", direction=""):
     """entries: [{"time","text","map_query"}]  新しい順で渡すこと。
 
     先頭に H2 見出しを含める(記事の一番上に置く前提)。
@@ -143,6 +143,10 @@ def render_region(current_location, entries, updated_at, map_zoom=15,
         'padding:10px 16px;margin:16px 0;background:#fff7f7;">'
     )
     parts.append(f'<p style="margin:0;"><strong>現在地(自動更新):</strong> {loc}</p>')
+    if (direction or "").strip():
+        parts.append(
+            f'<p style="margin:4px 0 0 0;"><strong>進行方向:</strong> {html.escape(direction.strip())}</p>'
+        )
     parts.append(
         f'<p style="margin:4px 0 0 0;font-size:0.9em;color:#666;">最終更新: {html.escape(updated_at)}'
         "／地図・YouTube生配信のチャット・Xの沿道情報をもとに自動で追記しています。正確な通過地点は番組の公式発表が基準です。</p>"

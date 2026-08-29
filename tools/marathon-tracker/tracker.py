@@ -229,6 +229,7 @@ def main():
             map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
             map_image_url=state.get("map_image_url", ""),
             map_image_caption="追跡者(@YSB_DANCHO)の位置共有マップ",
+            direction=state.get("direction", ""),
         )
         try:
             post = au.get_post(cfg)
@@ -434,6 +435,7 @@ def main():
                         updated_at=now.strftime("%m/%d %H:%M") + " JST",
                         map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
                         map_image_url=map_img_url, map_image_caption=cap_txt,
+                        direction=state.get("direction", ""),
                     )
                     try:
                         post = au.get_post(cfg)
@@ -498,7 +500,10 @@ def main():
 
     if result.get("current_location"):
         state["current_location"] = result["current_location"]
-    log(f"追記エントリ {added} 件 / 累計 {len(state['entries'])} 件 / 現在地='{state['current_location']}'")
+    if result.get("direction"):
+        state["direction"] = result["direction"]
+    log(f"追記エントリ {added} 件 / 累計 {len(state['entries'])} 件 / 現在地='{state['current_location']}'"
+        f" 進行方向='{state.get('direction','')}'")
 
     # 追跡者の位置共有マップのスクショを WP に上げて記事に貼る
     map_img_url = ""
@@ -515,7 +520,7 @@ def main():
         updated_at=now.strftime("%m/%d %H:%M") + " JST",
         map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
         map_image_url=map_img_url or state.get("map_image_url", ""),
-        map_image_caption=map_cap,
+        map_image_caption=map_cap, direction=state.get("direction", ""),
     )
 
     try:
