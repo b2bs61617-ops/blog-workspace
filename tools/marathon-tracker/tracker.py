@@ -420,6 +420,14 @@ def main():
         return (mo, d, h, mi)
     state["entries"].sort(key=_entry_key, reverse=True)
     state["entries"] = state["entries"][:MAX_ENTRIES]
+
+    # share_map が正確な座標を取れていれば、最新エントリのピンをその座標で上書き
+    # (LLM が地名から地図クエリを作るより正確)
+    sm_pt = next((p.get("_latlng") for p in posts
+                  if p.get("source") == "share_map" and p.get("_exact") and p.get("_latlng")), None)
+    if sm_pt and state["entries"]:
+        state["entries"][0]["map_query"] = f"{sm_pt[0]},{sm_pt[1]}"
+
     if result.get("current_location"):
         state["current_location"] = result["current_location"]
     log(f"追記エントリ {added} 件 / 累計 {len(state['entries'])} 件 / 現在地='{state['current_location']}'")
