@@ -9,6 +9,28 @@ if (-not (Test-Path $repo)) {
     exit 0
 }
 
+# --- .env をGoogleドライブからPCローカルへ同期(秘密情報はGit管理外・Drive側が正) ---
+# 環境変数 BLOG_WORKSPACE_ENV_SRC で明示指定も可。Drive上の .env を編集すること(ローカルはキャッシュ)。
+$envSrcCandidates = @(
+    $env:BLOG_WORKSPACE_ENV_SRC,
+    "G:\マイドライブ\ブログ関係\.env",
+    "G:\My Drive\ブログ関係\.env",
+    "$env:USERPROFILE\My Drive\ブログ関係\.env",
+    "$env:USERPROFILE\マイドライブ\ブログ関係\.env"
+) | Where-Object { $_ -and (Test-Path $_) }
+if ($envSrcCandidates.Count -gt 0) {
+    $envSrc = $envSrcCandidates[0]
+    $envDst = Join-Path $repo ".env"
+    if (-not (Test-Path $envDst) -or (Get-Item $envSrc).LastWriteTimeUtc -gt (Get-Item $envDst).LastWriteTimeUtc) {
+        Copy-Item -LiteralPath $envSrc -Destination $envDst -Force -ErrorAction SilentlyContinue
+        $envNote = ".envをGoogleドライブからローカルへ更新した。"
+    } else {
+        $envNote = ".envはローカルに配置済み。"
+    }
+} else {
+    $envNote = ".envのGoogleドライブ元が未検出(WordPress投稿を使うなら手動配置が必要)。"
+}
+
 Push-Location $repo
 $output = git pull 2>&1
 $exitCode = $LASTEXITCODE
@@ -27,7 +49,7 @@ $skillsDir = Join-Path $repo ".claude\skills"
 $skillNames = @(Get-ChildItem $skillsDir -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
 $skills = $skillNames -join ", "
 
-$context = "マツの永続ペルソナ・ルール・スキルは blog-workspace リポジトリにある(ローカル: $repo, GitHub: b2bs61617-ops/blog-workspace)。$syncNote 詳細ルールは CLAUDE.md、スキルは .claude/skills/ 配下($skills)にある。マツの育成・ルール変更・スキルに関わる話題が出たら、まずこのリポジトリのCLAUDE.mdを確認すること。"
+$context = "マツの永続ペルソナ・ルール・スキルは blog-workspace リポジトリにある(ローカル: $repo, GitHub: b2bs61617-ops/blog-workspace)。$syncNote $envNote 詳細ルールは CLAUDE.md、スキルは .claude/skills/ 配下($skills)にある。マツの育成・ルール変更・スキルに関わる話題が出たら、まずこのリポジトリのCLAUDE.mdを確認すること。"
 
 $escaped = Escape-Json($context)
 Write-Output ('{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"' + $escaped + '"}}')

@@ -37,12 +37,14 @@ cd "ブログ作業場"
 
 Gitには含まれていないため、以下を手動で作成する。値は**Gitではなく**パスワードマネージャーなど別の安全な経路で受け取ること。
 
-**`.env`**(リポジトリ直下。`.env.example`をコピーして値を埋める):
-```powershell
-Copy-Item .env.example .env
-notepad .env
-```
-`WP_TREND_*` / `WP_AUDITION_*` / `WP_KOIKEYS_*` の3サイト分のURL・ユーザー名・アプリパスワードを入力する。
+**`.env`**(リポジトリ直下)。**現在はGoogleドライブの`マイドライブ/ブログ関係/.env`をマスターにしている**(2026-08-29〜、トモキ指示。全PC共通の値を1箇所で管理するため)。
+
+- Googleドライブ デスクトップ版(Google Drive for desktop)を各PCにインストールし、共有アカウントでサインインする(`G:\`等にマウントされる)。
+- `~/.claude/blog-workspace-sync.ps1`(SessionStartフック、テンプレは`tools/blog-workspace-sync.ps1.example`)が**セッション開始時に自動で`G:\マイドライブ\ブログ関係\.env`→リポジトリ直下`.env`へコピー**する(Drive側が新しいときだけ上書き)。ドライブレターやフォルダ名が違うPCは、環境変数`BLOG_WORKSPACE_ENV_SRC`にDrive上の`.env`のフルパスを設定すれば拾われる。
+- **編集はGoogleドライブ側の`.env`に対して行う**(リポジトリ直下の`.env`はキャッシュ。次回セッションで上書きされる)。ローカルからDriveへの逆同期はしない。
+- フックが未設定/Drive未マウントのPCで手動配置する場合: `Copy-Item .env.example .env; notepad .env`。
+- 中身は`WP_TREND_*` / `WP_AUDITION_*` / `WP_KOIKEYS_*` の3サイト分のURL・ユーザー名・アプリパスワード、および`GEMINI_API_KEY`・`LINE_CHANNEL_ACCESS_TOKEN`・`RAKUTEN_*`・`AMAZON_ASSOCIATE_TAG`・`GOOGLE_INDEXING_CREDENTIALS_PATH`。
+- 注意: Googleドライブは共有アカウント配下の非公開領域だが「クラウドに平文で秘密情報を置く」形になる。CLAUDE.mdの秘密情報の方針(Gitに含めない)は引き続き厳守。
 
 **`tools/Xiy/xiy_config.json`**(`xiy_config.json.example`をコピーして値を埋める):
 ```powershell
