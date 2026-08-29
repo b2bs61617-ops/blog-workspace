@@ -22,9 +22,14 @@ tracker.py (10分おき・タスクスケジューラ)
   ├─ 新着なし            → 記事を触らず終了
   ├─ llm_extract.py   … 新着メッセージ → {現在地ラベル, 時系列ログ文, 地図クエリ} を JSON 抽出
   │                     primary: config.llm_primary(このPCは "gemini")/ fallback: claude -p
-  └─ article_updater.py … 記事の <!-- MARATHON_TRACKER:BEGIN/END --> 領域だけ再生成し
-                          status:publish を明示して更新(下書きに戻さない)
+  ├─ article_updater.py … 記事の <!-- MARATHON_TRACKER:BEGIN/END --> 領域を再生成し
+  │                       (常に記事の最初の H2 の直前に配置)status:publish で更新
+  └─ google_indexing.notify … 更新できた回だけ Google Indexing API に URL_UPDATED を通知
 ```
+
+- 多重起動は `tracker.lock` で防止(手動実行とタスクの同時実行で state.json が壊れるのを回避)。
+- インデックス通知は「実際に記事を更新した回」だけ。移動なしでスキップした回は送らない
+  (Indexing API の 1日 200 リクエスト制限の節約 & 無変更 URL の連投回避)。
 
 - 触るのはマーカー領域だけ。トモキが手で書いた分・他セクションには一切触れない。
 - 上書き前に旧本文を `backups/<id>_<日時>.html` に退避。
@@ -90,6 +95,7 @@ python tools\marathon-tracker\login.py      # Chromium が開くので X にロ�
 | キー | 意味 |
 |---|---|
 | `post_id` / `wp_env_prefix` | 更新先の記事ID / `.env` の認証キー接頭辞(chomoand.com は `WP_TREND`) |
+| `article_url` / `search_console_ping` | 記事の公開URL / 記事更新のたび Google Indexing API に URL_UPDATED を通知するか(既定 true。`.env` の `GOOGLE_INDEXING_CREDENTIALS_PATH` かリポジトリ直下 `google-indexing-key.json` が必要。未設定なら自動スキップ) |
 | `youtube_enabled` / `youtube_video_url` | YouTubeチャット監視の on/off と対象URL |
 | `yt_capture_seconds` | 1回あたり yt-dlp を走らせる秒数(既定25) |
 | `max_yt_messages` | 1回で拾うチャット最大件数 |

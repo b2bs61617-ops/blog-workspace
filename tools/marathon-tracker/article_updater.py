@@ -53,6 +53,7 @@ def get_post(cfg):
         "title": d["title"]["raw"],
         "content": d["content"]["raw"],
         "modified": d.get("modified"),
+        "link": d.get("link", ""),
     }
 
 

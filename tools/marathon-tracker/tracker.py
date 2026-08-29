@@ -87,6 +87,33 @@ def release_lock():
         pass
 
 
+def ping_search_console(cfg, post):
+    """記事更新後、Google Indexing API に URL_UPDATED を通知(ベストエフォート)。
+    .env の GOOGLE_INDEXING_CREDENTIALS_PATH 未設定/失敗でも処理は止めない。"""
+    if not cfg.get("search_console_ping", False):
+        return
+    url = (cfg.get("article_url") or (post or {}).get("link") or "").strip()
+    if not url:
+        log("[warn] インデックス通知: 記事URLが不明。スキップ。")
+        return
+    try:
+        import importlib
+        gi = importlib.import_module("tools.google_indexing")
+    except Exception:
+        try:
+            sys.path.insert(0, str(HERE.parent))  # .../tools
+            import google_indexing as gi  # type: ignore
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] インデックス通知: google_indexing を読めない: {e}")
+            return
+    try:
+        res = gi.notify(url)
+        if res is not None:
+            log(f"インデックス登録をリクエスト: {url}")
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] インデックス通知に失敗(処理は継続): {e}")
+
+
 def load_json(path, default):
     if path.exists():
         try:
@@ -189,6 +216,7 @@ def main():
         state["last_wp_update"] = now.isoformat()
         save_state(state)
         log(f"--force: 記事を今の内容で描き直した(status: {status})")
+        ping_search_console(cfg, post)
         return
 
     posts = []
@@ -414,6 +442,7 @@ def main():
     state["last_wp_update"] = now.isoformat()
     save_state(state)
     log(f"完了。現在地='{state['current_location']}' 反映エントリ累計 {len(state['entries'])}")
+    ping_search_console(cfg, post)
 
 
 if __name__ == "__main__":

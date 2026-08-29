@@ -56,10 +56,20 @@ def notify(url):
     """.envの設定を使ってインデックス登録をリクエストする共通関数。未設定なら何もせずNoneを返す。"""
     env = load_env(ROOT / ".env")
     credentials_path = env.get("GOOGLE_INDEXING_CREDENTIALS_PATH")
-    if not credentials_path:
-        print("GOOGLE_INDEXING_CREDENTIALS_PATH が.envに未設定のためインデックス登録をスキップしたワン")
+    # .env のパスが(別PC由来などで)見つからない場合は既定の置き場所も探す。
+    candidates = [credentials_path] if credentials_path else []
+    candidates += [
+        str(ROOT / "google-indexing-key.json"),
+        str(Path.home() / "google-indexing-key.json"),
+    ]
+    found = next((p for p in candidates if p and Path(p).exists()), None)
+    if not found:
+        if not credentials_path:
+            print("GOOGLE_INDEXING_CREDENTIALS_PATH が.envに未設定のためインデックス登録をスキップしたワン")
+        else:
+            print(f"サービスアカウントキーが見つからないためインデックス登録をスキップしたワン: {credentials_path}")
         return None
-    return request_indexing(url, credentials_path)
+    return request_indexing(url, found)
 
 
 if __name__ == "__main__":
