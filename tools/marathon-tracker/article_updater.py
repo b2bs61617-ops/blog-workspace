@@ -123,13 +123,22 @@ def _map_iframe(query, zoom=15):
     )
 
 
+def _hhmm(t):
+    """'8/29 23:51' -> '23:51' / パースできなければそのまま。"""
+    t = (t or "").strip()
+    m = re.search(r"(\d{1,2}:\d{2})", t)
+    return m.group(1) if m else t
+
+
 def render_region(current_location, entries, updated_at, map_zoom=15,
                   heading="星野真里は今どこ？（リアルタイム更新）",
                   map_image_url="", map_image_caption="", direction=""):
-    """entries: [{"time","text","map_query"}]  新しい順で渡すこと。
+    """entries: [{"time","text","map_query","map_image"}]  新しい順で渡すこと。
 
     先頭に H2 見出しを含める(記事の一番上に置く前提)。
-    map_image_url: 追跡者の位置共有マップのスクショ(WPメディアのURL)。あれば現在地ボックス直下に貼る。
+    各エントリは「HH:MM の位置情報」という H3 見出し + 地図スクショ + 本文 で1ブロック。
+    地図スクショは差し替えず、時刻ごとに積み上げる(トモキ指示 2026-08-30)。
+    map_image_url / map_image_caption は後方互換で受け取るだけ(未使用)。
     """
     loc = html.escape(current_location or "確認中")
     parts = [BEGIN]
@@ -154,26 +163,28 @@ def render_region(current_location, entries, updated_at, map_zoom=15,
     parts.append("</div>")
     parts.append("<!-- /wp:html -->")
 
-    if map_image_url:
-        cap = html.escape(map_image_caption) if map_image_caption else ""
-        parts.append("<!-- wp:html -->")
-        parts.append(
-            f'<figure style="margin:12px 0;text-align:center;">'
-            f'<img src="{html.escape(map_image_url)}" alt="星野真里 現在地マップ" '
-            f'style="width:100%;max-width:640px;height:auto;border:1px solid #ddd;border-radius:4px;" '
-            f'loading="lazy" />'
-            + (f'<figcaption style="font-size:0.85em;color:#666;margin-top:4px;">{cap}</figcaption>' if cap else "")
-            + "</figure>"
-        )
-        parts.append("<!-- /wp:html -->")
-
     for e in entries:
-        t = html.escape(e.get("time", "").strip())
         body = html.escape(e.get("text", "").strip())
         mq = e.get("map_query", "").strip()
+        img = (e.get("map_image") or "").strip()
+        hhmm = html.escape(_hhmm(e.get("time", "")))
+
+        if hhmm:
+            parts.append('<!-- wp:heading {"level":3} -->')
+            parts.append(f'<h3 class="wp-block-heading">{hhmm}の位置情報</h3>')
+            parts.append("<!-- /wp:heading -->")
+
         parts.append("<!-- wp:html -->")
-        head = f"<strong>【{t}】</strong>" if t else ""
-        parts.append(f"<p>{head}{body}</p>")
+        if img:
+            parts.append(
+                f'<figure style="margin:8px 0;text-align:center;">'
+                f'<img src="{html.escape(img)}" alt="星野真里 現在地マップ {hhmm}" '
+                f'style="width:100%;max-width:640px;height:auto;border:1px solid #ddd;border-radius:4px;" '
+                f'loading="lazy" />'
+                f'<figcaption style="font-size:0.85em;color:#666;margin-top:4px;">'
+                f'追跡者(@YSB_DANCHO)の位置共有マップ（{hhmm} 時点）</figcaption></figure>'
+            )
+        parts.append(f"<p>{body}</p>")
         if mq:
             parts.append(_map_iframe(mq, map_zoom))
         parts.append("<!-- /wp:html -->")

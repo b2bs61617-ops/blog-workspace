@@ -117,30 +117,24 @@ def ping_search_console(cfg, post):
 
 def upload_map_shot(cfg, state, posts, now):
     """share_map が撮った地図スクショを WP メディアへ上げ、URL を返す。
-    古いスクショ(前回分)はメディアライブラリから消す。
-    今回スクショが無ければ前回の URL を使い回す。"""
+    時刻ごとに積み上げる方式なので古い画像は消さない。
+    今回スクショが無ければ空文字。"""
     sm_post = next((p for p in posts
                     if p.get("source") == "share_map" and p.get("_shot")), None)
     if not sm_post:
-        return state.get("map_image_url", "")
+        return ""
     try:
         up = au.upload_media(
             cfg, sm_post["_shot"],
             filename=f"hoshino-map-{now:%Y%m%d-%H%M}.png",
         )
     except Exception as e:  # noqa: BLE001
-        log(f"[warn] 地図スクショのアップロードに失敗(前回画像を継続使用): {e}")
-        return state.get("map_image_url", "")
+        log(f"[warn] 地図スクショのアップロードに失敗: {e}")
+        return ""
     new_url = up.get("url") or ""
     if not new_url:
-        return state.get("map_image_url", "")
-    old_id = state.get("map_media_id")
-    if up.get("id"):
-        state["map_media_id"] = up["id"]
+        return ""
     state["map_image_url"] = new_url
-    if old_id and old_id != up.get("id"):
-        if au.delete_media(cfg, old_id):
-            log(f"古い地図スクショ(media {old_id})を削除")
     log(f"地図スクショをアップロード: {new_url}")
     return new_url
 
@@ -227,8 +221,6 @@ def main():
             state.get("current_location", ""), state["entries"],
             updated_at=now.strftime("%m/%d %H:%M") + " JST",
             map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
-            map_image_url=state.get("map_image_url", ""),
-            map_image_caption="追跡者(@YSB_DANCHO)の位置共有マップ",
             direction=state.get("direction", ""),
         )
         try:
@@ -418,39 +410,8 @@ def main():
     new_loc = result.get("current_location", "") or prev_loc
     if _norm_loc(new_loc) and _norm_loc(new_loc) == _norm_loc(prev_loc):
         state["seen_ids"] = (list(seen | {p["id"] for p in posts}))[-MAX_SEEN:]
-        # 現在地(市区町村＋町丁目)は前回と同じ＝新しい追記エントリは足さない。
-        # ただし位置共有マップのスクショだけは差し替える(地図を「今」の状態に保つ)。
-        if not args.dry_run and not throttled:
-            has_shot = any(p.get("source") == "share_map" and p.get("_shot") for p in posts)
-            if has_shot and state.get("entries"):
-                map_img_url = upload_map_shot(cfg, state, posts, now)
-                if map_img_url:
-                    sm_fresh = next((p.get("_fresh", "") for p in posts
-                                     if p.get("source") == "share_map" and p.get("_shot")), "")
-                    cap_txt = "追跡者(@YSB_DANCHO)の位置共有マップ"
-                    if sm_fresh:
-                        cap_txt += f"（位置情報の更新: {sm_fresh}）"
-                    region = au.render_region(
-                        state.get("current_location", ""), state["entries"],
-                        updated_at=now.strftime("%m/%d %H:%M") + " JST",
-                        map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
-                        map_image_url=map_img_url, map_image_caption=cap_txt,
-                        direction=state.get("direction", ""),
-                    )
-                    try:
-                        post = au.get_post(cfg)
-                        new_content = au.splice(post["content"], region)
-                        au.backup(cfg, post["content"])
-                        st = au.put_post(cfg, new_content)
-                        state["last_wp_update"] = now.isoformat()
-                        save_state(state)
-                        log(f"移動なし。地図スクショのみ差し替えた(status: {st})")
-                        ping_search_console(cfg, post)
-                        return
-                    except Exception as e:  # noqa: BLE001
-                        log(f"[warn] 地図スクショのみ差し替えに失敗: {e}")
         save_state(state)
-        log(f"現在地が前回と同じ('{prev_loc}')。移動なしとみなし記事本文は更新しない。")
+        log(f"現在地が前回と同じ('{prev_loc}')。移動なしとみなし記事は更新しない。")
         return
 
     if throttled and not args.dry_run:
@@ -505,22 +466,18 @@ def main():
     log(f"追記エントリ {added} 件 / 累計 {len(state['entries'])} 件 / 現在地='{state['current_location']}'"
         f" 進行方向='{state.get('direction','')}'")
 
-    # 追跡者の位置共有マップのスクショを WP に上げて記事に貼る
-    map_img_url = ""
+    # 追跡者の位置共有マップのスクショを WP に上げ、今回の最新エントリに紐付ける
+    # (差し替えず、時刻ごとに積み上げる)
     if not args.dry_run:
         map_img_url = upload_map_shot(cfg, state, posts, now)
-    sm_fresh = next((p.get("_fresh", "") for p in posts
-                     if p.get("source") == "share_map" and p.get("_shot")), "")
-    map_cap = "追跡者(@YSB_DANCHO)の位置共有マップ"
-    if sm_fresh:
-        map_cap += f"（位置情報の更新: {sm_fresh}）"
+        if map_img_url and state["entries"]:
+            state["entries"][0]["map_image"] = map_img_url
 
     region = au.render_region(
         state["current_location"], state["entries"],
         updated_at=now.strftime("%m/%d %H:%M") + " JST",
         map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
-        map_image_url=map_img_url or state.get("map_image_url", ""),
-        map_image_caption=map_cap, direction=state.get("direction", ""),
+        direction=state.get("direction", ""),
     )
 
     try:
