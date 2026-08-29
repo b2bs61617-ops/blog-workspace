@@ -486,10 +486,26 @@ def main():
     prev_loc = state.get("current_location", "")
     new_loc = result.get("current_location", "") or prev_loc
     if _norm_loc(new_loc) and _norm_loc(new_loc) == _norm_loc(prev_loc):
-        state["seen_ids"] = (list(seen | {p["id"] for p in posts}))[-MAX_SEEN:]
-        save_state(state)
-        log(f"現在地が前回と同じ('{prev_loc}')。移動なしとみなし記事は更新しない。")
-        return
+        # 同じエリアラベルが続いても、GPS上は明確に移動していて記事が古く
+        # なっている場合は強制的に1件反映する。粒度の粗いエリア(市区名+「エリア」)で
+        # 何十分も更新が止まって見えるのを防ぐ(2026-08-30 トモキ指示)。
+        force_after = int(cfg.get("force_update_after_minutes", 25))
+        force_move_km = float(cfg.get("force_update_min_move_km", 0.6))
+        moved_km = 0.0
+        if prev_pt and cur_pt:
+            _bn = bearing_note(prev_pt, cur_pt)
+            if _bn:
+                moved_km = _bn["dist_km"]
+        stale_min = ((now - last_up).total_seconds() / 60) if last_up else 1e9
+        if stale_min >= force_after and moved_km >= force_move_km:
+            log(f"同エリア('{prev_loc}')だが記事が約{stale_min:.0f}分前で古く、"
+                f"前回更新地点から GPS上 約{moved_km:.1f}km 移動 → 強制的に反映する。")
+        else:
+            state["seen_ids"] = (list(seen | {p["id"] for p in posts}))[-MAX_SEEN:]
+            save_state(state)
+            log(f"現在地が前回と同じ('{prev_loc}')。移動なしとみなし記事は更新しない。"
+                f"(古さ{stale_min:.0f}分 / 移動{moved_km:.1f}km)")
+            return
 
     if throttled and not args.dry_run:
         log(f"前回更新から {min_gap} 分未満。今回はスキップ(次回反映)。")
