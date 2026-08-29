@@ -32,6 +32,8 @@ _FRESH_RE = re.compile(r"(たった今|今すぐ|(\d+)\s*分前|(\d+)\s*秒前)"
 # 位置共有の実座標: batchexecute 応答内の [null,null,<lat>,<lng>]
 _PIN_RE = re.compile(r"\[null,null,(3[0-9]\.\d{4,}),(1[0-9]{2}\.\d{4,})\]")
 _AT_RE = re.compile(r"/@(-?\d+\.\d+),(-?\d+\.\d+)")
+# 場所リンク(位置共有でない普通のピン)は URL 末尾の !3d<lat>!4d<lng> が最も正確
+_DATA_RE = re.compile(r"!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)")
 
 
 def _save_map_crop(png_bytes, out_path):
@@ -173,8 +175,11 @@ async def _read(share_url, wait_ms, shot_path=None):
         if kanto:
             out["pin"] = kanto[-1]
 
+        md = _DATA_RE.search(pg.url)
         m = _AT_RE.search(pg.url)
-        if m:
+        if md:
+            out["at"] = (float(md.group(1)), float(md.group(2)))
+        elif m:
             out["at"] = (float(m.group(1)), float(m.group(2)))
 
         try:
@@ -226,20 +231,21 @@ def fetch(share_url, wait_ms=22000, shot_path=None):
     have_shot = bool(shot_path and Path(shot_path).exists())
 
     # 現在地の説明は「地図スクショを Vision で直読み」を最優先。
-    # 内部RPCのピン座標(exact)が取れているときだけ逆ジオコーディングも併用する。
+    # 座標が取れていれば(URL由来でも)逆ジオコーディングで住所も添える。
     vision = _vision_read(shot_path) if have_shot else ""
-    geo = _reverse_geocode(lat, lng) if exact else ""
+    geo = _reverse_geocode(lat, lng)
 
     if vision:
         body = "追跡者(@YSB_DANCHO)の位置共有マップ: " + vision
-        if exact:
-            body += f"（{lat:.5f},{lng:.5f}）"
-        addr = vision
-    elif exact and geo:
-        body = f"追跡者(@YSB_DANCHO)のリアルタイム位置共有では、現在地は {geo} 付近（{lat:.5f},{lng:.5f}）。"
+        body += f"（{lat:.5f},{lng:.5f}）"
+        # H3 見出し用の住所は、地図に印字された地名(vision の1つ目)を優先。
+        addr = vision.split(" / ")[0].strip() or geo
+    elif geo:
+        kind = "リアルタイム位置共有" if exact else "共有マップのURL座標"
+        body = f"追跡者(@YSB_DANCHO)の{kind}では、現在地は {geo} 付近（{lat:.5f},{lng:.5f}）。"
         addr = geo
     else:
-        # スクショも読めず座標も不正確 → 断定できる情報が無い。使わない。
+        # スクショも読めず住所も引けない → 断定できる情報が無い。使わない。
         return []
     if fresh:
         body += f"(位置情報の更新: {fresh})"

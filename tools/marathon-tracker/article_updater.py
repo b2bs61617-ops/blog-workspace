@@ -156,10 +156,6 @@ def render_region(current_location, entries, updated_at, map_zoom=15,
         parts.append(
             f'<p style="margin:4px 0 0 0;"><strong>進行方向:</strong> {html.escape(direction.strip())}</p>'
         )
-    parts.append(
-        f'<p style="margin:4px 0 0 0;font-size:0.9em;color:#666;">最終更新: {html.escape(updated_at)}'
-        "／地図・YouTube生配信のチャット・Xの沿道情報をもとに自動で追記しています。正確な通過地点は番組の公式発表が基準です。</p>"
-    )
     parts.append("</div>")
     parts.append("<!-- /wp:html -->")
 
@@ -168,10 +164,14 @@ def render_region(current_location, entries, updated_at, map_zoom=15,
         mq = e.get("map_query", "").strip()
         img = (e.get("map_image") or "").strip()
         hhmm = html.escape(_hhmm(e.get("time", "")))
+        addr = html.escape((e.get("addr") or "").strip())
 
-        if hhmm:
+        if hhmm or addr:
+            label = "｜".join(x for x in (hhmm, addr) if x) or "位置情報"
+            if not addr:
+                label = f"{hhmm}の位置情報"
             parts.append('<!-- wp:heading {"level":3} -->')
-            parts.append(f'<h3 class="wp-block-heading">{hhmm}の位置情報</h3>')
+            parts.append(f'<h3 class="wp-block-heading">{label}</h3>')
             parts.append("<!-- /wp:heading -->")
 
         parts.append("<!-- wp:html -->")

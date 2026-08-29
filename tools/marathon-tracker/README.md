@@ -13,19 +13,33 @@
 ```
 tracker.py (10分おき・タスクスケジューラ)
   ├─ 稼働時間帯(config.active_from〜active_until)外 → 即終了
-  ├─ yt_chat_fetch.py    … 監視配信の live_chat を yt-dlp で25秒だけ取得→パース
-  │                        (バックログでほぼ現在時刻まで揃うので daemon 不要・毎回取り直し)
-  ├─ screen_map_fetch.py … 任意。config.screen_map_enabled=true のとき。
-  │                        デスクトップに出しっぱなしの Google マップ画面をスクショ→
-  │                        Gemini Vision で「中心付近の地名」を読む(人が地図を合わせる前提)
-  ├─ x_fetch.py          … 任意。config.x_enabled=true かつ playwright 導入時のみ
-  ├─ 新着なし            → 記事を触らず終了
-  ├─ llm_extract.py   … 新着メッセージ → {現在地ラベル, 時系列ログ文, 地図クエリ} を JSON 抽出
+  ├─ yt_chat_fetch.py    … 監視配信の live_chat を yt-dlp で25秒だけ取得→パース(補助)
+  ├─ x_fetch.py          … 追跡班アカウントの最新ポスト(沿道情報・補助)。playwright 必須
+  ├─ x_fetch.map_url_from_tweet … 【主軸】config.danchou_map_tweet(@YSB_DANCHO の
+  │                        「本官の現在地」ポスト)を毎回開き、貼られた Google マップの
+  │                        位置共有リンクを取り直す。t.co / カード表示(アンカー文字列が
+  │                        "google.com" だけ)でも展開して拾う。GPS を切って貼り直されても
+  │                        同じポストを直読みするので追随する。取れなければ最新TLをスキャン→
+  │                        config.share_map_url にフォールバック。
+  ├─ share_map_fetch.py … その位置共有リンクをヘッドレスで開き、内部RPCから14桁精度の
+  │                        座標を取得(URL由来の座標も可)。座標→住所は逆ジオコーディング。
+  │                        12分より古い位置/関東外は捨てる。地図スクショも撮る。
+  ├─ bearing_note()   … 前回観測座標→今回座標の移動ベクトル(距離km・方位・8方位)を
+  │                     機械計算し (@heading) として LLM に渡す(進行方向予測の根拠)
+  ├─ 新着なし / 前回と同じ現在地 → 記事を触らず終了
+  ├─ llm_extract.py   … 新着メッセージ → {現在地ラベル, 進行方向, 時系列ログ文, 地図クエリ} を JSON 抽出
   │                     primary: config.llm_primary(このPCは "gemini")/ fallback: claude -p
   ├─ article_updater.py … 記事の <!-- MARATHON_TRACKER:BEGIN/END --> 領域を再生成し
-  │                       (常に記事の最初の H2 の直前に配置)status:publish で更新
+  │                       (常に記事の最初の H2 の直前に配置)status:publish で更新。
+  │                       各エントリは「HH:MM｜市区町村＋町丁目」の H3 + 座標ピンの
+  │                       Google マップ埋め込み + 本文(住所＋進行方向)で1ブロック。時刻ごとに積み上げる。
   └─ google_indexing.notify … 更新できた回だけ Google Indexing API に URL_UPDATED を通知
 ```
+
+- share_map の座標は「@YSB_DANCHO の位置共有リンクの実座標」。その座標を最新エントリの
+  地図ピン(`q=lat,lng`)にそのまま使い、逆ジオコーディングした住所を H3 見出しに併記する。
+- 記事末尾の注記(「最終更新: …／…正確な通過地点は番組の公式発表が基準です。」)は
+  出さない(2026-08-30 トモキ指示)。
 
 - 多重起動は `tracker.lock` で防止(手動実行とタスクの同時実行で state.json が壊れるのを回避)。
 - インデックス通知は「実際に記事を更新した回」だけ。移動なしでスキップした回は送らない
@@ -100,7 +114,8 @@ python tools\marathon-tracker\login.py      # Chromium が開くので X にロ�
 | `yt_capture_seconds` | 1回あたり yt-dlp を走らせる秒数(既定25) |
 | `max_yt_messages` | 1回で拾うチャット最大件数 |
 | `screen_map_enabled` / `screen_map_region` | デスクトップのGoogleマップ画面をスクショ→Vision で読む on/off と撮影範囲(nullでプライマリ全体) |
-| `x_enabled` / `x_accounts` / `x_search_fallback` | X源(既定off)。アカウント未設定でも検索で動く |
+| `share_map_enabled` / `danchou_account` / `danchou_map_tweet` / `share_map_url` | 【主軸】位置共有トラッキング。`danchou_map_tweet` に指定した @YSB_DANCHO の「本官の現在地」ポストを毎回開いて位置共有リンクを取り直す。取れなければ `danchou_account` の最新TLをスキャン → 最後に `share_map_url`(既定の goo.gl リンク)にフォールバック |
+| `x_enabled` / `x_accounts` / `x_search_fallback` | X源(沿道情報・補助)。`danchou_account` は自動で先頭に足される。アカウント未設定でも検索で動く |
 | `active_from` / `active_until` | 稼働時間帯(JST・ISO8601)。外の時間は即終了 |
 | `section_heading_contains` / `next_heading_contains` | マーカー領域を置く見出しの目印 |
 | `min_minutes_between_wp_updates` | 連続更新の最小間隔(分) |

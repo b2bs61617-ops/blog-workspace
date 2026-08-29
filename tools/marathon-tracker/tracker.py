@@ -15,6 +15,7 @@
 import argparse
 import asyncio
 import json
+import math
 import re
 import sys
 from datetime import datetime, timedelta, timezone
@@ -159,6 +160,30 @@ def parse_dt(s):
         return None
 
 
+_COMPASS8 = ["北", "北東", "東", "南東", "南", "南西", "西", "北西"]
+
+
+def bearing_note(prev_pt, cur_pt):
+    """前回座標→今回座標の距離(km)・方位(度)・8方位ラベルを返す。動いていなければ None。"""
+    try:
+        la1, ln1 = float(prev_pt[0]), float(prev_pt[1])
+        la2, ln2 = float(cur_pt[0]), float(cur_pt[1])
+    except (TypeError, ValueError, IndexError):
+        return None
+    r = 6371.0
+    p1, p2 = math.radians(la1), math.radians(la2)
+    dlt, dln = math.radians(la2 - la1), math.radians(ln2 - ln1)
+    a = math.sin(dlt / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dln / 2) ** 2
+    dist_km = 2 * r * math.asin(min(1.0, math.sqrt(a)))
+    if dist_km < 0.05:
+        return None
+    y = math.sin(dln) * math.cos(p2)
+    x = math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dln)
+    brg = (math.degrees(math.atan2(y, x)) + 360) % 360
+    compass = _COMPASS8[round(brg / 45) % 8]
+    return {"dist_km": dist_km, "bearing": brg, "compass": compass}
+
+
 def is_noise(text, patterns):
     for p in patterns:
         try:
@@ -193,6 +218,8 @@ def main():
     state.setdefault("entries", [])
     state.setdefault("current_location", "")
     state.setdefault("last_wp_update", "")
+    state.setdefault("last_latlng", None)
+    state.setdefault("share_map_url_current", "")
 
     if args.reset_bootstrap:
         state["bootstrap_done"] = False
@@ -297,25 +324,12 @@ def main():
         except Exception as e:  # noqa: BLE001
             log(f"[warn] 貼付け地図スクショの読み取り失敗: {e}")
 
-    # --- ソース(主軸): 追跡者の Google マップ位置共有リンク ---
-    # 実座標(内部RPC)＋地図スクショの両方を取る。スクショは記事に画像として貼る。
-    if cfg.get("share_map_enabled", False) and cfg.get("share_map_url"):
-        try:
-            LOG_DIR.mkdir(exist_ok=True)
-            sm = share_map_fetch.fetch(
-                cfg["share_map_url"],
-                shot_path=str(LOG_DIR / "share_map_shot.png"),
-            )
-            log(f"位置共有マップ 読み取り {len(sm)} 件"
-                + (f" -> {sm[0]['text'][:70]}" if sm else " (座標取れず)")
-                + (" [スクショ取得]" if sm and sm[0].get("_shot") else ""))
-            posts.extend(sm)
-        except Exception as e:  # noqa: BLE001
-            log(f"[warn] 位置共有マップの読み取り失敗: {e}")
-
-    # --- ソース3: X(補助・失敗しても続行) ---
+    # --- ソース3: X(補助＋@YSB_DANCHO の地図リンク源。失敗しても続行) ---
     accounts = [a.lstrip("@").strip() for a in cfg.get("x_accounts", []) if a.strip()]
     fallback = cfg.get("x_search_fallback") or None
+    danchou_acct = (cfg.get("danchou_account") or "YSB_DANCHO").lstrip("@").strip()
+    if danchou_acct and danchou_acct.lower() not in [a.lower() for a in accounts]:
+        accounts = [danchou_acct] + accounts
     if cfg.get("x_enabled", True) and x_fetch is None:
         log(f"[warn] X有効だが playwright 未インストールのためスキップ: {_X_IMPORT_ERROR}")
     if cfg.get("x_enabled", True) and x_fetch is not None and (accounts or fallback):
@@ -330,6 +344,51 @@ def main():
             posts.extend(x_posts)
         except Exception as e:  # noqa: BLE001
             log(f"[warn] X取得失敗(Playwright/ログイン未設定?): {e}")
+
+    # --- ソース(主軸): 追跡者の Google マップリンク ---
+    # 毎回 @YSB_DANCHO の位置共有リンクを取り直す(GPSを切って貼り直されるため)。
+    #   1) config.danchou_map_tweet(「本官の現在地」ポスト)を直接開いて t.co を展開
+    #   2) 取れなければ最新タイムラインに地図URLが無いかスキャン
+    #   3) それも無ければ前回使えたURL → config.share_map_url にフォールバック
+    share_url = ""
+    src_label = ""
+    tweet_url = (cfg.get("danchou_map_tweet") or "").strip()
+    if x_fetch is not None and tweet_url:
+        try:
+            share_url = x_fetch.map_url_from_tweet(tweet_url)
+            if share_url:
+                src_label = "指定ポスト"
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] 指定ポストからの地図リンク取得に失敗: {e}")
+    if not share_url and x_fetch is not None:
+        try:
+            share_url = x_fetch.resolve_danchou_map_url(posts, danchou_acct)
+            if share_url:
+                src_label = "最新TL"
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] @{danchou_acct} の地図リンク抽出に失敗: {e}")
+    if share_url:
+        if share_url != state.get("share_map_url_current"):
+            log(f"@{danchou_acct} の地図リンクを採用({src_label}): {share_url}")
+        state["share_map_url_current"] = share_url
+    else:
+        share_url = state.get("share_map_url_current") or cfg.get("share_map_url", "")
+        if share_url:
+            log(f"@{danchou_acct} の新しい地図リンクなし。既存リンクを使用: {share_url}")
+
+    if cfg.get("share_map_enabled", False) and share_url:
+        try:
+            LOG_DIR.mkdir(exist_ok=True)
+            sm = share_map_fetch.fetch(
+                share_url,
+                shot_path=str(LOG_DIR / "share_map_shot.png"),
+            )
+            log(f"位置共有マップ 読み取り {len(sm)} 件"
+                + (f" -> {sm[0]['text'][:70]}" if sm else " (座標取れず)")
+                + (" [スクショ取得]" if sm and sm[0].get("_shot") else ""))
+            posts.extend(sm)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] 位置共有マップの読み取り失敗: {e}")
 
     log(f"取得合計 {len(posts)} 件")
     if not posts:
@@ -371,6 +430,24 @@ def main():
         return
 
     new.sort(key=lambda x: (parse_dt(x.get("date", "")) or now))
+
+    # 進行方向の根拠: 前回観測地点→今回の位置共有座標の移動ベクトルを機械計算して
+    # 合成ポスト (@heading) として LLM に渡す。
+    cur_pt = next((p.get("_latlng") for p in posts
+                   if p.get("source") == "share_map" and p.get("_latlng")), None)
+    prev_pt = state.get("last_latlng")
+    if prev_pt and cur_pt:
+        bn = bearing_note(prev_pt, cur_pt)
+        if bn:
+            new.append({
+                "id": f"heading:{now:%Y%m%d%H%M}",
+                "date": now.isoformat(),
+                "source": "heading",
+                "text": (f"前回の観測地点から約{bn['dist_km']:.1f}km {bn['compass']}へ移動"
+                         f"(方位{bn['bearing']:.0f}°)。"),
+            })
+            log(f"移動ベクトル: 約{bn['dist_km']:.1f}km {bn['compass']} (方位{bn['bearing']:.0f}°)")
+
     log(f"新着 {len(new)} 件を LLM で判定")
 
     # 連続更新の抑制
@@ -452,12 +529,16 @@ def main():
     state["entries"].sort(key=_entry_key, reverse=True)
     state["entries"] = state["entries"][:MAX_ENTRIES]
 
-    # share_map が正確な座標を取れていれば、最新エントリのピンをその座標で上書き
+    # share_map の座標があれば、最新エントリのピンをその座標で上書きし、住所も添える
     # (LLM が地名から地図クエリを作るより正確)
-    sm_pt = next((p.get("_latlng") for p in posts
-                  if p.get("source") == "share_map" and p.get("_exact") and p.get("_latlng")), None)
-    if sm_pt and state["entries"]:
+    sm_post = next((p for p in posts
+                    if p.get("source") == "share_map" and p.get("_latlng")), None)
+    if sm_post and state["entries"]:
+        sm_pt = sm_post["_latlng"]
         state["entries"][0]["map_query"] = f"{sm_pt[0]},{sm_pt[1]}"
+        if sm_post.get("_addr"):
+            state["entries"][0]["addr"] = sm_post["_addr"]
+        state["last_latlng"] = [sm_pt[0], sm_pt[1]]
 
     if result.get("current_location"):
         state["current_location"] = result["current_location"]
