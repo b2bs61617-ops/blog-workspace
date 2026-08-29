@@ -21,6 +21,7 @@
 | PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com |
 |---|---|---|---|---|
 | USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) |
+| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) |
 
 - hostnameは`hostname`コマンドで確認できる。
 - [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
