@@ -72,6 +72,41 @@ def put_post(cfg, new_content):
     return d.get("status")
 
 
+def upload_media(cfg, image_path, filename=None):
+    """画像を WordPress メディアライブラリにアップロード。{"id","url"} を返す。"""
+    url, auth = _auth(cfg)
+    api = f"{url}/wp-json/wp/v2/media"
+    data = Path(image_path).read_bytes()
+    fn = filename or Path(image_path).name
+    req = urllib.request.Request(
+        api, data=data, method="POST",
+        headers={
+            "Authorization": f"Basic {auth}",
+            "Content-Type": "image/png",
+            "Content-Disposition": f'attachment; filename="{fn}"',
+        },
+    )
+    with urllib.request.urlopen(req, timeout=60) as r:
+        d = json.loads(r.read())
+    return {"id": d.get("id"), "url": d.get("source_url") or d.get("guid", {}).get("rendered", "")}
+
+
+def delete_media(cfg, media_id):
+    """古い地図スクショをメディアライブラリから完全削除(ベストエフォート)。"""
+    if not media_id:
+        return False
+    url, auth = _auth(cfg)
+    api = f"{url}/wp-json/wp/v2/media/{media_id}?force=true"
+    req = urllib.request.Request(
+        api, method="DELETE", headers={"Authorization": f"Basic {auth}"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30):
+            return True
+    except Exception:
+        return False
+
+
 def backup(cfg, content):
     BACKUP_DIR.mkdir(exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -89,10 +124,12 @@ def _map_iframe(query, zoom=15):
 
 
 def render_region(current_location, entries, updated_at, map_zoom=15,
-                  heading="星野真里は今どこ？（リアルタイム更新）"):
+                  heading="星野真里は今どこ？（リアルタイム更新）",
+                  map_image_url="", map_image_caption=""):
     """entries: [{"time","text","map_query"}]  新しい順で渡すこと。
 
     先頭に H2 見出しを含める(記事の一番上に置く前提)。
+    map_image_url: 追跡者の位置共有マップのスクショ(WPメディアのURL)。あれば現在地ボックス直下に貼る。
     """
     loc = html.escape(current_location or "確認中")
     parts = [BEGIN]
@@ -112,6 +149,19 @@ def render_region(current_location, entries, updated_at, map_zoom=15,
     )
     parts.append("</div>")
     parts.append("<!-- /wp:html -->")
+
+    if map_image_url:
+        cap = html.escape(map_image_caption) if map_image_caption else ""
+        parts.append("<!-- wp:html -->")
+        parts.append(
+            f'<figure style="margin:12px 0;text-align:center;">'
+            f'<img src="{html.escape(map_image_url)}" alt="星野真里 現在地マップ" '
+            f'style="width:100%;max-width:640px;height:auto;border:1px solid #ddd;border-radius:4px;" '
+            f'loading="lazy" />'
+            + (f'<figcaption style="font-size:0.85em;color:#666;margin-top:4px;">{cap}</figcaption>' if cap else "")
+            + "</figure>"
+        )
+        parts.append("<!-- /wp:html -->")
 
     for e in entries:
         t = html.escape(e.get("time", "").strip())
