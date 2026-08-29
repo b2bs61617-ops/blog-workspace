@@ -87,10 +87,18 @@ def _map_iframe(query, zoom=15):
     )
 
 
-def render_region(current_location, entries, updated_at, map_zoom=15):
-    """entries: [{"time","text","map_query"}]  新しい順で渡すこと。"""
+def render_region(current_location, entries, updated_at, map_zoom=15,
+                  heading="星野真里は今どこ？（リアルタイム更新）"):
+    """entries: [{"time","text","map_query"}]  新しい順で渡すこと。
+
+    先頭に H2 見出しを含める(記事の一番上に置く前提)。
+    """
     loc = html.escape(current_location or "確認中")
     parts = [BEGIN]
+    if heading:
+        parts.append("<!-- wp:heading -->")
+        parts.append(f'<h2 class="wp-block-heading">{html.escape(heading)}</h2>')
+        parts.append("<!-- /wp:heading -->")
     parts.append("<!-- wp:html -->")
     parts.append(
         '<div style="border:1px solid #ddd;border-left:4px solid #d24;border-radius:4px;'
@@ -119,26 +127,24 @@ def render_region(current_location, entries, updated_at, map_zoom=15):
     return "\n".join(parts)
 
 
-def splice(content, region_html, section_contains, next_contains):
-    """マーカー領域を region_html で置換。無ければ該当セクション末尾に挿入。"""
+def splice(content, region_html, section_contains=None, next_contains=None):
+    """マーカー領域を常に「記事の最初の H2 の直前」に置く。
+
+    既存のマーカー領域はどこにあっても本文から除去してから、先頭側へ挿入し直す。
+    (トモキ指示 2026-08-29: 更新される見出しを記事の一番上に)
+    section_contains / next_contains は後方互換のため受け取るだけ(未使用)。
+    """
+    # 既存マーカー領域を丸ごと除去
     if BEGIN in content and END in content:
-        pre = content.split(BEGIN, 1)[0]
-        post = content.split(END, 1)[1]
-        return pre + region_html + post
+        pre = content.split(BEGIN, 1)[0].rstrip()
+        post = content.split(END, 1)[1].lstrip()
+        content = pre + ("\n\n" if pre and post else "") + post
 
-    # セクション見出し(h2 に section_contains を含む)を探す
-    sec = re.search(r"<h2[^>]*>[^<]*" + re.escape(section_contains) + r"[^<]*</h2>", content)
-    if not sec:
-        raise RuntimeError(f"セクション見出しが見つからない: ...{section_contains}...")
+    # 最初の見出し(直前の wp:heading コメントごと)の位置。無ければ本文先頭。
+    m = re.search(r"(<!--\s*wp:heading[^>]*-->\s*)?<h2[\s>]", content)
+    insert_at = m.start() if m else 0
 
-    # そのセクション以降で、次の見出し(h2 に next_contains を含む)の直前 wp:heading コメントを探す
-    after = content[sec.end():]
-    nxt = re.search(r"(<!-- wp:heading -->\s*)?<h2[^>]*>[^<]*" + re.escape(next_contains) + r"[^<]*</h2>", after)
-    if not nxt:
-        raise RuntimeError(f"次セクション見出しが見つからない: ...{next_contains}...")
-
-    insert_at = sec.end() + nxt.start()
-    block = region_html + "\n\n"
+    block = region_html.rstrip() + "\n\n"
     return content[:insert_at] + block + content[insert_at:]
 
 

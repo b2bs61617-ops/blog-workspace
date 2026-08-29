@@ -43,14 +43,48 @@ except Exception:
 
 CONFIG_FILE = HERE / "config.json"
 STATE_FILE = HERE / "state.json"
+LOCK_FILE = HERE / "tracker.lock"
 LOG_DIR = HERE / "logs"
 JST = timezone(timedelta(hours=9))
 MAX_ENTRIES = 120
 MAX_SEEN = 2000
+LOCK_STALE_MINUTES = 12
 
 
 def log(msg):
     print(f"[{datetime.now(JST):%Y-%m-%d %H:%M:%S}] {msg}", flush=True)
+
+
+def acquire_lock():
+    """多重起動防止。手動実行とタスクの同時実行で state.json が競合するのを防ぐ。
+    戻り値 True で取得成功。古いロック(> LOCK_STALE_MINUTES 分)は奪う。"""
+    import os
+    import time
+
+    if LOCK_FILE.exists():
+        try:
+            age_min = (time.time() - LOCK_FILE.stat().st_mtime) / 60
+        except Exception:
+            age_min = 999
+        if age_min < LOCK_STALE_MINUTES:
+            return False
+        # 古いロックは残骸とみなして削除
+        try:
+            LOCK_FILE.unlink()
+        except Exception:
+            pass
+    try:
+        LOCK_FILE.write_text(f"{os.getpid()} {datetime.now(JST).isoformat()}", encoding="utf-8")
+        return True
+    except Exception:
+        return False
+
+
+def release_lock():
+    try:
+        LOCK_FILE.unlink()
+    except Exception:
+        pass
 
 
 def load_json(path, default):
@@ -89,7 +123,16 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--reset-bootstrap", action="store_true")
     ap.add_argument("--headful", action="store_true", help="ブラウザを表示して取得(デバッグ用)")
+    ap.add_argument("--force", action="store_true",
+                    help="現在地が同じでも/前回更新直後でも、今の内容で記事を描き直す(レイアウト変更の反映用)")
     args = ap.parse_args()
+
+    if not args.dry_run:
+        if not acquire_lock():
+            log(f"別の実行が進行中(または {LOCK_STALE_MINUTES} 分以内のロックあり)。今回はスキップ。")
+            return
+        import atexit
+        atexit.register(release_lock)
 
     cfg = load_json(CONFIG_FILE, {})
     state = load_json(STATE_FILE, {})
@@ -113,6 +156,39 @@ def main():
         return
     if au_ and now > au_:
         log(f"稼働終了({cfg['active_until']})を過ぎている。終了。")
+        return
+
+    _heading = cfg.get("realtime_heading") or "星野真里は今どこ？（リアルタイム更新）"
+
+    # --force: 取得もLLMもせず、今の state の内容で記事を描き直す(レイアウト変更の反映用)
+    if args.force:
+        if not state.get("entries"):
+            log("--force: state に entries が無い。先に通常実行で1回更新してワン。")
+            return
+        region = au.render_region(
+            state.get("current_location", ""), state["entries"],
+            updated_at=now.strftime("%m/%d %H:%M") + " JST",
+            map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
+        )
+        try:
+            post = au.get_post(cfg)
+            new_content = au.splice(post["content"], region)
+        except Exception as e:  # noqa: BLE001
+            log(f"[ERROR] --force 描き直しに失敗: {e}")
+            return
+        if args.dry_run:
+            LOG_DIR.mkdir(exist_ok=True)
+            prev = LOG_DIR / f"preview_force_{now:%Y%m%d_%H%M%S}.html"
+            prev.write_text(new_content, encoding="utf-8")
+            log(f"[DRY-RUN] --force プレビュー: {prev}")
+            print(au.region_of(new_content))
+            return
+        bpath = au.backup(cfg, post["content"])
+        log(f"旧本文を退避: {bpath}")
+        status = au.put_post(cfg, new_content)
+        state["last_wp_update"] = now.isoformat()
+        save_state(state)
+        log(f"--force: 記事を今の内容で描き直した(status: {status})")
         return
 
     posts = []
@@ -293,7 +369,7 @@ def main():
     region = au.render_region(
         state["current_location"], state["entries"],
         updated_at=now.strftime("%m/%d %H:%M") + " JST",
-        map_zoom=int(cfg.get("map_zoom", 15)),
+        map_zoom=int(cfg.get("map_zoom", 15)), heading=_heading,
     )
 
     try:
