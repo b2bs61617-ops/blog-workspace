@@ -17,16 +17,17 @@
   "yt_capture_seconds": 25,
   "max_yt_messages": 250,
 
-  "screen_map_enabled": true,
+  "screen_map_enabled": false,
   "screen_map_region": null,
+  "_screen_map_note": "デスクトップ全画面のスクショ読み。share_map(GPS共有)導入で不要になり既定off。",
 
   "mapshot_enabled": true,
   "mapshot_dir": "tools/marathon-tracker/mapshot",
   "mapshot_max_age_minutes": 20,
 
-  "share_map_enabled": false,
+  "share_map_enabled": true,
   "share_map_url": "https://maps.app.goo.gl/LNRGLE28rtg6dENf6",
-  "_share_map_note": "@YSB_DANCHO の位置共有リンク。headlessだとGoogleが座標を隠すため既定off。取れた時だけ補助的に使う。",
+  "_share_map_note": "@YSB_DANCHO の位置共有リンク。webdriver判定を回避して @lat,lng を取得。12分より古い位置/関東外は捨てる。",
 
   "x_enabled": true,
   "x_accounts": ["YSB_DANCHO", "24tv24tv", "yes0724day"],
