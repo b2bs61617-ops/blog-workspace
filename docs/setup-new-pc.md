@@ -179,3 +179,21 @@ notepad $env:USERPROFILE\.claude\settings.json
 `%USERPROFILE%`部分は実際の絶対パス(例: `C:\\Users\\s30se\\.claude\\blog-workspace-sync.ps1`)に書き換える。
 
 4. 次に新しいセッションを開いたときから有効になる(今開いているセッションには反映されない)。
+
+## 12. ルール・スキルの変更を確認なしで自動pushする(任意・PCごとの個人設定)
+
+CLAUDE.mdの運用ルールでは「新しいスキル・ルールを学んだら`CLAUDE.md`/`docs/`/`.claude/skills/`に反映して`git commit`→`git push`まで行う」ことになっているが、環境によってはマツからの`git commit`/`git push`が毎回ブロック(または確認待ち)になる。確認なしで自動実行させたいPCでは、`~/.claude/settings.json`の`permissions.allow`に以下を追加する(セクション10・11と同じくPC個人設定、リポジトリでは共有しない)。
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
+```
+
+既存の設定があればマージする。次の新規セッションから有効。これを入れないPCでは、マツがリポジトリのファイルを更新したあと、ユーザーが手動で`git commit`→`git push`する運用になる(変更内容の消失は起きないが、他PCへの反映が遅れる)。
