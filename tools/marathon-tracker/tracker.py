@@ -26,7 +26,13 @@ sys.path.insert(0, str(HERE))
 
 import article_updater as au  # noqa: E402
 import llm_extract  # noqa: E402
-import x_fetch  # noqa: E402
+import yt_chat_fetch  # noqa: E402
+
+try:
+    import x_fetch  # noqa: E402  (playwright 未インストールなら X ソースは無効)
+except Exception as _x_imp_err:  # noqa: BLE001
+    x_fetch = None
+    _X_IMPORT_ERROR = _x_imp_err
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -108,21 +114,45 @@ def main():
         log(f"稼働終了({cfg['active_until']})を過ぎている。終了。")
         return
 
+    posts = []
+
+    # --- ソース1: YouTube ライブチャット(主軸) ---
+    yt_url = (cfg.get("youtube_video_url") or "").strip()
+    if cfg.get("youtube_enabled", True) and yt_url:
+        try:
+            yt_posts = yt_chat_fetch.fetch(
+                yt_url,
+                capture_seconds=int(cfg.get("yt_capture_seconds", 25)),
+                limit=int(cfg.get("max_yt_messages", 250)),
+            )
+            log(f"YouTubeチャット取得 {len(yt_posts)} 件")
+            posts.extend(yt_posts)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] YouTubeチャット取得失敗: {e}")
+    elif cfg.get("youtube_enabled", True):
+        log("[warn] youtube_video_url 未設定(config.json)。YouTubeソースはスキップ。")
+
+    # --- ソース2: X(補助・失敗しても続行) ---
     accounts = [a.lstrip("@").strip() for a in cfg.get("x_accounts", []) if a.strip()]
     fallback = cfg.get("x_search_fallback") or None
-    if not accounts and not fallback:
-        log("x_accounts が未設定(config.json)。当日、追跡アカウントを入れてワン。終了。")
-        return
-    log(f"取得開始: accounts={accounts or '(なし)'} fallback={fallback if not accounts else '(未使用)'}")
+    if cfg.get("x_enabled", True) and x_fetch is None:
+        log(f"[warn] X有効だが playwright 未インストールのためスキップ: {_X_IMPORT_ERROR}")
+    if cfg.get("x_enabled", True) and x_fetch is not None and (accounts or fallback):
+        log(f"X取得開始: accounts={accounts or '(なし)'} fallback={fallback if not accounts else '(未使用)'}")
+        try:
+            x_posts = asyncio.run(x_fetch.fetch(
+                accounts, search_fallback=fallback,
+                limit=int(cfg.get("max_tweets_per_account", 30)),
+                headless=not args.headful,
+            ))
+            log(f"X取得 {len(x_posts)} 件")
+            posts.extend(x_posts)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] X取得失敗(Playwright/ログイン未設定?): {e}")
 
-    posts = asyncio.run(x_fetch.fetch(
-        accounts, search_fallback=fallback,
-        limit=int(cfg.get("max_tweets_per_account", 30)),
-        headless=not args.headful,
-    ))
-    log(f"取得 {len(posts)} 件")
+    log(f"取得合計 {len(posts)} 件")
     if not posts:
-        log("ポストが取れなかった(ログイン切れ/一時的な失敗の可能性)。終了。")
+        log("どのソースからも取得できなかった(配信終了/ログイン切れ/一時的な失敗)。終了。")
         return
 
     seen = set(state["seen_ids"])

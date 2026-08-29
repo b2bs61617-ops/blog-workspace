@@ -1,0 +1,10 @@
+# marathon-tracker 依存(Python 3.12+)
+#   pip install -r tools/marathon-tracker/requirements.txt
+yt-dlp>=2026.8.19        # YouTube ライブチャット取得(主軸)
+google-genai>=2.0        # 位置情報の抽出(Gemini)。claude -p が使える環境なら無くても可
+requests>=2.30           # 予備
+
+# --- X(ツイート)ソースを併用する場合のみ ---
+#   pip install playwright && python -m playwright install chrome
+#   その後 config.json の "x_enabled": true にして login.py を一度実行
+# playwright>=1.40

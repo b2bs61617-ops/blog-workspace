@@ -6,11 +6,12 @@
 
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path "$PSScriptRoot\..\..").Path
-$py   = (Get-Command python).Source
+$bat  = Join-Path $PSScriptRoot "run.bat"
 $taskName = "MarathonTracker_HoshinoMari"
 
-$action  = New-ScheduledTaskAction -Execute $py `
-    -Argument "tools\marathon-tracker\tracker.py" -WorkingDirectory $repo
+# run.bat 経由(PYTHONUTF8=1 をセットしてから python を呼ぶ)。cp932 環境での文字化け対策。
+$action  = New-ScheduledTaskAction -Execute "cmd.exe" `
+    -Argument "/c `"$bat`"" -WorkingDirectory $repo
 
 # 10分おき、今日から明日いっぱいまで
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
@@ -19,8 +20,8 @@ $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
 
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable `
     -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 9)
-# 注: claude -p の抽出は初回コールドスタートで 2〜3 分かかることがある(実測 ~140s)。
-#     10分間隔なら次回実行に食い込まない範囲。遅ければ config.json の llm_primary を "gemini" に。
+# 注: yt-dlp のチャット取得(既定25秒)+ Gemini 抽出で1回あたり実測 40〜90 秒程度。
+#     10分間隔なら次回実行に食い込まない。
 
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger `
     -Settings $settings -Description "24時間テレビ 星野真里マラソンの現在地を記事12158へ自動追記" -Force

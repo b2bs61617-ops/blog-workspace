@@ -1,5 +1,5 @@
 {
-  "_comment": "24時間テレビ マラソン現在地トラッカー設定。当日 x_accounts に追跡アカウント(先頭@なし)を入れる。",
+  "_comment": "24時間テレビ マラソン現在地トラッカー設定。主軸はYouTubeライブチャット。X源はPlaywrightとX側ログインが要るので既定はoff、login.py実行後に x_enabled=true にする。",
 
   "wp_env_prefix": "WP_TREND",
   "post_id": 12158,
@@ -9,6 +9,12 @@
   "section_heading_contains": "リアルタイム情報",
   "next_heading_contains": "ゴール予想時刻",
 
+  "youtube_enabled": true,
+  "youtube_video_url": "https://www.youtube.com/watch?v=LOJxmd-xenc",
+  "yt_capture_seconds": 25,
+  "max_yt_messages": 250,
+
+  "x_enabled": false,
   "x_accounts": [],
   "x_search_fallback": "星野真里 マラソン 現在地",
   "max_tweets_per_account": 30,
@@ -17,7 +23,7 @@
   "active_until": "2026-08-30T21:00:00+09:00",
 
   "min_minutes_between_wp_updates": 8,
-  "first_run_lookback_minutes": 0,
+  "first_run_lookback_minutes": 15,
 
   "noise_patterns": [
     "プレゼント企画", "フォロー&", "フォロー＆", "抽選で", "当選者", "RTキャンペーン",
@@ -25,7 +31,7 @@
   ],
 
   "map_zoom": 15,
-  "course_context": "スタート候補は等々力(川崎市)ほか。多摩川沿いを北上→生田スタジオで仮眠→世田谷・都心南部を経て両国国技館へ、が予想ルート。ゴールは両国国技館、8/30 20時台後半が有力。距離は100〜105km予想。",
-  "llm_primary": "claude",
+  "course_context": "スタート候補は等々力(川崎市)・味の素スタジアム(調布)・日産スタジアム(横浜)ほか。多摩川沿いを北上→生田スタジオで仮眠→世田谷・都心南部を経て両国国技館へ、が予想ルート。ゴールは両国国技館、8/30 20時台後半が有力。距離は100〜105km予想。",
+  "llm_primary": "gemini",
   "llm_model_gemini": "gemini-flash-latest"
 }
