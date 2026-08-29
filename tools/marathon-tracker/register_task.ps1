@@ -1,30 +1,35 @@
-# 24時間マラソン現在地トラッカーを「10分おき」でタスクスケジューラに登録する。
-# 管理者権限の PowerShell で実行推奨。
-# 稼働時間帯は config.json の active_from / active_until で制御しているので、
-# マラソン終了後にこのタスクを消し忘れても記事は更新されない(各回が即終了する)。
-# ただし無駄に走り続けるので、終わったら Unregister するのが望ましい。
+# Register the 24h-marathon location tracker as a scheduled task that runs
+# every 10 minutes. Run from an elevated PowerShell if possible.
+#
+# The active window is controlled by config.json (active_from / active_until),
+# so even if you forget to remove this task after the broadcast, each run just
+# exits immediately. Still, Unregister it when done to stop the churn.
+#
+# NOTE: this file is ASCII-only on purpose. Windows PowerShell 5.1 reads a
+# BOM-less .ps1 as the system ANSI codepage (cp932 here); non-ASCII text would
+# be mis-decoded and break parsing.
 
 $ErrorActionPreference = "Stop"
 $repo = (Resolve-Path "$PSScriptRoot\..\..").Path
 $bat  = Join-Path $PSScriptRoot "run.bat"
 $taskName = "MarathonTracker_HoshinoMari"
 
-# run.bat 経由(PYTHONUTF8=1 をセットしてから python を呼ぶ)。cp932 環境での文字化け対策。
+# Go through run.bat so PYTHONUTF8=1 is set and Python is called by full path.
 $action  = New-ScheduledTaskAction -Execute "cmd.exe" `
     -Argument "/c `"$bat`"" -WorkingDirectory $repo
 
-# 10分おき、今日から明日いっぱいまで
+# Every 10 minutes, starting now, for 2 days.
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
     -RepetitionInterval (New-TimeSpan -Minutes 10) `
     -RepetitionDuration (New-TimeSpan -Days 2)
 
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable `
     -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 9)
-# 注: yt-dlp のチャット取得(既定25秒)+ Gemini 抽出で1回あたり実測 40〜90 秒程度。
-#     10分間隔なら次回実行に食い込まない。
+# One run = yt-dlp chat capture (~25s) + Gemini extract, measured ~35-90s.
+# Comfortably inside the 10-minute gap.
 
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger `
-    -Settings $settings -Description "24時間テレビ 星野真里マラソンの現在地を記事12158へ自動追記" -Force
+    -Settings $settings -Description "24h-TV Hoshino Mari marathon: auto-append current location to post 12158" -Force
 
-Write-Host "登録完了: $taskName (10分おき)"
-Write-Host "解除するには: Unregister-ScheduledTask -TaskName $taskName -Confirm:`$false"
+Write-Host "Registered: $taskName (every 10 min)"
+Write-Host "To remove: Unregister-ScheduledTask -TaskName $taskName -Confirm:`$false"
