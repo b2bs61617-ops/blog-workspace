@@ -6,6 +6,7 @@
   "site_label": "chomoand.com",
   "article_url": "https://chomoand.com/24h-hoshinomari/",
   "search_console_ping": true,
+  "index_ping_min_minutes": 30,
 
   "runner_name": "星野真里",
   "realtime_heading": "星野真里は今どこ？（マラソン現在地・リアルタイム更新）",

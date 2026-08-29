@@ -89,15 +89,28 @@ def release_lock():
         pass
 
 
-def ping_search_console(cfg, post):
+def ping_search_console(cfg, state, post):
     """記事更新後、Google Indexing API に URL_UPDATED を通知(ベストエフォート)。
-    .env の GOOGLE_INDEXING_CREDENTIALS_PATH 未設定/失敗でも処理は止めない。"""
+    .env の GOOGLE_INDEXING_CREDENTIALS_PATH 未設定/失敗でも処理は止めない。
+
+    記事自体は 10 分おきに更新されるが、インデックス通知は
+    index_ping_min_minutes 分(既定30)に1回までに絞る(Indexing API の
+    1日 200 リクエスト制限の節約。2026-08-30 トモキ指示)。"""
     if not cfg.get("search_console_ping", False):
         return
     url = (cfg.get("article_url") or (post or {}).get("link") or "").strip()
     if not url:
         log("[warn] インデックス通知: 記事URLが不明。スキップ。")
         return
+
+    now = datetime.now(JST)
+    gap_min = int(cfg.get("index_ping_min_minutes", 30))
+    last_ping = parse_dt((state or {}).get("last_index_ping", ""))
+    if last_ping and (now - last_ping) < timedelta(minutes=gap_min):
+        mins = (now - last_ping).total_seconds() / 60
+        log(f"インデックス通知は {gap_min} 分に1回。前回から {mins:.0f} 分なので今回は送らない。")
+        return
+
     try:
         import importlib
         gi = importlib.import_module("tools.google_indexing")
@@ -112,6 +125,9 @@ def ping_search_console(cfg, post):
         res = gi.notify(url)
         if res is not None:
             log(f"インデックス登録をリクエスト: {url}")
+            if state is not None:
+                state["last_index_ping"] = now.isoformat()
+                save_state(state)
     except Exception as e:  # noqa: BLE001
         log(f"[warn] インデックス通知に失敗(処理は継続): {e}")
 
@@ -220,6 +236,7 @@ def main():
     state.setdefault("last_wp_update", "")
     state.setdefault("last_latlng", None)
     state.setdefault("share_map_url_current", "")
+    state.setdefault("last_index_ping", "")
 
     if args.reset_bootstrap:
         state["bootstrap_done"] = False
@@ -269,7 +286,7 @@ def main():
         # --force はレイアウト反映なので連続更新スロットルの起点(last_wp_update)は触らない
         save_state(state)
         log(f"--force: 記事を今の内容で描き直した(status: {status})")
-        ping_search_console(cfg, post)
+        ping_search_console(cfg, state, post)
         return
 
     posts = []
@@ -619,7 +636,7 @@ def main():
     state["last_wp_update"] = now.isoformat()
     save_state(state)
     log(f"完了。現在地='{state['current_location']}' 反映エントリ累計 {len(state['entries'])}")
-    ping_search_console(cfg, post)
+    ping_search_console(cfg, state, post)
 
 
 if __name__ == "__main__":
