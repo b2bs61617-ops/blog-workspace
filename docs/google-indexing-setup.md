@@ -1,6 +1,17 @@
 # Google Indexing APIのセットアップ手順
 
-**現在の状態(2026-07-19)**: 稼働中。サービスアカウント`chomoand-477@model-gearing-465707-d6.iam.gserviceaccount.com`を3サイトのSearch Consoleオーナーとして登録済み。経緯は[docs/history.md](history.md)参照。新しいPCでセットアップする場合、鍵ファイル(`google-indexing-key.json`)を安全な経路でコピーして`.env`にパスを設定するだけでよい(1〜2章のCloud Console/Search Console作業を毎回やり直す必要はない)。
+**現在の状態(2026-08-30更新)**: 稼働中。プロジェクト`model-gearing-465707-d6`のサービスアカウントを3サイトのSearch Consoleオーナーとして登録済み(`chomoand-477@...`および`chomoand-466@...`。どちらの鍵でもIndexing APIは通る)。経緯は[docs/history.md](history.md)参照。
+
+**鍵ファイルの置き場所**: `G:\マイドライブ\ブログ関係\google-indexing-key.json`(Google Drive。全PC共通パス)。`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`をこの絶対パスにする。`.gitignore`済み。
+
+**鍵を新規発行する手順**(既存の鍵JSONを紛失した場合。Console からは既存鍵の秘密鍵を再DLできない):
+1. [サービスアカウント一覧](https://console.cloud.google.com/iam-admin/serviceaccounts?project=model-gearing-465707-d6)で`chomoand-4xx@model-gearing-465707-d6.iam.gserviceaccount.com`を開く
+2. 「キー」タブ →「鍵を追加」→「新しい鍵を作成」→ JSON → 作成(自動DL)
+3. `google-indexing-key.json`にリネームして上記 Drive パスへ配置
+4. `python tools/google_indexing.py https://chomoand.com/` で`urlNotificationMetadata`が返れば疎通OK
+5. 古いキーIDは、他PCが使っている可能性があるので全PC移行が済むまで削除しない
+
+新しいPCでのセットアップは、この鍵ファイルが Drive にあるので`.env`のパスを合わせるだけでよい(1〜2章のCloud Console/Search Console作業を毎回やり直す必要はない)。
 
 記事公開時に投稿URLをGoogleへ即時通知し、インデックス登録をリクエストする仕組み(`tools/google_indexing.py`)の初回セットアップ手順。[publishスキル](../.claude/skills/publish/SKILL.md)から呼ばれる。
 
