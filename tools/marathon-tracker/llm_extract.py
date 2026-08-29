@@ -96,12 +96,49 @@ def _try_claude(prompt, timeout=300):
     return _extract_json(r.stdout)
 
 
-def _try_gemini(prompt, model, api_key):
-    from google import genai
+GEMINI_FALLBACK_MODELS = ["gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.1-flash-lite"]
 
-    client = genai.Client(api_key=api_key)
-    resp = client.models.generate_content(model=model, contents=prompt)
-    return _extract_json(resp.text)
+
+def _try_gemini(prompt, model, api_key):
+    import time
+
+    from google import genai
+    from google.genai import types
+
+    # 1コールが詰まって10分枠を食い潰さないよう HTTP タイムアウトを明示(ミリ秒)。
+    client = genai.Client(
+        api_key=api_key,
+        http_options=types.HttpOptions(timeout=40000),
+    )
+
+    # config のモデルを先頭に、既知の代替モデルを続ける。
+    #  - 混雑(503/504/429 など)      → 少し待って同モデル再試行、ダメなら次モデル
+    #  - モデル無効(404/NOT_FOUND 等) → 即座に次モデルへ
+    #  - それ以外(認証エラー等)        → 即 raise
+    models = [model] + [m for m in GEMINI_FALLBACK_MODELS if m != model]
+
+    last_err = None
+    for mi, model_name in enumerate(models):
+        for attempt in range(2):
+            try:
+                resp = client.models.generate_content(model=model_name, contents=prompt)
+                return _extract_json(resp.text)
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                msg = str(e)
+                if any(s in msg for s in ("404", "NOT_FOUND", "not available", "not found")):
+                    break  # このモデルは使えない。次モデルへ
+                transient = any(s in msg for s in (
+                    "503", "504", "429", "500", "UNAVAILABLE", "DEADLINE_EXCEEDED",
+                    "RESOURCE_EXHAUSTED", "overloaded", "high demand", "timed out", "timeout",
+                ))
+                if not transient:
+                    raise
+                if attempt == 0:
+                    time.sleep(5)
+        if mi < len(models) - 1:
+            time.sleep(2)
+    raise RuntimeError(f"Gemini 全モデルで失敗(リトライ尽きた): {last_err}")
 
 
 def _normalize(d):

@@ -33,5 +33,5 @@
   "map_zoom": 15,
   "course_context": "スタート候補は等々力(川崎市)・味の素スタジアム(調布)・日産スタジアム(横浜)ほか。多摩川沿いを北上→生田スタジオで仮眠→世田谷・都心南部を経て両国国技館へ、が予想ルート。ゴールは両国国技館、8/30 20時台後半が有力。距離は100〜105km予想。",
   "llm_primary": "gemini",
-  "llm_model_gemini": "gemini-flash-latest"
+  "llm_model_gemini": "gemini-3.5-flash"
 }
