@@ -18,8 +18,11 @@ $taskName = "MarathonTracker_HoshinoMari"
 $action  = New-ScheduledTaskAction -Execute "cmd.exe" `
     -Argument "/c `"$bat`"" -WorkingDirectory $repo
 
-# Every 10 minutes, starting now, for 2 days.
-$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
+# Every 10 minutes, for 2 days. Anchor the cadence to the most recent
+# :00/:10/:20... boundary so runs land on clean 10-minute marks.
+$now = Get-Date
+$anchor = $now.Date.AddHours($now.Hour).AddMinutes([math]::Floor($now.Minute / 10) * 10)
+$trigger = New-ScheduledTaskTrigger -Once -At $anchor `
     -RepetitionInterval (New-TimeSpan -Minutes 10) `
     -RepetitionDuration (New-TimeSpan -Days 2)
 

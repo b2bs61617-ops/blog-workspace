@@ -235,6 +235,20 @@ def main():
         log("位置情報なしと判定。記事は触らず終了。")
         return
 
+    # 現在地が前回と実質同じ(末尾の「(走行中)」等を除いて一致)なら、
+    # 移動なしとみなして記事は更新しない(トモキ指示 2026-08-29)。
+    def _norm_loc(s):
+        s = re.sub(r"[（(][^（()）]*[）)]\s*$", "", (s or "").strip()).strip()
+        return re.sub(r"\s+", "", s)
+
+    prev_loc = state.get("current_location", "")
+    new_loc = result.get("current_location", "") or prev_loc
+    if _norm_loc(new_loc) and _norm_loc(new_loc) == _norm_loc(prev_loc):
+        state["seen_ids"] = (list(seen | {p["id"] for p in posts}))[-MAX_SEEN:]
+        save_state(state)
+        log(f"現在地が前回と同じ('{prev_loc}')。移動なしとみなし記事は更新しない。")
+        return
+
     if throttled and not args.dry_run:
         log(f"前回更新から {min_gap} 分未満。今回はスキップ(次回反映)。")
         return
