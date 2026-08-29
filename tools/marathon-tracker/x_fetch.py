@@ -117,6 +117,64 @@ async def _read_tweet_links(tweet_url, timeout=30000):
         return cands
 
 
+# --- 追跡班アカウント (@24tv24tv 等) が投げる地図ピン投稿から座標を拾う ---
+_Q_RE = re.compile(r"[?&]q=(-?\d{1,2}\.\d+)(?:,|%2c)(-?\d{2,3}\.\d+)", re.I)
+_LL_RE = re.compile(r"[?&]ll=(-?\d{1,2}\.\d+)(?:,|%2c)(-?\d{2,3}\.\d+)", re.I)
+_ATLL_RE = re.compile(r"/@(-?\d{1,2}\.\d+),(-?\d{2,3}\.\d+)")
+_PIN_LAT = (34.9, 36.5)      # 関東ざっくり
+_PIN_LNG = (138.7, 140.5)
+
+
+def _coords_from_str(s):
+    if not s:
+        return None
+    for rx in (_Q_RE, _LL_RE, _ATLL_RE):
+        m = rx.search(s)
+        if not m:
+            continue
+        try:
+            la, ln = float(m.group(1)), float(m.group(2))
+        except ValueError:
+            continue
+        if _PIN_LAT[0] <= la <= _PIN_LAT[1] and _PIN_LNG[0] <= ln <= _PIN_LNG[1]:
+            return (la, ln)
+    return None
+
+
+def latest_pin_from_posts(posts, accounts, expand_limit=3):
+    """すでに取得済みの posts から、指定アカウントの最新の地図ピン投稿を1件返す。
+
+    追跡班(@24tv24tv 等)は `maps.google.com/maps?q=<lat>,<lng>` 形式のURLを
+    数分おきに投げる。表示URL/本文/`t.co` 展開のどれかから座標を取る。
+    戻り値: {"lat","lng","date","text","account","tweet_id"} / 無ければ None。
+    """
+    accs = {str(a).lstrip("@").lower() for a in accounts}
+    cand = [p for p in posts
+            if str(p.get("source", "")).lstrip("@").lower() in accs]
+    cand.sort(key=lambda x: (_parse_dt(x.get("date", ""))
+                             or datetime.min.replace(tzinfo=timezone.utc)),
+              reverse=True)
+    expands = 0
+    for p in cand:
+        for s in (p.get("maps_url"), p.get("text")):
+            c = _coords_from_str((s or "").replace(" ", ""))
+            if c:
+                return {"lat": c[0], "lng": c[1], "date": p.get("date", ""),
+                        "text": p.get("text", ""),
+                        "account": "@" + str(p.get("source", "")).lstrip("@"),
+                        "tweet_id": p.get("id", "")}
+        tco = p.get("tco_url")
+        if tco and expands < expand_limit:
+            expands += 1
+            c = _coords_from_str(_expand(tco))
+            if c:
+                return {"lat": c[0], "lng": c[1], "date": p.get("date", ""),
+                        "text": p.get("text", ""),
+                        "account": "@" + str(p.get("source", "")).lstrip("@"),
+                        "tweet_id": p.get("id", "")}
+    return None
+
+
 def map_url_from_tweet(tweet_url):
     """指定した1ツイートを開き、そこに貼られた Google マップURLを返す。無ければ ""。
 

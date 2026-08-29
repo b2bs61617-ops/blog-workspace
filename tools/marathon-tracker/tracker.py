@@ -200,6 +200,40 @@ def bearing_note(prev_pt, cur_pt):
     return {"dist_km": dist_km, "bearing": brg, "compass": compass}
 
 
+def _point_age_min(p, now):
+    """その座標ポストが「何分前の位置情報か」の目安。小さいほど新しい。"""
+    src = p.get("source")
+    if src == "share_map":
+        # 内部RPCの生ピンが取れているときだけ信用する。URL座標フォールバックは
+        # 位置共有が止まって古い座標を読んでいる可能性が高いので大きな値にする。
+        if not p.get("_exact"):
+            return 999.0
+        m = re.search(r"(\d+)\s*分前", (p.get("_fresh") or p.get("text") or ""))
+        return float(m.group(1)) if m else 0.0
+    if src == "tv_pin":
+        dt = parse_dt(p.get("_pin_dt") or p.get("date") or "")
+        return (now - dt).total_seconds() / 60 if dt else 999.0
+    return 999.0
+
+
+def pick_primary_point(posts, now):
+    """@YSB_DANCHO の位置共有(share_map)と追跡班のピン(tv_pin)のうち、
+    より新しい方を「今の座標」として採用する。差が3分以内なら精度の高い
+    share_map を優先。どちらも無ければ None。"""
+    cands = [p for p in posts
+             if p.get("source") in ("share_map", "tv_pin") and p.get("_latlng")]
+    if not cands:
+        return None
+    if len(cands) == 1:
+        return cands[0]
+    scored = sorted(cands, key=lambda p: _point_age_min(p, now))
+    best, second = scored[0], scored[1]
+    if best.get("source") == "tv_pin" and second.get("source") == "share_map":
+        if _point_age_min(second, now) - _point_age_min(best, now) <= 3:
+            return second
+    return best
+
+
 def is_noise(text, patterns):
     for p in patterns:
         try:
@@ -407,6 +441,36 @@ def main():
         except Exception as e:  # noqa: BLE001
             log(f"[warn] 位置共有マップの読み取り失敗: {e}")
 
+    # --- ソース: 追跡班アカウントの地図ピン投稿 (@24tv24tv 等。q=lat,lng) ---
+    # @YSB_DANCHO の位置共有が止まっても、こちらが生きていれば座標を拾える。
+    pin_accounts = [a.lstrip("@").strip() for a in cfg.get("pin_accounts", ["24tv24tv"]) if a.strip()]
+    if x_fetch is not None and pin_accounts:
+        try:
+            tp = x_fetch.latest_pin_from_posts(posts, pin_accounts)
+        except Exception as e:  # noqa: BLE001
+            tp = None
+            log(f"[warn] 地図ピン投稿の解析に失敗: {e}")
+        if tp:
+            la, ln = tp["lat"], tp["lng"]
+            addr = ""
+            try:
+                addr = share_map_fetch._reverse_geocode(la, ln)
+            except Exception:  # noqa: BLE001
+                pass
+            pin_dt = parse_dt(tp.get("date", ""))
+            age_min = (now - pin_dt).total_seconds() / 60 if pin_dt else 999
+            body = (f"追跡班({tp['account']})の地図ピン: "
+                    f"{(addr + ' 付近') if addr else '座標'}（{la:.5f},{ln:.5f}）")
+            posts.append({
+                "id": f"tvpin:{tp.get('tweet_id') or f'{now:%Y%m%d%H%M}'}",
+                "date": tp.get("date", "") or now.isoformat(),
+                "author": tp["account"], "source": "tv_pin", "url": "",
+                "text": body, "_latlng": [round(la, 7), round(ln, 7)],
+                "_addr": addr, "_exact": True, "_pin_dt": tp.get("date", ""),
+            })
+            log(f"地図ピン投稿 {tp['account']} {age_min:.0f}分前 -> "
+                f"{addr or '(住所不明)'} ({la:.5f},{ln:.5f})")
+
     log(f"取得合計 {len(posts)} 件")
     if not posts:
         log("どのソースからも取得できなかった(配信終了/ログイン切れ/一時的な失敗)。終了。")
@@ -448,10 +512,14 @@ def main():
 
     new.sort(key=lambda x: (parse_dt(x.get("date", "")) or now))
 
-    # 進行方向の根拠: 前回観測地点→今回の位置共有座標の移動ベクトルを機械計算して
+    # 進行方向の根拠: 前回観測地点→今回の座標の移動ベクトルを機械計算して
     # 合成ポスト (@heading) として LLM に渡す。
-    cur_pt = next((p.get("_latlng") for p in posts
-                   if p.get("source") == "share_map" and p.get("_latlng")), None)
+    # 座標は「@YSB_DANCHO の位置共有」と「追跡班のピン」のうち新しい方を採用。
+    primary_pt_post = pick_primary_point(posts, now)
+    cur_pt = primary_pt_post.get("_latlng") if primary_pt_post else None
+    if primary_pt_post:
+        log(f"採用した座標ソース: {primary_pt_post.get('source')} "
+            f"({_point_age_min(primary_pt_post, now):.0f}分前相当)")
     prev_pt = state.get("last_latlng")
     if prev_pt and cur_pt:
         bn = bearing_note(prev_pt, cur_pt)
@@ -562,16 +630,14 @@ def main():
     state["entries"].sort(key=_entry_key, reverse=True)
     state["entries"] = state["entries"][:MAX_ENTRIES]
 
-    # share_map の座標があれば、最新エントリのピンをその座標で上書きし、住所も添える
+    # 採用した座標(位置共有 or 追跡班ピンの新しい方)で最新エントリのピンと住所を上書き
     # (LLM が地名から地図クエリを作るより正確)
-    sm_post = next((p for p in posts
-                    if p.get("source") == "share_map" and p.get("_latlng")), None)
-    if sm_post and state["entries"]:
-        sm_pt = sm_post["_latlng"]
-        state["entries"][0]["map_query"] = f"{sm_pt[0]},{sm_pt[1]}"
-        if sm_post.get("_addr"):
-            state["entries"][0]["addr"] = sm_post["_addr"]
-        state["last_latlng"] = [sm_pt[0], sm_pt[1]]
+    if primary_pt_post and state["entries"]:
+        pt = primary_pt_post["_latlng"]
+        state["entries"][0]["map_query"] = f"{pt[0]},{pt[1]}"
+        if primary_pt_post.get("_addr"):
+            state["entries"][0]["addr"] = primary_pt_post["_addr"]
+        state["last_latlng"] = [pt[0], pt[1]]
 
     if result.get("current_location"):
         state["current_location"] = result["current_location"]
