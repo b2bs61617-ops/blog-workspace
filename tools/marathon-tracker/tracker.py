@@ -213,7 +213,7 @@ def main():
         bpath = au.backup(cfg, post["content"])
         log(f"旧本文を退避: {bpath}")
         status = au.put_post(cfg, new_content)
-        state["last_wp_update"] = now.isoformat()
+        # --force はレイアウト反映なので連続更新スロットルの起点(last_wp_update)は触らない
         save_state(state)
         log(f"--force: 記事を今の内容で描き直した(status: {status})")
         ping_search_console(cfg, post)

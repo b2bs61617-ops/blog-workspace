@@ -28,7 +28,7 @@
   "active_from": "2026-08-29T18:00:00+09:00",
   "active_until": "2026-08-30T21:00:00+09:00",
 
-  "min_minutes_between_wp_updates": 8,
+  "min_minutes_between_wp_updates": 5,
   "first_run_lookback_minutes": 15,
   "max_new_entries_per_update": 1,
 

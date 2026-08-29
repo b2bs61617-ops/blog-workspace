@@ -11,5 +11,16 @@ if not exist "%PY%" set "PY=%LOCALAPPDATA%\Programs\Python\Python313\python.exe"
 if not exist "%PY%" set "PY=python"
 
 cd /d "%~dp0..\.."
-"%PY%" tools\marathon-tracker\tracker.py %*
+
+rem Keep a daily log so scheduled runs (whose console is discarded) are debuggable.
+if not exist "tools\marathon-tracker\logs" mkdir "tools\marathon-tracker\logs"
+for /f "tokens=1-3 delims=/-. " %%a in ("%date%") do set "TODAY=%%a%%b%%c"
+set "LOGF=tools\marathon-tracker\logs\run_%TODAY%.log"
+set "TMPF=%TEMP%\mtrun_%RANDOM%.txt"
+
+"%PY%" tools\marathon-tracker\tracker.py %* > "%TMPF%" 2>&1
+type "%TMPF%"
+>> "%LOGF%" echo ---------- %date% %time% ----------
+type "%TMPF%" >> "%LOGF%"
+del "%TMPF%" 2>nul
 endlocal
