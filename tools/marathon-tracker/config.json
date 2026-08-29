@@ -44,9 +44,9 @@
   "first_run_lookback_minutes": 15,
   "max_new_entries_per_update": 1,
 
-  "_force_update_note": "同じエリアラベルが続いて記事更新がスキップされ続けても、前回更新から force_update_after_minutes 分以上経過 かつ 前回更新地点から force_update_min_move_km km 以上GPS移動していれば1件強制反映する。",
-  "force_update_after_minutes": 25,
-  "force_update_min_move_km": 0.6,
+  "_force_update_note": "同じエリアラベルが続いて記事更新がスキップされ続けても、前回更新から force_update_after_minutes 分以上経過 かつ 前回更新地点から force_update_min_move_km km 以上GPS移動していれば1件強制反映する。実質『GPSが動いていれば毎サイクル1件足して保存』にするため閾値を下げてある(2026-08-30 トモキ指示)。",
+  "force_update_after_minutes": 9,
+  "force_update_min_move_km": 0.25,
 
   "noise_patterns": [
     "プレゼント企画", "フォロー&", "フォロー＆", "抽選で", "当選者", "RTキャンペーン",
