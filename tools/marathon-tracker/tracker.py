@@ -355,6 +355,7 @@ def main():
             last_location=state.get("current_location", ""),
             primary=cfg.get("llm_primary", "claude"),
             gemini_model=cfg.get("llm_model_gemini", "gemini-flash-latest"),
+            recent_entries=state.get("entries", [])[:8],
         )
     except Exception as e:  # noqa: BLE001
         log(f"[ERROR] LLM抽出に失敗: {e}  (既読にせず次回リトライ)")

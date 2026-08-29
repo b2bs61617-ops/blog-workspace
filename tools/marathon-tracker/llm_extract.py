@@ -35,15 +35,26 @@ def _load_env():
     return env
 
 
-def _build_prompt(runner, course_context, tweets, last_location):
+def _build_prompt(runner, course_context, tweets, last_location, recent_entries=None):
     lines = []
     for t in tweets:
         lines.append(f"- [{t.get('date','')}] (@{t.get('source','').lstrip('@')}) {t.get('text','')}")
     tweets_block = "\n".join(lines)
+
+    route_block = "(まだ無し)"
+    if recent_entries:
+        rl = []
+        for e in recent_entries[:8]:
+            rl.append(f"- {e.get('time','')} {e.get('text','')}")
+        route_block = "\n".join(rl)
+
     return f"""あなたは24時間テレビ チャリティーマラソンの「現在地」速報を書く編集者です。
 ランナー: {runner}
 予想コースの前提: {course_context}
 現在、記事に載っている最新の現在地: {last_location or "(まだ無し)"}
+
+これまでの経路(記事に載せている時系列。新しい順):
+{route_block}
 
 以下は監視中の新着メッセージです(各行の (@xxx) が出どころ)。ここから「ランナーが今どこにいるか/どこを通過したか/どこで休憩したか」に関する事実だけを抜き出してください。
 
@@ -63,9 +74,17 @@ def _build_prompt(runner, course_context, tweets, last_location):
 - 個人の家・特定できる一般人の情報は書かない。ランナーの位置と公共の施設・地名のみ。
 - 各エントリの time は「M/D HH:MM」形式。ポストの投稿時刻(JST)から推定。分からなければ現在時刻でよい。
 - map_query は Googleマップで検索して正しい場所が出る日本語の地名/施設名(例「日産 駒沢店」「二子玉川駅」「府中市 郷土の森公園」)。エリアだけで施設が無ければ市区名+ランドマーク。地図が付けられないなら空文字。
-- current_location は capbox に出す短いラベル。「世田谷区・駒沢エリア(休憩中)」のように 場所 + (走行中/休憩中/仮眠中 など) 。
+- current_location は capbox に出す短いラベル。「世田谷区・駒沢エリア(走行中)」のように 場所 + (走行中/休憩中/仮眠中 など) 。
 - entries は原則1件だけ。今回の「新しい動き」を1行にまとめる。似た内容を2件に分けない。
 - 新しい位置情報が無ければ update=false。
+
+【entries の text の書き方(重要)】
+- 情報源を書かない。「GPS情報によると」「視聴者コメントによると」「配信によると」「Xの情報では」「〜との情報」等の出どころ表現は本文に入れない。事実として淡々と書く(不確実なときだけ「〜とみられます」程度でぼかす)。
+- 1文目: 現在地の住所・エリア(市区町村＋町丁目や、近くの駅・交差点・橋・幹線道路名)。
+- 2文目: 「これまでの経路」と「予想コースの前提」を踏まえて、いま **どの方面へ向かっているか**(例:「多摩川方面へ北上中」「中原街道を東進し都心方向へ」)。
+- ルートは基本的に **大通り・幹線道路沿い** を走る。進行方向は、現在地から次の予想通過点へ向かう幹線道路(街道・国道・県道・◯◯通り)に沿って推測する。細い路地や不自然な近道は想定しない。
+- 休憩・仮眠・再スタートなど状態変化があればそれも1文で。
+- 全体で2〜3文、120字前後。
 
 【新着ポスト】
 {tweets_block}
@@ -171,8 +190,8 @@ def _normalize(d):
 
 
 def extract(runner, course_context, tweets, last_location="", primary="claude",
-            gemini_model="gemini-flash-latest"):
-    prompt = _build_prompt(runner, course_context, tweets, last_location)
+            gemini_model="gemini-flash-latest", recent_entries=None):
+    prompt = _build_prompt(runner, course_context, tweets, last_location, recent_entries)
     env = _load_env()
     gkey = env.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY")
 
