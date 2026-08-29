@@ -253,10 +253,14 @@ def main():
         log(f"前回更新から {min_gap} 分未満。今回はスキップ(次回反映)。")
         return
 
-    # エントリを蓄積(新しい順)。time+text で重複排除
+    # 1回の更新で足すエントリ数の上限(既定1)。冗長な連投を防ぐ。
+    cap = int(cfg.get("max_new_entries_per_update", 1))
+    fresh = result["entries"][:cap] if cap > 0 else result["entries"]
+
+    # エントリを蓄積。time+text で重複排除
     existing_keys = {(e.get("time", ""), e.get("text", "")) for e in state["entries"]}
     added = 0
-    for e in reversed(result["entries"]):  # LLM出力は新しい順想定。古い方から prepend
+    for e in reversed(fresh):  # LLM出力は新しい順想定。古い方から prepend
         key = (e.get("time", ""), e.get("text", ""))
         if key in existing_keys:
             continue
@@ -266,6 +270,21 @@ def main():
         })
         existing_keys.add(key)
         added += 1
+
+    if not added:
+        state["seen_ids"] = (list(seen | {p["id"] for p in posts}))[-MAX_SEEN:]
+        save_state(state)
+        log("新しい追記エントリなし(全て既出)。記事は更新しない。")
+        return
+
+    # 時系列で新しい順に並べ替え("M/D HH:MM" をパース、失敗分は末尾)
+    def _entry_key(e):
+        m = re.match(r"\s*(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{2})", e.get("time", ""))
+        if not m:
+            return (0, 0, 0, 0)
+        mo, d, h, mi = (int(x) for x in m.groups())
+        return (mo, d, h, mi)
+    state["entries"].sort(key=_entry_key, reverse=True)
     state["entries"] = state["entries"][:MAX_ENTRIES]
     if result.get("current_location"):
         state["current_location"] = result["current_location"]

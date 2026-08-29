@@ -17,8 +17,8 @@
   "screen_map_enabled": true,
   "screen_map_region": null,
 
-  "x_enabled": false,
-  "x_accounts": [],
+  "x_enabled": true,
+  "x_accounts": ["24tv24tv", "yes0724day"],
   "x_search_fallback": "星野真里 マラソン 現在地",
   "max_tweets_per_account": 30,
 
@@ -27,6 +27,7 @@
 
   "min_minutes_between_wp_updates": 8,
   "first_run_lookback_minutes": 15,
+  "max_new_entries_per_update": 1,
 
   "noise_patterns": [
     "プレゼント企画", "フォロー&", "フォロー＆", "抽選で", "当選者", "RTキャンペーン",

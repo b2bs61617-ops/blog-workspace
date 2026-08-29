@@ -6,7 +6,7 @@ mss>=9.0                 # デスクトップのGoogleマップ画面スクシ�
 Pillow>=10.0             # スクショの縮小(screen_map_enabled 時)
 requests>=2.30           # 予備
 
-# --- X(ツイート)ソースを併用する場合のみ ---
-#   pip install playwright && python -m playwright install chrome
-#   その後 config.json の "x_enabled": true にして login.py を一度実行
+# --- X(ツイート)ソース(config は既に x_enabled: true)---
+#   pip install playwright && python -m playwright install chromium
+#   その後 login.py を一度実行して X にログイン(未ログインなら「X取得 0 件」で素通り)
 # playwright>=1.40

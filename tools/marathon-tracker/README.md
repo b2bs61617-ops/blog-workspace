@@ -68,14 +68,22 @@ llm_extract に渡す。「判別不可」と返ったら何もしない。最�
 `logs/last_map_shot.png` に残る。特定ウィンドウだけ撮りたいときは config の
 `screen_map_region` に `[left, top, width, height]` を入れる。
 
-### Xの沿道情報も併用したい場合(任意)
+### Xの沿道情報も併用する(config は既に `x_enabled: true`)
+
+`config.json` に監視アカウント(`24tv24tv` / `yes0724day`)は設定済み。あとは**Xに一度ログイン**するだけ:
 
 ```
 pip install playwright
-python -m playwright install chrome
-python tools\marathon-tracker\login.py      # ブラウザでXにログイン
+python -m playwright install chromium
+$env:PYTHONUTF8=1
+python tools\marathon-tracker\login.py      # Chromium が開くので X にログイン→ターミナルで Enter
 ```
-その後 `config.json` の `"x_enabled": true`、必要なら `"x_accounts": ["実況アカウント"]` を入れる。
+
+- ログイン状態は `~/marathon_tracker_profile` に保存され、以降 tracker.py がヘッドレスで再利用する。
+- ログイン前は「X取得 0 件」で素通り(YouTube+地図で動作)。ログイン後に自動で沿道情報も混ざる。
+- 既定は playwright 同梱 chromium を使う。Google Chrome を使いたい場合は環境変数
+  `MARATHON_PW_CHANNEL=chrome`(または `msedge`)。
+- 監視アカウントを変えるときは `config.json` の `x_accounts`(先頭 @ なし・複数可)。
 
 ## config.json のキー
 

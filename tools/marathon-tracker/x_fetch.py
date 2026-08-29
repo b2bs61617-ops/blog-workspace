@@ -5,6 +5,7 @@
 - リツイート/固定ポストは除外。取得できたものを新しい順で返す。
 """
 import asyncio
+import os
 import re
 import urllib.parse
 from datetime import datetime, timezone
@@ -102,9 +103,16 @@ async def fetch(accounts, search_fallback=None, limit=30, headless=True):
     """accounts: ["screen_name", ...]  戻り値: 新しい順のツイート list。"""
     out = []
     async with async_playwright() as p:
+        # channel は環境変数で上書き可(既定: playwright 同梱 chromium)。
+        # 同梱 chromium が無い環境向けに "chrome"/"msedge" を指定できる。
+        _kw = {}
+        _ch = os.environ.get("MARATHON_PW_CHANNEL", "").strip()
+        if _ch:
+            _kw["channel"] = _ch
         context = await p.chromium.launch_persistent_context(
-            PROFILE_DIR, headless=headless, channel="chrome", slow_mo=20,
+            PROFILE_DIR, headless=headless, slow_mo=20,
             args=["--disable-blink-features=AutomationControlled"],
+            **_kw,
         )
         page = context.pages[0] if context.pages else await context.new_page()
         try:
