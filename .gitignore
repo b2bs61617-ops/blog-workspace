@@ -39,6 +39,9 @@ tools/marathon-tracker/state.json
 tools/marathon-tracker/backups/
 tools/marathon-tracker/logs/
 tools/marathon-tracker/run.log
+tools/marathon-tracker/tracker.lock
+tools/marathon-tracker/mapshot/*
+!tools/marathon-tracker/mapshot/README.md
 
 # 記事本文用に公式YouTube動画から手動で切り出したフレーム画像(著作権のある動画のフレームのためリポジトリに含めない。ローカル・WordPressメディアライブラリには残す方針)
 images/*_video_frame.jpg

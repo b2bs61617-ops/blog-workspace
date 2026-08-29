@@ -95,6 +95,92 @@ def _ask_gemini(png_bytes, api_key, model="gemini-3.5-flash"):
     raise RuntimeError(f"Gemini Vision 失敗: {last}")
 
 
+_IMG_EXT = (".png", ".jpg", ".jpeg", ".webp")
+
+FILE_VISION_PROMPT = """これはトモキが自分のブラウザで開いた Google マップ(24時間テレビ マラソンの
+追跡者 @YSB_DANCHO のリアルタイム位置共有、または現在地に合わせた地図)のスクリーンショットです。
+
+地図部分を見て、次を日本語で簡潔に answer:
+- 共有ピン/中心付近はどの都道府県・市区町村・エリアか
+- 中心付近に見える地名・駅名・道路名・橋・河川・ランドマーク・ピンの吹き出し(読めるもの)
+- ルートやピンが複数あるなら、いちばん新しそうな(先頭の)位置
+
+【ルール】
+- 地図が映っていない/文字が小さすぎて読めない/どこか判別できない場合は、先頭に「判別不可」とだけ書く。
+- 推測で市区町村名をでっち上げない。はっきり読み取れた文字だけを根拠にする。
+- ピンやアイコンのラベルが不鮮明なら「(ラベル不鮮明)」と書く。
+- 5行以内。"""
+
+
+def fetch_file(path_or_dir, max_age_minutes=20, model="gemini-3.5-flash"):
+    """トモキが置いた地図スクショ画像(フォルダなら最新の1枚)を Vision で読む。
+
+    画像の更新時刻が max_age_minutes より古ければ「古い情報」として使わない。
+    戻り値は fetch() と同じ post dict の list。
+    """
+    env = _load_env()
+    key = env.get("GEMINI_API_KEY")
+    if not key:
+        return []
+    p = Path(path_or_dir)
+    if p.is_dir():
+        imgs = [f for f in p.iterdir()
+                if f.is_file() and f.suffix.lower() in _IMG_EXT
+                and not f.name.startswith(".")]
+        if not imgs:
+            return []
+        target = max(imgs, key=lambda f: f.stat().st_mtime)
+    elif p.is_file():
+        target = p
+    else:
+        return []
+
+    age_min = (datetime.now().timestamp() - target.stat().st_mtime) / 60
+    if age_min > max_age_minutes:
+        return []  # 古いスクショは使わない(前の場所のまま更新し続けるのを防ぐ)
+
+    try:
+        png = _downscale_png(target.read_bytes())
+    except Exception:
+        return []
+    try:
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=45000))
+        text = ""
+        for m in [model, "gemini-3.6-flash", "gemini-3.1-flash-lite"]:
+            try:
+                resp = client.models.generate_content(
+                    model=m,
+                    contents=[types.Part.from_bytes(data=png, mime_type="image/png"),
+                              FILE_VISION_PROMPT],
+                )
+                text = (resp.text or "").strip()
+                break
+            except Exception as e:  # noqa: BLE001
+                if not any(s in str(e) for s in ("404", "NOT_FOUND", "not available",
+                                                 "503", "504", "429", "UNAVAILABLE",
+                                                 "DEADLINE_EXCEEDED", "overloaded")):
+                    raise
+    except Exception:
+        return []
+    if not text or text.splitlines()[0].strip().startswith("判別不可"):
+        return []
+
+    now = datetime.now(JST)
+    return [{
+        "id": f"mapshot:{int(target.stat().st_mtime)}",  # 画像が変わるまで同一ID
+        "date": now.isoformat(),
+        "author": "mapshot",
+        "text": "トモキが貼った位置共有マップのスクショより: " + " / ".join(
+            ln.strip() for ln in text.splitlines() if ln.strip()
+        ),
+        "source": "mapshot",
+        "url": "",
+    }]
+
+
 def fetch(region=None, save_shot_to=None, model="gemini-3.5-flash"):
     env = _load_env()
     key = env.get("GEMINI_API_KEY")

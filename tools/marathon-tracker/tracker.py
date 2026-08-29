@@ -254,6 +254,24 @@ def main():
         except Exception as e:  # noqa: BLE001
             log(f"[warn] Googleマップ画面の読み取り失敗: {e}")
 
+    # --- ソース: トモキがフォルダに置いた地図スクショを Vision で読む ---
+    if cfg.get("mapshot_enabled", True):
+        try:
+            mdir = cfg.get("mapshot_dir") or str(HERE / "mapshot")
+            mp = Path(mdir)
+            if not mp.is_absolute():
+                mp = HERE.parents[1] / mdir  # リポジトリ相対
+            shots = screen_map_fetch.fetch_file(
+                str(mp),
+                max_age_minutes=int(cfg.get("mapshot_max_age_minutes", 20)),
+                model=cfg.get("llm_model_gemini", "gemini-3.5-flash"),
+            )
+            log(f"貼付け地図スクショ 読み取り {len(shots)} 件"
+                + (f" -> {shots[0]['text'][:70]}" if shots else " (無し/古い/判別不可)"))
+            posts.extend(shots)
+        except Exception as e:  # noqa: BLE001
+            log(f"[warn] 貼付け地図スクショの読み取り失敗: {e}")
+
     # --- ソース(実験): 追跡者の Google マップ位置共有リンク ---
     if cfg.get("share_map_enabled", False) and cfg.get("share_map_url"):
         try:

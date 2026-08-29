@@ -20,6 +20,10 @@
   "screen_map_enabled": true,
   "screen_map_region": null,
 
+  "mapshot_enabled": true,
+  "mapshot_dir": "tools/marathon-tracker/mapshot",
+  "mapshot_max_age_minutes": 20,
+
   "share_map_enabled": false,
   "share_map_url": "https://maps.app.goo.gl/LNRGLE28rtg6dENf6",
   "_share_map_note": "@YSB_DANCHO の位置共有リンク。headlessだとGoogleが座標を隠すため既定off。取れた時だけ補助的に使う。",
