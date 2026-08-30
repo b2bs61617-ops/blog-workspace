@@ -2,7 +2,7 @@
 
 <!-- wp:paragraph -->
 <p>KO1KEYZ's KEITO (Keito Ono) posted a close-up selfie clip to the group's official TikTok (@ko1keyzofficial) on August 29, 2026, and the white shirt he wears in it has fans asking "what brand is that?" and calling the look "cute, like a school uniform."<br>
-The short answer: the shirt appears to be <strong>Miu Miu's logo-embroidered cotton poplin shirt</strong>, with a reference price of around <strong><span style="font-size:1.25em;text-decoration:underline;">220,000–230,000 yen (tax included)</span></strong>.<br>
+The short answer: the shirt appears to be <strong>Miu Miu's logo-embroidered cotton poplin shirt</strong>, with a reference price of around <strong><span style="font-size:1.25em;text-decoration:underline;text-decoration-color:#e0812f;text-decoration-thickness:3px;text-underline-offset:3px;">220,000–230,000 yen (tax included)</span></strong>.<br>
 This article covers the video the shirt appears in, the details of the shirt and the Miu Miu brand, and the price and where to buy it.</p>
 <!-- /wp:paragraph -->
 
@@ -100,7 +100,7 @@ It's often worn by K-pop idols and actors, and it's popular as "a subtle logo th
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Miu Miu's logo-embroidered cotton poplin shirt has a reference price of around <strong><span style="font-size:1.25em;text-decoration:underline;">220,000–230,000 yen (tax included)</span></strong> at official and authorized retailers.<br>
+<p>Miu Miu's logo-embroidered cotton poplin shirt has a reference price of around <strong><span style="font-size:1.25em;text-decoration:underline;text-decoration-color:#e0812f;text-decoration-thickness:3px;text-underline-offset:3px;">220,000–230,000 yen (tax included)</span></strong> at official and authorized retailers.<br>
 It varies a little by season, color and sleeve spec, but the low-200,000-yen range is the benchmark.<br>
 That's steep even for a luxury shirt, and hard to guess from the plain, single-logo look.</p>
 <!-- /wp:paragraph -->
