@@ -2,7 +2,7 @@
 
 <!-- wp:paragraph -->
 <p>KO1KEYZ의 KEITO(오노 케이토)가 2026년 8월 29일 그룹 공식 틱톡(@ko1keyzofficial)에 올린 클로즈업 셀카 영상에서 입은 흰 셔츠에 "어디 브랜드야?" "교복 같아서 귀엽다"는 반응이 쏟아지고 있습니다.<br>
-결론부터 말하면 이 셔츠는 <strong>미우미우(Miu Miu)의 로고 자수 코튼 포플린 셔츠</strong>로 보이며, 참고 가격은 <strong><span style="font-size:1.25em;color:#e0812f;text-decoration:underline;">약 22만~23만 엔대(세금 포함)</span></strong>입니다.<br>
+결론부터 말하면 이 셔츠는 <strong>미우미우(Miu Miu)의 로고 자수 코튼 포플린 셔츠</strong>로 보이며, 참고 가격은 <strong><span style="font-size:1.25em;text-decoration:underline;">약 22만~23만 엔대(세금 포함)</span></strong>입니다.<br>
 이 글에서는 KEITO가 셔츠를 입고 있던 영상의 내용, 셔츠의 특징과 미우미우라는 브랜드, 그리고 가격과 구입처까지 자세히 정리했습니다.</p>
 <!-- /wp:paragraph -->
 
@@ -100,7 +100,7 @@ K-POP 아이돌이나 배우가 착용하는 예도 많아, "은근하지만 아
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>미우미우의 로고 자수 코튼 포플린 셔츠는 공식・정규 취급점 기준 참고 가격이 <strong><span style="font-size:1.25em;color:#e0812f;text-decoration:underline;">약 22만~23만 엔대(세금 포함)</span></strong>입니다.<br>
+<p>미우미우의 로고 자수 코튼 포플린 셔츠는 공식・정규 취급점 기준 참고 가격이 <strong><span style="font-size:1.25em;text-decoration:underline;">약 22만~23만 엔대(세금 포함)</span></strong>입니다.<br>
 시즌이나 컬러, 소매 사양에 따라 다소 차이가 있지만 20만 엔대 초반이 기준입니다.<br>
 명품 셔츠 중에서도 높은 가격대라, 원포인트 로고의 심플한 겉모습으로는 상상하기 어려운 금액입니다.</p>
 <!-- /wp:paragraph -->
