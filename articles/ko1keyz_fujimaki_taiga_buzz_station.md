@@ -2,7 +2,7 @@
 
 『PRODUCE 101 JAPAN 新世界』(日プ新世界)に出演した藤牧大雅さんが、よゐこ・濱口優さんがパーソナリティを務めるラジオ番組「濱口優のBUZZ STATION」にゲスト出演することが発表されました。<br>
 出演回は<strong>2026年9月18日(金)18:00〜18:50</strong>で、渋谷の公開スタジオからの生放送です。<br>
-この記事では、放送の日時と聴き方、「BUZZ STATION」がどんな番組なのか、そして藤牧大雅さんのこれまでの経歴と直近のファンミーティング情報まで整理します。
+この記事では、放送の日時と聴き方・観覧の可否、「BUZZ STATION」がどんな番組なのか、そして藤牧大雅さんのこれまでの経歴と直近のファンミーティング情報まで整理します。
 
 <!-- wp:html -->
 <div style="border:1px solid #ddd9d3;border-radius:4px;padding:16px 18px;margin:0 0 16px 0;">
@@ -12,7 +12,7 @@
 <tr><td style="background:#f3f1ee;border:1px solid #ddd9d3;padding:8px 12px;">放送日時</td><td style="border:1px solid #ddd9d3;padding:8px 12px;">2026年9月18日(金)18:00〜18:50</td></tr>
 <tr><td style="background:#f3f1ee;border:1px solid #ddd9d3;padding:8px 12px;">放送局</td><td style="border:1px solid #ddd9d3;padding:8px 12px;">Shibuya Cross-FM(渋谷クロスFM)93.8MHz</td></tr>
 <tr><td style="background:#f3f1ee;border:1px solid #ddd9d3;padding:8px 12px;">パーソナリティ</td><td style="border:1px solid #ddd9d3;padding:8px 12px;">濱口優(よゐこ)</td></tr>
-<tr><td style="background:#f3f1ee;border:1px solid #ddd9d3;padding:8px 12px;">形式</td><td style="border:1px solid #ddd9d3;padding:8px 12px;">渋谷の公開スタジオからの生放送</td></tr>
+<tr><td style="background:#f3f1ee;border:1px solid #ddd9d3;padding:8px 12px;">形式</td><td style="border:1px solid #ddd9d3;padding:8px 12px;">渋谷・神南の公開スタジオからの生放送(観覧できる建て付け)</td></tr>
 </table>
 </div>
 <!-- /wp:html -->
@@ -41,8 +41,17 @@
 </div>
 <!-- /wp:html -->
 
-公開スタジオからの生放送のため、スタジオの様子を見に行けば、濱口優さんやゲストと同じ空間でラジオ収録の臨場感を体感できるのも特徴です。<br>
-藤牧大雅さんの出演回も同じ形式で放送されるとみられます。
+放送はすべて生放送で、収録は渋谷・神南のシダックス・カルチャービレッジ1階にある公開スタジオから行われます。<br>
+ファイヤー通り沿いの歩道からガラス越しにスタジオが見える立地で、番組は「観覧に来たリスナーが濱口優さんやゲストと同じ空間で番組を楽しめる」体験型ラジオをうたっています。<br>
+つまり、収録を生で見に行くことも想定された番組です。
+
+ただし、藤牧大雅さんの回に一般向けの観覧枠が設けられるのか、整理券や事前申し込みが必要かどうかは、現時点でアナウンスされていません。<br>
+観覧を考えている場合は、番組公式X(@BUZZ_STATION1)やShibuya Cross-FMの公式サイトで直前の案内を必ず確認してください。<br>
+藤牧大雅さんの出演回も、放送そのものは同じ生放送の形で届けられるとみられます。
+
+<!-- wp:html -->
+<iframe src="https://maps.google.com/maps?q=渋谷クロスFM&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="350" frameborder="0" scrolling="no" style="border:0;" loading="lazy"></iframe>
+<!-- /wp:html -->
 
 ## 放送はいつ？聴き方は？
 
@@ -68,7 +77,8 @@ Shibuya Cross-FMは、渋谷・神南エリアを中心にカバーするミニF
 ## 藤牧大雅ってどんな人？
 
 藤牧大雅(ふじまき たいが)さんは、数々のオーディション番組に挑戦し続けてきた練習生です。<br>
-JYPの練習生として約4年半を過ごしたのち、日本と韓国のサバイバル番組に立て続けに参加してきました。
+JYPの練習生として約4年半を過ごしたのち、日本と韓国のサバイバル番組に立て続けに参加してきました。<br>
+より詳しい生い立ち・経歴は<a href="https://chomoand-1.com/fujimakitaiga_wiki-1025" target="_blank" rel="noopener">藤牧大雅のwiki風経歴記事</a>にまとめています。
 
 <!-- wp:html -->
 <div style="border:1px solid #ddd9d3;border-radius:4px;padding:16px 18px;margin:0 0 16px 0;">
@@ -99,6 +109,7 @@ JYPの練習生として約4年半を過ごしたのち、日本と韓国のサ�
 
 パフォーマンスの構成まで一人で計画を立て、家族の許可も得たうえでの開催とのこと。<br>
 チケットの予約受付はすでに始まっており、本人のInstagram(@taiga17517)のプロフィール欄のリンクから申し込めます。<br>
+開催日・会場・内容の詳細は<a href="https://chomoand-1.com/taiga-no-meeting-10345" target="_blank" rel="noopener">ファンミーティングまとめ記事</a>で紹介しています。<br>
 ファンミーティングで直接会い、その2週間後にはラジオでトークを聴く、という流れを楽しめる9月になりそうです。
 
 ## まとめ
@@ -107,7 +118,8 @@ JYPの練習生として約4年半を過ごしたのち、日本と韓国のサ�
 <div style="border:2px solid #8a8378;border-radius:8px;background:rgba(138,131,120,0.08);padding:1em 1.25em;margin:0 0 16px 0;">
 <p style="margin:0;">
 &#10003; 藤牧大雅が「濱口優のBUZZ STATION」9月放送回にゲスト出演<br>
-&#10003; 放送は2026年9月18日(金)18:00〜18:50、Shibuya Cross-FM(93.8MHz)<br>
+&#10003; 放送は2026年9月18日(金)18:00〜18:50、Shibuya Cross-FM(93.8MHz)の生放送<br>
+&#10003; 渋谷・神南の公開スタジオで、収録を見に行ける建て付け(藤牧回の観覧枠の有無は未案内)<br>
 &#10003; エリア外は公式サイトの映像付き配信で視聴、radikoは非対応<br>
 &#10003; 番組ではオーディションで培った経験やこれからの挑戦を語る予定<br>
 &#10003; 9月3日にはヒューリックホール東京で自費・無料のファンミーティングも開催
@@ -120,11 +132,12 @@ JYPの練習生として約4年半を過ごしたのち、日本と韓国のサ�
 
 <!-- wp:html -->
 <div style="border:1px solid #ddd9d3;border-left:4px solid #8a8378;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f6f4;">
-<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">日プ新世界の関連記事</p>
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">藤牧大雅・日プ新世界の関連記事</p>
 <ul style="margin:0;padding-left:1.3em;">
+<li><a href="https://chomoand-1.com/fujimakitaiga_wiki-1025">藤牧大雅のwiki風経歴は？EXPG・JYP出身で虹プロ2やボイプラ2経験者！</a></li>
+<li><a href="https://chomoand-1.com/taiga-no-meeting-10345">藤牧大雅のファンミーティングは無料！開催日や会場・内容は？</a></li>
 <li><a href="https://chomoand-1.com/produce101japanshinsekai_zense-2748">【日プ新世界】練習生の前世一覧！元K-POPアイドルや経歴を徹底調査！</a></li>
 <li><a href="https://chomoand-1.com/produce101japanshinsekai_8matome-8577">【日プ新世界】第8話まとめ｜コンセプト評価・KCON・第2回順位発表式結果！</a></li>
-<li><a href="https://chomoand-1.com/produce101japan_ryourirecipi-8604">【日プ新世界】練習生が作った料理のレシピまとめ！意外な料理男子も判明！</a></li>
 </ul>
 </div>
 <!-- /wp:html -->
