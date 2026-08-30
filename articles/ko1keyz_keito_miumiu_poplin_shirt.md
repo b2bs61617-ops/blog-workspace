@@ -2,7 +2,7 @@
 
 <!-- wp:paragraph -->
 <p>KO1KEYZのKEITO(小野慶人)が、2026年8月29日にグループ公式TikTok(@ko1keyzofficial)へ投稿した接写セルフィー動画で着ていた白いシャツに、「どこのブランド？」「制服みたいでかわいい」と注目が集まっています。<br>
-結論から言うと、このシャツは<strong>Miu Miu(ミュウミュウ)のロゴ刺繍入りコットンポプリンシャツ</strong>とみられ、参考価格は<strong><span style="font-size:1.25em;text-decoration:underline;text-decoration-color:#e0812f;text-decoration-thickness:3px;text-underline-offset:3px;">22万〜23万円前後(税込)</span></strong>です。<br>
+結論から言うと、このシャツは<strong>Miu Miu(ミュウミュウ)のロゴ刺繍入りコットンポプリンシャツ</strong>とみられ、参考価格は<strong><span class="swl-marker mark_orange" style="font-size:1.15em;">22万〜23万円前後(税込)</span></strong>です。<br>
 この記事では、KEITOがシャツを着ていた動画の内容、シャツの特徴とMiu Miuというブランド、そして値段・購入できる場所まで詳しくまとめます。</p>
 <!-- /wp:paragraph -->
 
@@ -100,7 +100,7 @@ K-POPアイドルや俳優が着用する例も多く、「さりげないけど
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Miu Miuのロゴ刺繍入りコットンポプリンシャツは、公式・正規取扱店での参考価格が<strong><span style="font-size:1.25em;text-decoration:underline;text-decoration-color:#e0812f;text-decoration-thickness:3px;text-underline-offset:3px;">22万〜23万円前後(税込)</span></strong>です。<br>
+<p>Miu Miuのロゴ刺繍入りコットンポプリンシャツは、公式・正規取扱店での参考価格が<strong><span class="swl-marker mark_orange" style="font-size:1.15em;">22万〜23万円前後(税込)</span></strong>です。<br>
 シーズンやカラー、袖の仕様によって多少前後しますが、20万円台前半が目安になります。<br>
 ハイブランドのシャツとしても高めの価格帯で、ワンポイントロゴのシンプルな見た目からは想像しづらい金額です。</p>
 <!-- /wp:paragraph -->
