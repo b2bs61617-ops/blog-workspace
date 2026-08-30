@@ -24,6 +24,9 @@
 
 ## 愛用アイテムとして判明済みのもの
 
+- **黒Tシャツ(DIARY 1999)**: DIARY 1999「DIARY ARC CONSTRUCTED T-SHIRT」ブラック・コットン100%。胸のアーチ状「DIARY」カレッジロゴ+肩の切り替えパネル+ドロップショルダーのビッグシルエットが目印。国内参考価格3万6300円(税込、ANSWER = https://www.answerclothing.com/items/143690788)。公式diary1999.comでは$210前後(確認時は完売表示)。ブランドはMyles Henrik Hall(Matthew M. Williams門下)がパリコレでスタート、スローガン「for the youth, by the youth」、国内取扱いNUBIAN等。
+  - 出典: KO1KEYZ公式インスタグラム(@ko1keyzofficial)のKOSUKEソロ・リール動画(2026-08-29ごろ、ビル屋上で数秒のダンス)。ユーザー提供のスクショ+商品ページで特定。本文写真なし(元がインスタリールで、使えるX転載画像を確保できなかったため。同日投稿のKEITOミュウミュウ記事と同じ扱いで文字アイキャッチのみ)。
+  - 記事: JP chomoand-1.com 下書きID11986 `kosuke-diary-1999-arc-tshirt` / KR ID11988 / EN ID11989(2026-08-30時点すべて未公開)。カテゴリ JP[66,63,102]・KR[74,78]・EN[110,112]。アイキャッチ JP media 11985(EN共用)・KR media 11987。ビルドは`build_and_post_kosuke_diary1999_tshirt.py`(現状は新規作成専用、更新時はEXISTING_ID分岐の追記が必要)。
 - **ヘアミルク**: &PAIR(アンドペア、株式会社ヴィークレア)「コントロール リペア 2in1 ヘアミルクミスト」150mL・税込1,595円(税抜1,450円)。ゆっくりプッシュでミルク状、素早くプッシュでミスト状になる2way式。香りはピンクローズ in ブルーバーベナ。&PAIRは『PRODUCE 101 JAPAN 新世界』の協賛パートナー。
   - 購入先: 公式ストア https://vicrea.net/shopbrand/andpair/ / Amazon https://www.amazon.co.jp/dp/B0DZX2CPQH / 楽天 https://item.rakuten.co.jp/vicrea/pair_mist1/
   - 出典動画: KO1KEYZ公式YouTube「🌙 KO1KEYZ Night Routine...⭐️」(https://youtu.be/bipgdNcr3ok、2026-08-10公開)。動画内の名前タグ・オンスクリーン字幕(「髪にミルクをしっかりつけて乾かしてます」)から本人パートと特定済み。動画自体に音声の自動字幕は精度が低く人名で当てにならないため、名前タグ(バッジ)とタイムスタンプでの視認確認が確実。
