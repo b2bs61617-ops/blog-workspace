@@ -1,4 +1,4 @@
-# KEITO's shirt is Miu Miu! A shocking 200,000+ yen?
+# KEITO's TikTok selfie shirt is Miu Miu! Over 200,000 yen?
 
 <!-- wp:paragraph -->
 <p>KO1KEYZ's KEITO (Keito Ono) posted a close-up selfie clip to the group's official TikTok (@ko1keyzofficial) on August 29, 2026, and the white shirt he wears in it has fans asking "what brand is that?" and calling the look "cute, like a school uniform."<br>
