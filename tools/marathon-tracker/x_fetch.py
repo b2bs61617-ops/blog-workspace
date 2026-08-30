@@ -71,10 +71,10 @@ def _expand(url, timeout=12):
 
 def _maps_url_from_strings(cands):
     """本文/リンク文字列の集合から Google マップURLを1つ返す。
-    直書きが無ければ t.co を展開して地図なら採用する。"""
-    direct = _first_maps_url(cands)
-    if direct:
-        return direct
+
+    X は表示URLを truncate('…') するので、t.co があれば展開結果を最優先で使う。
+    t.co が無い/展開に失敗したときだけ、表示テキストの地図URL(全空白除去)を使う。
+    """
     for s in cands:
         if not s:
             continue
@@ -84,7 +84,7 @@ def _maps_url_from_strings(cands):
         exp = _expand(mt.group(0))
         if exp and _MAPS_RE.search(exp):
             return exp
-    return ""
+    return _first_maps_url([re.sub(r"\s+", "", s or "") for s in cands])
 
 
 async def _read_tweet_links(tweet_url, timeout=30000):
@@ -204,9 +204,7 @@ def resolve_danchou_map_url(posts, account, timeout=12):
     cand.sort(key=lambda x: (_parse_dt(x.get("date", ""))
                              or datetime.min.replace(tzinfo=timezone.utc)),
               reverse=True)
-    for p in cand:
-        if p.get("maps_url"):
-            return p["maps_url"]
+    # t.co 展開を優先(表示URLは X に truncate されて短縮コードが欠けることがある)
     for p in cand:
         tco = p.get("tco_url")
         if not tco:
@@ -214,6 +212,9 @@ def resolve_danchou_map_url(posts, account, timeout=12):
         exp = _expand(tco, timeout=timeout)
         if exp and _MAPS_RE.search(exp):
             return exp
+    for p in cand:
+        if p.get("maps_url"):
+            return p["maps_url"]
     return ""
 
 
