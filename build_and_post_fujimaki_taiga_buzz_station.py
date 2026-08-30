@@ -90,7 +90,7 @@ ZENSE_URL = "https://chomoand-1.com/produce101japanshinsekai_zense-2748"
 MATOME8_URL = "https://chomoand-1.com/produce101japanshinsekai_8matome-8577"
 RECIPE_URL = "https://chomoand-1.com/produce101japan_ryourirecipi-8604"
 
-title = "藤牧大雅がBUZZ STATIONにゲスト出演！日時や聴き方は？"
+title = "藤牧大雅がBUZZ STATIONゲスト出演！日時・聴き方・観覧は？"
 
 blocks = []
 

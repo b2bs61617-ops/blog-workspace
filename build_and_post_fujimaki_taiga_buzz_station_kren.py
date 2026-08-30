@@ -121,7 +121,7 @@ def post_lang(title, content, slug, lang, summary, featured_media):
 
 
 # =========================== KOREAN ===========================
-kr_title = "프듀 신세계 후지마키 타이가, BUZZ STATION 게스트 출연! 방송일은?"
+kr_title = "프듀 신세계 후지마키 타이가, BUZZ STATION 게스트 출연! 방송일·관람은?"
 
 kr = []
 kr.append(p([
@@ -270,7 +270,7 @@ print("KR_PREVIEW", f"{WP_URL}/?p={kr_post['id']}")
 
 
 # =========================== ENGLISH ===========================
-en_title = "Taiga Fujimaki to Guest on Radio Show BUZZ STATION: Date and How to Listen"
+en_title = "Taiga Fujimaki to Guest on BUZZ STATION: Date, How to Listen, Can You Watch?"
 
 en = []
 en.append(p([

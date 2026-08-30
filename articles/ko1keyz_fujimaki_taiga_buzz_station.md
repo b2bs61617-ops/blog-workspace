@@ -1,4 +1,4 @@
-# 藤牧大雅がBUZZ STATIONにゲスト出演！日時や聴き方は？
+# 藤牧大雅がBUZZ STATIONゲスト出演！日時・聴き方・観覧は？
 
 『PRODUCE 101 JAPAN 新世界』(日プ新世界)に出演した藤牧大雅さんが、よゐこ・濱口優さんがパーソナリティを務めるラジオ番組「濱口優のBUZZ STATION」にゲスト出演することが発表されました。<br>
 出演回は<strong>2026年9月18日(金)18:00〜18:50</strong>で、<strong><span class="swl-marker mark_yellow" style="font-size:1.15em;">渋谷の公開スタジオからの生放送</span></strong>です。<br>
