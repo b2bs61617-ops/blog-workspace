@@ -157,7 +157,8 @@ def latest_pin_from_posts(posts, accounts, expand_limit=3):
     expands = 0
     for p in cand:
         for s in (p.get("maps_url"), p.get("text")):
-            c = _coords_from_str((s or "").replace(" ", ""))
+            # X は表示URLに空白・改行・「…」を差し込むので全空白を除去してから読む
+            c = _coords_from_str(re.sub(r"\s+", "", s or ""))
             if c:
                 return {"lat": c[0], "lng": c[1], "date": p.get("date", ""),
                         "text": p.get("text", ""),

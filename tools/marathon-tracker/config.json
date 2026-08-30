@@ -36,7 +36,8 @@
   "x_enabled": true,
   "x_accounts": ["YSB_DANCHO", "24tv24tv", "yes0724day"],
   "pin_accounts": ["24tv24tv"],
-  "_pin_accounts_note": "maps.google.com/maps?q=lat,lng 形式の地図ピンを数分おきに投げる追跡班アカウント。@YSB_DANCHO の位置共有が止まったときの座標源。位置共有とピンのうち新しい方を毎回採用する(2026-08-30)。",
+  "pin_max_age_minutes": 20,
+  "_pin_accounts_note": "maps.google.com/maps?q=lat,lng 形式の地図ピンを数分おきに投げる追跡班アカウント。@YSB_DANCHO の位置共有が止まったときの座標源。位置共有とピンのうち新しい方を毎回採用する。ただしピンが pin_max_age_minutes 分より古ければ座標源には使わない(2026-08-30)。",
   "x_search_fallback": "星野真里 マラソン 現在地",
   "max_tweets_per_account": 30,
 

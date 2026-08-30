@@ -459,17 +459,22 @@ def main():
                 pass
             pin_dt = parse_dt(tp.get("date", ""))
             age_min = (now - pin_dt).total_seconds() / 60 if pin_dt else 999
-            body = (f"追跡班({tp['account']})の地図ピン: "
-                    f"{(addr + ' 付近') if addr else '座標'}（{la:.5f},{ln:.5f}）")
-            posts.append({
-                "id": f"tvpin:{tp.get('tweet_id') or f'{now:%Y%m%d%H%M}'}",
-                "date": tp.get("date", "") or now.isoformat(),
-                "author": tp["account"], "source": "tv_pin", "url": "",
-                "text": body, "_latlng": [round(la, 7), round(ln, 7)],
-                "_addr": addr, "_exact": True, "_pin_dt": tp.get("date", ""),
-            })
-            log(f"地図ピン投稿 {tp['account']} {age_min:.0f}分前 -> "
-                f"{addr or '(住所不明)'} ({la:.5f},{ln:.5f})")
+            pin_max_age = int(cfg.get("pin_max_age_minutes", 20))
+            if age_min > pin_max_age:
+                log(f"地図ピン投稿 {tp['account']} は {age_min:.0f}分前で古い"
+                    f"(>{pin_max_age}分)。座標源には使わない。")
+            else:
+                body = (f"追跡班({tp['account']})の地図ピン: "
+                        f"{(addr + ' 付近') if addr else '座標'}（{la:.5f},{ln:.5f}）")
+                posts.append({
+                    "id": f"tvpin:{tp.get('tweet_id') or f'{now:%Y%m%d%H%M}'}",
+                    "date": tp.get("date", "") or now.isoformat(),
+                    "author": tp["account"], "source": "tv_pin", "url": "",
+                    "text": body, "_latlng": [round(la, 7), round(ln, 7)],
+                    "_addr": addr, "_exact": True, "_pin_dt": tp.get("date", ""),
+                })
+                log(f"地図ピン投稿 {tp['account']} {age_min:.0f}分前 -> "
+                    f"{addr or '(住所不明)'} ({la:.5f},{ln:.5f})")
 
     log(f"取得合計 {len(posts)} 件")
     if not posts:
