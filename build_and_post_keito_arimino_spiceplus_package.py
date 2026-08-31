@@ -257,7 +257,7 @@ KEITO가 어떤 길을 거쳐 KO1KEYZ에 도달했는지는, <a href="https://ch
 
 <!-- wp:paragraph -->
 <p>만약 정말로 KEITO의 패키지였다면, 데뷔 전부터 전국 드러그스토어에 "KEITO가 놓여 있었다"는 이야기가 됩니다.<br>
-회사원을 하면서 코스메나 헤어 일도 받던 시기가 있었다는 점까지 포함해, 오래된 팬일수록 반가운 발견입니다. 다음 잡지 인터뷰나 라디오에서 본인이 어떻게 돌아볼지 기대되네요.</p>
+회사원을 하면서 코스메나 헤어 일도 받던 시기가 있었다는 점까지 포함해, 오래된 팬일수록 반가운 발견입니다. 매장에서 「KEITO 버전」 패키지를 만나면 럭키!? 당분간은 장 보러 갈 때마다 왁스 진열대를 계속 확인하게 될 것 같네요!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->
@@ -433,7 +433,7 @@ If Arimino or KEITO's side releases anything new, including on whether it is tru
 
 <!-- wp:paragraph -->
 <p>If it really is KEITO's package, then he was literally on drugstore shelves nationwide long before his debut.<br>
-Together with the fact that he took cosmetics and hair jobs while holding down an office job, it is the kind of discovery longtime fans will love. It will be fun to hear how he looks back on it in a future magazine interview or radio spot.</p>
+Together with the fact that he took cosmetics and hair jobs while holding down an office job, it is the kind of discovery longtime fans will love. Spotting a "KEITO version" on a shelf would be a lucky find, and you may catch yourself checking the wax aisle every time you shop for a while.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->
