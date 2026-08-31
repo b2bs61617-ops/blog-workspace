@@ -228,7 +228,7 @@ KEITO가 어떤 길을 거쳐 KO1KEYZ에 도달했는지는, <a href="https://ch
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>질문 사이트에서 드러그스토어 점원이 답한 대로, 지금 매장에 놓인 「스파이스 플러스 웨트 왁스」는 패키지 모델 사진이 교체된 시기로 보입니다.<br>
+<p>지금 매장에 놓인 「스파이스 플러스 웨트 왁스」는 패키지 모델 사진이 교체된 시기로 보입니다.<br>
 스파이스 시리즈는 리뉴얼 때마다 디자인이나 시리즈 특유의 「얼굴 마크」를 바꿔 온 이력이 있어, 모델 사진 교체 자체는 드문 일이 아닙니다.</p>
 <!-- /wp:paragraph -->
 
@@ -404,7 +404,7 @@ For how KEITO got to KO1KEYZ, see our <a href="https://chomoand-1.com/ono-keito-
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>As the drugstore staffer said on the Q&amp;A site, the "Spice Plus Wet Wax" on shelves now appears to be from a period when the package model photo had changed.<br>
+<p>The "Spice Plus Wet Wax" on shelves now appears to be from a period when the package model photo had changed.<br>
 The Spice series has changed its design and its trademark "face mark" with each renewal, so swapping the model photo is nothing unusual.</p>
 <!-- /wp:paragraph -->
 
