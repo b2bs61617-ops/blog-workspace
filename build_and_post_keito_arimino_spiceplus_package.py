@@ -110,7 +110,7 @@ print("JP_POST_ID:", JP_ID, "| slug:", jp_post["slug"], "| preview:", f"{WP_URL}
 KR_TITLE = "KO1KEYZ KEITO(오노 케이토)가 왁스 패키지 모델이었다?"
 
 KR_CONTENT = """<!-- wp:paragraph -->
-<p>KO1KEYZ의 KEITO(오노 케이토)를 두고, 「드러그스토어에서 파는 헤어 왁스 패키지에 찍혀 있는 사람이 KEITO 아니야?」라는 목소리가 X에서 퍼지며 564건이 넘는 「좋아요」를 모으고 있습니다.<br>
+<p>KO1KEYZ의 KEITO(오노 케이토)를 두고, 「드러그스토어에서 파는 헤어 왁스 패키지에 찍혀 있는 사람이 KEITO 아니야?」라는 목소리가 X에서 퍼졌습니다. 해당 글에는 564건이 넘는 「좋아요」가 달려 있습니다.<br>
 화제가 된 상품은 아리미노의 「스파이스 플러스 웨트 왁스」이고, 계기는 어느 질문 사이트에서의 대화였습니다.<br>
 다만 <strong>아리미노와 KEITO 측 어느 쪽에서도 공식 발표는 없으며, 패키지 모델이 KEITO 본인인지 여부는 현재 확인되지 않았습니다</strong>. 이 기사에서는 무엇이 화제가 되고 있는지, 그 왁스가 어떤 상품인지, 그리고 KEITO의 「일반인 시절」 활동을 근거로 「있을 법한 이야기인지」를 정리합니다.</p>
 <!-- /wp:paragraph -->
@@ -286,7 +286,7 @@ print("KR_POST_ID:", kr_post["id"], "| slug:", kr_post["slug"], "| preview:", f"
 EN_TITLE = "Was KO1KEYZ's KEITO a Hair Wax Package Model?"
 
 EN_CONTENT = """<!-- wp:paragraph -->
-<p>Fans have been passing around the idea that KEITO (Keito Ono) of KO1KEYZ is the person pictured on the package of a hair wax sold in Japanese drugstores, and the post has drawn more than 564 likes on X.<br>
+<p>Fans have been passing around the idea that KEITO (Keito Ono) of KO1KEYZ is the person pictured on the package of a hair wax sold in Japanese drugstores. The post has drawn more than 564 likes on X.<br>
 The product in question is Arimino's "Spice Plus Wet Wax," and it started from an exchange on a Q&amp;A site.<br>
 That said, <strong>neither Arimino nor KEITO's side has made any official announcement, so whether the package model is really KEITO is unconfirmed at this point</strong>. This article covers what is being talked about, what kind of product the wax is, and whether it is a plausible story given KEITO's work during his "private citizen" years.</p>
 <!-- /wp:paragraph -->
