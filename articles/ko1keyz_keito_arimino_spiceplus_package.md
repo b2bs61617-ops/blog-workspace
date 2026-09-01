@@ -51,6 +51,13 @@ SNS上でも「似ているけど断言はできない」という慎重な見�
 </div>
 <!-- /wp:html -->
 
+<!-- wp:html -->
+<figure class="wp-block-image size-large" style="margin:0 0 16px 0;">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png" alt="アリミノ スパイスプラス ウェットワックスのパッケージ" width="367" height="500" style="max-width:100%;height:auto;display:block;margin:0 auto;" srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-220x300.png 220w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png 367w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube.png 514w" sizes="(max-width:400px) 100vw, 367px">
+<figcaption style="text-align:center;font-size:12px;">出典:https://x.com/kagayake__123/status/2093917066936152187</figcaption>
+</figure>
+<!-- /wp:html -->
+
 <!-- wp:paragraph -->
 <p>アリミノの「スパイスプラス(SPICE+)」は、美容師からの支持が厚かった「スパイスプレミアム」を2021年ごろにフルリニューアルして生まれたメンズ向けスタイリングブランドです。<br>
 その中のウェットワックスは、濡れたようなツヤと束感を長時間キープするタイプで、大人っぽくアンニュイなショート〜ミディアムに向く、と公式は説明しています。</p>

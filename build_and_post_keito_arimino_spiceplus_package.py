@@ -160,6 +160,13 @@ SNS에서도 「닮았지만 단언은 못 하겠다」라는 신중한 견해�
 </div>
 <!-- /wp:html -->
 
+<!-- wp:html -->
+<figure class="wp-block-image size-large" style="margin:0 0 16px 0;">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png" alt="아리미노 스파이스 플러스 웨트 왁스 패키지" width="367" height="500" style="max-width:100%;height:auto;display:block;margin:0 auto;" srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-220x300.png 220w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png 367w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube.png 514w" sizes="(max-width:400px) 100vw, 367px">
+<figcaption style="text-align:center;font-size:12px;">출처:https://x.com/kagayake__123/status/2093917066936152187</figcaption>
+</figure>
+<!-- /wp:html -->
+
 <!-- wp:paragraph -->
 <p>아리미노의 「스파이스 플러스(SPICE+)」는, 미용사들의 지지가 두터웠던 「스파이스 프리미엄」을 2021년경 풀 리뉴얼해 탄생한 남성용 스타일링 브랜드입니다.<br>
 그중 웨트 왁스는, 젖은 듯한 윤기와 다발감을 장시간 유지하는 타입으로, 어른스럽고 나른한 숏〜미디엄에 어울린다고 공식은 설명하고 있습니다.</p>
@@ -334,6 +341,13 @@ On social media, plenty of people are cautious, saying "it looks like him but I 
 <p style="margin:4px 0 0 0;"><strong>Size / price:</strong> 80g / suggested retail 1,540 yen incl. tax</p>
 <p style="margin:4px 0 0 0;"><strong>Type:</strong> Wet-hard wax that holds a glossy, piecey finish</p>
 </div>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large" style="margin:0 0 16px 0;">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png" alt="Arimino Spice Plus Wet Wax package" width="367" height="500" style="max-width:100%;height:auto;display:block;margin:0 auto;" srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-220x300.png 220w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube-367x500.png 367w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_arimino_spiceplus_package_tube.png 514w" sizes="(max-width:400px) 100vw, 367px">
+<figcaption style="text-align:center;font-size:12px;">Source: https://x.com/kagayake__123/status/2093917066936152187</figcaption>
+</figure>
 <!-- /wp:html -->
 
 <!-- wp:paragraph -->
