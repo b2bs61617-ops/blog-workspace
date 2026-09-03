@@ -110,7 +110,7 @@ blocks.append(h2("Only the Day 2 evening show in Hyogo will be streamed"))
 blocks.append(minibox('<p style="margin:0;"><strong>Stream target:</strong> Hyogo (Kobe World Memorial Hall), Day 2 evening performance</p>\n<p style="margin:4px 0 0 0;"><strong>Date &amp; time:</strong> Thursday, September 10, 2026, 6:30pm JST &mdash; starts as the evening show begins</p>'))
 blocks.append(p([
     "The Hyogo leg of \"2026 KO1KEYZ 1ST FAN MEETING\" runs for two days, on Wednesday September 9 and Thursday September 10, with four shows in total across matinee and evening slots at Kobe World Memorial Hall. The only one being live streamed is the final show: the <strong>evening performance on Thursday, September 10</strong>.",
-    "The stream begins at 6:30pm JST, the same time the evening show starts. It is a live broadcast only, with <strong>no archive (replay) stream</strong>, so you need to watch in real time on the day.",
+    "The stream begins at 6:30pm JST, the same time the evening show starts. It is a live broadcast only, with <strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;\">no archive (replay) stream</span></strong>, so you need to watch in real time on the day.",
     "The Tokyo shows (August 21&ndash;23 at TOYOTA ARENA TOKYO) have already finished, so this Hyogo evening stream is effectively the only chance to see the first fan meeting on video.",
 ]))
 blocks.append(wptable(
@@ -130,8 +130,8 @@ blocks.append(p([
 blocks.append(h2("Viewing ticket price and streaming services"))
 blocks.append(minibox('<p style="margin:0;"><strong>Viewing ticket:</strong> 3,600 yen (tax included) + system fees</p>\n<p style="margin:4px 0 0 0;"><strong>Streaming services:</strong> In Japan: Lemino and Lawson Ticket / a separate service is provided for overseas viewers</p>'))
 blocks.append(p([
-    "The viewing ticket costs <strong>3,600 yen (tax included)</strong>. On top of that, each streaming platform adds its own system fee.",
-    f"In Japan the stream is offered on <strong>Lemino</strong> and <strong>Lawson Ticket</strong>, and a separate streaming service is provided for overseas viewers. You can check the full list of platforms and payment methods on the <a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">official news page</a>.",
+    "<strong><span class=\"swl-marker mark_yellow\">The viewing ticket costs 3,600 yen (tax included)</span></strong>. On top of that, each streaming platform adds its own system fee.",
+    f"<span class=\"swl-marker mark_yellow\">In Japan the stream is offered on Lemino and Lawson Ticket</span>, and a separate streaming service is provided for overseas viewers. You can check the full list of platforms and payment methods on the <a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">official news page</a>.",
     "Compared with a seat at the venue, the stream lets you watch from home for around 3,600 yen, so the barrier to joining in is fairly low &mdash; an easy way to get a look at a pre-debut group's fan meeting.",
 ]))
 blocks.append(p([
@@ -194,6 +194,8 @@ print("content chars:", len(content))
 
 slug = f"{JP_SLUG}-en"
 
+EN_POST_ID = 12250  # update in place
+
 payload = {
     "title": title,
     "content": content,
@@ -206,7 +208,7 @@ payload = {
     "author": 2,
 }
 r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
+    f"{WP_URL}/wp-json/wp/v2/posts/{EN_POST_ID}",
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
     data=json.dumps(payload).encode("utf-8"),
 )

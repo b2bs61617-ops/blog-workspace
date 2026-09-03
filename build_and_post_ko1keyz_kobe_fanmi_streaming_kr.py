@@ -112,7 +112,7 @@ blocks.append(h2("생중계되는 것은 효고 2일째・저녁 공연뿐"))
 blocks.append(minibox('<p style="margin:0;"><strong>중계 대상:</strong>효고(고베 월드 기념홀) 2일째・저녁 공연</p>\n<p style="margin:4px 0 0 0;"><strong>중계 일시:</strong>2026년 9월 10일(목) 18:30(6:30pm) JST~ ※저녁 공연 개연과 동시에 시작</p>'))
 blocks.append(p([
     "『2026 KO1KEYZ 1ST FAN MEETING』의 효고 공연은 고베 월드 기념홀에서 9월 9일(수)・10일(목) 이틀간, 낮・저녁 합쳐 총 4회차가 열립니다. 이번에 생중계 대상이 된 것은 그중 마지막 회차인 <strong>9월 10일(목) 저녁 공연</strong>뿐입니다.",
-    "중계 시작은 저녁 공연 개연과 같은 18:30(JST). 생중계만 진행되며 <strong>다시보기(아카이브) 중계는 제공되지 않습니다</strong>. 당일 그 시간에 실시간으로 시청해야 합니다.",
+    "중계 시작은 저녁 공연 개연과 같은 18:30(JST). 생중계만 진행되며 <strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;\">다시보기(아카이브) 중계는 제공되지 않습니다</span></strong>. 당일 그 시간에 실시간으로 시청해야 합니다.",
     "도쿄 공연(8월 21일~23일・TOYOTA ARENA TOKYO)은 이미 종료되었기 때문에, 첫 팬미팅의 모습을 영상으로 즐길 수 있는 것은 사실상 이 효고・저녁 공연 생중계가 유일한 기회가 됩니다.",
 ]))
 blocks.append(wptable(
@@ -132,8 +132,8 @@ blocks.append(p([
 blocks.append(h2("시청권 가격과 중계 서비스는?"))
 blocks.append(minibox('<p style="margin:0;"><strong>시청권:</strong>3,600엔(세금 포함)＋각종 시스템 이용료</p>\n<p style="margin:4px 0 0 0;"><strong>중계 서비스:</strong>일본 국내=Lemino・로손 티켓/해외용 서비스도 별도 준비</p>'))
 blocks.append(p([
-    "시청권 가격은 <strong>3,600엔(세금 포함)</strong>입니다. 이와 별도로 중계 플랫폼별 시스템 이용료가 추가됩니다.",
-    f"일본 국내용 중계는 <strong>Lemino</strong>와 <strong>로손 티켓</strong>, 해외용으로도 별도 중계 서비스가 준비되어 있습니다. 대응 서비스나 결제 방법 등 자세한 정보는 <a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">공식 사이트 공지 페이지</a>에서 확인할 수 있습니다.",
+    "<strong><span class=\"swl-marker mark_yellow\">시청권 가격은 3,600엔(세금 포함)</span></strong>입니다. 이와 별도로 중계 플랫폼별 시스템 이용료가 추가됩니다.",
+    f"<span class=\"swl-marker mark_yellow\">일본 국내용 중계는 Lemino와 로손 티켓</span>, 해외용으로도 별도 중계 서비스가 준비되어 있습니다. 대응 서비스나 결제 방법 등 자세한 정보는 <a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">공식 사이트 공지 페이지</a>에서 확인할 수 있습니다.",
     "현장 좌석 티켓과 비교하면, 생중계는 3,600엔 정도로 집에서 볼 수 있어 참여 장벽이 상당히 낮습니다. 데뷔 전 그룹의 팬미팅을 부담 없이 들여다볼 수 있는 기회가 될 것 같습니다.",
 ]))
 blocks.append(p([
@@ -198,21 +198,8 @@ print("content chars:", len(content))
 
 slug = f"{JP_SLUG}-kr"
 
-eyecatch_path = ROOT / "images" / "ko1keyz_kobe_fanmi_streaming_eyecatch_kr.png"
-with open(eyecatch_path, "rb") as f:
-    eyecatch_data = f.read()
-media_r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/media",
-    headers={
-        **HEADERS_AUTH,
-        "Content-Type": "image/png",
-        "Content-Disposition": 'attachment; filename="ko1keyz_kobe_fanmi_streaming_eyecatch_kr.png"',
-    },
-    data=eyecatch_data,
-)
-media_r.raise_for_status()
-eyecatch_media = media_r.json()
-print("KR EYECATCH_MEDIA_ID", eyecatch_media["id"])
+KR_POST_ID = 12249       # update in place
+KR_EYECATCH_MEDIA_ID = 12248
 
 payload = {
     "title": title,
@@ -221,12 +208,12 @@ payload = {
     "slug": slug,
     "lang": "ko",
     "translations": {"ja": JP_POST_ID},
-    "featured_media": eyecatch_media["id"],
+    "featured_media": KR_EYECATCH_MEDIA_ID,
     "categories": [66, 62],
     "author": 2,
 }
 r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
+    f"{WP_URL}/wp-json/wp/v2/posts/{KR_POST_ID}",
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
     data=json.dumps(payload).encode("utf-8"),
 )

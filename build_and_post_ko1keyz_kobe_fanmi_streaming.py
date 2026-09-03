@@ -110,7 +110,7 @@ blocks.append(h2("生配信されるのは兵庫2日目・夜公演のみ"))
 blocks.append(minibox('<p style="margin:0;"><strong>配信対象:</strong>兵庫(神戸ワールド記念ホール)2日目・夜公演</p>\n<p style="margin:4px 0 0 0;"><strong>配信日時:</strong>2026年9月10日(木)18:30(6:30pm)JST〜 ※夜公演の開演と同時にスタート</p>'))
 blocks.append(p([
     "『2026 KO1KEYZ 1ST FAN MEETING』の兵庫公演は、神戸ワールド記念ホールで9月9日(水)・10日(木)の2日間、昼夜あわせて計4公演がおこなわれます。今回生配信の対象になったのは、そのうち最終公演にあたる<strong>9月10日(木)の夜公演</strong>だけです。",
-    "配信のスタートは夜公演の開演と同じ18:30(JST)。生配信のみで、<strong>アーカイブ(見逃し)配信は用意されていません</strong>。当日その時間にリアルタイムで視聴する必要があります。",
+    "配信のスタートは夜公演の開演と同じ18:30(JST)。生配信のみで、<strong><span class=\"swl-marker mark_yellow\" style=\"font-size:1.15em;\">アーカイブ(見逃し)配信は用意されていません</span></strong>。当日その時間にリアルタイムで視聴する必要があります。",
     "東京公演(8月21日〜23日・TOYOTA ARENA TOKYO)はすでに終了しているため、初のファンミーティングの模様を映像で楽しめるのは、実質この兵庫・夜公演の生配信が唯一の機会になります。",
 ]))
 blocks.append(wptable(
@@ -130,8 +130,8 @@ blocks.append(p([
 blocks.append(h2("視聴チケットの料金と配信サービスは？"))
 blocks.append(minibox('<p style="margin:0;"><strong>視聴チケット:</strong>3,600円(税込)＋各種システム利用料</p>\n<p style="margin:4px 0 0 0;"><strong>配信サービス:</strong>国内=Lemino・ローソンチケット/海外向けにも別サービスを用意</p>'))
 blocks.append(p([
-    "視聴チケットの価格は<strong>3,600円(税込)</strong>です。これとは別に、配信プラットフォームごとのシステム利用料が加算されます。",
-    f"国内向けの配信は<strong>Lemino</strong>と<strong>ローソンチケット</strong>、海外向けにも別途配信サービスが用意されています。対応サービスや決済方法などのくわしい情報は、<a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">公式サイトのお知らせページ</a>で確認できます。",
+    "<strong><span class=\"swl-marker mark_yellow\">視聴チケットの価格は3,600円(税込)</span></strong>です。これとは別に、配信プラットフォームごとのシステム利用料が加算されます。",
+    f"<span class=\"swl-marker mark_yellow\">国内向けの配信はLeminoとローソンチケット</span>、海外向けにも別途配信サービスが用意されています。対応サービスや決済方法などのくわしい情報は、<a href=\"{OFFICIAL_NEWS}\" target=\"_blank\" rel=\"noopener\">公式サイトのお知らせページ</a>で確認できます。",
     "現地の座席チケットと比べると、生配信は3,600円ほどで自宅から見られるぶん、参加のハードルはかなり低めです。デビュー前のグループのファンミーティングを気軽にのぞける機会になりそうです。",
 ]))
 blocks.append(p([
