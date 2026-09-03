@@ -99,7 +99,7 @@ def fanmi_figure(alt, caption):
 OFFICIAL_NEWS = "https://ko1keyz.com/news/detail/99"
 CAMERA_URL = "https://chomoand-1.com/en/?p=11734"
 
-title = "KO1KEYZ's Kobe fan meeting will be live streamed: how to watch"
+title = "KO1KEYZ's Kobe fan meeting live stream: tickets & how to watch"
 
 blocks = []
 

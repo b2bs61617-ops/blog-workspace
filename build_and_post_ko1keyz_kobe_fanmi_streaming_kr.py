@@ -101,7 +101,7 @@ CAMERA_URL = "https://chomoand-1.com/ko/?p=11733"
 LEMINO_URL = "https://chomoand-1.com/ko/?p=11313"
 SCHEDULE_URL = "https://chomoand-1.com/ko/?p=10863"
 
-title = "코이키즈 고베 팬미팅 생중계 확정! 시청 방법은?"
+title = "코이키즈 고베 팬미팅 생중계 확정! 시청 방법과 티켓은?"
 
 blocks = []
 
