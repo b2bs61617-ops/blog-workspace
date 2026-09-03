@@ -30,6 +30,9 @@ KO1KEYZ(コイキーズ)のTOWA(濱田永遠)さんが、2026年7月末に仁川
 上あごと下あごにギザギザの白い歯がぐるりと並び、口の内側は赤。<br>
 遠目には黒いシンプルなバックパックに見えますが、近くで見るとひと目で「サメ」とわかる、遊び心のあるデザインになっています。
 
+<!-- 本文画像2: 仁川空港の動画から切り出し(背負って歩くカット)。media 12240 / 出典 https://x.com/m8msan/status/2083199846501298429 -->
+![仁川空港でサメ型のリュックを背負って歩くKO1KEYZのメンバー](https://chomoand-1.com/wp-content/uploads/2026/09/towa_incheon_shark_backpack_2.jpg)
+
 ## ブランドはMORN CREATIONS(モーン・クリエイションズ)
 
 調べてみたところ、このサメのリュックは<span class="swl-marker mark_green" style="font-size:1.15em;"><strong>香港のバッグブランド「MORN CREATIONS(モーン・クリエイションズ)」の「シャークバックパック」</strong></span>で間違いなさそうです。<br>
