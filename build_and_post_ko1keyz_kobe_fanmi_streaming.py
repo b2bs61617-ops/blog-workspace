@@ -89,7 +89,7 @@ CAMERA_URL = "https://chomoand-1.com/is-there-a-camera-on-ko1keyz1s-11729"
 LEMINO_URL = "https://chomoand-1.com/ko1keyz-new-program-will-be-di-11311"
 SCHEDULE_URL = "https://chomoand-1.com/what-is-ko1keyzs-future-schedu-10860"
 
-title = "コイキーズ神戸ファンミは配信される？視聴方法は？"
+title = "コイキーズ神戸ファンミが生配信決定！視聴方法は？"
 
 blocks = []
 

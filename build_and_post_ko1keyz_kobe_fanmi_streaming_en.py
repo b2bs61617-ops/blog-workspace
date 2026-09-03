@@ -89,7 +89,7 @@ def wptable(headers, rows):
 OFFICIAL_NEWS = "https://ko1keyz.com/news/detail/99"
 CAMERA_URL = "https://chomoand-1.com/en/?p=11734"
 
-title = "Will KO1KEYZ's Kobe fan meeting be live streamed?"
+title = "KO1KEYZ's Kobe fan meeting will be live streamed: how to watch"
 
 blocks = []
 
