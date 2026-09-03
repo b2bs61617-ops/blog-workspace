@@ -82,6 +82,16 @@ def wptable(headers, rows):
 <!-- /wp:table -->'''
 
 
+def fanmi_figure(alt, caption):
+    return wphtml(f'''<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg" alt="{alt}" width="500" height="333"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-300x200.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal.jpg 780w"
+  sizes="(max-width: 500px) 100vw, 500px">
+<figcaption style="text-align:center;font-size:12px;">{caption}(出典:<a href="https://x.com/KO1KEYZofficial/status/2090703676507922768" target="_blank" rel="noopener">https://x.com/KO1KEYZofficial/status/2090703676507922768</a>)</figcaption>
+</figure>''')
+
+
 OFFICIAL_NEWS = "https://ko1keyz.com/news/detail/99"
 VENUE_URL = "https://chomoand-1.com/ko1keyz-fan-meeting-10421"
 DAY1_URL = "https://chomoand-1.com/ko1keyz1st-fan-meeting-tokyo-f-11644"
@@ -156,6 +166,10 @@ blocks.append(p([
 ]))
 
 blocks.append(h2("生配信ではどんな様子が見られる？"))
+blocks.append(fanmi_figure(
+    "KO1KEYZ 1ST FAN MEETING東京公演でステージに立つ12人",
+    "東京公演(TOYOTA ARENA TOKYO)のステージに立つKO1KEYZ12人",
+))
 blocks.append(p([
     "初のファンミーティングは、トークコーナーやメンバー同士のゲーム、楽曲パフォーマンス、そして終盤の撮影OKタイムなどで構成されています。先に開催された東京公演では、メンバーがトロッコで客席をまわる場面や、アンコールでの撮影可能タイムがファンの間で大きな話題になりました。",
     f"今回生配信される兵庫・夜公演は全4公演のなかの最終公演にあたるため、2日間を走り抜けたメンバーの空気感や、締めくくりならではの挨拶も見どころになりそうです。東京公演当日の様子は<a href=\"{DAY1_URL}\">KO1KEYZ1stファンミ初日(東京)セトリ・座席表・トロッコは？</a>にまとめているので、配信前に予習しておくと当日をより楽しめます。",

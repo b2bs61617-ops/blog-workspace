@@ -86,6 +86,16 @@ def wptable(headers, rows):
 <!-- /wp:table -->'''
 
 
+def fanmi_figure(alt, caption):
+    return wphtml(f'''<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg" alt="{alt}" width="500" height="333"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-300x200.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal.jpg 780w"
+  sizes="(max-width: 500px) 100vw, 500px">
+<figcaption style="text-align:center;font-size:12px;">{caption} (Source: <a href="https://x.com/KO1KEYZofficial/status/2090703676507922768" target="_blank" rel="noopener">https://x.com/KO1KEYZofficial/status/2090703676507922768</a>)</figcaption>
+</figure>''')
+
+
 OFFICIAL_NEWS = "https://ko1keyz.com/news/detail/99"
 CAMERA_URL = "https://chomoand-1.com/en/?p=11734"
 
@@ -156,6 +166,10 @@ blocks.append(p([
 ]))
 
 blocks.append(h2("What will the stream show?"))
+blocks.append(fanmi_figure(
+    "KO1KEYZ's 12 members on stage at their 1ST FAN MEETING Tokyo shows",
+    "KO1KEYZ's 12 members on the stage at the Tokyo shows (TOYOTA ARENA TOKYO)",
+))
 blocks.append(p([
     "The first fan meeting is built around talk segments, games between the members, song performances, and a photo-OK time near the end. At the earlier Tokyo shows, moments like the members riding a cart around the arena and the photo time during the encore became big talking points among fans.",
     "The Hyogo evening show being streamed is the last of the four performances, so the members' mood after two full days and their closing remarks should be worth watching too.",

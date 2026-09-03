@@ -85,6 +85,16 @@ def wptable(headers, rows):
 <!-- /wp:table -->'''
 
 
+def fanmi_figure(alt, caption):
+    return wphtml(f'''<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg" alt="{alt}" width="500" height="333"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-300x200.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal-500x333.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/08/ko1keyz_fanmi_day1_rehearsal.jpg 780w"
+  sizes="(max-width: 500px) 100vw, 500px">
+<figcaption style="text-align:center;font-size:12px;">{caption}(출처:<a href="https://x.com/KO1KEYZofficial/status/2090703676507922768" target="_blank" rel="noopener">https://x.com/KO1KEYZofficial/status/2090703676507922768</a>)</figcaption>
+</figure>''')
+
+
 OFFICIAL_NEWS = "https://ko1keyz.com/news/detail/99"
 VENUE_URL = "https://chomoand-1.com/ko/ko1keyz-fan-meeting-kr-10770"
 CAMERA_URL = "https://chomoand-1.com/ko/?p=11733"
@@ -158,6 +168,10 @@ blocks.append(p([
 ]))
 
 blocks.append(h2("생중계에서는 어떤 모습을 볼 수 있나?"))
+blocks.append(fanmi_figure(
+    "KO1KEYZ 1ST FAN MEETING 도쿄 공연 무대에 선 12명",
+    "도쿄 공연(TOYOTA ARENA TOKYO) 무대에 선 KO1KEYZ 12명",
+))
 blocks.append(p([
     "첫 팬미팅은 토크 코너, 멤버끼리의 게임, 곡 퍼포먼스, 그리고 종반의 촬영 OK 타임 등으로 구성되어 있습니다. 먼저 열린 도쿄 공연에서는 멤버들이 카트를 타고 객석을 도는 장면이나 앙코르에서의 촬영 가능 타임이 팬들 사이에서 큰 화제가 되었습니다.",
     "이번에 생중계되는 효고・저녁 공연은 총 4회차 중 마지막 회차에 해당하기 때문에, 이틀을 달려온 멤버들의 분위기나 마무리다운 인사도 볼거리가 될 것 같습니다.",
