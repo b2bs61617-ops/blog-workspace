@@ -196,6 +196,11 @@ blocks.append(notebox('''<p style="font-weight:bold;font-size:1.05em;margin:0 0 
 blocks.append(p([
     "Even if you cannot be there in person, getting to watch the very first fan meeting live is a nice thing. Mind the time difference and the sales deadline, and open the streaming page early on the day to wait for it to start.",
 ]))
+blocks.append(p([
+    "That said, a 6:30pm start on a weekday lands right when dinner and evening chores tend to pile up. For households with small children in particular, it may be hard to sit down and watch in peace.",
+    "The live-only format, with no rewind or archive, is also a genuine downside for anyone who cannot stay glued to the screen in real time. Sorting out your schedule for the day in advance, so you can be ready by the start time, helps.",
+    "We will keep this article updated as new information comes in, such as added streaming services or changes to how to watch.",
+]))
 
 blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>More on this live stream:</strong></p>
 <ul style="margin:0;padding-left:1.2em;">
