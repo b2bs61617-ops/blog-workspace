@@ -179,7 +179,7 @@ blocks.append(h2("Will there be an archive stream or a Blu-ray release?"))
 blocks.append(minibox('<p style="margin:0;"><strong>Archive stream:</strong> None (live only)</p>\n<p style="margin:4px 0 0 0;"><strong>Blu-ray/DVD release:</strong> Not announced as of September 3, 2026</p>'))
 blocks.append(p([
     "This stream has no archive (replay). You will not be able to rewatch the same broadcast afterwards, so plan for real-time viewing.",
-    f"There is also no official word yet on a Blu-ray or DVD of the shows. For more on the recording cameras spotted at the venue and the chances of a physical release, see <a href=\"{CAMERA_URL}\">Were there cameras at KO1KEYZ's 1st fan meeting? Will it get a Blu-ray release?</a>.",
+    "There is also no official word yet on a Blu-ray or DVD of the shows. Recording cameras were seen at the venue, but it is not known whether that will lead to a physical release.",
     "Note that a separate special program following the fan meeting preparations has been announced for Lemino, but that is a documentary-style piece rather than the show itself. It is a different piece of content from this Hyogo evening stream.",
 ]))
 
@@ -197,9 +197,8 @@ blocks.append(p([
     "Even if you cannot be there in person, getting to watch the very first fan meeting live is a nice thing. Mind the time difference and the sales deadline, and open the streaming page early on the day to wait for it to start.",
 ]))
 
-blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>More on KO1KEYZ's fan meeting on this blog:</strong></p>
+blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>More on this live stream:</strong></p>
 <ul style="margin:0;padding-left:1.2em;">
-<li><a href="{CAMERA_URL}" target="_blank" rel="noopener">Were there cameras at KO1KEYZ's 1st fan meeting? Will it get a Blu-ray release?</a></li>
 <li><a href="{OFFICIAL_NEWS}" target="_blank" rel="noopener">KO1KEYZ official news page (live stream details)</a></li>
 </ul>'''))
 

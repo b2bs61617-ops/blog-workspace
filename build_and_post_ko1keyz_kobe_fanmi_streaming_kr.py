@@ -181,8 +181,8 @@ blocks.append(h2("아카이브 중계나 영상물 발매는 있나?"))
 blocks.append(minibox('<p style="margin:0;"><strong>아카이브 중계:</strong>없음(생중계만)</p>\n<p style="margin:4px 0 0 0;"><strong>영상물 발매(블루레이・DVD):</strong>2026년 9월 3일 시점 발표 없음</p>'))
 blocks.append(p([
     "이번 생중계에 아카이브(다시보기) 중계는 없습니다. 중계 종료 후 같은 영상을 다시 볼 수 없는 방식이므로, 시청을 예정하고 있다면 실시간 시청을 전제로 준비해 두세요.",
-    f"공연 자체의 블루레이・DVD화에 대해서도 현시점에 공식 발표는 없습니다. 회장에 촬영용 카메라가 들어와 있던 건이나 영상물 발매 가능성에 대해서는 <a href=\"{CAMERA_URL}\">KO1KEYZ 1st 팬미팅에 카메라가? 음반화 가능성은?</a>에서 자세히 정리했습니다.",
-    f"참고로, 팬미팅 준비에 밀착한 특별 프로그램이 <a href=\"{LEMINO_URL}\">Lemino에서 방영되는 것</a>은 별도로 발표되었지만, 이는 공연 본편 그 자체가 아니라 다큐멘터리 성격의 콘텐츠입니다. 이번 효고・저녁 공연 생중계와는 다른 콘텐츠이므로 혼동하지 않도록 주의하세요.",
+    "공연 자체의 블루레이・DVD화에 대해서도 현시점에 공식 발표는 없습니다. 회장에 촬영용 카메라가 들어와 있던 것은 확인되었지만, 그것이 영상물 발매로 이어질지는 알 수 없습니다.",
+    "참고로, 팬미팅 준비에 밀착한 특별 프로그램이 Lemino에서 방영되는 것은 별도로 발표되었지만, 이는 공연 본편 그 자체가 아니라 다큐멘터리 성격의 콘텐츠입니다. 이번 효고・저녁 공연 생중계와는 다른 콘텐츠이므로 혼동하지 않도록 주의하세요.",
 ]))
 
 blocks.append(h2("정리"))
@@ -202,9 +202,6 @@ blocks.append(p([
 blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>KO1KEYZ의 팬미팅에 대해서는 이 블로그의 다른 글에서도 소개하고 있습니다.</strong></p>
 <ul style="margin:0;padding-left:1.2em;">
 <li><a href="{VENUE_URL}" target="_blank" rel="noopener">KO1KEYZ 팬미팅 공연장은 어디? 일정과 접근성도 소개!</a></li>
-<li><a href="{CAMERA_URL}" target="_blank" rel="noopener">KO1KEYZ 1st 팬미팅에 카메라가? 음반화 가능성은?</a></li>
-<li><a href="{SCHEDULE_URL}" target="_blank" rel="noopener">KO1KEYZ의 향후 스케줄은? 데뷔까지의 일정 정리</a></li>
-<li><a href="{LEMINO_URL}" target="_blank" rel="noopener">KO1KEYZ 새 프로그램이 Lemino에서 방영 결정! 시청 방법은?</a></li>
 </ul>'''))
 
 content = "\n\n".join(blocks)

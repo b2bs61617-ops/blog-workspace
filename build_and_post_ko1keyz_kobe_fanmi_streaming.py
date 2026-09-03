@@ -179,8 +179,8 @@ blocks.append(h2("アーカイブ配信や円盤化はある？"))
 blocks.append(minibox('<p style="margin:0;"><strong>アーカイブ配信:</strong>なし(生配信のみ)</p>\n<p style="margin:4px 0 0 0;"><strong>円盤化(Blu-ray・DVD):</strong>2026年9月3日時点で発表なし</p>'))
 blocks.append(p([
     "今回の生配信にアーカイブ(見逃し)配信はありません。配信終了後に同じ映像を見返すことはできない仕組みなので、視聴を予定している人はリアルタイムでの視聴を前提に準備しておきましょう。",
-    f"公演そのもののBlu-ray・DVD化についても、現時点で公式からの発表はありません。会場に収録用のカメラが入っていた件や円盤化の可能性については、<a href=\"{CAMERA_URL}\">KO1KEYZ1stファンミにカメラが？円盤化の可能性は？</a>でくわしくまとめています。",
-    f"なお、ファンミーティングの準備に密着した特別番組が<a href=\"{LEMINO_URL}\">Leminoで配信されること</a>は別に発表されていますが、こちらは公演本編そのものではなくドキュメンタリー的な内容です。今回の兵庫・夜公演の生配信とは別のコンテンツなので、混同しないよう注意してください。",
+    "公演そのもののBlu-ray・DVD化についても、現時点で公式からの発表はありません。会場には収録用のカメラが入っていたことが確認されていますが、それが円盤化につながるかどうかは分かっていません。",
+    "なお、ファンミーティングの準備に密着した特別番組がLeminoで配信されることは別に発表されていますが、こちらは公演本編そのものではなくドキュメンタリー的な内容です。今回の兵庫・夜公演の生配信とは別のコンテンツなので、混同しないよう注意してください。",
 ]))
 
 blocks.append(h2("まとめ"))
@@ -201,7 +201,6 @@ blocks.append(notebox(f'''<p style="margin:0 0 8px 0;"><strong>KO1KEYZのファ�
 <ul style="margin:0;padding-left:1.2em;">
 <li><a href="{VENUE_URL}" target="_blank" rel="noopener">KO1KEYZのファンミーティングの会場はどこ？日程やアクセスも紹介！</a></li>
 <li><a href="{DAY1_URL}" target="_blank" rel="noopener">KO1KEYZ1stファンミ初日(東京)セトリ・座席表・トロッコは？</a></li>
-<li><a href="{CAMERA_URL}" target="_blank" rel="noopener">KO1KEYZ1stファンミにカメラが？円盤化の可能性は？</a></li>
 <li><a href="{SCHEDULE_URL}" target="_blank" rel="noopener">KO1KEYZの今後のスケジュールは？デビューまでの日程まとめ</a></li>
 </ul>'''))
 
