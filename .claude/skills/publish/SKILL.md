@@ -8,13 +8,15 @@ description: 「公開して」「公開する」と言われたときに使う�
 「公開して」と言われたら以下を実行する:
 
 1. 対象の記事IDを確認する(直前の作業の記事ID、または指定された記事ID)
-2. [docs/wordpress.md](../../../docs/wordpress.md)の接続情報でREST APIを叩き、ステータスを`publish`に変更
+   - **chomoand-1.com(コイキーズブログ)は、日本語版・韓国語版・英語版の3言語セットをまとめて公開する**(2026-09-06にトモキ確認)。日本語版の記事IDが対象なら、Polylangの`translations`フィールド(または`-kr`/`-en`のslug命名規則)から韓国語版・英語版の下書きIDも引き、3件とも`publish`にする。翻訳版がまだ下書きとして存在しない場合はその言語はスキップしてよい(後日STEP6/7で生成された時点で別途公開する)。chomoand.com・chomoand-0.comは多言語展開していないので対象の1件だけ。
+2. [docs/wordpress.md](../../../docs/wordpress.md)の接続情報でREST APIを叩き、ステータスを`publish`に変更(3言語セットなら各IDについて実行)
    - エンドポイント: `POST {サイトURL}/wp-json/wp/v2/posts/{記事ID}`
    - ボディ: `{ "status": "publish" }`
-3. 公開後のURL(`{サイトURL}/?p={記事ID}`)を確定する
-4. `python tools/google_indexing.py {公開URL}` を実行し、Google Indexing APIへ即時インデックス登録をリクエストする
+3. 公開後のURL(`{サイトURL}/?p={記事ID}`)を確定する(3言語セットなら3URLとも)
+4. **公開したURLすべて**(3言語セットなら日本語・韓国語・英語の3URLとも)について`python tools/google_indexing.py {公開URL}`を実行し、Google Indexing APIへ即時インデックス登録をリクエストする
    - `.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/google-indexing-setup.md](../../../docs/google-indexing-setup.md)参照)
-5. **chomoand-1.com(コイキーズブログ)の記事のみ**、`python tools/naver_indexnow.py {公開URL}` も実行し、IndexNowプロトコル経由でNaverへ即時インデックス登録をリクエストする(2026-08-02〜)
+5. **chomoand-1.com(コイキーズブログ)の記事のみ**、`python tools/naver_indexnow.py {公開URL}`も実行し、IndexNowプロトコル経由でNaverへ即時インデックス登録をリクエストする(2026-08-02〜)
+   - **判定はサイト単位であって言語単位ではない。** chomoand-1.comの記事なら日本語版・韓国語版・英語版の**全URL**をNaverに送る(韓国語版だけではない)。日本語・英語URLを送ってもNaver側がクロール要否を判断するだけで害はない。
    - `.env`の`NAVER_INDEXNOW_KEY`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/naver-search-advisor-setup.md](../../../docs/naver-search-advisor-setup.md)参照)
    - chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
 6. **Xへの自動投稿は2026-08-10時点で意図的に停止中**。`tools/x_auto_post.py`は実装済みだが、X APIが2026年にPay-Per-Use化し「URL付き投稿$0.20/件」という単価になったことが判明し、ユーザー判断で当面Xは手動投稿にする方針になった(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。3サイトとも`.env`に`X_*`キーを設定しない運用にしているため、このステップは実行しない(キー未設定なら実行しても自動スキップされるだけなので、うっかり実行してしまっても実害はない)
