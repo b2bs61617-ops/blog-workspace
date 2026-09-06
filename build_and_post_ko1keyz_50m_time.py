@@ -38,9 +38,9 @@ PROFILE_URL = "https://chomoand-1.com/profile-12-9725"
 YUKI_WIKI_URL = "https://chomoand-1.com/yu-ki-wiki-278"
 SRC_CONCEPT_PHOTO = "https://x.com/m_yoshiki_y/status/2083762494775214250"
 
-# 本文画像(ISSAのコンセプトフォト切り出し。野球道具を持ったカット)
-BODY_IMG_PATH = ROOT / "images" / "ko1keyz_issa_concept_photo.jpg"
-EXISTING_BODY_MEDIA_ID = 12456
+# 本文画像(コンセプトフォトの複数人カット。野球・サッカー・ボクシングの道具を持った6人)
+BODY_IMG_PATH = ROOT / "images" / "ko1keyz_concept_group1.jpg"
+EXISTING_BODY_MEDIA_ID = 12460
 
 # 兄弟記事(運転免許記事)の下書きURL。作成後にここを埋めて再実行
 SIBLING_LICENSE_URL = "https://chomoand-1.com/?p=12446"
@@ -110,9 +110,13 @@ def build_img_html(m, alt, src_url):
 if EXISTING_BODY_MEDIA_ID:
     _bm = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_BODY_MEDIA_ID}", headers=HEADERS_AUTH).json()
 else:
-    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_issa_concept_photo.jpg")
+    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_concept_group1.jpg")
 print("body image media id:", _bm["id"])
-issa_img = build_img_html(_bm, "コンセプトフォトで野球道具を手にするISSA(柳谷伊冴)", SRC_CONCEPT_PHOTO)
+group_img = build_img_html(
+    _bm,
+    "KO1KEYZのコンセプトフォト。ISSAは野球、RYOGAはサッカー、RYUJIはボクシングの道具を手にしている",
+    SRC_CONCEPT_PHOTO,
+)
 
 
 def time_table(rows):
@@ -218,11 +222,15 @@ blocks.append(p([
     "6秒台前半という数字は、体を動かしてきた下地があってこそのものです。",
     "タイムが判明したメンバーを中心に、これまでのスポーツ経歴を振り返ってみます。",
 ]))
+blocks.append(group_img)
 blocks.append(p([
-    "<strong>ISSA(柳谷伊冴)</strong>は、公式のコンセプトフォトで野球ボールとグローブ、バットを手にしていたことからも分かるとおり、野球経験者です。",
+    "デビュー記念のコンセプトフォトでは、メンバーがそれぞれ経歴にちなんだ小物を手にしています。",
+    "ISSAは野球ボールとグローブ・バット、RYOGAはサッカーボール、RYUJIはボクシンググローブと、スポーツにまつわるアイテムが並んでいるのが分かります。",
+]))
+blocks.append(p([
+    "<strong>ISSA(柳谷伊冴)</strong>は、そのコンセプトフォトからも分かるとおり、野球経験者です。",
     "走塁やベースランニングで鍛えた瞬発力が、6.2秒という数字に表れているとみられます。",
 ]))
-blocks.append(issa_img)
 blocks.append(p([
     "<strong>YUKI(後藤結)</strong>は、小学生時代に野球を6年間続け、中学ではバレーボール部に所属していた本格的なスポーツ少年でした。",
     "ビーチバレーで全国大会に出場した経験もあり、運動神経の高さはファンの間でもよく知られています。",

@@ -37,9 +37,9 @@ PROFILE_URL = "https://chomoand-1.com/profile-12-9725"
 SRC_TWEET = "https://x.com/kaibun323/status/2096181192227946737"
 SRC_CONCEPT_PHOTO = "https://x.com/m_yoshiki_y/status/2083762494775214250"
 
-# 本文画像(KEITOのコンセプトフォト切り出し)。一度アップしたらIDを入れて再アップを防ぐ
-BODY_IMG_PATH = ROOT / "images" / "ko1keyz_keito_concept_photo.jpg"
-EXISTING_BODY_MEDIA_ID = 12454
+# 本文画像(コンセプトフォトの複数人カット)。一度アップしたらIDを入れて再アップを防ぐ
+BODY_IMG_PATH = ROOT / "images" / "ko1keyz_concept_group2.jpg"
+EXISTING_BODY_MEDIA_ID = 12458
 
 # 兄弟記事(50m走タイム記事)の下書きが出来たらここにURLを入れて再実行
 SIBLING_50M_URL = "https://chomoand-1.com/?p=12449"
@@ -120,9 +120,13 @@ def build_img_html(m, alt, src_url):
 if EXISTING_BODY_MEDIA_ID:
     _bm = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_BODY_MEDIA_ID}", headers=HEADERS_AUTH).json()
 else:
-    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_keito_concept_photo.jpg")
+    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_concept_group2.jpg")
 print("body image media id:", _bm["id"])
-keito_img = build_img_html(_bm, "KO1KEYZ最年長のKEITO(小野慶人)。コンセプトフォトより", SRC_CONCEPT_PHOTO)
+group_img = build_img_html(
+    _bm,
+    "KO1KEYZのコンセプトフォト(SHINHAENG・SIYOUNG・TOWA・YOSHIKI・YUKI・YURA)",
+    SRC_CONCEPT_PHOTO,
+)
 
 
 def status_table(rows):
@@ -195,6 +199,11 @@ blocks.append(status_table([
     ("DAIKI(加藤大樹)", "21歳", "公表なし"),
     ("SHINHAENG(オ・シンヘン)", "22歳", "公表なし"),
 ]))
+blocks.append(group_img)
+blocks.append(p([
+    "写真はデビュー記念のコンセプトフォトから、SHINHAENG・SIYOUNG・TOWA・YOSHIKI・YUKI・YURAの6人ぶんです。",
+    "このうち免許を持っているとみられるのはYOSHIKIのみで、SIYOUNGとYURAは「持っていない」、TOWAとYUKIはまだのようです。",
+]))
 
 blocks.append(h2("運転免許を持っているメンバー"))
 blocks.append(listbox([
@@ -208,10 +217,6 @@ blocks.append(p([
     "この5人は、トーク会やこれまでの発言で「免許を持っている」と伝えられているメンバーです。",
     "いずれも20歳を超えており、デビュー準備が本格化する前の期間に、教習所へ通ったり合宿免許で一気に取得したりしていたとみられます。",
     "グループ最年長で26歳のKEITOは、練習生になる以前から免許を持っていた可能性が高いところです。",
-]))
-blocks.append(keito_img)
-blocks.append(p([
-    "写真はデビュー記念のコンセプトフォトで撮影されたKEITO(小野慶人)です。",
     "ただし、免許があるからといって自分の車を持っているとは限りません。",
     "あくまで「運転できる資格がある」という段階だという点は押さえておきたいです。",
 ]))
