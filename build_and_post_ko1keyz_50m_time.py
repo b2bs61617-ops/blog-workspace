@@ -36,6 +36,11 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 REPORT_URL = "https://chomoand-1.com/?p=12373"
 PROFILE_URL = "https://chomoand-1.com/profile-12-9725"
 YUKI_WIKI_URL = "https://chomoand-1.com/yu-ki-wiki-278"
+SRC_CONCEPT_PHOTO = "https://x.com/m_yoshiki_y/status/2083762494775214250"
+
+# 本文画像(ISSAのコンセプトフォト切り出し。野球道具を持ったカット)
+BODY_IMG_PATH = ROOT / "images" / "ko1keyz_issa_concept_photo.jpg"
+EXISTING_BODY_MEDIA_ID = 12456
 
 # 兄弟記事(運転免許記事)の下書きURL。作成後にここを埋めて再実行
 SIBLING_LICENSE_URL = "https://chomoand-1.com/?p=12446"
@@ -71,6 +76,43 @@ def notebox(html_body):
     return wphtml(f'''<div style="border:1px solid {BORDER};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:{BG};">
 {html_body}
 </div>''')
+
+
+def upload_media(path, filename, content_type="image/jpeg"):
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/media",
+        headers={**HEADERS_AUTH, "Content-Type": content_type,
+                 "Content-Disposition": f'attachment; filename="{filename}"'},
+        data=path.read_bytes(),
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def build_img_html(m, alt, src_url):
+    md = m["media_details"]
+    sizes = md.get("sizes", {})
+    full_url, full_w, full_h = m["source_url"], md["width"], md["height"]
+    large = sizes.get("large", {"source_url": full_url, "width": full_w})
+    medium = sizes.get("medium", {"source_url": full_url, "width": full_w})
+    iw = large["width"]
+    ih = int(iw * full_h / full_w)
+    srcset = f'{medium["source_url"]} {medium["width"]}w, {large["source_url"]} {large["width"]}w, {full_url} {full_w}w'
+    return wphtml(f'''<figure class="wp-block-image size-large">
+<img src="{large["source_url"]}" alt="{alt}" width="{iw}" height="{ih}"
+  style="max-width:100%;height:auto;"
+  srcset="{srcset}"
+  sizes="(max-width: {iw}px) 100vw, {iw}px">
+<figcaption style="text-align:center;font-size:12px;">出典:<a href="{src_url}" target="_blank" rel="noopener">{src_url}</a>(コンセプトフォトの二次拡散)</figcaption>
+</figure>''')
+
+
+if EXISTING_BODY_MEDIA_ID:
+    _bm = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_BODY_MEDIA_ID}", headers=HEADERS_AUTH).json()
+else:
+    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_issa_concept_photo.jpg")
+print("body image media id:", _bm["id"])
+issa_img = build_img_html(_bm, "コンセプトフォトで野球道具を手にするISSA(柳谷伊冴)", SRC_CONCEPT_PHOTO)
 
 
 def time_table(rows):
@@ -177,9 +219,10 @@ blocks.append(p([
     "タイムが判明したメンバーを中心に、これまでのスポーツ経歴を振り返ってみます。",
 ]))
 blocks.append(p([
-    "<strong>ISSA(柳谷伊冴)</strong>は、公式のコンセプトフォトで野球ボールを手にしていたことからも分かるとおり、野球経験者です。",
+    "<strong>ISSA(柳谷伊冴)</strong>は、公式のコンセプトフォトで野球ボールとグローブ、バットを手にしていたことからも分かるとおり、野球経験者です。",
     "走塁やベースランニングで鍛えた瞬発力が、6.2秒という数字に表れているとみられます。",
 ]))
+blocks.append(issa_img)
 blocks.append(p([
     "<strong>YUKI(後藤結)</strong>は、小学生時代に野球を6年間続け、中学ではバレーボール部に所属していた本格的なスポーツ少年でした。",
     "ビーチバレーで全国大会に出場した経験もあり、運動神経の高さはファンの間でもよく知られています。",

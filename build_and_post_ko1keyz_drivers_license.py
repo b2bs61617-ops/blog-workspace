@@ -35,6 +35,11 @@ HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 REPORT_URL = "https://chomoand-1.com/?p=12373"
 PROFILE_URL = "https://chomoand-1.com/profile-12-9725"
 SRC_TWEET = "https://x.com/kaibun323/status/2096181192227946737"
+SRC_CONCEPT_PHOTO = "https://x.com/m_yoshiki_y/status/2083762494775214250"
+
+# 本文画像(KEITOのコンセプトフォト切り出し)。一度アップしたらIDを入れて再アップを防ぐ
+BODY_IMG_PATH = ROOT / "images" / "ko1keyz_keito_concept_photo.jpg"
+EXISTING_BODY_MEDIA_ID = 12454
 
 # 兄弟記事(50m走タイム記事)の下書きが出来たらここにURLを入れて再実行
 SIBLING_50M_URL = "https://chomoand-1.com/?p=12449"
@@ -81,6 +86,43 @@ def notebox(html_body):
     return wphtml(f'''<div style="border:1px solid {BORDER};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:{BG};">
 {html_body}
 </div>''')
+
+
+def upload_media(path, filename, content_type="image/jpeg"):
+    r = requests.post(
+        f"{WP_URL}/wp-json/wp/v2/media",
+        headers={**HEADERS_AUTH, "Content-Type": content_type,
+                 "Content-Disposition": f'attachment; filename="{filename}"'},
+        data=path.read_bytes(),
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def build_img_html(m, alt, src_url):
+    md = m["media_details"]
+    sizes = md.get("sizes", {})
+    full_url, full_w, full_h = m["source_url"], md["width"], md["height"]
+    large = sizes.get("large", {"source_url": full_url, "width": full_w})
+    medium = sizes.get("medium", {"source_url": full_url, "width": full_w})
+    iw = large["width"]
+    ih = int(iw * full_h / full_w)
+    srcset = f'{medium["source_url"]} {medium["width"]}w, {large["source_url"]} {large["width"]}w, {full_url} {full_w}w'
+    return wphtml(f'''<figure class="wp-block-image size-large">
+<img src="{large["source_url"]}" alt="{alt}" width="{iw}" height="{ih}"
+  style="max-width:100%;height:auto;"
+  srcset="{srcset}"
+  sizes="(max-width: {iw}px) 100vw, {iw}px">
+<figcaption style="text-align:center;font-size:12px;">出典:<a href="{src_url}" target="_blank" rel="noopener">{src_url}</a>(コンセプトフォトの二次拡散)</figcaption>
+</figure>''')
+
+
+if EXISTING_BODY_MEDIA_ID:
+    _bm = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{EXISTING_BODY_MEDIA_ID}", headers=HEADERS_AUTH).json()
+else:
+    _bm = upload_media(BODY_IMG_PATH, "ko1keyz_keito_concept_photo.jpg")
+print("body image media id:", _bm["id"])
+keito_img = build_img_html(_bm, "KO1KEYZ最年長のKEITO(小野慶人)。コンセプトフォトより", SRC_CONCEPT_PHOTO)
 
 
 def status_table(rows):
@@ -166,6 +208,10 @@ blocks.append(p([
     "この5人は、トーク会やこれまでの発言で「免許を持っている」と伝えられているメンバーです。",
     "いずれも20歳を超えており、デビュー準備が本格化する前の期間に、教習所へ通ったり合宿免許で一気に取得したりしていたとみられます。",
     "グループ最年長で26歳のKEITOは、練習生になる以前から免許を持っていた可能性が高いところです。",
+]))
+blocks.append(keito_img)
+blocks.append(p([
+    "写真はデビュー記念のコンセプトフォトで撮影されたKEITO(小野慶人)です。",
     "ただし、免許があるからといって自分の車を持っているとは限りません。",
     "あくまで「運転できる資格がある」という段階だという点は押さえておきたいです。",
 ]))
