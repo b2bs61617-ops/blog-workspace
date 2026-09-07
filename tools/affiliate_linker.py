@@ -10,6 +10,7 @@ koikeyz-affiliateスキルから、記事本文中に見つけたブランド・
 
 実行:
   python tools/affiliate_linker.py "商品名やブランド名"
+  python tools/affiliate_linker.py --json "商品名やブランド名"   # 自動挿入フロー用に候補をJSONで出力
 """
 import sys
 import json
@@ -132,8 +133,17 @@ def print_result(result):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("使い方: python tools/affiliate_linker.py \"商品名やブランド名\"")
+    args = sys.argv[1:]
+    as_json = False
+    if args and args[0] == "--json":
+        as_json = True
+        args = args[1:]
+    if not args:
+        print("使い方: python tools/affiliate_linker.py [--json] \"商品名やブランド名\"")
         sys.exit(1)
-    keyword = sys.argv[1]
-    print_result(search_product(keyword))
+    keyword = args[0]
+    result = search_product(keyword)
+    if as_json:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        print_result(result)

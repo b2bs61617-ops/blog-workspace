@@ -43,6 +43,17 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - **回避策**: capbox風の見た目が欲しい箇所は、クラス名(`swell-block-capbox`等)に頼らず、`<div style="border:1px solid #ddd;border-left:4px solid {アクセント色};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">`のようなインラインstyleで直接枠・背景を指定する(タイトル部分は`<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">`)。タイトルバー型(見出し行に背景色を敷くパターン)も同様に`<p style="...;padding:10px 18px;background:{アクセント色};color:#fff;">`+その下に`<ul>`/`<div>`をインラインstyleで続ける形にする。表(`swl-marker`ではなくtable)側で既にインラインstyle方式に切り替え済みなのと同じ考え方。KO1KEYZ記事でアクセント色を選ぶときは[docs/rules.mdの「UIボックスのアクセントカラーはメンバーカラーと被らせない」](../../../docs/rules.md#uiボックスのアクセントカラーはメンバーカラーと被らせないko1keyz2026-08-11追加)を参照。
 - **How to apply**: chomoand-0.com・chomoand-1.comどちらでも、新しくcapboxを使う記事を書くときは最初からこのインラインstyle版を使う(クラスベースの`swell-block-capbox`は`wp:html`経由では使わない)。もし将来的にクラスベースで正常表示されるケースを確認できたら(テーマ側の対応が入った等)、この回避策の要否を見直す。
 
+## STEP 1.6: 楽天/Amazonアフィリエイトリンクの自動挿入(chomoand-1.com・愛用品/私物特定記事限定、2026-09-07〜)
+
+**投稿先がchomoand-1.com(コイキーズブログ)で、かつ記事がKO1KEYZメンバー個人の「愛用品・使用アイテム・私服/アクセサリー特定」系(例: 愛用香水、ナイトルーティンの使用コスメ、私服のブランド特定)のときだけ**、STEP 1.5で作ったブロック付きHTMLに対して[koikeyz-affiliate](../koikeyz-affiliate/SKILL.md)スキルの「新規記事執筆時の自動付与」セクション(STEP 1.6)を**確認なしで自動実行**する。
+
+- ブランド名+商品カテゴリが厳密一致で書かれている言及の直後に、`(<a href="{楽天アフィリエイトURL}" ... rel="nofollow sponsored noopener">楽天で見る</a> / <a href="{Amazon検索URL}" ... rel="nofollow sponsored noopener">Amazonで見る</a>)`をinlineで追記する。
+- 別ブランド・別商品としか思えない候補しか出ない言及はスキップ(記事自体は投稿する)。同一商品は本文で最初の1回だけ。
+- リンクを1つ以上入れたら本文冒頭に`<p style="font-size:12px;color:#888;">本記事はプロモーションを含みます</p>`(重複させない)。
+- rules.mdで必須の「購入先」box/箇条書きは、このinlineリンクとは別に従来どおり必ず置く。
+- 対象外の記事(ファンミレポート・スケジュール・プロフィール等、私物特定が主眼でないもの)ではこのSTEPは丸ごとスキップ。他2サイト(chomoand.com・chomoand-0.com)も対象外。
+- 詳細な判定基準・実行手順・見送りルールは[koikeyz-affiliateスキル](../koikeyz-affiliate/SKILL.md)を正とする。韓国語版・英語版(STEP 6/7)にはリンクを引き継がない。
+
 ## STEP 2: スラッグの生成
 
 - Google翻訳API(client=gtx)でタイトルを英語に翻訳: `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=en&dt=t&q={encoded_title}`
@@ -107,5 +118,6 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 - 記事ID・スラッグ・確認URL(`{サイトURL}/?p={id}`)
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書き・英語下書きのID・スラッグ
+- (STEP1.6を実行した場合)どの言及に楽天/Amazonリンクを挿入したか、見送った言及があればその理由
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜7を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6→STEP7、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜7を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP1.6(愛用品/私物特定記事のみ・アフィリエイトリンク自動挿入)→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6→STEP7、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP1.6・STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。

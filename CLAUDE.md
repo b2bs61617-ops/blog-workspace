@@ -65,7 +65,7 @@
 | [blog-upload](.claude/skills/blog-upload/SKILL.md) | 「ブログにアップして」で投稿まで自動実行 |
 | [publish](.claude/skills/publish/SKILL.md) | 「公開して」で下書きを公開する |
 | [koikeyz-rewrite](.claude/skills/koikeyz-rewrite/SKILL.md) | コイキーズブログの既存記事リライト(対象範囲・実行フロー・監視ツール) |
-| [koikeyz-affiliate](.claude/skills/koikeyz-affiliate/SKILL.md) | コイキーズ記事のブランド・商品の言及に楽天/Amazonのアフィリエイトリンクを自動提案・挿入 |
+| [koikeyz-affiliate](.claude/skills/koikeyz-affiliate/SKILL.md) | コイキーズ記事のブランド・商品の言及に楽天/Amazonのアフィリエイトリンクを自動提案・挿入。既存記事は1件ずつOK待ち、KO1KEYZメンバー個人の愛用品/私物特定系の**新規記事**はblog-uploadのSTEP1.6で確認なし自動挿入(2026-09-07〜) |
 | [x-trend-article](.claude/skills/x-trend-article/SKILL.md) | Xトレンド監視が検知した新トレンドの自動記事化(リサーチ→執筆→chomoand.com下書きまで)。ヘッドレスClaudeから起動される |
 | [shorts-video](.claude/skills/shorts-video/SKILL.md) | コイキーズ記事をTikTok/YouTube Shorts向け縦型動画に変換(試験導入・コイキーズ限定、動画生成までを自動化・投稿は手動) |
 
@@ -89,7 +89,7 @@
 | KO1KEYZ YouTube監視(`tools/koikeyz-youtube-monitor/`) | **2026-07-30〜未使用**(試作したがユーザー判断でKO1KEYZはX監視主軸の方針に決定、タスクスケジューラ登録は削除済み)。コードのみ将来用に残置。KO1KEYZの情報収集は`tools/koikeyz-monitor/`(X監視)を参照 |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | Naverインデックス登録(`tools/naver_indexnow.py`) | コイキーズブログの記事公開時に自動送信(publishスキルから、2026-08-02〜)。IndexNowプロトコル使用、OAuth不要でGETのみ。**サイト直下へのキー検証ファイル設置だけトモキ本人が未実施**。未設定でも公開処理は止まらない。セットアップは[docs/naver-search-advisor-setup.md](docs/naver-search-advisor-setup.md) |
-| 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
+| 商品アフィリエイトリンク生成(`tools/affiliate_linker.py`) | コイキーズ記事のブランド・商品名から楽天商品検索API+Amazon検索リンクの候補を取得。koikeyz-affiliateスキルで使用。`--json`で候補を構造化出力(新規記事の自動挿入フロー用)。`.env`に`RAKUTEN_APP_ID`/`RAKUTEN_ACCESS_KEY`/`RAKUTEN_AFFILIATE_ID`/`AMAZON_ASSOCIATE_TAG`が必要 |
 | SNS自動投稿 | 記事を**公開(publish)したタイミング**で自動投稿する仕組み(2026-07-30〜導入)。Instagram/Facebook/Threads=Jetpack Socialプラグイン(1つの接続で3ネットワーク共有可能)。**chomoand-1.comのみFacebook Page・Instagram・Threadsとも接続完了・稼働中(2026-08-02〜)**。chomoand.comはプラグイン導入済みだがInstagram/Facebook/Threadsとも未接続(2026-08-10時点で拡張作業中)。chomoand-0.comは長期化していたDNS障害(ISP側のDNS横取りが原因と判明、[docs/history.md](docs/history.md)参照)が解消済みでプラグイン導入から着手可能。**投稿画像・投稿文のカスタマイズ(2026-08-11〜コイキーズで試験導入)**: SNS共有用の画像を記事内写真(本文中で最初に登場する1枚、featured_mediaごと差し替え)に、投稿文を`jetpack_publicize_message`メタでマツが書く要約文にしている(featured_mediaとは別画像を指定する機能はJetpack Social有料プラン限定と判明したため、無料の代替策として採用)。セットアップ・調査結果は[docs/sns-auto-post-setup.md](docs/sns-auto-post-setup.md)参照。**X=`tools/x_auto_post.py`を実装済みだが2026-08-10時点で意図的に未使用(手動投稿運用)**。2026年のX API Pay-Per-Use化で「URL付き投稿$0.20/件」という単価になったため、ユーザー判断で自動投稿は当面見送り、publishスキルが手動投稿用のフック文・ハッシュタグ案を提示する運用にした。経緯・料金詳細・手動投稿手順は[docs/x-auto-post-setup.md](docs/x-auto-post-setup.md)参照 |
 | ショート動画生成(`tools/shorts/`) | コイキーズ記事をTikTok/YouTube Shorts向け縦型動画に変換(2026-08-11〜試験導入)。`clip_downloader.py`(yt-dlpでX/Instagram投稿から動画DL)→`video_maker.py`(ffmpegで9:16変換・結合・テキスト焼き込み・60秒トリム)。**投稿は自動化せず手動運用**(TikTok Content Posting APIはアプリ審査が必要なため)。他人の投稿動画を再編集して別プラットフォームに載せる形になり著作権・規約違反リスクをユーザーが承知の上で運用。**このMacはセットアップ・動作確認済み(2026-08-11)**。`drawtext`フィルタ(テキスト焼き込み)には標準`ffmpeg`ではなく`ffmpeg-full`が必要(PATHは`/opt/homebrew/opt/ffmpeg-full/bin`優先)、詳細は[docs/shorts-video-setup.md](docs/shorts-video-setup.md)参照 |
 
