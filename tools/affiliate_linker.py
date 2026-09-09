@@ -22,7 +22,8 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT = Path(__file__).parent.parent
-RAKUTEN_ITEM_SEARCH_URL = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601"
+# APIバージョンは2026-08-17に 20220601 が廃止され 20260701 に移行(廃止版は "API Configuration not found" を返す)
+RAKUTEN_ITEM_SEARCH_URL = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
 AMAZON_SEARCH_URL = "https://www.amazon.co.jp/s"
 
 
