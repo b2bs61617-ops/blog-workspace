@@ -106,11 +106,11 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 
 ## STEP 6(chomoand-1.com限定): 韓国語版下書きの自動生成
 
-コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**韓国語版も日本語版と同じアイキャッチ画像をfeatured_mediaに設定する**(2026-07-30〜、日本語版のアイキャッチ復活に合わせて変更)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。STEP6を終えたら、slugが元記事の`-kr`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
+コイキーズブログ(chomoand-1.com)の記事は、STEP3完了後に**確認なしで自動的に**韓国語版の下書きも作成する(2026-07-19〜、トモキ指示)。ローカライズの方法・POSTする`lang`フィールドの使い方は[docs/korea-expansion.md](../../../docs/korea-expansion.md)を参照。**slugは必ず元記事slug+`-kr`にする**(翻訳グループの紐付けはサイト常駐mu-plugin `ko1keyz-i18n-autolink` がslug規則で自動判定するため。REST の `translations` フィールドは効かない、詳細は同docs参照)。**韓国語版も日本語版と同じアイキャッチ画像をfeatured_mediaに設定する**(2026-07-30〜、日本語版のアイキャッチ復活に合わせて変更)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。STEP6を終えたら、slugが元記事の`-kr`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
 
 ## STEP 7(chomoand-1.com限定): 英語版下書きの自動生成(2026-08-19〜)
 
-コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・Polylangの`lang`/`translations`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
+コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・POSTする`lang`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。**slugは必ず元記事slug+`-en`にする**(翻訳グループの紐付けはmu-plugin `ko1keyz-i18n-autolink` がslug規則で自動判定。REST の `translations` フィールドは効かない)。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
 
 ## 完了報告
 

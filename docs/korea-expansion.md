@@ -25,8 +25,9 @@ KO1KEYZが韓国でもデビューするため、chomoand-1.comを多言語化�
 3. **下書き投稿**: `POST {サイトURL}/wp-json/wp/v2/posts` で新規作成する。ボディに以下を含める:
    - `title`(韓国語)・`content`(韓国語、ブロック構造維持)
    - `status: "draft"`(絶対に`publish`にしない)
-   - `slug`: 元記事のslugに`-kr`を付ける(必ずこの命名規則を守ること。下記の欠落チェックがslugの前方一致でJP/KR記事を突き合わせているため、これを崩すと検知できなくなる)
-   - `lang: "ko"`・`translations: {"ja": 元記事ID}` — **PolylangのREST APIはこの2つのフィールドを書き込み時にそのまま認識する**(2026-07-19に動作確認済み。応答の`link`が自動的に`/ko/`配下のURLになっていればPolylang側で韓国語として正しく登録されている証拠。GETで読み返しても`lang`/`translations`フィールドは応答に出てこない仕様なので、そこでは判定できない)。
+   - `slug`: 元記事のslugに`-kr`を付ける(**この命名規則は必須。下記の欠落チェックと、翻訳グループ自動紐付けmu-plugin `ko1keyz-i18n-autolink` の両方がslugの`-kr`サフィックスでJP/KR記事を突き合わせている。崩すと検知も紐付けもできなくなる**)。
+   - `lang: "ko"` を含める(応答の`link`が`/ko/`配下のURLになっていればPolylang側で韓国語として登録されている証拠。GETで読み返しても`lang`フィールドは応答に出てこない仕様)。
+   - **`translations: {"ja": 元記事ID}` は送っても無害だが効果はない。** Polylang 3.8.7 free の環境では REST の `translations` 書き込みが翻訳グループに反映されないことを2026-09-09に検証済み(過去の記述「REST APIがこのフィールドを認識する」は誤り。実際には言語割り当てだけが効いていて、hreflangに必要なグループ紐付けは一度も保存されていなかった)。**翻訳グループの紐付けはサイト常駐の mu-plugin `ko1keyz-i18n-autolink.php` が save 時に自動で行う**([リポジトリの `tools/wp-mu-plugins/ko1keyz-i18n-autolink.php`](../tools/wp-mu-plugins/ko1keyz-i18n-autolink.php) を chomoand-1.com の `wp-content/mu-plugins/` に設置済み)。KR/EN版を`-kr`/`-en` slug + 正しい`lang`で作れば、次の save で JP⇔KR⇔EN が自動でグループ化され `<link rel="alternate" hreflang>` が出る。
 4. **アイキャッチは作らない**(2026-07-24〜。それまでは韓国語テキスト入りの専用アイキャッチを別途生成する運用だったが、コイキーズブログ全体でアイキャッチ自体を廃止したためこのSTEPは不要になった)。
 5. **完了報告**: 日本語版の報告に加えて、韓国語下書きのID・スラッグをユーザーに報告する。
 
@@ -40,6 +41,16 @@ STEP6は「STEP3完了後に同じ作業の続きとして自動実行する」�
 **GETでは`lang`/`translations`が返らないため、公開後のサイトマップやフロントページを見ても「下書きのまま止まっているだけ」なのか「本当に作られていない」のか区別できない。** 判定には認証付きで`status=draft`も含めて取得する必要がある。
 
 [`tools/check_translation_gaps.py`](../tools/check_translation_gaps.py)(2026-08-19に韓国語専用の`check_kr_translation_gaps.py`から改名・拡張。英語版のチェックも同時に行う)を使うと、chomoand-1.comの全記事(下書き含む)をslugの前方一致で突き合わせ、韓国語版が見つからない日本語記事を一覧化できる。**chomoand-1.com向けにblog-uploadスキルを実行する作業の最初に、まずこのスクリプトを実行して既存の抜け漏れがないか確認し、あれば先にSTEP6相当の処理で埋めてから新規記事の作業に入ること。**
+
+### hreflang(翻訳グループ紐付け)— mu-pluginで自動化(2026-09-09)
+
+**背景**: docs記載の「REST の `translations` フィールドで紐付く」は Polylang 3.8.7 free では動いていなかった。2026-09-09時点で公開JP記事136本すべてが翻訳グループ未紐付け＝`<link rel="alternate" hreflang>` が1件も出ていない状態だった(言語割り当て `/ko/` `/en/` はできていたが、グループ関係が未保存)。
+
+**恒久対策**: サイト常駐 mu-plugin [`tools/wp-mu-plugins/ko1keyz-i18n-autolink.php`](../tools/wp-mu-plugins/ko1keyz-i18n-autolink.php) を chomoand-1.com の `wp-content/mu-plugins/` に設置。`wp_after_insert_post` フックで、記事のPolylang言語とslug(`{base}` / `{base}-kr` / `{base}-en`)からグループを組み立て `pll_save_post_translations()` を呼ぶ。下書き・予約投稿も対象。言語未設定の記事や `-kr`/`-en` 規則から外れたslugには触らない(誤爆防止)。**blog-uploadのSTEP6/7で `-kr`/`-en` slug と正しい `lang` さえ守れば、以後の記事は保存時に自動でhreflangが出る。**
+
+**一括バックフィル(2026-09-09・単発)**: 既存140グループ(公開136+下書き4)を、SSH不要のブラウザ実行版スクリプト(`wp-load.php` を自前ロードしてトークンガード付きで `pll_save_post_translations()` をループ)で紐付け済み。実行後136/136の公開JP記事でhreflang出力を確認、スクリプトは削除済み。同等の監査は `tools/check_translation_gaps.py`(slug突き合わせ)+ フロントHTMLの `hreflang` grep で可能。
+
+**注意**: mu-plugin は本番投入時に一度、適当なJP記事を開いて `<head>` に `hreflang="ja"/"ko"/"en"` の3行(EN未作成なら2行)が出るか確認する。slug衝突で `-kr-2` 等になった相手は完全一致検索から漏れるので、その場合だけ手動 or バックフィルスクリプトで補う。
 
 ### PowerShellでのREST API呼び出しの注意(2026-07-19に確認)
 

@@ -56,6 +56,8 @@ chomoand-0.com(ジャニオタブログ)は以下が判明済み(2026-08-10):
 
 chomoand-1.com(コイキーズブログ)にはPolylangを導入し、韓国語版・英語版の展開を進めている(優先順位は韓国語→英語→中国語)。サイト構成・自動生成の運用フローは[docs/korea-expansion.md](korea-expansion.md)(韓国語・Polylang共通インフラ)・[docs/english-expansion.md](english-expansion.md)(英語)を参照。日本語記事アップロード時の韓国語下書き自動生成は[blog-uploadスキル](../.claude/skills/blog-upload/SKILL.md)のSTEP6、英語下書き自動生成はSTEP7に組み込み済み。**英語版の自動生成は2026-08-19以降の新規アップロードのみが対象で、既存記事への一括バックフィルは対象外。**
 
+翻訳グループの紐付け(hreflang出力)は、REST の `translations` フィールドが Polylang 3.8.7 free で効かないため、サイト常駐 mu-plugin `ko1keyz-i18n-autolink.php`([tools/wp-mu-plugins/](../tools/wp-mu-plugins/))が slug 命名規則(`-kr`/`-en`)から save 時に自動で行う(2026-09-09〜)。既存140グループはバックフィル済み。
+
 ### chomoand.com(恋リアブログ)
 
 2026-07-20時点のカテゴリと記事数(恋リア用カテゴリは番組ごとに新設済み。新しい番組を書くときは同様に`get_or_create_category`的な手順でカテゴリを新設する)。

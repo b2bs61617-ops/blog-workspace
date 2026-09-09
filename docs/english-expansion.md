@@ -20,8 +20,9 @@ KO1KEYZの海外展開の第2弾として、英語版の自動生成を追加し
 3. **下書き投稿**: `POST {サイトURL}/wp-json/wp/v2/posts` で新規作成する。
    - `title`(英語)・`content`(英語、ブロック構造維持)
    - `status: "draft"`(絶対に`publish`にしない)
-   - `slug`: 元記事のslugに`-en`を付ける(必ずこの命名規則を守ること。抜け漏れチェックがslugの前方一致でJP/EN記事を突き合わせているため、これを崩すと検知できなくなる)
-   - `lang: "en"`・`translations: {"ja": 元記事ID}`(韓国語版と同じくPolylangのREST APIがこの2フィールドを書き込み時にそのまま認識する。応答の`link`が`/en/`配下のURLになっていれば正しく登録されている証拠)
+   - `slug`: 元記事のslugに`-en`を付ける(**必須。抜け漏れチェックと翻訳グループ自動紐付けmu-plugin `ko1keyz-i18n-autolink` の両方がslugの`-en`サフィックスでJP/EN記事を突き合わせている**)。
+   - `lang: "en"` を含める(応答の`link`が`/en/`配下のURLになっていれば言語登録OK)。
+   - **`translations: {"ja": 元記事ID}` は効果なし**(Polylang 3.8.7 free で REST の `translations` 書き込みが反映されないことを2026-09-09に検証。[korea-expansion.md](korea-expansion.md)の「hreflang（翻訳グループ紐付け）」参照)。**紐付けはサイト常駐 mu-plugin [`ko1keyz-i18n-autolink.php`](../tools/wp-mu-plugins/ko1keyz-i18n-autolink.php) が save 時に自動実行する。** `-en` slug + 正しい `lang` で作れば以後は自動でhreflangが出る。
 4. **アイキャッチは日本語版と同じ画像をfeatured_mediaに設定する**(韓国語版と同じ運用。テキスト入りの英語専用アイキャッチは別途作らない)。
 5. **完了報告**: 日本語版・韓国語版の報告に加えて、英語下書きのID・スラッグをユーザーに報告する。
 
