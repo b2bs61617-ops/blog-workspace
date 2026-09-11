@@ -87,9 +87,12 @@ ISSA sings it at the first pre-chorus and again right before the final chorus, R
 
 <!-- wp:paragraph -->
 <p>The chorus line <strong>"together" ("僕らで") is sung by KEITO in both Chorus 1 and the Final Chorus</strong> &#8211; a short but consistently repeated part.<br>
-The song's opening line (the very first line of Verse 1) belongs to YUKI, while the closing line, <strong>"I'll be right here" ("そばにいるよ"), goes to YURA</strong> &#8211; a nice touch of different members bookending the track.<br>
-You can check each member's emoji-to-color pairing in <a href="https://chomoand-1.com/en/summary-of-ko1keyz-member-emoj-en-12632" target="_blank" rel="noopener">our KO1KEYZ member emoji summary</a>, and the full color list in <a href="https://chomoand-1.com/en/ko1keyz-no-color-en-12667" target="_blank" rel="noopener">our KO1KEYZ member colors article</a>.</p>
+The song's opening line (the very first line of Verse 1) belongs to YUKI, while the closing line, <strong>"I'll be right here" ("そばにいるよ"), goes to YURA</strong> &#8211; a nice touch of different members bookending the track.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">You can check each member's emoji-to-color pairing in <a href="https://chomoand-1.com/en/summary-of-ko1keyz-member-emoj-en-12632" target="_blank" rel="noopener">our KO1KEYZ member emoji summary</a>, and the full color list in <a href="https://chomoand-1.com/en/ko1keyz-no-color-en-12667" target="_blank" rel="noopener">our KO1KEYZ member colors article</a>.</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">What "Run Again"'s lyrics mean</h2>

@@ -273,9 +273,12 @@
 
 <!-- wp:paragraph -->
 <p>サビの<strong>「僕らで」は1番サビ・大サビともにKEITO</strong>が歌っていて、短いフレーズながら毎回同じメンバーが担当する数少ない固定パートになっています。<br>
-また、曲の入り(1番Aメロの1行目)はYUKI、曲を締める最後の一節<strong>「そばにいるよ」はYURA</strong>と、始まりと終わりで別のメンバーが立っているのも印象的です。<br>
-各メンバーの絵文字とカラーの対応は<a href="https://chomoand-1.com/summary-of-ko1keyz-member-emoj-10560" target="_blank" rel="noopener">KO1KEYZメンバー絵文字まとめの記事</a>、カラー一覧は<a href="https://chomoand-1.com/ko1keyz-no-color-10196" target="_blank" rel="noopener">メンバーカラーの記事</a>で確認できます。</p>
+また、曲の入り(1番Aメロの1行目)はYUKI、曲を締める最後の一節<strong>「そばにいるよ」はYURA</strong>と、始まりと終わりで別のメンバーが立っているのも印象的です。</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">各メンバーの絵文字とカラーの対応は<a href="https://chomoand-1.com/summary-of-ko1keyz-member-emoj-10560" target="_blank" rel="noopener">KO1KEYZメンバー絵文字まとめの記事</a>、カラー一覧は<a href="https://chomoand-1.com/ko1keyz-no-color-10196" target="_blank" rel="noopener">メンバーカラーの記事</a>で確認できます。</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">「Run Again」の歌詞に込められた意味</h2>

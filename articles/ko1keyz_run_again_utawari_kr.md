@@ -87,9 +87,12 @@
 
 <!-- wp:paragraph -->
 <p>사비의 <strong>'우리로(僕らで)'는 1절 사비와 라스트 사비 모두 KEITO</strong>가 부르는 반복 파트입니다.<br>
-또한 이 곡의 첫 줄(1절 A멜로디 첫 줄)은 YUKI, 곡을 마무리하는 마지막 구절 <strong>'곁에 있을게(そばにいるよ)'는 YURA</strong>가 부르며, 시작과 끝에 서로 다른 멤버가 서있는 점도 인상적입니다.<br>
-각 멤버의 이모지와 컬러 대응은 <a href="https://chomoand-1.com/ko/summary-of-ko1keyz-member-emoj-kr-10794" target="_blank" rel="noopener">KO1KEYZ 멤버 이모지 정리 글</a>, 컬러 목록은 <a href="https://chomoand-1.com/ko/ko1keyz-no-color-kr-10749" target="_blank" rel="noopener">멤버 컬러 글</a>에서 확인할 수 있습니다.</p>
+또한 이 곡의 첫 줄(1절 A멜로디 첫 줄)은 YUKI, 곡을 마무리하는 마지막 구절 <strong>'곁에 있을게(そばにいるよ)'는 YURA</strong>가 부르며, 시작과 끝에 서로 다른 멤버가 서있는 점도 인상적입니다.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">각 멤버의 이모지와 컬러 대응은 <a href="https://chomoand-1.com/ko/summary-of-ko1keyz-member-emoj-kr-10794" target="_blank" rel="noopener">KO1KEYZ 멤버 이모지 정리 글</a>, 컬러 목록은 <a href="https://chomoand-1.com/ko/ko1keyz-no-color-kr-10749" target="_blank" rel="noopener">멤버 컬러 글</a>에서 확인할 수 있습니다.</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">'Run Again' 가사에 담긴 의미</h2>

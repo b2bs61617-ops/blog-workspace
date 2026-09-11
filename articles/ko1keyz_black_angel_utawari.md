@@ -239,15 +239,25 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>間奏で挟まる<strong>「Pray / 闇に染めてこのまま2人 / Sol愛」は、1回目がSHINHAENG、2回目がYURA</strong>と担当します。<br>
-プリコーラスの<strong>「君に堕ちて行くfalling / 何度も求め続けるpain / Settle me down, so settle me down / 分かっているのに wanna love you」も、1番と2番で歌う4人がまるごと入れ替わる</strong>珍しい構成です(1番:YURA→RYUJI→YUKI→SIYOUNG、2番:SIYOUNG→RYOGA→YUKI→SHINHAENG)。<br>
+<p>間奏で挟まる<strong>「Pray / 闇に染めてこのまま2人 / Sol愛」は、1回目がSHINHAENG、2回目がYURA</strong>と担当します。</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.95em;color:#555;">「君に堕ちて行くfalling / 何度も求め続けるpain / Settle me down, so settle me down / 分かっているのに wanna love you」</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>このプリコーラスも、<strong>1番と2番で歌う4人がまるごと入れ替わる</strong>珍しい構成です(1番:YURA→RYUJI→YUKI→SIYOUNG、2番:SIYOUNG→RYOGA→YUKI→SHINHAENG)。<br>
 この曲で唯一の掛け合いが<strong>「全てを捧げよう」のRYOGA・YUKI</strong>で、ダークな世界観の中でも2人の声が重なる印象的な一節になっています。</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>6人それぞれの持ちパート数を見ると、YUKI・SIYOUNG・RYUJI・RYOGA・SHINHAENG・YURAといずれも複数回登場しており、偏りの少ないバランス型の歌割りといえます。<br>
-各メンバーの絵文字とカラーの対応は<a href="https://chomoand-1.com/summary-of-ko1keyz-member-emoj-10560" target="_blank" rel="noopener">KO1KEYZメンバー絵文字まとめの記事</a>、カラー一覧は<a href="https://chomoand-1.com/ko1keyz-no-color-10196" target="_blank" rel="noopener">メンバーカラーの記事</a>で確認できます。</p>
+<p>6人それぞれの持ちパート数を見ると、YUKI・SIYOUNG・RYUJI・RYOGA・SHINHAENG・YURAといずれも複数回登場しており、偏りの少ないバランス型の歌割りといえます。</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">各メンバーの絵文字とカラーの対応は<a href="https://chomoand-1.com/summary-of-ko1keyz-member-emoj-10560" target="_blank" rel="noopener">KO1KEYZメンバー絵文字まとめの記事</a>、カラー一覧は<a href="https://chomoand-1.com/ko1keyz-no-color-10196" target="_blank" rel="noopener">メンバーカラーの記事</a>で確認できます。</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">「BLACK ANGEL」の歌詞に込められた世界観</h2>

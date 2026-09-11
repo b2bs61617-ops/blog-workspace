@@ -69,15 +69,25 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>간주에 등장하는 <strong>'Pray / 어둠에 물들여 이대로 둘이서 / Sol愛'는 첫 번째가 SHINHAENG, 두 번째가 YURA</strong>가 맡습니다.<br>
-프리코러스의 <strong>'너에게 떨어져 가는 falling / 몇 번이고 원하게 되는 pain / Settle me down, so settle me down / 알고 있는데도 wanna love you'도 1절과 2절에서 부르는 4명이 통째로 바뀌는</strong> 흥미로운 구성입니다(1절: YURA→RYUJI→YUKI→SIYOUNG, 2절: SIYOUNG→RYOGA→YUKI→SHINHAENG).<br>
+<p>간주에 등장하는 <strong>'Pray / 어둠에 물들여 이대로 둘이서 / Sol愛'는 첫 번째가 SHINHAENG, 두 번째가 YURA</strong>가 맡습니다.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.95em;color:#555;">'너에게 떨어져 가는 falling / 몇 번이고 원하게 되는 pain / Settle me down, so settle me down / 알고 있는데도 wanna love you'</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>이 프리코러스도 <strong>1절과 2절에서 부르는 4명이 통째로 바뀌는</strong> 흥미로운 구성입니다(1절: YURA→RYUJI→YUKI→SIYOUNG, 2절: SIYOUNG→RYOGA→YUKI→SHINHAENG).<br>
 이 곡에서 유일한 합창 파트가 <strong>'모든 걸 바치자'의 RYOGA·YUKI</strong>로, 다크한 세계관 속에서도 두 사람의 목소리가 겹치는 인상적인 구절입니다.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>6명 각자의 파트 수를 보면 YUKI·SIYOUNG·RYUJI·RYOGA·SHINHAENG·YURA 모두 여러 번 등장하며, 편차가 적은 균형형 파트 분배라고 할 수 있습니다.<br>
-각 멤버의 이모지와 컬러 대응은 <a href="https://chomoand-1.com/ko/summary-of-ko1keyz-member-emoj-kr-10794" target="_blank" rel="noopener">KO1KEYZ 멤버 이모지 정리 글</a>, 컬러 목록은 <a href="https://chomoand-1.com/ko/ko1keyz-no-color-kr-10749" target="_blank" rel="noopener">멤버 컬러 글</a>에서 확인할 수 있습니다.</p>
+<p>6명 각자의 파트 수를 보면 YUKI·SIYOUNG·RYUJI·RYOGA·SHINHAENG·YURA 모두 여러 번 등장하며, 편차가 적은 균형형 파트 분배라고 할 수 있습니다.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">각 멤버의 이모지와 컬러 대응은 <a href="https://chomoand-1.com/ko/summary-of-ko1keyz-member-emoj-kr-10794" target="_blank" rel="noopener">KO1KEYZ 멤버 이모지 정리 글</a>, 컬러 목록은 <a href="https://chomoand-1.com/ko/ko1keyz-no-color-kr-10749" target="_blank" rel="noopener">멤버 컬러 글</a>에서 확인할 수 있습니다.</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">'BLACK ANGEL' 가사에 담긴 세계관</h2>

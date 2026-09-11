@@ -69,15 +69,25 @@ Chorus 1 runs RYUJI &#8594; SIYOUNG &#8594; RYOGA &#8594; YURA &#8594; SHINHAENG
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The interlude line <strong>"Pray / dye it all in darkness, just the two of us / Sol-ae" is sung by SHINHAENG the first time and YURA the second</strong>.<br>
-The pre-chorus &#8211; <strong>"falling for you / craving you again and again, this pain / settle me down, so settle me down / I know it, but I still wanna love you" &#8211; also has its four singers swap completely between verses</strong> (Verse 1: YURA &#8594; RYUJI &#8594; YUKI &#8594; SIYOUNG; Verse 2: SIYOUNG &#8594; RYOGA &#8594; YUKI &#8594; SHINHAENG).<br>
+<p>The interlude line <strong>"Pray / dye it all in darkness, just the two of us / Sol-ae" is sung by SHINHAENG the first time and YURA the second</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.95em;color:#555;">"falling for you / craving you again and again, this pain / settle me down, so settle me down / I know it, but I still wanna love you"</div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p>This pre-chorus also has <strong>its four singers swap completely between verses</strong> (Verse 1: YURA &#8594; RYUJI &#8594; YUKI &#8594; SIYOUNG; Verse 2: SIYOUNG &#8594; RYOGA &#8594; YUKI &#8594; SHINHAENG).<br>
 The only line the two of them sing together in this song is <strong>"let's give it all" by RYOGA and YUKI</strong> &#8211; a striking moment where two voices overlap inside this otherwise dark world.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Counting each member's lines, YUKI, SIYOUNG, RYUJI, RYOGA, SHINHAENG and YURA all appear multiple times, making this a fairly balanced part distribution.<br>
-Check each member's emoji-to-color pairing in <a href="https://chomoand-1.com/en/summary-of-ko1keyz-member-emoj-en-12632" target="_blank" rel="noopener">our KO1KEYZ member emoji summary</a>, and the full color list in <a href="https://chomoand-1.com/en/ko1keyz-no-color-en-12667" target="_blank" rel="noopener">our KO1KEYZ member colors article</a>.</p>
+<p>Counting each member's lines, YUKI, SIYOUNG, RYUJI, RYOGA, SHINHAENG and YURA all appear multiple times, making this a fairly balanced part distribution.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div style="border-left:3px solid #8a8378;background:#f7f6f4;padding:8px 14px;margin:0 0 12px 0;font-size:0.9em;color:#555;">Check each member's emoji-to-color pairing in <a href="https://chomoand-1.com/en/summary-of-ko1keyz-member-emoj-en-12632" target="_blank" rel="noopener">our KO1KEYZ member emoji summary</a>, and the full color list in <a href="https://chomoand-1.com/en/ko1keyz-no-color-en-12667" target="_blank" rel="noopener">our KO1KEYZ member colors article</a>.</div>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">The world built by "BLACK ANGEL"'s lyrics</h2>
