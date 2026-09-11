@@ -54,7 +54,7 @@ You can read more about the full flow of the fan meeting's first day in <a href=
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Based on fans' listening notes circulating on social media, here is the part distribution with each member's emoji swapped for their romanized name.<br>
+<p>Based on the listening notes shared in <a href="https://x.com/arigato___ryg/status/2098005662219546687" target="_blank" rel="noopener">this X (formerly Twitter) post</a>, here is the part distribution with each member's emoji swapped for their romanized name.<br>
 Name colors match each member's official color (SIYOUNG's white is shown in gray for readability).<br>
 Some posts use slightly different emoji for the same member (a dragon vs. dragon-face emoji, etc.) &#8211; both point to the same person (RYUJI or RYOGA).</p>
 <!-- /wp:paragraph -->

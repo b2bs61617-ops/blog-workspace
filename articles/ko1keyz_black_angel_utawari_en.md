@@ -47,7 +47,7 @@ The same fan meeting also featured another concept-evaluation song, "Neko," maki
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Based on fans' listening notes circulating on social media, here is the part distribution with each member's emoji swapped for their romanized name.<br>
+<p>Based on the listening notes shared in <a href="https://x.com/arigato___ryg/status/2097996056495845704" target="_blank" rel="noopener">this X (formerly Twitter) post</a>, here is the part distribution with each member's emoji swapped for their romanized name.<br>
 Name colors match each member's official color (SIYOUNG's white is shown in gray for readability).<br>
 The lyric "Sol愛" is written exactly as it appears in the original fan transcription &#8211; its precise meaning is unclear, so we've kept it as-is.</p>
 <!-- /wp:paragraph -->
