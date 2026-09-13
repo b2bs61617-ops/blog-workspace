@@ -6,6 +6,8 @@
   https://x.com/HACHIWAREtoGOTO/status/2096151845182075045
 追記(2026-09-13): YURA(安部結蘭)のタイム(6.3秒)が判明
   https://x.com/poniponi_yura/status/2098630163223511442
+追記(2026-09-13): RYOGA(飯塚亮賀)本人がヨントン(9/12)で「50m走6秒後半」と明言
+  https://x.com/RYOGA_IS_MY_KEY/status/2098706870953529692
 関西オフライントーク会シリーズのスピンオフ。まとめ記事=post 12373。
 """
 import json, os, re, base64, urllib.request, urllib.parse, subprocess, sys
@@ -155,7 +157,7 @@ blocks = []
 blocks.append(p([
     "KO1KEYZのメンバーは、50メートル走がどのくらい速いのか。",
     "2026年9月5日(土)に関西で開かれたデビュー記念のメンバー個別オフライントーク会をきっかけに、メンバーの50m走のタイムが話題になりました。",
-    "判明しているのは7人ぶんで、<strong>ISSAとYOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒</strong>、そして<strong>TOWAは「7秒台」</strong>。",
+    "判明しているのは8人ぶんで、<strong>ISSAとYOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒</strong>、<strong>RYOGAは「6秒台後半」</strong>、そして<strong>TOWAは「7秒台」</strong>。",
     "多くが6秒台前半で、成人男性の平均タイムをはっきり上回る数字です。",
 ]))
 
@@ -174,8 +176,8 @@ blocks.append(h2("KO1KEYZメンバーの50m走タイム一覧"))
 blocks.append(p([
     "このオフライントーク会は、メンバーと1対1で短時間だけ会話できる企画でした。",
     "そのなかで「50m走が速いらしい」という話が出て、具体的な秒数を教えてくれたメンバーがいたことから、レポートを通じてタイムが広まっています。",
-    "その後もファンの報告を通じて数字が少しずつ増え、名前が挙がっているのは次の7人です。",
-    "残る5人のタイムは、今のところ公表されていません。",
+    "その後もファンの報告や本人発言を通じて数字が少しずつ増え、名前が挙がっているのは次の8人です。",
+    "残る4人のタイムは、今のところ公表されていません。",
 ]))
 blocks.append(time_table([
     ("ISSA(柳谷伊冴)", "6.2秒", "野球経験者"),
@@ -184,11 +186,12 @@ blocks.append(time_table([
     ("YUKI(後藤結)", "6.3秒", "野球・バレー経験者"),
     ("YURA(安部結蘭)", "6.3秒", "特定の競技歴は非公表"),
     ("KOSUKE(照井康祐)", "6.4秒", "最年少クラス"),
+    ("RYOGA(飯塚亮賀)", "6秒台後半", "サッカー経験者・本人がヨントンで明言"),
     ("TOWA(濱田永遠)", "7秒台", "グループ最年少級"),
 ]))
 blocks.append(p([
-    "こうして並べてみると、6.2秒から6.4秒のあいだにほとんどのメンバーが収まっているのが分かります。",
-    "0.2秒の差はあるものの、7人中6人が6秒台前半という、かなりそろった数字です。",
+    "こうして並べてみると、上位6人は6.2秒から6.4秒というごく僅かな差に収まっているのが分かります。",
+    "RYOGAは「6秒台後半」とやや控えめな自己申告ですが、こちらも十分に速い部類です。",
     "TOWAだけ「7秒台」と一段のんびりした数字ですが、これはグループでも最年少級の19歳であることを踏まえると、決して遅いわけではありません。",
 ]))
 
@@ -207,7 +210,7 @@ blocks.append(wphtml(
     f'<tr><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">中学2年生 男子</td><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">約8.0秒</td><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">新体力テストの平均</td></tr>\n'
     f'<tr><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;">高校2年生 男子</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;">約7.4秒</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;">新体力テストの平均</td></tr>\n'
     f'<tr><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">20〜24歳 男性</td><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">約7.4秒前後</td><td style="background:#ffffff;border:1px solid #e4e0da;padding:9px 12px;">新体力テストの平均</td></tr>\n'
-    f'<tr><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;font-weight:bold;">KO1KEYZ(判明分)</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;font-weight:bold;">6.2〜7秒台</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;">7人中6人が6秒台前半</td></tr>\n'
+    f'<tr><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;font-weight:bold;">KO1KEYZ(判明分)</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;font-weight:bold;">6.2〜7秒台</td><td style="background:{BG};border:1px solid #e4e0da;padding:9px 12px;">8人中6人が6秒台前半</td></tr>\n'
     '</table>\n</div>'
 ))
 blocks.append(p([
@@ -241,7 +244,7 @@ blocks.append(p([
 ]))
 blocks.append(p([
     "<strong>RYOGA(飯塚亮賀)</strong>は、コンセプトフォトでサッカーボールを持っており、サッカー経験者です。",
-    "今回タイムそのものは公表されていませんが、身のこなしの軽さには定評があります。",
+    "ファンとの交流企画(ヨントン)では自身の50m走について「6秒後半」と明かしており、あわせてシャトルランも「クラス1位(多分)」と振り返っています。",
 ]))
 blocks.append(p([
     "<strong>DAIKI(加藤大樹)</strong>・<strong>YOSHIKI(矢田佳暉)</strong>・<strong>KOSUKE(照井康祐)</strong>・<strong>YURA(安部結蘭)</strong>は、特定の競技経歴が大きく取り上げられているわけではありません。",
@@ -251,16 +254,16 @@ blocks.append(p([
 blocks.append(h2("まとめ"))
 blocks.append(wphtml(f'''<div style="border:2px solid {ACCENT};border-radius:8px;background:rgba(138,131,120,0.08);padding:1em 1.25em;margin:0 0 16px 0;">
 <p style="margin:0;">
-&#10003; 9月5日のオフライントーク会をきっかけに、ファンの報告を通じて7人ぶんの50m走タイムが判明<br>
-&#10003; ISSA・YOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒、TOWAは7秒台<br>
+&#10003; 9月5日のオフライントーク会をきっかけに、ファンの報告や本人発言を通じて8人ぶんの50m走タイムが判明<br>
+&#10003; ISSA・YOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒、RYOGAは6秒台後半、TOWAは7秒台<br>
 &#10003; 20〜24歳男性の平均は約7.4秒。6秒台前半は運動部レベルの速さ<br>
 &#10003; ISSAは野球、YUKIは野球・バレー、RYOGAはサッカーの経験者<br>
-&#10003; タイムはファンの報告にもとづくもので、YOSHIKIは6.2秒と6.3秒で報告が分かれている
+&#10003; RYOGAはヨントンで本人が「6秒台後半」と明言、YOSHIKIは6.2秒と6.3秒でファンの報告が分かれている
 </p>
 </div>'''))
 blocks.append(p([
     "スポーツ経歴のあるメンバーが多いことは知られていましたが、具体的な数字が出てくると速さがより実感できます。",
-    "残る5人のタイムや、関東会場のトーク会で新しい情報が出てきたら、この記事にも追記していきます。",
+    "残る4人のタイムや、関東会場のトーク会で新しい情報が出てきたら、この記事にも追記していきます。",
 ]))
 
 _rel = [
@@ -299,7 +302,7 @@ def get_slug(title, fallback, maxlen=40):
 
 
 SUMMARY = ("2026年9月5日のKO1KEYZオフライントーク会をきっかけに判明した、メンバーの50m走のタイムを紹介。"
-           "ISSA・YOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒、TOWAは7秒台と、一般平均よりかなり速い数字です。")
+           "ISSA・YOSHIKIが6.2秒前後、DAIKI・YUKI・YURAが6.3秒、KOSUKEが6.4秒、RYOGAは6秒台後半、TOWAは7秒台と、一般平均よりかなり速い数字です。")
 
 EXISTING_POST_ID = 12449
 EXISTING_EYECATCH_MEDIA_ID = 12450
