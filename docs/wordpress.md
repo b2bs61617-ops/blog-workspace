@@ -7,10 +7,11 @@
 | 恋リアブログ | https://chomoand.com | **恋愛リアリティ番組の出演者wiki**(2026-07-14〜)。旧「トレンドブログ」。`.env`のキー名は`WP_TREND_*`のまま(改名すると全PCの`.env`更新が必要なため据え置き) | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
 | ジャニオタブログ | https://chomoand-0.com | ジャニーズ系記事全般(オーディション番組系だけでなく、グループ・メンバー個人の話題・ファンクラブ情報なども含む) | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
+| Travis Japan専門ブログ | https://chomoand-4.blog | **Travis Japan専門**(2026-09-13新設、サイト名「ちょものTravis Japan情報局」)。以前はTravis Japan記事もchomoand-0.comに投稿していたが、新設後は**新規記事のみ**こちらへ。既存のchomoand-0.com上のTravis Japan記事はそのまま残す(移行はしない) | `WP_CHOMO4_URL` / `WP_CHOMO4_USERNAME` / `WP_CHOMO4_APP_PASSWORD`(サイト新設時の命名の都合でキー名は`CHOMO4`のまま) |
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。
 
-**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事→chomoand-0.com、コイキーズ記事→chomoand-1.com。
+**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事(Travis Japan以外)→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**。
 
 ## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定/2026-08-06、chomoand-0.comは例外指定)
 
@@ -18,10 +19,10 @@
 
 **例外: chomoand-0.com(ジャニオタブログ)だけはPCによらず投稿者を`b2bs61617@gmail.com`(user id 1、認証に使っているアカウント本人)に固定する**(2026-08-06にユーザーから指示。「ジャニーズブログに関しては投稿者はb2bs61617@gmail.comでおっけー」)。下表の「chomoand-0.com」列はこの例外指定の対象外(chomoand.com・chomoand-1.comは引き続き下表のPCごとの名義を使う)。
 
-| PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com |
-|---|---|---|---|---|
-| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) |
-| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) |
+| PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com | chomoand-4.blog |
+|---|---|---|---|---|---|
+| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) |
+| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) |
 
 - hostnameは`hostname`コマンドで確認できる。
 - [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
@@ -51,6 +52,16 @@ chomoand-0.com(ジャニオタブログ)は以下が判明済み(2026-08-10):
 **Travis Japanメンバー・グループに関する記事は、`categories`に`[3, 7]`(ジャニーズ+Travis Japan)の両方を指定する**(2026-08-10にユーザー指示)。ジャニーズだけ付けてTravis Japanカテゴリを付け忘れるミスが実際にあった(post 408・330で発覚、後から追加で修正)。新規投稿時はもちろん、過去に片方しか付いていない記事を見つけたら気づいた範囲で追加してよい。
 
 グループ・メンバー全体の話題(メンカラ・絵文字まとめなど)は`[66, 62]`(KO1KEYZ+まとめ)を使うとよい。
+
+chomoand-4.blog(Travis Japan専門ブログ)は以下が判明済み(2026-09-13):
+
+| ID | 名前 |
+|---|---|
+| 1 | 未分類 |
+| 3 | Travis Japan |
+| 4 | ジャニーズ |
+
+投稿時は基本`[3]`(Travis Japan)を指定する。グループ横断・他ジャニーズグループとの絡みなど「ジャニーズ全般」寄りの内容を含む記事は`[3, 4]`にする(chomoand-0.comの「Travis Japanは[3,7]両方付ける」ルールと同じ考え方)。
 
 ### 多言語化(2026-07-19〜、2026-08-19に英語追加)
 

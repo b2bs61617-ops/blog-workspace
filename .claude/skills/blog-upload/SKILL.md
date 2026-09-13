@@ -5,7 +5,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 # ブログアップロードスキル
 
-「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う。
+「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う(chomoand-4.blogだけキー名が`WP_CHOMO4_*`)。既存のchomoand-0.com上のTravis Japan記事はそのまま残し移行しない。
 
 ## STEP 1: 記事ファイルの読み込み・HTML変換
 
@@ -93,6 +93,7 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   - `export-design`で1200×675のPNGにして`images/`に保存
   - Canva MCPが使えないときのフォールバックは[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の汎用テンプレ(1200×630px)
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
+- **chomoand-4.blog(Travis Japan専門ブログ)は、chomoand-0.comと同じ`tools/eyecatch_chomoand0.py`のTravis Japanメンバーカラー版をそのまま流用する**(2026-09-13〜、専用テンプレはまだ無い)。詳細は[docs/eyecatch-style.mdの「Travis Japanメンバーカラー適用」](../../../docs/eyecatch-style.md)参照
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定

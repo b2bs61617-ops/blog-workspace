@@ -6,11 +6,12 @@
 ## プロジェクト概要
 
 トレンドブログの作業場です。人物・話題の記事を調査・執筆し、WordPressに投稿します。
-運営サイトは3つあります(詳細は [docs/wordpress.md](docs/wordpress.md)):
+運営サイトは4つあります(詳細は [docs/wordpress.md](docs/wordpress.md)):
 
 - **chomoand.com** — **「恋愛リアリティ番組の出演者wiki」特化サイト**。ABEMA『今日、好きになりました。』『オオカミくん』系、Netflix『ボーイフレンド』『あいの里』系、Amazon『バチェラー』系など**配信プラットフォーム横断**で、出演者の学歴・家族構成・彼氏彼女・本名を掘る。作業手順は[koi-real](.claude/skills/koi-real/SKILL.md)スキル。**最大の勝ち筋は「新シーズンの出演者発表直後」に最速で書くこと**(まだ誰も学歴を書いていない空白期間が2〜4週間ある)。出演者は一般人・未成年が多いためプライバシーの線引きが必須(koi-realスキル参照)。方針転換の経緯は[docs/chomoand-pivot.md](docs/chomoand-pivot.md)。
 - **chomoand-0.com** — ジャニオタブログ
 - **chomoand-1.com** — コイキーズブログ
+- **chomoand-4.blog** — **Travis Japan専門ブログ**(2026-09-13新設、サイト名「ちょものTravis Japan情報局」)。Travis Japanのメンバー・グループの調査記事はこのサイトへ下書きする。既存の`chomoand-0.com`上のTravis Japan記事(カテゴリ「Travis Japan」)はそのまま残し、**今後の新規記事だけ**こちらへ振り分ける。記事の書き方自体は既存のジャニーズ系スキル([wiki-article](.claude/skills/wiki-article/SKILL.md)・[gakureki-kazoku-kanojo](.claude/skills/gakureki-kazoku-kanojo/SKILL.md))を流用する(専用スキルはまだ無い)。認証情報は`.env`の`WP_CHOMO4_*`(サイト新設時の命名の都合でキー名は`CHOMO4`のまま、`TRAVIS`ではない)。
 
 ## アシスタントの人格
 
