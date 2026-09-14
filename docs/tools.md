@@ -94,6 +94,21 @@ chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・�
 - タスクスケジューラに`YouTube-Talent-Monitor`というタスク名で登録済み(2026-07-29、1台のPCで毎日**23:00 JST**実行)。実行時刻は直近8日間・76件の投稿時刻を集計して決めた(0〜6時台の投稿はゼロ、ピークは18時と21時、23時までに当日投稿の100%が出揃う。**当初は8時に登録していたが、それだと当日投稿の96%がまだ上がっていない状態でチェックしてしまうことが分析で判明し23時に変更**)。1日1回のみのため投稿からチェックまで最大約23時間のラグがあるが、「最速で書く」を優先してチェック頻度を増やす場合はx-trend-monitorと同じ複数回/日方式への変更を検討する。
 - `channel_id`が`null`のまま残っている4チャンネル(Johnny's official本体、ジュニアCHANNEL、Johnny's Gaming Room、SUPER EIGHT)はハンドルが確認できず自動解決できなかった。特にSUPER EIGHT(旧関ジャニ∞)は名称が一般的すぎて誤同定リスクがあるため見送った。確認でき次第`channels.json`に手動で追記する。
 
+### 追記(2026-09-14): 特定タイトルの過去動画をURL無しで探したいとき、RSSフィードは404することがある
+
+「ロケ地・私物特定の元ネタが公式YouTube動画らしいが動画URLが分からない、タイトルの一部(キーワード)だけ分かっている」というとき、上記の公開RSSフィード(`https://www.youtube.com/feeds/videos.xml?channel_id=...`)に頼ろうとすると、チャンネルによっては単純に**404 Not Found**が返ってくることがある(2026-09-14、Travis Japan公式チャンネルで確認。`channel_id`自体はチャンネルページの`externalId`から取得した正しい値だったにもかかわらず404)。原因未特定(チャンネル側の配信設定によるものとみられる)。
+
+- **代替手順**: チャンネルの`/videos`タブ(`https://www.youtube.com/@ハンドル/videos`)を`curl -A "Mozilla/5.0 ..."`でそのまま取得すると、ページ埋め込みの`ytInitialData`にここ数十本ぶんの動画一覧がJSONで入っている。ただし**2026年時点のYouTubeは動画一覧の描画に`videoRenderer`ではなく`richItemRenderer` → `lockupViewModel`という新しいスキーマを使っている**ため、`grep -o "videoRenderer"`で探しても0件になる(旧スキーマ前提の情報が古いブログ記事等に多いので注意)。
+- タイトル文字列は`"title":{"content":"動画タイトル"}`というパターンで拾える。目当てのキーワード(例:「コストコ」)でこの文字列を検索し、そのタイトルの前後数千文字の範囲から`"videoId":"XXXXXXXXXXX"`(11文字)または`/vi/XXXXXXXXXXX/`(サムネイルURL中のID)を正規表現で拾えば、videoIdが確定する。
+- 確認例(Git Bashから):
+  ```bash
+  curl -sL -A "Mozilla/5.0" "https://www.youtube.com/@TravisJapan_official/videos" -o /tmp/videos.html
+  grep -o '"title":{"content":"[^"]*"' /tmp/videos.html | grep -i "コストコ"
+  # 見つかったタイトル文字列の前後を検索してvideoIdを特定(pythonのre.findallで前後6000文字を検索するのが確実)
+  ```
+- videoIdが分かれば、あとは通常通り`yt-dlp --js-runtimes deno -f <format_id> ...`でダウンロード・フレーム抽出すればよい(下記「JSランタイム(deno)必須」の節を参照)。
+- **How to apply**: RSSフィードが404/空で返ってきても「その動画は存在しない」と即断せず、まず`/videos`タブのHTMLスクレイピングにフォールバックすること。
+
 ## 記事本文用に動画から1コマだけ手動で切り出したい場合(2026-08-03)
 
 `youtube-talent-monitor`の`visual_analysis.py`と同じyt-dlp+opencv方式を、監視ツールを介さずその場で単発実行したいとき(例:記事に使う特定シーンの画像が欲しい)のやり方。
@@ -109,6 +124,15 @@ chomoand-0.com(ジャニオタブログ)向け。STARTO ENTERTAINMENT所属・�
 - **`yt_dlp`が`No supported JavaScript runtime could be found`警告を出す環境では、`format: "best[height<=720]"`のような結合フォーマット指定だと360p(`18`)しか取れないことがある**(署名解読にJSランタイムが必要な高解像度の結合フォーマットが選べないため)。フレーム抽出は音声不要なので、`info['formats']`から**映像のみのフォーマット(例:`format_id == '137'`で1080p mp4/avc1)を直接指定**すれば`cv2.VideoCapture`でそのまま高解像度フレームが取れる。`ffmpeg`が無くても映像onlyストリームなら結合不要でそのまま使える。
 - MVなど映画的画角(シネマスコープ)の動画は上下に黒帯(レターボックス)が入っていることが多い。そのままだと本文画像に不要な黒帯が写るため、`cv2`でグレースケール化して行ごとの平均輝度が閾値以下の行を上下から削る(黒帯除去)と綺麗にトリミングできる。
 - **メンバー全員など「N人全員が写っている画像がほしい」と頼まれたときは、候補シーンを選ぶ前にその画角でN人が横に並びきるかを確認する**。寄りのカット(例:エンディングの整列ショット)は1人あたりの横幅が大きく、7人グループでも16:9フレームに5人程度しか収まらないことがある(2026-08-05、Travis Japan「On My Road -Stadium ver.-」記事で確認)。全員を収めたい場合は、寄りのカットに固執せず、サビの隊形シーンや俯瞰・引きのカットなど**カメラが遠い/広い画角のタイムスタンプ**を優先して探す方が確実。
+
+### 追記(2026-09-06): 現在のYouTubeはJSランタイム(deno)必須・古いyt-dlpだと403/画像onlyになる
+
+2026-09-06(松倉海斗のAcne Studiosバッグ記事、chomoand-0.com)時点で、YouTube側の仕様変更により以下が必要になった。
+
+- **`yt-dlp`を最新に更新する**(`python -m pip install -U yt-dlp`)。古いバージョン(2026-06系)だと`android_vr`クライアントの署名なしURLが即`HTTP Error 403: Forbidden`になり、`web`クライアントだと`Only images are available`になってダウンロードできない。
+- **JSランタイム(deno)を入れる**。`No supported JavaScript runtime could be found`が出る環境では署名解読ができず高解像度フォーマットが取れない。Windowsは`$env:DENO_INSTALL="$HOME\.deno"; irm https://deno.land/install.ps1 | iex`で`~/.deno/bin/deno.exe`に入る(PATHにも追加される)。yt-dlp実行時に`--js-runtimes deno`を付ける(PATH未反映のセッションでは`export PATH="$PATH:$HOME/.deno/bin"`しておく)。
+- 上記2点が揃えば`yt-dlp -f 137 --js-runtimes deno`等で1080p動画をローカルにDLできる。**その後のフレーム抽出は、`cv2`で直リンクをシークするより「動画をローカルに丸ごとDL→`cv2`か同梱ffmpegでフレーム抽出」の方が安定**(直リンクへの`cv2.VideoCapture`は黒フレーム/ズレが出やすい)。
+- **`ffmpeg`が未インストールでも`imageio_ffmpeg`同梱バイナリが使える**: `FF=$(python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")` → `"$FF" -ss {秒} -i video.mp4 -frames:v 1 -q:v 2 out.jpg`。av01(VP9/AV1)コーデックの動画は`cv2`のシークが極端に遅いので、avc1(H.264)フォーマット(例:`134`=360p, `135`=480p, `136`=720p, `137`=1080p)を選んでDLするか、この同梱ffmpegで抜く。
 
 ### 追記(2026-08-13): 手描き見取り図・手書き画像を清書きするときは必ず元画像を高解像度で切り出して確認する
 
