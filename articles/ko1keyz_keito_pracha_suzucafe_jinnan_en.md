@@ -39,11 +39,11 @@ Despite its convenient location within walking distance of Shibuya Station, the 
 
 <!-- wp:html -->
 <figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg" alt="SUZU CAFE Jinnan overview" width="336" height="500"
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg" alt="SUZU CAFE Jinnan's antique sofa lounge area" width="500" height="373"
   style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-201x300.jpg 201w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg 336w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map.jpg 780w"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-300x224.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge.jpg 780w"
   sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">Source: https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
+<figcaption style="text-align:center;font-size:12px;">Source: https://x.com/atsushi_1007_/status/2054517008117473415</figcaption>
 </figure>
 <!-- /wp:html -->
 
@@ -80,8 +80,19 @@ The Velvet Gateau au Chocolat is known for its rich, melt-in-the-mouth dark choc
 <!-- /wp:table -->
 
 <!-- wp:paragraph -->
-<p>All three desserts get a 50-yen discount with a drink set between 2pm and 6pm (excluding weekends and holidays), so fans hoping to try the same menu as KEITO might want to stop by on a weekday afternoon.</p>
+<p>All three desserts get a 50-yen discount with a drink set between 2pm and 6pm (excluding weekends and holidays), so fans hoping to try the same menu as KEITO might want to stop by on a weekday afternoon.<br>
+The dessert menu also includes a "Rich Matcha Pudding" (750 yen) made with plenty of Kyoto Uji matcha, which is another popular pick among regulars.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg" alt="SUZU CAFE Jinnan's Rich Matcha Pudding" width="332" height="500"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-199x300.jpg 199w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg 332w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding.jpg 720w"
+  sizes="(max-width: 1024px) 100vw, 1024px">
+<figcaption style="text-align:center;font-size:12px;">Source: https://x.com/hapuchan___/status/2061462791014560197</figcaption>
+</figure>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">KEITO's Reputation on Pracha</h2>

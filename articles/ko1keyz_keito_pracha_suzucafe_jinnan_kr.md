@@ -39,11 +39,11 @@
 
 <!-- wp:html -->
 <figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg" alt="SUZU CAFE 진난의 매장 정보" width="336" height="500"
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg" alt="SUZU CAFE 진난의 앤티크 소파 라운지" width="500" height="373"
   style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-201x300.jpg 201w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg 336w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map.jpg 780w"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-300x224.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge.jpg 780w"
   sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">출처:https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
+<figcaption style="text-align:center;font-size:12px;">출처:https://x.com/atsushi_1007_/status/2054517008117473415</figcaption>
 </figure>
 <!-- /wp:html -->
 
@@ -80,8 +80,19 @@
 <!-- /wp:table -->
 
 <!-- wp:paragraph -->
-<p>3가지 모두 14시〜18시(주말・공휴일 제외)에는 음료 세트 이용 시 50엔 할인되는 서비스도 있어, KEITO와 같은 메뉴를 직접 맛보고 싶은 팬이라면 평일 오후에 방문하는 것이 이득입니다.</p>
+<p>3가지 모두 14시〜18시(주말・공휴일 제외)에는 음료 세트 이용 시 50엔 할인되는 서비스도 있어, KEITO와 같은 메뉴를 직접 맛보고 싶은 팬이라면 평일 오후에 방문하는 것이 이득입니다.<br>
+디저트 메뉴에는 이 외에도 교토 우지 말차를 듬뿍 사용한 「진한 말차 푸딩」(750엔) 같은 메뉴도 있어, 이쪽도 방문객들 사이에서 인기입니다.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg" alt="SUZU CAFE 진난의 진한 말차 푸딩" width="332" height="500"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-199x300.jpg 199w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg 332w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding.jpg 720w"
+  sizes="(max-width: 1024px) 100vw, 1024px">
+<figcaption style="text-align:center;font-size:12px;">출처:https://x.com/hapuchan___/status/2061462791014560197</figcaption>
+</figure>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">프라차에서의 KEITO 평판은?</h2>

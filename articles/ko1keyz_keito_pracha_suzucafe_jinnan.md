@@ -39,11 +39,11 @@
 
 <!-- wp:html -->
 <figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg" alt="SUZU CAFE 神南の店内・概要" width="336" height="500"
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg" alt="SUZU CAFE 神南のアンティークソファのラウンジ席" width="500" height="373"
   style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-201x300.jpg 201w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map-336x500.jpg 336w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_map.jpg 780w"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-300x224.jpg 300w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge-500x373.jpg 500w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_sofa_lounge.jpg 780w"
   sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">出典:https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
+<figcaption style="text-align:center;font-size:12px;">出典:https://x.com/atsushi_1007_/status/2054517008117473415</figcaption>
 </figure>
 <!-- /wp:html -->
 
@@ -80,8 +80,19 @@
 <!-- /wp:table -->
 
 <!-- wp:paragraph -->
-<p>3品とも14時〜18時(土日祝日を除く)はドリンクセット利用で50円引きになるサービスもあるため、KEITOと同じメニューを実際に味わってみたいというファンには、平日の午後に訪れるのがお得です。</p>
+<p>3品とも14時〜18時(土日祝日を除く)はドリンクセット利用で50円引きになるサービスもあるため、KEITOと同じメニューを実際に味わってみたいというファンには、平日の午後に訪れるのがお得です。<br>
+デザートメニューにはこのほか、京都宇治抹茶をふんだんに使った「濃い抹茶プリン」(750円)といった一品もあり、こちらも来店客から人気を集めています。</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<figure class="wp-block-image size-large">
+<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg" alt="SUZU CAFE 神南の濃い抹茶プリン" width="332" height="500"
+  style="max-width:100%;height:auto;"
+  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-199x300.jpg 199w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding-332x500.jpg 332w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_matcha_pudding.jpg 720w"
+  sizes="(max-width: 1024px) 100vw, 1024px">
+<figcaption style="text-align:center;font-size:12px;">出典:https://x.com/hapuchan___/status/2061462791014560197</figcaption>
+</figure>
+<!-- /wp:html -->
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading">プラチャでのKEITOの評判は？</h2>
