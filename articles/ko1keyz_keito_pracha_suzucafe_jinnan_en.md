@@ -64,29 +64,20 @@ Review sites put its rating at around 3.6 (from over 500 reviews), and the menu 
 <h2 class="wp-block-heading">The Desserts KEITO Is Thought to Have Recommended</h2>
 <!-- /wp:heading -->
 
-<!-- wp:html -->
-<div style="border:1px solid #f2ddc4;border-left:4px solid #e0812f;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#fdf6ee;">
-<p style="margin:0;"><strong>Vanilla Ice Cream &amp; Custard Pudding:</strong>890 yen (tax included)<br>
-<strong>Velvet Gateau au Chocolat:</strong>880 yen (tax included)<br>
-<strong>Blueberry Rare Cheesecake with Brown Sugar:</strong>880 yen (tax included)</p>
-</div>
-<!-- /wp:html -->
-
 <!-- wp:paragraph -->
 <p>Among SUZU CAFE Jinnan's dessert menu, these three items stand out in particular.<br>
 The <strong><span class="swl-marker mark_orange">Vanilla Ice Cream &amp; Custard Pudding</span></strong> tops the cafe's signature firm-set custard pudding — made with a Vietnamese-style caramel hiding a touch of coffee — with vanilla ice cream, making it a step up from the standalone custard pudding (750 yen).<br>
 The Velvet Gateau au Chocolat is known for its rich, melt-in-the-mouth dark chocolate, while the Blueberry Rare Cheesecake made with brown sugar balances a refreshing tartness with gentle sweetness.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:html -->
-<figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg" alt="SUZU CAFE Jinnan dessert menu" width="450" height="500"
-  style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-270x300.jpg 270w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg 450w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu.jpg 780w"
-  sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">Source: https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
-</figure>
-<!-- /wp:html -->
+<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
+<tr><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">Item</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;width:18%;">Price (tax incl.)</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">Notes</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">Vanilla Ice Cream &amp; Custard Pudding</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">890 yen</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">Signature custard pudding topped with vanilla ice cream</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;">Velvet Gateau au Chocolat</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">880 yen</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">Rich, melt-in-the-mouth dark chocolate</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">Blueberry Rare Cheesecake</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">880 yen</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">Made with brown sugar, refreshingly tart</td></tr>
+</tbody></table></figure>
+<!-- /wp:table -->
 
 <!-- wp:paragraph -->
 <p>All three desserts get a 50-yen discount with a drink set between 2pm and 6pm (excluding weekends and holidays), so fans hoping to try the same menu as KEITO might want to stop by on a weekday afternoon.</p>

@@ -64,29 +64,20 @@
 <h2 class="wp-block-heading">KEITOがすすめたとみられるデザートメニューは？</h2>
 <!-- /wp:heading -->
 
-<!-- wp:html -->
-<div style="border:1px solid #f2ddc4;border-left:4px solid #e0812f;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#fdf6ee;">
-<p style="margin:0;"><strong>バニラアイス&amp;カスタードプリン:</strong>890円(税込)<br>
-<strong>生チョコ仕立てのガトーショコラ:</strong>880円(税込)<br>
-<strong>キビ砂糖を使ったブルーベリーのレアチーズケーキ:</strong>880円(税込)</p>
-</div>
-<!-- /wp:html -->
-
 <!-- wp:paragraph -->
 <p>SUZU CAFE 神南のデザートメニューの中でも、特に目を引くのがこの3品です。<br>
 <strong><span class="swl-marker mark_orange">バニラアイス&amp;カスタードプリン</span></strong>は、SUZU CAFE名物の固めに仕上げたカスタードプリンに、コーヒーを隠し味にしたベトナム風カラメルとバニラアイスを合わせた看板デザートで、単品のカスタードプリン(750円)よりワンランク贅沢な一皿になっています。<br>
 生チョコ仕立てのガトーショコラは濃厚な生チョコレートの口どけが特徴で、キビ砂糖を使ったブルーベリーのレアチーズケーキはさっぱりとした酸味とやさしい甘さのバランスが魅力です。</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:html -->
-<figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg" alt="SUZU CAFE 神南のデザートメニュー" width="450" height="500"
-  style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-270x300.jpg 270w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg 450w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu.jpg 780w"
-  sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">出典:https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
-</figure>
-<!-- /wp:html -->
+<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
+<tr><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">メニュー</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;width:18%;">価格(税込)</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">ひとこと</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">バニラアイス&amp;カスタードプリン</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">890円</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">名物カスタードプリン+バニラアイスの看板デザート</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;">生チョコ仕立てのガトーショコラ</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">880円</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">濃厚な生チョコレートの口どけ</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">ブルーベリーのレアチーズケーキ</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">880円</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">キビ砂糖使用、さっぱりとした酸味</td></tr>
+</tbody></table></figure>
+<!-- /wp:table -->
 
 <!-- wp:paragraph -->
 <p>3品とも14時〜18時(土日祝日を除く)はドリンクセット利用で50円引きになるサービスもあるため、KEITOと同じメニューを実際に味わってみたいというファンには、平日の午後に訪れるのがお得です。</p>

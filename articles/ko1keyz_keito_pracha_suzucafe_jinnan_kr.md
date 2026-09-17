@@ -64,29 +64,20 @@
 <h2 class="wp-block-heading">KEITO가 추천한 것으로 보이는 디저트 메뉴는?</h2>
 <!-- /wp:heading -->
 
-<!-- wp:html -->
-<div style="border:1px solid #f2ddc4;border-left:4px solid #e0812f;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#fdf6ee;">
-<p style="margin:0;"><strong>바닐라 아이스크림&amp;커스터드 푸딩:</strong>890엔(세금 포함)<br>
-<strong>생초콜릿 스타일 가토 쇼콜라:</strong>880엔(세금 포함)<br>
-<strong>황설탕을 사용한 블루베리 레어치즈케이크:</strong>880엔(세금 포함)</p>
-</div>
-<!-- /wp:html -->
-
 <!-- wp:paragraph -->
 <p>SUZU CAFE 진난의 디저트 메뉴 중에서도 특히 눈에 띄는 것이 이 3가지입니다.<br>
 <strong><span class="swl-marker mark_orange">바닐라 아이스크림&amp;커스터드 푸딩</span></strong>은 SUZU CAFE의 대표 메뉴인 단단하게 만든 커스터드 푸딩에, 커피를 숨은 맛으로 더한 베트남풍 캐러멜과 바닐라 아이스크림을 곁들인 시그니처 디저트로, 단품 커스터드 푸딩(750엔)보다 한 단계 더 사치스러운 한 접시입니다.<br>
 생초콜릿 스타일 가토 쇼콜라는 진한 생초콜릿의 부드러운 식감이 특징이며, 황설탕을 사용한 블루베리 레어치즈케이크는 산뜻한 산미와 은은한 단맛의 밸런스가 매력입니다.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:html -->
-<figure class="wp-block-image size-large">
-<img src="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg" alt="SUZU CAFE 진난의 디저트 메뉴" width="450" height="500"
-  style="max-width:100%;height:auto;"
-  srcset="https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-270x300.jpg 270w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu-450x500.jpg 450w, https://chomoand-1.com/wp-content/uploads/2026/09/ko1keyz_keito_pracha_suzucafe_dessert_menu.jpg 780w"
-  sizes="(max-width: 1024px) 100vw, 1024px">
-<figcaption style="text-align:center;font-size:12px;">출처:https://x.com/ryokaoshidesu2/status/2100441737957421497</figcaption>
-</figure>
-<!-- /wp:html -->
+<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
+<tr><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">메뉴</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;width:18%;">가격(세금포함)</td><td style="background:#e0812f;color:#fff;font-weight:bold;border:1px solid #e0812f;padding:8px 12px;">한마디</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">바닐라 아이스크림&amp;커스터드 푸딩</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">890엔</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">대표 커스터드 푸딩+바닐라 아이스크림 시그니처 디저트</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;">생초콜릿 스타일 가토 쇼콜라</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">880엔</td><td style="border:1px solid #f2ddc4;padding:8px 12px;">진한 생초콜릿의 부드러운 식감</td></tr>
+<tr><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">블루베리 레어치즈케이크</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">880엔</td><td style="border:1px solid #f2ddc4;padding:8px 12px;background:#fdf6ee;">황설탕 사용, 산뜻한 산미</td></tr>
+</tbody></table></figure>
+<!-- /wp:table -->
 
 <!-- wp:paragraph -->
 <p>3가지 모두 14시〜18시(주말・공휴일 제외)에는 음료 세트 이용 시 50엔 할인되는 서비스도 있어, KEITO와 같은 메뉴를 직접 맛보고 싶은 팬이라면 평일 오후에 방문하는 것이 이득입니다.</p>
