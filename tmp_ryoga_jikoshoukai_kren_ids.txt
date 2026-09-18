@@ -1,0 +1,2 @@
+kr=13192 kr_slug=ryoga-jikoshoukai-naruto-kuchiyose-kr kr_media=13193
+en=13195 en_slug=ryoga-jikoshoukai-naruto-kuchiyose-en

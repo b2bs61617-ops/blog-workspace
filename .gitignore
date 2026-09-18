@@ -34,6 +34,9 @@ tools/koikeyz-youtube-monitor/monitor_state.json
 tools/koikeyz-youtube-monitor/reports/
 tools/koikeyz-youtube-monitor/frames/
 
+# 記事執筆用にYouTube動画からアドホックに抽出した動画クリップ・フレーム(著作権のある動画のためリポジトリに含めない。ローカルには残す方針)
+frames_tmp/
+
 # マラソン現在地トラッカーのローカル生成データ(PCごとの状態・記事バックアップ・ログ)
 tools/marathon-tracker/state.json
 tools/marathon-tracker/backups/
