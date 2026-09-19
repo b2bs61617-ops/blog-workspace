@@ -181,27 +181,38 @@ document.fonts.ready.then(() => {{
 
 
 def _script_3line() -> str:
-    """3行デザイン用スクリプト: 各行を横幅に合わせて拡大し、2行目を必ず一番大きくする."""
+    """3行デザイン用スクリプト: 画面いっぱいに使う.
+
+    1・3行目は大きな文字(基準112px)、2行目は特大(基準230px)+縦に引き伸ばす。
+    行が横幅に収まらないときは、まず横だけ詰め(縦長の文字にする)、それでも足りなければ文字を小さくする。
+    """
     return f"""<script>
 document.fonts.ready.then(() => {{
   const [l1, l2, l3] = ['l1', 'l2', 'l3'].map(id => document.getElementById(id));
-  const fitW = (el, max, width) => {{
-    let size = max;
+  const FIT_W = 1130, USABLE_H = 560, GAP = 40;
+  // 文字サイズ(max)で並べ、幅超過なら横を詰める(minSx まで)。それでも超えるなら文字自体を小さくする
+  const fit = (el, max, minSx, growSx = 1) => {{
+    el.style.fontSize = max + 'px';
+    const w = el.getBoundingClientRect().width;
+    let size = max, sx = 1;
+    if (w < FIT_W) sx = Math.min(growSx, FIT_W / w);  // 短い行は横にも伸ばして画面を使う(growSx>1のときだけ)
+    if (w > FIT_W) {{
+      sx = FIT_W / w;
+      if (sx < minSx) {{ size = Math.floor(max * FIT_W / (w * minSx)); sx = minSx; }}
+    }}
     el.style.fontSize = size + 'px';
-    while (size > 20 && el.getBoundingClientRect().width > width) {{ size -= 2; el.style.fontSize = size + 'px'; }}
+    el.dataset.sx = sx; el.dataset.sy = 1;
     return size;
   }};
-  const FIT_W = 1060, GAP = 18, FIT_H = {CANVAS_H} - 2 * 52;
-  const s2 = fitW(l2, 200, FIT_W);
-  // 1・3行目は装飾ライン分(::before/::after)も幅に含めてフィットし、2行目の68%を上限にして格差を保つ
-  const cap = Math.floor(s2 * 0.68);
-  fitW(l1, Math.min(96, cap), FIT_W);
-  fitW(l3, Math.min(96, cap), FIT_W);
-  const els = [l1, l2, l3];
-  const total = els.reduce((s, e) => s + e.getBoundingClientRect().height, 0) + GAP * 2;
-  if (total > FIT_H) {{
-    const r = FIT_H / total;
-    for (const e of els) e.style.fontSize = Math.floor(parseFloat(e.style.fontSize) * r) + 'px';
+  const h1 = fit(l1, 112, 0.62), h3 = fit(l3, 112, 0.62);
+  const h2 = fit(l2, 230, 0.7, 1.3);
+  // 残りの高さを2行目の縦伸ばしで使い切る(最大1.7倍)
+  const sy = Math.max(1, Math.min(1.7, (USABLE_H - h1 - h3 - GAP * 2) / h2));
+  l2.dataset.sy = sy;
+  for (const el of [l1, l2, l3]) {{
+    const size = parseFloat(el.style.fontSize), sy2 = parseFloat(el.dataset.sy);
+    el.style.transform = `scale(${{el.dataset.sx}}, ${{sy2}})`;
+    el.style.margin = (size * (sy2 - 1) / 2) + 'px 0';  // 縦に伸ばした分の場所を確保
   }}
   document.querySelector('.stage').style.gap = GAP + 'px';
   document.body.dataset.fitted = '1';
@@ -286,14 +297,14 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 .title mark {{ color: inherit; background: linear-gradient(transparent 58%, {main if dark else tint} 58%, {main if dark else tint} 94%, transparent 94%);
   padding: 0 4px; {"text-shadow: 0 0 24px rgba(20,8,50,.85);" if dark else ""} }}
 /* 3行デザイン: 1・3行目は控えめ、2行目だけ特大+メンバーカラーのマーカー */
-.l {{ position: relative; z-index: 2; white-space: nowrap; text-align: center; line-height: 1.18;
+.l {{ position: relative; z-index: 2; white-space: nowrap; text-align: center; line-height: 1;
   color: {"#fff" if dark else "#1c1c1c"};
   text-shadow: {"0 0 22px rgba(20,8,50,.9), 0 3px 0 rgba(20,8,50,.45)" if dark else "0 0 14px rgba(255,255,255,.9)"}; }}
 .l1, .l3 {{ letter-spacing: 0.05em; opacity: 0.94; }}
 .l2 {{ letter-spacing: 0.01em; padding: 0 22px;
   background: linear-gradient(transparent 60%, {main if dark else tint} 60%, {main if dark else tint} 93%, transparent 93%); }}
-.l1::before, .l1::after, .l3::before, .l3::after {{ content: ''; display: inline-block; width: 46px; height: 4px; border-radius: 2px;
-  vertical-align: middle; margin: 0 18px; background: {main}; box-shadow: 0 0 12px {main}; }}
+.l1::before, .l1::after, .l3::before, .l3::after {{ content: ''; display: inline-block; width: 32px; height: 5px; border-radius: 3px;
+  vertical-align: middle; margin: 0 12px; background: {main}; box-shadow: 0 0 12px {main}; }}
 {theme_css}
 </style>
 </head>
