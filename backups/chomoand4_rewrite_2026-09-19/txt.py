@@ -1,0 +1,17 @@
+import sys, re, html
+sys.stdout.reconfigure(encoding='utf-8')
+for pid in sys.argv[1:]:
+    t = open(f'original/{pid}.html', encoding='utf-8').read()
+    t = re.sub(r'<!--.*?-->', '', t, flags=re.S)
+    t = re.sub(r'<figure[^>]*>.*?<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)".*?(?:<figcaption[^>]*>(.*?)</figcaption>)?.*?</figure>', lambda m: f'\n[IMG {m.group(1).split("/")[-1]} alt={m.group(2)} cap={re.sub("<[^>]+>","",m.group(3) or "")}]\n', t, flags=re.S)
+    t = re.sub(r'<h([23])[^>]*>', lambda m: '\n' + '#'*int(m.group(1)) + ' ', t)
+    t = re.sub(r'</(p|li|tr|div|h\d)>', '\n', t)
+    t = re.sub(r'</t[dh]>', ' | ', t)
+    t = re.sub(r'<br\s*/?>', '\n', t)
+    t = re.sub(r'<iframe[^>]*src="([^"]+)"[^>]*>', lambda m: '\n[MAP ' + m.group(1)[:80] + ']\n', t)
+    t = re.sub(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', r'\2(\1)', t)
+    t = re.sub(r'<[^>]+>', '', t)
+    t = html.unescape(t)
+    t = re.sub(r'\n\s*\n+', '\n', t)
+    print(f'=========== {pid} ===========')
+    print(t.strip())
