@@ -93,7 +93,11 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   - `export-design`で1200×675のPNGにして`images/`に保存
   - Canva MCPが使えないときのフォールバックは[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の汎用テンプレ(1200×630px)
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
-- **chomoand-4.blog(Travis Japan専門ブログ)は、chomoand-0.comと同じ`tools/eyecatch_chomoand0.py`のTravis Japanメンバーカラー版をそのまま流用する**(2026-09-13〜、専用テンプレはまだ無い)。詳細は[docs/eyecatch-style.mdの「Travis Japanメンバーカラー適用」](../../../docs/eyecatch-style.md)参照
+- **chomoand-4.blog(Travis Japan専門ブログ)は、確認なしで自動的に`tools/eyecatch_torahja.py`の3行デザインで作る**(2026-09-19〜、トモキ指示「トラジャで記事を作成したらアイキャッチは自動で作って」。旧`eyecatch_chomoand0.py`は使わない)。手順:
+  1. 記事タイトル(投稿するそのままのタイトル。変更しない)を、**「1行目|2行目|3行目」に分ける**。2行目=タイトルで一番強調したい内容(答え・オチ。短く8文字前後が理想)、1・3行目はなるべく短く。3行をつなげると(Travis Japan/トラジャを除いた)タイトルと一致させる(一致しないとツールがエラーで止まる)。
+  2. `python tools/eyecatch_torahja.py --title "<記事タイトル全文>" --split "1行目|2行目|3行目" --out images/{ファイル名}_eyecatch.png`。**`--color-key`は省略**(タイトルにメンバー1人→そのメンバーカラー、グループ/なし/複数→紫を自動判定。出力の`color-key: ◯◯`を確認)。「Travis Japan」「トラジャ」の省略も自動。
+  3. STEP5でアップロードしてfeatured_mediaに設定する。ユーザーへの完了報告にアイキャッチの分け方(3行)を一言添える。
+  - ルールと経緯は[docs/eyecatch-style.mdの「Travis Japan 3行デザイン」](../../../docs/eyecatch-style.md)参照。既存44記事は2026-09-19に一括適用済み(`backups/chomoand4_eyecatch_3line_2026-09-19/`)。
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定
