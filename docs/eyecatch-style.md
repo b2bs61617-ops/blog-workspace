@@ -8,7 +8,28 @@
 | **chomoand.com(恋愛リアリティ番組の出演者記事)** | **`tools/eyecatch_chomoand.py`必須**(2026-07-19〜)。詳細は下記「chomoand.com統一テンプレ」参照。Canva MCP版(design_id: `DAHPjgiBOTI`、[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md))は2026-07-19に運用停止(経緯は同docs参照) |
 | chomoand.com(恋リア以外の旧カテゴリ記事) | 対象外。第2次転換([docs/chomoand-pivot.md](chomoand-pivot.md))で凍結済みの旧記事(トレンド系・未分類など)はそのまま放置。新デザインを適用するのは恋リア記事のみ |
 | chomoand-0.com | **`tools/eyecatch_chomoand0.py`必須**(HTML+Playwrightで汎用テンプレを自動生成。手動でHTML/PowerShellを組む必要はない)。詳細は下記「汎用テンプレ」参照 |
-| chomoand-4.blog(Travis Japan専門、2026-09-13新設) | chomoand-0.comと同じ`tools/eyecatch_chomoand0.py`を流用し、**必ず`--color-key`でTravis Japanメンバーカラーを指定する**(下記「Travis Japanメンバーカラー適用」参照)。専用テンプレはまだ無い |
+| chomoand-4.blog(Travis Japan専門、2026-09-13新設) | **`tools/eyecatch_torahja.py`の3行デザイン必須**(2026-09-19〜、下記「Travis Japan 3行デザイン」参照)。旧方式(`eyecatch_chomoand0.py`+`--color-key`)は使わない |
+
+## Travis Japan 3行デザイン(chomoand-4.blog専用、2026-09-19〜、トモキ指示)
+
+`tools/eyecatch_torahja.py`(HTML+Playwright、極太丸ゴシック、1200×630)。ルール:
+
+1. **記事タイトルをそのまま使う**(要約・言い換え禁止)。
+2. タイトルの「**Travis Japan**」「**トラジャ**」は**省略する**。`【Travis Japan】`は括弧ごと、`トラジャの〜`は頭の助詞ごと自動で消える。
+3. **3行で作る**。**2行目=タイトルで一番強調したい内容(答え・オチ)**で、最大サイズ+濃色マーカー。1・3行目は小さめ(2行目の約68%以下)。
+4. **背景色はタイトルで自動決定**(`--color-key`省略=auto): メンバー名(フルネーム・名字・被らない名前)が**1人だけ**出てくればそのメンバーカラーの背景、**グループ全体の話題・メンバー不在・複数人なら紫**(ステージライト)。
+
+```bash
+python tools/eyecatch_torahja.py \
+  --title "宮近海斗がコストコでかぶってた帽子は6CRAYONと判明！" \
+  --split "宮近海斗がコストコでかぶってた帽子は|6CRAYON|と判明！" \
+  --out images/xxx_eyecatch.png
+```
+
+- `--split "1行目|2行目|3行目"`はマツがタイトルを見て決める。3行をつなげた文字列が(グループ名省略後の)タイトルと一致しないとエラーになる(ルール①の担保)。
+- `--split`を付けないと従来の全文1ブロック表示(バッジ+文節改行)になる。
+- 出力時に`color-key: ◯◯`が表示されるので、色の判定結果を確認できる。判定を上書きしたいときだけ`--color-key "松田元太"`等を指定する。
+- 「海斗」だけの表記は2人(宮近・松倉)いるため判定に使わない。フルネームか名字で判定する。
 
 ## chomoand.com統一テンプレ(恋愛リアリティ番組の出演者記事専用)
 
@@ -65,6 +86,23 @@ python tools/eyecatch_koikeyz.py \
 ## 汎用テンプレ(chomoand-0.com / chomoand.comのフォールバック用)
 
 サイズ: 1200×630px(OGP/WordPress標準)。人物名を超大きく中央に、グラデーションblobの背景、色はランダムで毎回変える。
+
+**2026-09-17更新**: トモキから「アイキャッチをもっと見やすくしたい」との依頼で`tools/eyecatch_chomoand0.py`を改修。
+- KO1KEYZ/chomoand.comテンプレと同じ「各行を横幅いっぱいまで自動フィット」をJSで追加(以前は行数に応じた固定サイズのみで、短い名前でも余白が余ったり長い行だけ小さくなったりしていた)。
+- 全テキストに白いグロー(`text-shadow`の多重ぼかし)を追加し、パステルblobに重なっても文字が沈まないようコントラストを強化。
+
+**2026-09-17追加更新(2回目)**: chomoand-4.blogの直近5記事に上記の`--top`/`--main`/`--bottom`で作った案(グループ名+人物名+トピック抜粋の3段構成)を出したところ、トモキから「微妙だね。記事のタイトルをそのままアイキャッチにして。文字のサイズは全て2倍に」と修正指示。**`--title`オプションを追加**し、以後chomoand-0.com/chomoand-4.blogのアイキャッチは**記事タイトルをそのまま(自動改行のみ)大きく表示するのが標準**になった。
+
+```bash
+python tools/eyecatch_chomoand0.py \
+  --title "宮近海斗がコストコでかぶってた帽子は6CRAYONと判明！" \
+  --color-key "宮近海斗" \
+  --out images/xxx_eyecatch.png
+```
+
+- `--title`指定時は`--top`/`--main`/`--bottom`は無視される。`wrap_title()`がタイトルの文字数から適切な行数(概ね2〜4行、文字数の平方根に比例)を自動算出し、句読点・記号の直後を優先しつつ**英数字の単語(ブランド名など)の途中では改行しない**ように改行位置を決める(「6CRAYON」が「6C」「RAYON」に割れるのを防ぐため)。
+- 文字サイズの上限を全体的に倍増(top: 56→112px / bottom: 60→120px / main 1行: 130→260px、2行: 110→220px、3行: 190px、4行: 170px、5行以上: 150px)。ただし横幅基準の自動フィット(`FIT_WIDTH`、1080→1140pxに拡大)だけだと結局同じ幅で頭打ちになって「2倍」にならないため、**縦方向にはみ出す場合は全要素のフォントサイズを比率で縮小する2段階フィット**(`FIT_HEIGHT=560px`)をJSに追加し、はみ出さない範囲で実際に大きく見えるようにした。
+- `--main`/`--top`/`--bottom`を使う従来の使い方(chomoand.com/KO1KEYZ等、他ツールとの組み合わせ)は引き続き動く(後方互換)。
 
 ### 作り方(2通り)
 
