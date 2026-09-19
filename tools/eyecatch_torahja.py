@@ -72,7 +72,7 @@ MEMBER_ALIASES: dict[str, tuple[str, ...]] = {
     "七五三掛龍也": ("七五三掛龍也", "七五三掛", "龍也"),
     "川島如恵留": ("川島如恵留", "川島", "如恵留"),
     "吉澤閑也": ("吉澤閑也", "吉澤", "閑也"),
-    "松田元太": ("松田元太", "松田", "元太"),
+    "松田元太": ("松田元太", "松田", "元太", "げんた"),
     "松倉海斗": ("松倉海斗", "松倉"),
 }
 
@@ -93,6 +93,8 @@ def strip_group_name(title: str) -> str:
     「トラジャの◯◯」のように消したあと頭に残る助詞(の/が/は…)も落とす。
     """
     t = GROUP_BRACKET_RE.sub("", title.strip())
+    # 文頭・「】」直後のグループ名は、続く助詞(の/が/は…)ごと消す(「【開幕戦】Travis Japanが履いた靴」→「【開幕戦】履いた靴」)
+    t = re.sub(rf"(^|】)[ 　]*(?:{GROUP_WORD_RE.pattern})[のがはをにでともへ]*", lambda m: m.group(1), t, flags=re.IGNORECASE)
     t = GROUP_WORD_RE.sub("", t)
     return LEADING_JUNK_RE.sub("", t).strip()
 
