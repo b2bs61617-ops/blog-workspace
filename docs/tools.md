@@ -174,3 +174,13 @@ chomoand-1.com(コイキーズブログ)向けに、上記YouTubeタレント監
 - サービスアカウントのJSON鍵が必要で、`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`が未設定の場合は通知だけスキップされ、公開処理自体は止まらない(LINE通知と同じフェイルセーフ方式)。
 - セットアップ手順は[docs/google-indexing-setup.md](google-indexing-setup.md)参照。
 - Indexing APIは規約上Job Posting/BroadcastEvent専用が本来の用途で、ブログ記事への利用は黙認されている状態である点に注意。
+
+## 検索順位チェック(`tools/rank_check.py`)
+
+指定キーワードで実際にYahoo!検索を開き、対象ドメインが何位に出ているかをその場で確認するツール(2026-09-22追加)。
+
+- 実行例: `python tools/rank_check.py "トークィーンズ Travis Japan 恋愛観" chomoand-4.blog`
+- Playwright(`channel="chrome"`、インストール済みの実Chromeを起動)で毎回新規コンテキスト(シークレットウィンドウ相当)を開いて検索し、結果リンクを上から順位付けして対象ドメインが最初に出現する順位を返す。
+- **Yahoo!検索のみ対応。Googleは非対応**: ヘッドレスChromeでGoogle検索を開くと`/sorry/index`(異常なトラフィック検知)へ即リダイレクトされブロックされる。ブラウザ偽装等の回避策は取らない方針のため、Googleの順位はこのツールでは取得できない。
+- Googleの順位を知りたい場合は、Search Console API(`searchAnalytics.query`。サービスアカウント`chomoand-466@model-gearing-465707-d6.iam.gserviceaccount.com`を対象サイトのSearch Consoleに追加すれば使える。[google-indexing-setup.md](google-indexing-setup.md)と同じ鍵を流用)で実績データを見るか、トモキ本人がシークレットウィンドウで目視確認する。
+- Search Console実績データ(過去のインプレッション・平均掲載順位)との違い: `rank_check.py`は「今この瞬間の順位」、Search Consoleは「Googleが記録した実際の検索結果からの実績」(2〜3日のラグあり、低頻度クエリはプライバシー保護で個別非表示)。両方見ると答え合わせになる。
