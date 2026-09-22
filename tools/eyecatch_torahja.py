@@ -104,10 +104,10 @@ def build_bg_prompt(color_key: str, style: str) -> str:
         )
     if style == "elegant":
         return (
-            f"soft pastel {color_word} watercolor wash background, clearly tinted delicate "
-            "gradient, airy minimal atmosphere, subtle blurred light, empty with absolutely "
-            "no people and no faces, no text, no logo, blog banner background, elegant "
-            "minimalist non-photorealistic illustration style"
+            f"elegant watercolor floral border frame, delicate {color_word} flowers and "
+            "leaves clustered densely along the four edges and corners only, vast plain "
+            "white empty space filling the center, botanical watercolor illustration, "
+            "blog banner background, no people, no faces, no text, no logo"
         )
     return (
         f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
@@ -405,7 +405,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 .frame {{ position: absolute; inset: 18px; border: {"1px solid rgba(60,50,60,0.16)" if elegant else f"3px solid {'rgba(255,255,255,0.28)' if dark else 'rgba(255,255,255,0.9)'}"}; border-radius: {6 if elegant else 26}px; }}
 .ai-bg {{ position: absolute; top: 0; left: 0; width: {CANVAS_W + BG_OVERSCAN_W}px; height: {CANVAS_H + BG_OVERSCAN_H}px; z-index: 0; }}
 .scrim {{ position: absolute; inset: 0; z-index: 0;
-  background: {f"{tint}b3" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
+  background: {"rgba(255,255,255,0.1)" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
 .badge {{ position: relative; z-index: 2; font-size: 44px; letter-spacing: 0.06em; padding: 8px 34px 10px; border-radius: 999px;
   color: {"#fff" if dark else "#fff"}; background: {main if dark else "#2b1a55"}; {"color:#1b1030;" if dark and color_key in ("吉澤閑也","川島如恵留") else ""}
   box-shadow: 0 6px 24px {main}88; }}
