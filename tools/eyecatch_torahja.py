@@ -35,6 +35,20 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 FONT_PATH = REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf"
 FONT_ELEGANT_LIGHT = REPO_ROOT / "assets" / "fonts" / "NotoSerifJP-Light.ttf"
 FONT_ELEGANT_REGULAR = REPO_ROOT / "assets" / "fonts" / "NotoSerifJP-Medium.ttf"
+# elegantスタイル専用の固定背景(トモキ提供、紫の水彩フラワー・左右の縁取り+中央クリーム無地)。
+# AI生成(構図がぶれる・二重フレーム化・ウォーターマーク)をやめて、この1枚をhue-rotateで使い回す。
+FLORAL_BG_PATH = REPO_ROOT / "assets" / "eyecatch_torahja_floral_bg.png"
+# 元画像は紫(COLORS["group"]の主色 #a487cf、HSL色相 約264°)基準。各メンバーカラーの色相との差分(deg)。
+FLORAL_HUE_ROTATE: dict[str, int] = {
+    "宮近海斗": 89,     # 赤
+    "中村海人": -114,   # 緑
+    "七五三掛龍也": 67,  # ピンク
+    "川島如恵留": -41,   # シルバー
+    "吉澤閑也": 144,     # 黄
+    "松田元太": -48,     # 青
+    "松倉海斗": 127,     # オレンジ
+    "group": 0,          # 紫(元画像のまま)
+}
 
 POLLINATIONS_BASE_URL = "https://image.pollinations.ai/prompt/"
 POLLINATIONS_MODEL = "flux"
@@ -93,7 +107,10 @@ def _shade(hex_color: str, amount: float) -> str:
 
 
 def build_bg_prompt(color_key: str, style: str) -> str:
-    """メンバーカラーとstyle(light/stage/elegant)から背景生成プロンプトを組み立てる(顔・人物は描かせない)."""
+    """メンバーカラーとstyle(light/stage)から背景生成プロンプトを組み立てる(顔・人物は描かせない).
+
+    elegantはAI生成をやめ固定アセット(FLORAL_BG_PATH)+hue-rotateに切り替えたため対象外。
+    """
     color_word = MEMBER_COLOR_WORDS.get(color_key, "purple")
     if style == "stage":
         return (
@@ -101,14 +118,6 @@ def build_bg_prompt(color_key: str, style: str) -> str:
             "bokeh light particles, dark navy gradient, atmospheric fog, empty stage with "
             "absolutely no people and no faces, no text, no logo, blog banner background, "
             "cinematic lighting, non-photorealistic digital art"
-        )
-    if style == "elegant":
-        return (
-            f"elegant watercolor floral illustration, dense clusters of {color_word} and "
-            "teal flowers and leaves along the left side and right side only, wide open "
-            "plain cream textured paper area filling the center, botanical vector "
-            "illustration style, blog banner background, no people, no faces, no text, "
-            "no logo"
         )
     return (
         f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
@@ -326,6 +335,7 @@ def build_html(
     style: str = "stage",
     lines: list[str] | None = None,
     bg_path: Path | None = None,
+    hue_deg: int = 0,
 ) -> str:
     """lines(3要素)を渡すと3行デザイン(2行目を最大・マーカー強調)、なければ従来の全文1ブロック."""
     if color_key not in COLORS:
@@ -405,8 +415,10 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 .dot {{ position: absolute; border-radius: 50%; background: #fff; opacity: {0.7 if dark else 0}; box-shadow: 0 0 10px #fff; }}
 .frame {{ position: absolute; inset: 18px; border: {"1px solid rgba(60,50,60,0.16)" if elegant else f"3px solid {'rgba(255,255,255,0.28)' if dark else 'rgba(255,255,255,0.9)'}"}; border-radius: {6 if elegant else 26}px; }}
 .ai-bg {{ position: absolute; top: 0; left: 0; width: {CANVAS_W + BG_OVERSCAN_W}px; height: {CANVAS_H + BG_OVERSCAN_H}px; z-index: 0; }}
+.floral-bg {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+  filter: hue-rotate({hue_deg}deg) saturate(1.02); }}
 .scrim {{ position: absolute; inset: 0; z-index: 0;
-  background: {"radial-gradient(ellipse 620px 330px at 50% 50%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.96) 38%, rgba(255,255,255,0) 78%)" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
+  background: {"rgba(255,255,255,0.06)" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
 .badge {{ position: relative; z-index: 2; font-size: 44px; letter-spacing: 0.06em; padding: 8px 34px 10px; border-radius: 999px;
   color: {"#fff" if dark else "#fff"}; background: {main if dark else "#2b1a55"}; {"color:#1b1030;" if dark and color_key in ("吉澤閑也","川島如恵留") else ""}
   box-shadow: 0 6px 24px {main}88; }}
@@ -430,7 +442,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 </head>
 <body>
 <div class="stage">
-  {f'<img class="ai-bg" src="{bg_path.resolve().as_uri()}"><div class="scrim"></div>' if bg_path else ""}
+  {f'<img class="floral-bg" src="{bg_path.resolve().as_uri()}"><div class="scrim"></div>' if (bg_path and elegant) else (f'<img class="ai-bg" src="{bg_path.resolve().as_uri()}"><div class="scrim"></div>' if bg_path else "")}
   {"" if elegant else '<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="dot" style="left:96px;top:70px;width:9px;height:9px"></div><div class="dot" style="left:1040px;top:120px;width:7px;height:7px"></div><div class="dot" style="left:180px;top:540px;width:6px;height:6px"></div><div class="dot" style="left:1110px;top:500px;width:10px;height:10px"></div><div class="dot" style="left:600px;top:44px;width:5px;height:5px"></div>'}
   {'<div class="blob eb1"></div><div class="blob eb2"></div><div class="blob eb3"></div>' if (elegant and not bg_path) else ""}
   {"" if elegant else '<div class="frame"></div>'}
@@ -484,32 +496,41 @@ def main() -> None:
     )
     ap.add_argument(
         "--ai-bg", action=argparse.BooleanOptionalAction, default=True,
-        help="背景をPollinations.aiで毎回AI生成する(既定で有効・人物なしの抽象ステージ演出)。--no-ai-bgでCSSグラデーションに固定",
+        help="背景をPollinations.aiで毎回AI生成する(stage/light用、既定で有効)。--no-ai-bgでCSSグラデーションに固定。"
+        "elegantは固定アセット(assets/eyecatch_torahja_floral_bg.png)を使うため無効",
     )
-    ap.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
+    ap.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(stage/light用。elegantでは無視される)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     if args.split and args.lines:
         raise SystemExit("--split と --lines は同時に指定できない")
     color_key = detect_color_key(args.title) if args.color_key == "auto" else args.color_key
     print(f"color-key: {color_key}")
-    bg_path = resolve_ai_background(args.ai_bg, color_key, args.style, args.seed)
+    hue_deg = 0
+    tmp_bg_path: Path | None = None
+    if args.style == "elegant":
+        # 固定アセット+hue-rotateで色替え(AI生成だと構図がぶれる・ウォーターマークが乗る問題があったため)
+        bg_path = FLORAL_BG_PATH
+        hue_deg = FLORAL_HUE_ROTATE.get(color_key, 0)
+    else:
+        bg_path = resolve_ai_background(args.ai_bg, color_key, args.style, args.seed)
+        tmp_bg_path = bg_path
     try:
         if args.split:
             stripped = strip_group_name(args.title)
             lines = parse_split(stripped, args.split)
-            html_text = build_html(stripped, color_key, args.style, lines, bg_path)
+            html_text = build_html(stripped, color_key, args.style, lines, bg_path, hue_deg)
         elif args.lines:
             parts = [p.strip() for p in args.lines.split("|")]
             if len(parts) != 3 or not all(parts):
                 raise SystemExit(f'--lines は「1行目|2行目|3行目」の3つ(空なし)で指定: {args.lines!r}')
-            html_text = build_html("", color_key, args.style, parts, bg_path)
+            html_text = build_html("", color_key, args.style, parts, bg_path, hue_deg)
         else:
-            html_text = build_html(args.title, color_key, args.style, bg_path=bg_path)
+            html_text = build_html(args.title, color_key, args.style, bg_path=bg_path, hue_deg=hue_deg)
         print(f"done: {render(html_text, Path(args.out))}")
     finally:
-        if bg_path is not None:
-            bg_path.unlink(missing_ok=True)
+        if tmp_bg_path is not None:
+            tmp_bg_path.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
