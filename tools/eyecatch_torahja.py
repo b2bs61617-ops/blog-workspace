@@ -104,9 +104,11 @@ def build_bg_prompt(color_key: str, style: str) -> str:
         )
     if style == "elegant":
         return (
-            f"delicate watercolor painting of {color_word} flowers and green leaves "
-            "clustered near the edges and corners, botanical illustration, blog banner "
-            "background, no people, no faces, no text, no logo"
+            f"elegant watercolor floral illustration, dense clusters of {color_word} and "
+            "teal flowers and leaves along the left side and right side only, wide open "
+            "plain cream textured paper area filling the center, botanical vector "
+            "illustration style, blog banner background, no people, no faces, no text, "
+            "no logo"
         )
     return (
         f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
