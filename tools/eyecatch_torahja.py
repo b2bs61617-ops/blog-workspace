@@ -7,7 +7,7 @@ eyecatch_chomoand0.py の後継(トラジャ向け)。記事タイトルは要�
 - 改行は日本語の文節単位(Intl.Segmenter)。「飾ら/れてる」「Travis/Japan」のような泣き別れをしない
 - 先頭の【...】は上部のバッジに出す(文字は省略せず、置き場所だけ変える)
 - タイトル中のメンバー名はメンバーカラーのマーカーで強調
-- 背景は2種類: light(明るいスモーク) / stage(暗いステージライト)
+- 背景は3種類: light(明るいスモーク) / stage(暗いステージライト) / elegant(淡いグラデーション+細字セリフ調、2026-09-22〜)
 
 使い方:
     python tools/eyecatch_torahja.py \
@@ -33,6 +33,8 @@ CANVAS_W = 1200
 CANVAS_H = 630
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FONT_PATH = REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf"
+FONT_ELEGANT_LIGHT = REPO_ROOT / "assets" / "fonts" / "NotoSansJP-Light.ttf"
+FONT_ELEGANT_REGULAR = REPO_ROOT / "assets" / "fonts" / "NotoSansJP-Regular.ttf"
 
 POLLINATIONS_BASE_URL = "https://image.pollinations.ai/prompt/"
 POLLINATIONS_MODEL = "flux"
@@ -91,7 +93,7 @@ def _shade(hex_color: str, amount: float) -> str:
 
 
 def build_bg_prompt(color_key: str, style: str) -> str:
-    """メンバーカラーとstyle(light/stage)から背景生成プロンプトを組み立てる(顔・人物は描かせない)."""
+    """メンバーカラーとstyle(light/stage/elegant)から背景生成プロンプトを組み立てる(顔・人物は描かせない)."""
     color_word = MEMBER_COLOR_WORDS.get(color_key, "purple")
     if style == "stage":
         return (
@@ -99,6 +101,13 @@ def build_bg_prompt(color_key: str, style: str) -> str:
             "bokeh light particles, dark navy gradient, atmospheric fog, empty stage with "
             "absolutely no people and no faces, no text, no logo, blog banner background, "
             "cinematic lighting, non-photorealistic digital art"
+        )
+    if style == "elegant":
+        return (
+            f"very light pastel {color_word} watercolor wash background, extremely soft "
+            "delicate gradient, airy minimal atmosphere, subtle blurred light, mostly white "
+            "space, empty with absolutely no people and no faces, no text, no logo, blog "
+            "banner background, elegant minimalist non-photorealistic illustration style"
         )
     return (
         f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
@@ -267,12 +276,15 @@ document.fonts.ready.then(() => {{
 </script>"""
 
 
-def _script_3line() -> str:
+def _script_3line(elegant: bool = False) -> str:
     """3行デザイン用スクリプト: 画面いっぱいに使う.
 
     1・3行目は大きな文字(基準112px)、2行目は特大(基準230px)+縦に引き伸ばす。
     行が横幅に収まらないときは、まず横だけ詰め(縦長の文字にする)、それでも足りなければ文字を小さくする。
+    elegant=Trueのときは、極太ゴシック用のサイズだと重すぎるため基準サイズを一回り小さくする。
     """
+    max1 = 78 if elegant else 112
+    max2 = 132 if elegant else 230
     return f"""<script>
 document.fonts.ready.then(() => {{
   const [l1, l2, l3] = ['l1', 'l2', 'l3'].map(id => document.getElementById(id));
@@ -291,8 +303,8 @@ document.fonts.ready.then(() => {{
     el.dataset.sx = sx; el.dataset.sy = 1;
     return size;
   }};
-  const h1 = fit(l1, 112, 0.62), h3 = fit(l3, 112, 0.62);
-  const h2 = fit(l2, 230, 0.7, 1.3);
+  const h1 = fit(l1, {max1}, 0.62), h3 = fit(l3, {max1}, 0.62);
+  const h2 = fit(l2, {max2}, 0.7, 1.3);
   // 残りの高さを2行目の縦伸ばしで使い切る(最大1.7倍)
   const sy = Math.max(1, Math.min(1.7, (USABLE_H - h1 - h3 - GAP * 2) / h2));
   l2.dataset.sy = sy;
@@ -317,13 +329,15 @@ def build_html(
     """lines(3要素)を渡すと3行デザイン(2行目を最大・マーカー強調)、なければ従来の全文1ブロック."""
     if color_key not in COLORS:
         raise ValueError(f"unknown color_key: {color_key!r} (known: {', '.join(COLORS)})")
-    if style not in ("light", "stage"):
-        raise ValueError("style must be 'light' or 'stage'")
+    if style not in ("light", "stage", "elegant"):
+        raise ValueError("style must be 'light', 'stage' or 'elegant'")
     main, tint = COLORS[color_key]
     badge, body = split_badge(title)
     # メンバー名(color-key)が本文にあれば強調対象にする
     mark = color_key if color_key != "group" and color_key in body else ""
-    font_url = FONT_PATH.as_uri()
+    elegant = style == "elegant"
+    font_url = FONT_ELEGANT_LIGHT.as_uri() if elegant else FONT_PATH.as_uri()
+    font_url_regular = FONT_ELEGANT_REGULAR.as_uri()
     badge_html = f'<div class="badge">{html_mod.escape(badge)}</div>' if badge else ""
     dark = style == "stage"
     theme_css = ""
@@ -344,13 +358,26 @@ def build_html(
         theme_css = f"""
 .l2 {{ background: linear-gradient(transparent 60%, #6a3fdbe6 60%, #6a3fdbe6 93%, transparent 93%); }}
 """
+    elif lines and elegant:
+        # エレガント版: ビビッドな色ブロックではなく、メンバー(またはグループ紫)の淡い水彩背景+細い下線で控えめに強調
+        theme_css = f"""
+.stage {{ background: linear-gradient(135deg, #fdfcfb 0%, #fbf9fa 45%, #f9f7f9 100%); }}
+.blob {{ position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.32; }}
+.eb1 {{ width: 620px; height: 620px; left: -220px; top: -260px; background: {tint}; }}
+.eb2 {{ width: 560px; height: 560px; right: -200px; bottom: -240px; background: {main}; opacity: 0.16; }}
+.eb3 {{ width: 420px; height: 420px; left: 34%; top: 20%; background: #ffffff; opacity: 0.6; }}
+.l {{ color: #3a3532; text-shadow: none; }}
+.l1, .l3 {{ letter-spacing: 0.12em; opacity: 0.82; font-family: 'SansR'; font-weight: 300; }}
+.l2 {{ letter-spacing: 0.03em; padding: 0 4px 14px; background: none; border-bottom: 2px solid {main}; font-family: 'SansR'; font-weight: 300; color: #2c2622; }}
+.l1::before, .l1::after, .l3::before, .l3::after {{ display: none; }}
+"""
     if lines:
         badge_html = ""
         title_html = "".join(
             f'<div class="l l{i}" id="l{i}">{html_mod.escape(text)}</div>'
             for i, text in enumerate(lines, start=1)
         )
-        script = _script_3line()
+        script = _script_3line(elegant)
     else:
         title_html = '<div class="title" id="t"></div>'
         script = _script_block(body, mark, badge_html)
@@ -360,9 +387,10 @@ def build_html(
 <head>
 <meta charset="UTF-8">
 <style>
-@font-face {{ font-family: 'Rounded'; src: url('{font_url}') format('truetype'); font-weight: 900; }}
+@font-face {{ font-family: '{"SansR" if elegant else "Rounded"}'; src: url('{font_url}') format('truetype'); font-weight: {300 if elegant else 900}; }}
+{f"@font-face {{ font-family: 'SansR'; src: url('{font_url_regular}') format('truetype'); font-weight: 400; }}" if elegant else ""}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family: 'Rounded', 'Yu Gothic', sans-serif; font-weight: 900; }}
+body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family: '{"SansR" if elegant else "Rounded"}', 'Yu Gothic', sans-serif; font-weight: {300 if elegant else 900}; }}
 .stage {{ width: {CANVAS_W}px; height: {CANVAS_H}px; position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
   background: {"linear-gradient(135deg,#12082b 0%,#2a1160 55%,#150a33 100%)" if dark else "#f6f2fb"}; }}
@@ -374,16 +402,16 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
   background: linear-gradient(to bottom, #fff, transparent 85%); transform-origin: top center; }}
 .b1 {{ left: 240px; transform: rotate(24deg); }} .b2 {{ left: 620px; transform: rotate(-16deg); }} .b3 {{ left: 900px; transform: rotate(30deg); }}
 .dot {{ position: absolute; border-radius: 50%; background: #fff; opacity: {0.7 if dark else 0}; box-shadow: 0 0 10px #fff; }}
-.frame {{ position: absolute; inset: 18px; border: 3px solid {"rgba(255,255,255,0.28)" if dark else "rgba(255,255,255,0.9)"}; border-radius: 26px; }}
+.frame {{ position: absolute; inset: 18px; border: {"1px solid rgba(60,50,60,0.16)" if elegant else f"3px solid {'rgba(255,255,255,0.28)' if dark else 'rgba(255,255,255,0.9)'}"}; border-radius: {6 if elegant else 26}px; }}
 .ai-bg {{ position: absolute; top: 0; left: 0; width: {CANVAS_W + BG_OVERSCAN_W}px; height: {CANVAS_H + BG_OVERSCAN_H}px; z-index: 0; }}
 .scrim {{ position: absolute; inset: 0; z-index: 0;
-  background: {"linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)"}; }}
+  background: {"rgba(253,252,251,0.72)" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
 .badge {{ position: relative; z-index: 2; font-size: 44px; letter-spacing: 0.06em; padding: 8px 34px 10px; border-radius: 999px;
   color: {"#fff" if dark else "#fff"}; background: {main if dark else "#2b1a55"}; {"color:#1b1030;" if dark and color_key in ("吉澤閑也","川島如恵留") else ""}
   box-shadow: 0 6px 24px {main}88; }}
 .title {{ position: relative; z-index: 2; width: 1060px; text-align: center; line-height: 1.22; letter-spacing: 0.02em;
-  color: {"#fff" if dark else "#1c1c1c"}; text-wrap: balance;
-  text-shadow: {"0 0 24px rgba(20,8,50,.85), 0 3px 0 rgba(20,8,50,.5)" if dark else "0 0 14px rgba(255,255,255,.9)"}; }}
+  color: {"#2c2622" if elegant else ("#fff" if dark else "#1c1c1c")}; text-wrap: balance;
+  text-shadow: {"0 1px 3px rgba(0,0,0,0.08)" if elegant else ("0 0 24px rgba(20,8,50,.85), 0 3px 0 rgba(20,8,50,.5)" if dark else "0 0 14px rgba(255,255,255,.9)")}; }}
 .title .w {{ white-space: nowrap; }}
 .title mark {{ color: inherit; background: linear-gradient(transparent 58%, {main if dark else tint} 58%, {main if dark else tint} 94%, transparent 94%);
   padding: 0 4px; {"text-shadow: 0 0 24px rgba(20,8,50,.85);" if dark else ""} }}
@@ -402,13 +430,8 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 <body>
 <div class="stage">
   {f'<img class="ai-bg" src="{bg_path.resolve().as_uri()}"><div class="scrim"></div>' if bg_path else ""}
-  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
-  <div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>
-  <div class="dot" style="left:96px;top:70px;width:9px;height:9px"></div>
-  <div class="dot" style="left:1040px;top:120px;width:7px;height:7px"></div>
-  <div class="dot" style="left:180px;top:540px;width:6px;height:6px"></div>
-  <div class="dot" style="left:1110px;top:500px;width:10px;height:10px"></div>
-  <div class="dot" style="left:600px;top:44px;width:5px;height:5px"></div>
+  {"" if elegant else '<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="dot" style="left:96px;top:70px;width:9px;height:9px"></div><div class="dot" style="left:1040px;top:120px;width:7px;height:7px"></div><div class="dot" style="left:180px;top:540px;width:6px;height:6px"></div><div class="dot" style="left:1110px;top:500px;width:10px;height:10px"></div><div class="dot" style="left:600px;top:44px;width:5px;height:5px"></div>'}
+  {'<div class="blob eb1"></div><div class="blob eb2"></div><div class="blob eb3"></div>' if (elegant and not bg_path) else ""}
   <div class="frame"></div>
   {badge_html}
   {title_html}
@@ -445,7 +468,7 @@ def main() -> None:
         choices=["auto", *sorted(COLORS)],
         help="メンバー名 or group。auto(既定)=タイトルにメンバー名が1人だけ→そのメンバーカラー、なし/複数→group(紫)",
     )
-    ap.add_argument("--style", default="stage", choices=["light", "stage"])
+    ap.add_argument("--style", default="stage", choices=["light", "stage", "elegant"])
     ap.add_argument(
         "--split",
         default=None,
