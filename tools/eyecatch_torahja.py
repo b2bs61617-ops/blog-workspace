@@ -21,13 +21,26 @@ from __future__ import annotations
 import argparse
 import html as html_mod
 import json
+import random
 import re
+import tempfile
+import urllib.parse
+import urllib.request
+import uuid
 from pathlib import Path
 
 CANVAS_W = 1200
 CANVAS_H = 630
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FONT_PATH = REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf"
+
+POLLINATIONS_BASE_URL = "https://image.pollinations.ai/prompt/"
+POLLINATIONS_MODEL = "flux"
+POLLINATIONS_TIMEOUT_SEC = 45
+# Pollinations.aiは無料利用だと nologo=true を付けても右下に "pollinations.ai" のロゴが焼き込まれる。
+# 表示キャンバスより一回り大きく生成し、CSS側でロゴが写る右下だけ画面外にはみ出させて隠す。
+BG_OVERSCAN_W = 220
+BG_OVERSCAN_H = 70
 
 # (メイン色, 明るい版で使う淡色) — 公式カラーを「きれいに映える濃さ」に調整
 COLORS: dict[str, tuple[str, str]] = {
@@ -41,6 +54,18 @@ COLORS: dict[str, tuple[str, str]] = {
     "group": ("#a487cf", "#d9c9f0"),  # グループカラー(紫)
 }
 GROUP_PURPLE = "#7c4dff"
+
+# AI背景生成プロンプトで使う色の英語名(メンバーカラーの雰囲気を背景に反映するため)
+MEMBER_COLOR_WORDS: dict[str, str] = {
+    "宮近海斗": "red",
+    "中村海人": "green",
+    "七五三掛龍也": "pink",
+    "川島如恵留": "silver white",
+    "吉澤閑也": "yellow",
+    "松田元太": "blue",
+    "松倉海斗": "orange",
+    "group": "purple",
+}
 
 BADGE_RE = re.compile(r"^【([^】]+)】\s*")
 
@@ -63,6 +88,66 @@ def _shade(hex_color: str, amount: float) -> str:
     h = hex_color.lstrip("#")
     r, g, b = (int(h[i : i + 2], 16) for i in (0, 2, 4))
     return "#{:02x}{:02x}{:02x}".format(*(round(c * (1 - amount)) for c in (r, g, b)))
+
+
+def build_bg_prompt(color_key: str, style: str) -> str:
+    """メンバーカラーとstyle(light/stage)から背景生成プロンプトを組み立てる(顔・人物は描かせない)."""
+    color_word = MEMBER_COLOR_WORDS.get(color_key, "purple")
+    if style == "stage":
+        return (
+            f"abstract concert stage background, glowing {color_word} spotlight beams and "
+            "bokeh light particles, dark navy gradient, atmospheric fog, empty stage with "
+            "absolutely no people and no faces, no text, no logo, blog banner background, "
+            "cinematic lighting, non-photorealistic digital art"
+        )
+    return (
+        f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
+        "airy bright atmosphere, empty space with absolutely no people and no faces, no text, "
+        "no logo, blog banner background, non-photorealistic flat illustration style"
+    )
+
+
+def build_pollinations_url(prompt: str, seed: int) -> str:
+    """Pollinations.aiのリクエストURLを組み立てる(副作用なし)。
+    ロゴを画面外に逃がすため、表示サイズよりBG_OVERSCAN分だけ大きく要求する。"""
+    encoded_prompt = urllib.parse.quote(prompt)
+    query = urllib.parse.urlencode({
+        "width": CANVAS_W + BG_OVERSCAN_W,
+        "height": CANVAS_H + BG_OVERSCAN_H,
+        "model": POLLINATIONS_MODEL,
+        "seed": seed,
+        "nologo": "true",
+    })
+    return f"{POLLINATIONS_BASE_URL}{encoded_prompt}?{query}"
+
+
+def generate_ai_background(prompt: str, seed: int) -> bytes:
+    """Pollinations.ai(APIキー不要・無料)で背景を1枚生成する.
+    既定のPython-urllib User-Agentは403で弾かれるため、ブラウザ相当のUser-Agentを付ける。"""
+    url = build_pollinations_url(prompt, seed)
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=POLLINATIONS_TIMEOUT_SEC) as resp:
+        if resp.status != 200:
+            raise RuntimeError(f"Pollinations.aiがHTTP {resp.status}を返した")
+        return resp.read()
+
+
+def resolve_ai_background(use_ai: bool, color_key: str, style: str, seed: int | None) -> Path | None:
+    """AI背景の一時ファイルパスを返す。無効化・生成失敗時はNone(=CSSグラデーションのみで描画)。"""
+    if not use_ai:
+        return None
+    try:
+        prompt = build_bg_prompt(color_key, style)
+        image_bytes = generate_ai_background(prompt, seed if seed is not None else random.randint(0, 2**31 - 1))
+        if not image_bytes:
+            raise RuntimeError("Pollinations.aiから画像データが返らなかった")
+        tmp_path = Path(tempfile.gettempdir()) / f"torahja_ai_bg_{uuid.uuid4().hex}.jpg"
+        tmp_path.write_bytes(image_bytes)
+        print(f"AI背景生成: {tmp_path}")
+        return tmp_path
+    except Exception as e:
+        print(f"AI背景生成失敗({type(e).__name__}: {e})、CSSグラデーション背景にフォールバック")
+        return None
 
 
 # タイトル中のメンバー呼称(フルネーム・名字・他メンバーと被らない名前)。「海斗」は2人いるので含めない
@@ -227,6 +312,7 @@ def build_html(
     color_key: str = "group",
     style: str = "stage",
     lines: list[str] | None = None,
+    bg_path: Path | None = None,
 ) -> str:
     """lines(3要素)を渡すと3行デザイン(2行目を最大・マーカー強調)、なければ従来の全文1ブロック."""
     if color_key not in COLORS:
@@ -289,6 +375,9 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 .b1 {{ left: 240px; transform: rotate(24deg); }} .b2 {{ left: 620px; transform: rotate(-16deg); }} .b3 {{ left: 900px; transform: rotate(30deg); }}
 .dot {{ position: absolute; border-radius: 50%; background: #fff; opacity: {0.7 if dark else 0}; box-shadow: 0 0 10px #fff; }}
 .frame {{ position: absolute; inset: 18px; border: 3px solid {"rgba(255,255,255,0.28)" if dark else "rgba(255,255,255,0.9)"}; border-radius: 26px; }}
+.ai-bg {{ position: absolute; top: 0; left: 0; width: {CANVAS_W + BG_OVERSCAN_W}px; height: {CANVAS_H + BG_OVERSCAN_H}px; z-index: 0; }}
+.scrim {{ position: absolute; inset: 0; z-index: 0;
+  background: {"linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)"}; }}
 .badge {{ position: relative; z-index: 2; font-size: 44px; letter-spacing: 0.06em; padding: 8px 34px 10px; border-radius: 999px;
   color: {"#fff" if dark else "#fff"}; background: {main if dark else "#2b1a55"}; {"color:#1b1030;" if dark and color_key in ("吉澤閑也","川島如恵留") else ""}
   box-shadow: 0 6px 24px {main}88; }}
@@ -312,6 +401,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 </head>
 <body>
 <div class="stage">
+  {f'<img class="ai-bg" src="{bg_path.resolve().as_uri()}"><div class="scrim"></div>' if bg_path else ""}
   <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
   <div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>
   <div class="dot" style="left:96px;top:70px;width:9px;height:9px"></div>
@@ -362,17 +452,27 @@ def main() -> None:
         help='3行デザイン: "1行目|2行目|3行目"。2行目=タイトルで一番強調したい内容。'
         "Travis Japan/トラジャは自動で省略され、3行をつなげるとタイトルと一致する必要がある",
     )
+    ap.add_argument(
+        "--ai-bg", action=argparse.BooleanOptionalAction, default=True,
+        help="背景をPollinations.aiで毎回AI生成する(既定で有効・人物なしの抽象ステージ演出)。--no-ai-bgでCSSグラデーションに固定",
+    )
+    ap.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     color_key = detect_color_key(args.title) if args.color_key == "auto" else args.color_key
     print(f"color-key: {color_key}")
-    if args.split:
-        stripped = strip_group_name(args.title)
-        lines = parse_split(stripped, args.split)
-        html_text = build_html(stripped, color_key, args.style, lines)
-    else:
-        html_text = build_html(args.title, color_key, args.style)
-    print(f"done: {render(html_text, Path(args.out))}")
+    bg_path = resolve_ai_background(args.ai_bg, color_key, args.style, args.seed)
+    try:
+        if args.split:
+            stripped = strip_group_name(args.title)
+            lines = parse_split(stripped, args.split)
+            html_text = build_html(stripped, color_key, args.style, lines, bg_path)
+        else:
+            html_text = build_html(args.title, color_key, args.style, bg_path=bg_path)
+        print(f"done: {render(html_text, Path(args.out))}")
+    finally:
+        if bg_path is not None:
+            bg_path.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
