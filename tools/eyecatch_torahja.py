@@ -33,8 +33,8 @@ CANVAS_W = 1200
 CANVAS_H = 630
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FONT_PATH = REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf"
-FONT_ELEGANT_LIGHT = REPO_ROOT / "assets" / "fonts" / "NotoSansJP-Light.ttf"
-FONT_ELEGANT_REGULAR = REPO_ROOT / "assets" / "fonts" / "NotoSansJP-Regular.ttf"
+FONT_ELEGANT_LIGHT = REPO_ROOT / "assets" / "fonts" / "NotoSerifJP-Light.ttf"
+FONT_ELEGANT_REGULAR = REPO_ROOT / "assets" / "fonts" / "NotoSerifJP-Medium.ttf"
 
 POLLINATIONS_BASE_URL = "https://image.pollinations.ai/prompt/"
 POLLINATIONS_MODEL = "flux"
@@ -104,10 +104,10 @@ def build_bg_prompt(color_key: str, style: str) -> str:
         )
     if style == "elegant":
         return (
-            f"very light pastel {color_word} watercolor wash background, extremely soft "
-            "delicate gradient, airy minimal atmosphere, subtle blurred light, mostly white "
-            "space, empty with absolutely no people and no faces, no text, no logo, blog "
-            "banner background, elegant minimalist non-photorealistic illustration style"
+            f"soft pastel {color_word} watercolor wash background, clearly tinted delicate "
+            "gradient, airy minimal atmosphere, subtle blurred light, empty with absolutely "
+            "no people and no faces, no text, no logo, blog banner background, elegant "
+            "minimalist non-photorealistic illustration style"
         )
     return (
         f"soft pastel {color_word} watercolor gradient background, gentle glowing light orbs, "
@@ -361,14 +361,14 @@ def build_html(
     elif lines and elegant:
         # エレガント版: ビビッドな色ブロックではなく、メンバー(またはグループ紫)の淡い水彩背景+細い下線で控えめに強調
         theme_css = f"""
-.stage {{ background: linear-gradient(135deg, #fdfcfb 0%, #fbf9fa 45%, #f9f7f9 100%); }}
-.blob {{ position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.32; }}
+.stage {{ background: linear-gradient(135deg, #ffffff 0%, {tint} 55%, #ffffff 100%); }}
+.blob {{ position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4; }}
 .eb1 {{ width: 620px; height: 620px; left: -220px; top: -260px; background: {tint}; }}
-.eb2 {{ width: 560px; height: 560px; right: -200px; bottom: -240px; background: {main}; opacity: 0.16; }}
-.eb3 {{ width: 420px; height: 420px; left: 34%; top: 20%; background: #ffffff; opacity: 0.6; }}
+.eb2 {{ width: 560px; height: 560px; right: -200px; bottom: -240px; background: {main}; opacity: 0.22; }}
+.eb3 {{ width: 420px; height: 420px; left: 34%; top: 20%; background: #ffffff; opacity: 0.45; }}
 .l {{ color: #3a3532; text-shadow: none; }}
-.l1, .l3 {{ letter-spacing: 0.12em; opacity: 0.82; font-family: 'SansR'; font-weight: 300; }}
-.l2 {{ letter-spacing: 0.03em; padding: 0 4px 14px; background: none; border-bottom: 2px solid {main}; font-family: 'SansR'; font-weight: 300; color: #2c2622; }}
+.l1, .l3 {{ letter-spacing: 0.12em; opacity: 0.82; font-family: 'Mincho'; font-weight: 300; }}
+.l2 {{ letter-spacing: 0.03em; padding: 0 4px 14px; background: none; border-bottom: 2px solid {main}; font-family: 'Mincho'; font-weight: 300; color: #2c2622; }}
 .l1::before, .l1::after, .l3::before, .l3::after {{ display: none; }}
 """
     if lines:
@@ -387,10 +387,10 @@ def build_html(
 <head>
 <meta charset="UTF-8">
 <style>
-@font-face {{ font-family: '{"SansR" if elegant else "Rounded"}'; src: url('{font_url}') format('truetype'); font-weight: {300 if elegant else 900}; }}
-{f"@font-face {{ font-family: 'SansR'; src: url('{font_url_regular}') format('truetype'); font-weight: 400; }}" if elegant else ""}
+@font-face {{ font-family: '{"Mincho" if elegant else "Rounded"}'; src: url('{font_url}') format('truetype'); font-weight: {300 if elegant else 900}; }}
+{f"@font-face {{ font-family: 'Mincho'; src: url('{font_url_regular}') format('truetype'); font-weight: 400; }}" if elegant else ""}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family: '{"SansR" if elegant else "Rounded"}', 'Yu Gothic', sans-serif; font-weight: {300 if elegant else 900}; }}
+body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family: '{"Mincho" if elegant else "Rounded"}', 'Yu Gothic', sans-serif; font-weight: {300 if elegant else 900}; }}
 .stage {{ width: {CANVAS_W}px; height: {CANVAS_H}px; position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
   background: {"linear-gradient(135deg,#12082b 0%,#2a1160 55%,#150a33 100%)" if dark else "#f6f2fb"}; }}
@@ -405,7 +405,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; font-family
 .frame {{ position: absolute; inset: 18px; border: {"1px solid rgba(60,50,60,0.16)" if elegant else f"3px solid {'rgba(255,255,255,0.28)' if dark else 'rgba(255,255,255,0.9)'}"}; border-radius: {6 if elegant else 26}px; }}
 .ai-bg {{ position: absolute; top: 0; left: 0; width: {CANVAS_W + BG_OVERSCAN_W}px; height: {CANVAS_H + BG_OVERSCAN_H}px; z-index: 0; }}
 .scrim {{ position: absolute; inset: 0; z-index: 0;
-  background: {"rgba(253,252,251,0.72)" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
+  background: {f"{tint}b3" if elegant else ("linear-gradient(135deg, rgba(18,8,43,0.55) 0%, rgba(42,17,96,0.68) 55%, rgba(21,10,51,0.72) 100%)" if dark else "rgba(246,242,251,0.62)")}; }}
 .badge {{ position: relative; z-index: 2; font-size: 44px; letter-spacing: 0.06em; padding: 8px 34px 10px; border-radius: 999px;
   color: {"#fff" if dark else "#fff"}; background: {main if dark else "#2b1a55"}; {"color:#1b1030;" if dark and color_key in ("吉澤閑也","川島如恵留") else ""}
   box-shadow: 0 6px 24px {main}88; }}
