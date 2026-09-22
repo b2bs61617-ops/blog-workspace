@@ -283,7 +283,7 @@ def _script_3line(elegant: bool = False) -> str:
     行が横幅に収まらないときは、まず横だけ詰め(縦長の文字にする)、それでも足りなければ文字を小さくする。
     elegant=Trueのときは、極太ゴシック用のサイズだと重すぎるため基準サイズを一回り小さくする。
     """
-    max1 = 78 if elegant else 112
+    max1 = 117 if elegant else 112
     max2 = 132 if elegant else 230
     return f"""<script>
 document.fonts.ready.then(() => {{
@@ -305,8 +305,8 @@ document.fonts.ready.then(() => {{
   }};
   const h1 = fit(l1, {max1}, 0.62), h3 = fit(l3, {max1}, 0.62);
   const h2 = fit(l2, {max2}, 0.7, 1.3);
-  // 残りの高さを2行目の縦伸ばしで使い切る(最大1.7倍)
-  const sy = Math.max(1, Math.min(1.7, (USABLE_H - h1 - h3 - GAP * 2) / h2));
+  // 残りの高さを2行目の縦伸ばしで使い切る(最大1.7倍)。elegantは縦長にせず等倍のまま
+  const sy = {"1" if elegant else "Math.max(1, Math.min(1.7, (USABLE_H - h1 - h3 - GAP * 2) / h2))"};
   l2.dataset.sy = sy;
   for (const el of [l1, l2, l3]) {{
     const size = parseFloat(el.style.fontSize), sy2 = parseFloat(el.dataset.sy);
@@ -472,8 +472,14 @@ def main() -> None:
     ap.add_argument(
         "--split",
         default=None,
-        help='3行デザイン: "1行目|2行目|3行目"。2行目=タイトルで一番強調したい内容。'
+        help='3行デザイン(タイトルをそのまま使う版): "1行目|2行目|3行目"。2行目=タイトルで一番強調したい内容。'
         "Travis Japan/トラジャは自動で省略され、3行をつなげるとタイトルと一致する必要がある",
+    )
+    ap.add_argument(
+        "--lines",
+        default=None,
+        help='3行デザイン(自由文言版): "1行目|2行目|3行目"。--titleとの一致チェックをしない。'
+        "マツが記事本文を読んでキャッチーな見出しを組み立てる場合に使う(--splitと同時指定はできない)",
     )
     ap.add_argument(
         "--ai-bg", action=argparse.BooleanOptionalAction, default=True,
@@ -482,6 +488,8 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
+    if args.split and args.lines:
+        raise SystemExit("--split と --lines は同時に指定できない")
     color_key = detect_color_key(args.title) if args.color_key == "auto" else args.color_key
     print(f"color-key: {color_key}")
     bg_path = resolve_ai_background(args.ai_bg, color_key, args.style, args.seed)
@@ -490,6 +498,11 @@ def main() -> None:
             stripped = strip_group_name(args.title)
             lines = parse_split(stripped, args.split)
             html_text = build_html(stripped, color_key, args.style, lines, bg_path)
+        elif args.lines:
+            parts = [p.strip() for p in args.lines.split("|")]
+            if len(parts) != 3 or not all(parts):
+                raise SystemExit(f'--lines は「1行目|2行目|3行目」の3つ(空なし)で指定: {args.lines!r}')
+            html_text = build_html("", color_key, args.style, parts, bg_path)
         else:
             html_text = build_html(args.title, color_key, args.style, bg_path=bg_path)
         print(f"done: {render(html_text, Path(args.out))}")
