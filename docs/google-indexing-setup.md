@@ -1,6 +1,6 @@
 # Google Indexing APIのセットアップ手順
 
-**現在の状態(2026-08-30更新)**: 稼働中。プロジェクト`model-gearing-465707-d6`のサービスアカウントを3サイトのSearch Consoleオーナーとして登録済み(`chomoand-477@...`および`chomoand-466@...`。どちらの鍵でもIndexing APIは通る)。経緯は[docs/history.md](history.md)参照。
+**現在の状態(2026-09-23更新)**: 稼働中。プロジェクト`model-gearing-465707-d6`のサービスアカウントを4サイト(chomoand.com / chomoand-0.com / chomoand-1.com / chomoand-4.blog)のSearch Consoleオーナーとして登録済み(`chomoand-477@...`および`chomoand-466@...`。どちらの鍵でもIndexing APIは通る)。chomoand-4.blogは2026-09-13新設のため当初未登録で、公開記事のIndexing API送信が403で失敗する事象があったが、2026-09-23にオーナー登録して解消した。経緯は[docs/history.md](history.md)参照。
 
 **鍵ファイルの置き場所**: `G:\マイドライブ\ブログ関係\google-indexing-key.json`(Google Drive。全PC共通パス)。`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`をこの絶対パスにする。`.gitignore`済み。
 
@@ -30,13 +30,13 @@
 
 ## 2. Search Consoleへの権限付与(トモキ本人が実施)
 
-対象の3サイト([docs/wordpress.md](wordpress.md)参照)それぞれで以下を行う。
+対象の4サイト([docs/wordpress.md](wordpress.md)参照)それぞれで以下を行う。
 
 1. [Google Search Console](https://search.google.com/search-console)で対象サイトを開く
 2. 「設定」→「ユーザーと権限」→「ユーザーを追加」
 3. 手順1で控えたサービスアカウントのメールアドレスを入力し、権限は「**オーナー**」を選択
 
-3サイト(chomoand.com / chomoand-0.com / chomoand-1.com)すべてで同じサービスアカウントを追加する。
+4サイト(chomoand.com / chomoand-0.com / chomoand-1.com / chomoand-4.blog)すべてで同じサービスアカウントを追加する。**新しいサイトを新設したら、Search Console登録時にこの手順も忘れず行うこと**(2026-09-13新設のchomoand-4.blogでこの手順が漏れており、2026-09-23までIndexing APIが403で失敗する状態が続いていた)。
 
 ## 3. ローカル設定(トモキ本人が実施)
 
