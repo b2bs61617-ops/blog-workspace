@@ -23,10 +23,12 @@ description: 「公開して」「公開する」と言われたときに使う�
    - **判定はサイト単位であって言語単位ではない。** chomoand-1.comの記事なら日本語版・韓国語版・英語版の**全URL**をNaverに送る(韓国語版だけではない)。日本語・英語URLを送ってもNaver側がクロール要否を判断するだけで害はない。
    - `.env`の`NAVER_INDEXNOW_KEY`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/naver-search-advisor-setup.md](../../../docs/naver-search-advisor-setup.md)参照)
    - chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
-6. **Xへの自動投稿は2026-08-10時点で意図的に停止中**。`tools/x_auto_post.py`は実装済みだが、X APIが2026年にPay-Per-Use化し「URL付き投稿$0.20/件」という単価になったことが判明し、ユーザー判断で当面Xは手動投稿にする方針になった(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。3サイトとも`.env`に`X_*`キーを設定しない運用にしているため、このステップは実行しない(キー未設定なら実行しても自動スキップされるだけなので、うっかり実行してしまっても実害はない)
-   - 方針転換後、ユーザーから「Xの自動投稿を再開したい」と指示があれば、`python tools/x_auto_post.py --site {trend|audition|koikeys} --text "{フック文}" --hashtags "{ハッシュタグ}" --image "{アイキャッチ画像URL}" --url "{公開URL}"` を実行する(siteはchomoand.com=`trend`、chomoand-0.com=`audition`、chomoand-1.com=`koikeys`)。フック文にはURLを含めない(`--url`の内容がリプライとして自動投稿される)
-   - **Xは現状手動投稿**。公開後のURL・アイキャッチ画像URLをユーザーに渡し、下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを提案する。ユーザーが1件目(画像+フック文、URL無し)を投稿したら、2件目は**1件目への返信(リプライ)**としてURLのみ投稿するよう案内する(「引用する」は使わない。引用は新しい独立投稿になりそれ自体がURL付き扱いでリーチが落ちるため)
-7. 公開後のURLとインデックス登録の結果、およびXの投稿案(フック文・ハッシュタグ)をユーザーに表示する
+6. **Xへの自動投稿(2026-09-23〜、Buffer経由で再開)**。旧`tools/x_auto_post.py`(X API直接利用)はPay-Per-Use化によるコスト($0.20/URL付き投稿)を理由に2026-08-10に停止したが、Buffer(定額プラン、@chomoand17を3サイト共通で使用)経由の`tools/x_auto_post_buffer.py`に切り替えて再開した(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。
+   - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --image "{アイキャッチ画像URL}" --url "{公開URL}"` を実行する。site指定は不要(3サイトとも同じ@chomoand17チャンネル)
+   - フック文にはURLを含めない(`--url`の内容が2件目のリプライとして自動投稿される)
+   - `.env`の`BUFFER_ACCESS_TOKEN`/`BUFFER_X_CHANNEL_ID`が未設定の場合は投稿だけスキップし、公開処理自体は止めない(Google Indexing/Naver IndexNowと同じフェイルセーフ方式)
+   - 成功すると`tweet_url`(1件目のツイートURL)がJSONで返るので、結果報告に使う
+7. 公開後のURL・インデックス登録の結果・Xへの投稿結果(ツイートURL)をユーザーに表示する
 
 ## Xの投稿文の作り方
 

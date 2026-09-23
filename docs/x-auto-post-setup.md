@@ -1,6 +1,17 @@
 # X(旧Twitter)自動投稿のセットアップ手順
 
-**現在の状態(2026-08-10更新)**: 実装済み・**当面は意図的に未使用(`.env`にキーを設定しない)**。2026-08-09にKO1KEYZ用のDeveloper App作成を試したところ、2026年のX API改定でFree/Basic/Proが廃止されPay-Per-Use(従量課金)のみになっていることが判明した。単価は通常投稿$0.015・**URL付き投稿$0.20**(2026-04-20改定、詳細は下記「料金についての判明事項」)。ユーザー判断で「しばらくはXは手動投稿、自動化は他のSNSから」という方針になったため、3サイトとも`X_*`キーは未設定のままにしている。[publishスキル](../.claude/skills/publish/SKILL.md)から呼ばれても自動でスキップされる(公開処理自体は止まらない)ので、コードはこのまま置いておいて問題ない。将来、費用対効果が見合うと判断したら本手順を再開すればよい。
+**現在の状態(2026-09-23更新)**: **Buffer経由で自動投稿を再開済み**。`tools/x_auto_post_buffer.py`が[publishスキル](../.claude/skills/publish/SKILL.md)から自動で呼ばれる。
+
+Bufferは公式にXとAPI連携している外部サービスで、投稿はBuffer側の定額プラン(無料枠あり)内で行われるため、下記「料金についての判明事項」にあるX API単体のPay-Per-Use課金($0.20/URL付き投稿)は発生しない。ブラウザ自動化(下記「検討した代替案」)のような凍結リスクもない(BufferはXの正規パートナーとしてOAuth連携しているため)。3サイトとも@chomoand17を共通利用しているため、旧方式(サイト別Developer App)と違いBufferのチャンネルは1つだけでよい。
+
+**セットアップ済みの内容**(2026-09-23、トモキ本人+マツで実施):
+1. buffer.comで無料アカウント作成、@chomoand17を接続
+2. developers.buffer.comでPersonal Access Key発行(有効期限は無期限〜長期のものを選択)
+3. `.env`に`BUFFER_ACCESS_TOKEN`・`BUFFER_X_CHANNEL_ID`を設定
+4. Buffer API(GraphQL、`https://api.buffer.com`)で実投稿テスト済み。`createPost`の`metadata.twitter.thread`でスレッド(1件目=画像+テキスト→2件目=リプライ)を組み、`mode: shareNow`で即時投稿。画像は公開URLを渡すだけでアップロード不要
+5. `tools/x_auto_post_buffer.py`を作成、`post_thread(hook_text, hashtags, image_url, article_url)`で呼び出し可能。戻り値に`tweet_url`(投稿されたツイートの実URL)を含む
+
+以下は旧方式(X API直接利用)の検討記録。参考として残す。`tools/x_auto_post.py`自体もコードは削除せず置いてある(現在は未使用)。
 
 ## 料金についての判明事項(2026-08-09調査)
 
