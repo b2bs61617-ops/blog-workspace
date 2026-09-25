@@ -3,7 +3,7 @@
 旧`tools/x_auto_post.py`はX API直接利用(2026年にPay-Per-Use化、URL付き投稿$0.20/件)の
 コスト問題とブラウザ自動化の凍結リスクを理由に、2026-08-09からXは意図的に手動投稿にしていた
 (経緯はdocs/x-auto-post-setup.md参照)。Bufferは公式にXとAPI連携済みのサービスで、投稿は
-Buffer側の定額プラン内で行われるため従量課金が発生しない。3サイトとも@chomoand17を共通で
+Buffer側の定額プラン内で行われるため従量課金が発生しない。全サイト(chomoand-4.blogのトラジャ含む)とも@chomoand17を共通で
 使っているため、旧スクリプトと違いサイト別の認証情報は不要(Bufferのチャンネルは1つ)。
 
 投稿の型は旧スクリプトと同じ: 「1件目=画像+フック文+ハッシュタグ(URL無し)」
@@ -93,9 +93,10 @@ def _gql_string(value):
     return f'"{escaped}"'
 
 
-def post_thread(hook_text, hashtags, image_url, article_url):
+def post_thread(hook_text, hashtags, image_url, article_url, due_at=None):
     """1件目(画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
-    スレッドをBuffer経由でXへ即時投稿する。
+    スレッドをBuffer経由でXへ投稿する。due_at(ISO8601、例"2026-09-25T21:00:00+09:00")を
+    渡すとその時刻に予約投稿、省略すると即時投稿。一括公開時の連投回避に使う(2026-09-25〜)。
     .envにBUFFER_ACCESS_TOKEN/BUFFER_X_CHANNEL_IDが無ければ何もせずNoneを返す
     (公開処理は止めない。Google Indexing/Naver IndexNowと同じフェイルセーフ方式)。
     """
@@ -107,6 +108,7 @@ def post_thread(hook_text, hashtags, image_url, article_url):
         return None
 
     text = compose_tweet_text(hook_text, hashtags)
+    mode = f"mode: customScheduled\n        dueAt: {_gql_string(due_at)}" if due_at else "mode: shareNow"
 
     query = f"""
     mutation {{
@@ -114,7 +116,7 @@ def post_thread(hook_text, hashtags, image_url, article_url):
         text: {_gql_string(text)}
         channelId: {_gql_string(channel_id)}
         schedulingType: automatic
-        mode: shareNow
+        {mode}
         assets: [{{ image: {{ url: {_gql_string(image_url)} }} }}]
         metadata: {{
           twitter: {{
@@ -126,7 +128,7 @@ def post_thread(hook_text, hashtags, image_url, article_url):
         }}
       }}) {{
         ... on PostActionSuccess {{
-          post {{ id status externalLink }}
+          post {{ id status dueAt externalLink }}
         }}
         ... on MutationError {{
           message
@@ -158,6 +160,7 @@ def post_thread(hook_text, hashtags, image_url, article_url):
     return {
         "post_id": post["id"],
         "status": post["status"],
+        "due_at": post.get("dueAt"),
         "tweet_url": post.get("externalLink"),
     }
 
@@ -168,9 +171,10 @@ if __name__ == "__main__":
     parser.add_argument("--hashtags", default="", help="例: '#今日好き #今日好きになりました'")
     parser.add_argument("--image", required=True, help="添付画像のURL(公開アクセス可能なもの)")
     parser.add_argument("--url", required=True, help="記事URL(リプライ投稿に使う)")
+    parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
     args = parser.parse_args()
 
-    result = post_thread(args.text, args.hashtags, args.image, args.url)
+    result = post_thread(args.text, args.hashtags, args.image, args.url, due_at=args.due_at)
     if result is None:
         sys.exit(0)
     print(json.dumps(result, ensure_ascii=False, indent=2))

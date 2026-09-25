@@ -23,8 +23,10 @@ description: 「公開して」「公開する」と言われたときに使う�
    - **判定はサイト単位であって言語単位ではない。** chomoand-1.comの記事なら日本語版・韓国語版・英語版の**全URL**をNaverに送る(韓国語版だけではない)。日本語・英語URLを送ってもNaver側がクロール要否を判断するだけで害はない。
    - `.env`の`NAVER_INDEXNOW_KEY`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/naver-search-advisor-setup.md](../../../docs/naver-search-advisor-setup.md)参照)
    - chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
-6. **Xへの自動投稿(2026-09-23〜、Buffer経由で再開)**。旧`tools/x_auto_post.py`(X API直接利用)はPay-Per-Use化によるコスト($0.20/URL付き投稿)を理由に2026-08-10に停止したが、Buffer(定額プラン、@chomoand17を3サイト共通で使用)経由の`tools/x_auto_post_buffer.py`に切り替えて再開した(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。
-   - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --image "{アイキャッチ画像URL}" --url "{公開URL}"` を実行する。site指定は不要(3サイトとも同じ@chomoand17チャンネル)
+6. **Xへの自動投稿(2026-09-23〜、Buffer経由で再開)**。旧`tools/x_auto_post.py`(X API直接利用)はPay-Per-Use化によるコスト($0.20/URL付き投稿)を理由に2026-08-10に停止したが、Buffer(定額プラン、@chomoand17を全サイト共通で使用)経由の`tools/x_auto_post_buffer.py`に切り替えて再開した(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。
+   - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --image "{アイキャッチ画像URL}" --url "{公開URL}"` を実行する。site指定は不要(**chomoand-4.blog(トラジャ)も含め全サイト同じ@chomoand17チャンネル**、2026-09-25トモキ確認)
+   - **一括公開(2本以上)のときは即時連投しない**。`--due-at "2026-09-26T09:00:00+09:00"`(ISO8601)で予約投稿にし、1〜1.5時間おきにずらす。深夜(0〜7時)は避け、同じメンバー・同じネタの記事は間を空ける(2026-09-25トモキ指示)
+   - **Bufferの無料プランは予約枠が最大10件**。超えると`Scheduled posts limit reached`で失敗するので、11本目以降は先の予約が投稿されて枠が空いてから入れる(公開処理自体は止めない)
    - フック文にはURLを含めない(`--url`の内容が2件目のリプライとして自動投稿される)
    - `.env`の`BUFFER_ACCESS_TOKEN`/`BUFFER_X_CHANNEL_ID`が未設定の場合は投稿だけスキップし、公開処理自体は止めない(Google Indexing/Naver IndexNowと同じフェイルセーフ方式)
    - 成功すると`tweet_url`(1件目のツイートURL)がJSONで返るので、結果報告に使う
@@ -41,6 +43,8 @@ description: 「公開して」「公開する」と言われたときに使う�
 | 私服・ブランド特定 | 「これ気になった人いる?」等の問いかけ | ブランド・番組タグ | 画像は該当シーンの切り抜きを使う |
 | 歴代まとめ・保存版(teiban-navi型) | 「歴代〇〇一覧」の網羅性を煽る一言 | 汎用タグ中心 | 資産コンテンツなので数ヶ月おきに同じ記事をリバイバル投稿してよい |
 | ネタバレ・あらすじ | 「〇〇に大事件?」等の煽り一行 | 番組全体タグ+話数/エピソードタグ | 放送直後〜翌朝に投稿、連投もあり |
+
+| トラジャ(chomoand-4.blog) | 私物特定なら「気になった人いる?」、経歴・予想系はタイトル流用の疑問形 | `#TravisJapan`+登場メンバーの名前タグ(例`#宮近海斗`)、足りなければ`#トラジャ` | 2026-09-25〜。メンバー名は本名=活動名なのでそのまま |
 
 いずれも本文は結論・フックを冒頭2行以内に収め、ハッシュタグは2〜4個(多すぎるとスパム的に見える)。
 
