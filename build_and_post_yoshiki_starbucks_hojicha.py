@@ -194,7 +194,7 @@ JP_CONTENT = "\n\n".join([
         "その後、2024年6月12日に再登場し、そのまま定番メニューの仲間入りを果たしています。",
         "季節限定ではないので、YOSHIKIと同じ一杯をいつでも注文できるのはうれしいポイントです。",
     ),
-    spec_box("ほうじ茶 & クラシックティー ラテの価格(税込)", [
+    spec_box("ほうじ茶 & クラシックティー ラテの価格(税込・店内利用)", [
         ("Short", "530円〜"),
         ("Tall", "570円〜"),
         ("Grande", "616円〜"),
@@ -203,7 +203,7 @@ JP_CONTENT = "\n\n".join([
         ("購入先", f"全国のスターバックス店舗(一部店舗を除く)・公式アプリのモバイルオーダー／{a(MENU_URL, '公式メニューページ')}"),
     ]),
     para(
-        "価格は2026年9月時点の公式メニューの表記で、持ち帰りと店内利用では税率の違いで金額が少し変わります。",
+        "価格は2026年9月時点の公式メニューの表記で、表の金額は店内利用の価格で、持ち帰りは税率の違いで少し安くなります。",
         "一部店舗では価格が異なる場合もあるので、注文前にアプリで確認しておくと安心です。",
     ),
 
@@ -339,7 +339,7 @@ KR_CONTENT = "\n\n".join([
         "이후 2024년 6월 12일에 다시 등장해 그대로 정규 메뉴가 되었습니다.",
         "계절 한정이 아니라서 YOSHIKI와 같은 음료를 언제든 주문할 수 있다는 점이 반갑습니다.",
     ),
-    spec_box("호지차 & 클래식 티 라떼 가격(세금 포함)", [
+    spec_box("호지차 & 클래식 티 라떼 가격(세금 포함・매장 이용)", [
         ("Short", "530엔~"),
         ("Tall", "570엔~"),
         ("Grande", "616엔~"),
@@ -348,7 +348,7 @@ KR_CONTENT = "\n\n".join([
         ("구입처", f"일본 전국 스타벅스 매장(일부 제외)・공식 앱 모바일 오더 / {a(MENU_URL, '공식 메뉴 페이지')}"),
     ]),
     para(
-        "가격은 2026년 9월 기준 공식 메뉴 표기이며, 포장과 매장 이용은 세율 차이로 금액이 조금 달라집니다.",
+        "가격은 2026년 9월 기준 공식 메뉴 표기이며, 표의 금액은 매장 이용 가격이며, 포장은 세율 차이로 조금 저렴해집니다.",
         "일부 매장은 가격이 다를 수 있으니, 주문 전에 앱으로 확인해 두면 안심입니다.",
     ),
 
@@ -481,7 +481,7 @@ EN_CONTENT = "\n\n".join([
         "It returned on June 12, 2024, and has stayed on the regular menu ever since.",
         "Because it isn't seasonal, you can order the same drink as YOSHIKI any time of year.",
     ),
-    spec_box("Hojicha & Classic Tea Latte prices (tax incl.)", [
+    spec_box("Hojicha & Classic Tea Latte prices (tax incl., dine-in)", [
         ("Short", "From JPY 530"),
         ("Tall", "From JPY 570"),
         ("Grande", "From JPY 616"),
@@ -490,7 +490,7 @@ EN_CONTENT = "\n\n".join([
         ("Where to buy", f"Starbucks stores across Japan (excluding some locations) and mobile order on the official app / {a(MENU_URL, 'official menu page')}"),
     ]),
     para(
-        "Prices are as listed on the official menu as of September 2026; takeout and dine-in differ slightly because of different tax rates.",
+        "Prices are as listed on the official menu as of September 2026; the table shows dine-in prices, and takeout is slightly cheaper due to a lower tax rate.",
         "Some stores may price it differently, so it's worth checking the app before you order.",
     ),
 
