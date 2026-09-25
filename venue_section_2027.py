@@ -6,7 +6,7 @@ Sakanaction dates). "Open" means no published booking, not a guaranteed vacancy.
 """
 
 
-def venue_blocks(p, h2, h3, minibox, table, mark):
+def venue_blocks(p, h2, h3, minibox, table, mark, fig):
     b = []
     b.append(h2("横アリ以外の会場の空き状況は？"))
     b.append(p([
@@ -91,6 +91,11 @@ def venue_blocks(p, h2, h3, minibox, table, mark):
         "ここはB.LEAGUE千葉ジェッツのホームアリーナなので、2月〜4月は試合とコンサートで週末がかなり埋まっています。",
         "ただ、5月と6月の予定はまだ1件も載っていません。",
         f"2026年は5月22日〜24日、2025年は6月7日〜8日にこの会場でツアーを締めくくっていて、{mark('今回も5〜6月のららアリーナで千秋楽という流れは十分ありえます')}。",
+    ]))
+    b.append(fig("out_lala_final"))
+    b.append(p([
+        "こちらは2026年5月24日、ららアリーナ東京ベイでの千秋楽の様子です。",
+        "Blu-ray・DVDの通常盤(初回プレス)には、この最終日公演のダイジェストが特典として収められています。",
     ]))
 
     b.append(h3("北海道は真駒内が改修工事、きたえーるはレバンガの試合と要調整"))

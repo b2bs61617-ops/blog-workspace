@@ -124,6 +124,20 @@ def gmap(q):
     )
 
 
+# ---------- images: frames from official YouTube trailers (uploaded to WP media, see json) ----------
+MEDIA = json.loads((ROOT / "articles" / "travis_japan_2027_tour_media.json").read_text(encoding="utf-8"))
+YT_TEASER = "https://www.youtube.com/watch?v=FsUisvoVOik"
+YT_STANDARD = "https://www.youtube.com/watch?v=HkzhJiV7TSQ"
+
+
+def fig(key, src_url):
+    m = MEDIA[key]
+    (full, fw, fh), (large, lw, lh), (med, mw, mh) = m["full"], m["large"], m["medium"]
+    return f'''<!-- wp:image {{"id":{m["id"]},"sizeSlug":"large"}} -->
+<figure class="wp-block-image size-large"><img src="{large}" alt="{m["alt"]}" class="wp-image-{m["id"]}" width="{lw}" height="{lh}" style="max-width:100%;height:auto;" srcset="{med} {mw}w, {large} {lw}w, {full} {fw}w" sizes="(max-width: 1024px) 100vw, 1024px"/><figcaption style="font-size:0.8em;color:#888;">出典:{src_url}</figcaption></figure>
+<!-- /wp:image -->'''
+
+
 # ---------- other-venue section (filled from official venue schedules) ----------
 from venue_section_2027 import venue_blocks  # noqa: E402  (generated alongside this script)
 
@@ -175,6 +189,11 @@ blocks.append(p([
     "一方で、愛知はガイシホールとAichi Sky Expo、北海道は真駒内ときたえーるのように、同じ地域でも年によって会場が入れ替わっています。",
     "新潟・宮城・福井のように、年によって回ったり回らなかったりする地域があるのもポイントです。",
 ]))
+blocks.append(fig("out_center_stage", YT_TEASER))
+blocks.append(p([
+    "こちらは2026年の「's travelers」の横浜アリーナ公演で、アリーナの真ん中に置かれた円形のセンターステージに7人が並んだ場面です。",
+    "1万人を超える大きな会場でも、客席のすぐ近くまでステージが張り出す演出を楽しめるのも、トラジャのアリーナツアーならではといえます。",
+]))
 
 # ---- Yokohama pattern ----
 blocks.append(h2("3年連続で「1月4日・横浜アリーナ」から開幕"))
@@ -188,6 +207,11 @@ blocks.append(p([
     "横浜アリーナの公式サイトには過去のイベントの設営日まで残っていて、それを見ると3年とも1月1日〜3日が設営日になっていました。",
     "2026年はさらに早く、前年の12月27日から準備に入っていたようです。",
     "元日から会場を押さえてセットを組み、三が日明けの4日に開幕するのが、トラジャのツアーの定番の流れになっています。",
+]))
+blocks.append(fig("out_yokoari_audience", YT_TEASER))
+blocks.append(p([
+    "2026年1月の横浜アリーナ公演では、スタンド席の上のほうまでペンライトの光で埋め尽くされていました。",
+    "この横アリ公演はBlu-ray・DVD「Travis Japan Concert Tour 2026 's travelers」(2026年8月26日発売)に収録されていて、公式YouTubeのティザー映像でも会場の熱気を見ることができます。",
 ]))
 blocks.append(p([
     "2025年の「VIIsual」と2026年の「's travelers」は、どちらも1月4日〜7日の4日間でした。",
@@ -235,7 +259,7 @@ blocks.append(p([
 blocks.append(gmap("横浜アリーナ"))
 
 # ---- other venues ----
-blocks.extend(venue_blocks(p=p, h2=h2, h3=h3, minibox=minibox, table=table, mark=mark))
+blocks.extend(venue_blocks(p=p, h2=h2, h3=h3, minibox=minibox, table=table, mark=mark, fig=lambda k: fig(k, YT_STANDARD)))
 
 # ---- announcement timing ----
 blocks.append(h2("ツアー発表はいつ？デビュー記念日の10月28日前後が濃厚"))
@@ -332,8 +356,13 @@ payload = {
     "author": 2,
 }
 
+# Draft already exists (post 926): later runs only refresh the body so title/slug never get re-sent.
+EXISTING_POST_ID = 926
+if EXISTING_POST_ID:
+    payload = {"content": content}
+
 r = requests.post(
-    f"{WP_URL}/wp-json/wp/v2/posts",
+    f"{WP_URL}/wp-json/wp/v2/posts" + (f"/{EXISTING_POST_ID}" if EXISTING_POST_ID else ""),
     headers={**HEADERS_AUTH, "Content-Type": "application/json"},
     data=json.dumps(payload).encode("utf-8"),
 )
