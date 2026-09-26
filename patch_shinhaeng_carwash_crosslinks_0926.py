@@ -102,6 +102,19 @@ def patch_1669(raw):
 
 
 # ---------------- 13030 バイト歴(JP・公開) ----------------
+NOLINK = "--nolink" in sys.argv  # 新記事公開前はリンクなしで本文だけ追記する
+JP_LINKBOX = gbox("<strong>SHINHAENGの下積み時代は、こちらの記事で詳しく紹介しています。</strong>",
+                  f'<ul style="margin:6px 0 0 0;padding-left:1.2em;"><li>{a(NEW_JP, "【SHINHAENG】洗車場で夜勤バイト？父が明かした下積み4年！")}</li></ul>')
+SEC_HEAD_13030 = "SHINHAENG(オ・シンヘン)は洗車場の夜勤"
+
+
+def add_link_13030(raw):
+    """--nolinkで追記済みの13030に、新記事公開後にリンクboxだけ足す"""
+    anchor = "接客系のバイトが多いメンバーの中で、夜通しの洗車は少し珍しいパターンと言えるでしょう。</p>\n<!-- /wp:paragraph -->"
+    assert raw.count(anchor) == 1
+    return raw.replace(anchor, anchor + "\n\n" + JP_LINKBOX)
+
+
 def patch_13030(raw):
     raw = after_first_para(raw, gbox(
         "<strong>2026年9月26日追記</strong>",
@@ -115,9 +128,7 @@ def patch_13030(raw):
             "父のオ・ウォンオクさんが地元紙・全南日報の取材で「夜10時から翌朝8時まで洗車場で働きながら準備した」と話していて、昼間は歌とダンスのレッスン、夜は洗車場という生活だったようです。",
             "接客系のバイトが多いメンバーの中で、夜通しの洗車は少し珍しいパターンと言えるでしょう。",
         ),
-        gbox("<strong>SHINHAENGの下積み時代は、こちらの記事で詳しく紹介しています。</strong>",
-             f'<ul style="margin:6px 0 0 0;padding-left:1.2em;"><li>{a(NEW_JP, "【SHINHAENG】洗車場で夜勤バイト？父が明かした下積み4年！")}</li></ul>'),
-    ])
+    ] + ([] if NOLINK else [JP_LINKBOX]))
     raw = before_h2(raw, "残る8人のバイト歴は非公表", sec)
     raw = rep(raw, f"{H2_OPEN}残る8人のバイト歴は非公表</h2>", f"{H2_OPEN}残る7人のバイト歴は非公表</h2>")
     raw = rep(raw, "ISSA・RYOGA・YOSHIKI・TOWA以外の8人", "ISSA・RYOGA・YOSHIKI・TOWA・SHINHAENG以外の7人")
@@ -200,7 +211,11 @@ if __name__ == "__main__":
         fn, published = TARGETS[pid]
         d = requests.get(f"{WP_URL}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, headers=HA).json()
         raw = d["content"]["raw"]
-        assert "13716" not in raw and "13717" not in raw and "13718" not in raw, f"{pid} already patched"
+        if pid == 13030 and SEC_HEAD_13030 in raw:
+            assert "13716" not in raw, "13030 already fully patched"
+            fn = add_link_13030  # 本文追記済み→リンクだけ足す
+        else:
+            assert "13716" not in raw and "13717" not in raw and "13718" not in raw, f"{pid} already patched"
         assert d["status"] == ("publish" if published else "draft"), (pid, d["status"])
         new = fn(raw)
         (S / f"patched_{pid}.html").write_text(new, encoding="utf-8")
@@ -212,5 +227,6 @@ if __name__ == "__main__":
                           data=json.dumps(payload).encode("utf-8"))
         r.raise_for_status()
         v = requests.get(f"{WP_URL}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, headers=HA).json()
-        ok = ("13716" in v["content"]["raw"] or "13717" in v["content"]["raw"] or "13718" in v["content"]["raw"])
+        ok = ("13716" in v["content"]["raw"] or "13717" in v["content"]["raw"] or "13718" in v["content"]["raw"]
+              or (NOLINK and SEC_HEAD_13030 in v["content"]["raw"]))
         print("  UPDATED", pid, v["status"], "verified" if ok else "NOT REFLECTED")
