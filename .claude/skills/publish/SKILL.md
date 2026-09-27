@@ -24,9 +24,10 @@ description: 「公開して」「公開する」と言われたときに使う�
    - `.env`の`NAVER_INDEXNOW_KEY`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/naver-search-advisor-setup.md](../../../docs/naver-search-advisor-setup.md)参照)
    - chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
 6. **Xへの自動投稿(2026-09-23〜、Buffer経由で再開)**。旧`tools/x_auto_post.py`(X API直接利用)はPay-Per-Use化によるコスト($0.20/URL付き投稿)を理由に2026-08-10に停止したが、Buffer(定額プラン、@chomoand17を全サイト共通で使用)経由の`tools/x_auto_post_buffer.py`に切り替えて再開した(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。
-   - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --image "{アイキャッチ画像URL}" --url "{公開URL}"` を実行する。site指定は不要(**chomoand-4.blog(トラジャ)も含め全サイト同じ@chomoand17チャンネル**、2026-09-25トモキ確認)
+   - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --post-id {日本語版の記事ID} --url "{公開URL}"` を実行する。site指定は不要(**chomoand-4.blog(トラジャ)も含め全サイト同じ@chomoand17チャンネル**、2026-09-25トモキ確認)
    - **一括公開(2本以上)のときは即時連投しない**。`--due-at "2026-09-26T09:00:00+09:00"`(ISO8601)で予約投稿にし、1〜1.5時間おきにずらす。深夜(0〜7時)は避け、同じメンバー・同じネタの記事は間を空ける(2026-09-25トモキ指示)
    - **Bufferの無料プランは予約枠が最大10件**。超えると`Scheduled posts limit reached`で失敗するので、11本目以降は先の予約が投稿されて枠が空いてから入れる(公開処理自体は止めない)
+   - **添付画像は記事本文内の画像すべて(アイキャッチは使わない、2026-09-27トモキ指示)**。`--post-id`で本文の`<img>`を自動で抜き出して原寸URLで添付する(Xの上限で先頭4枚まで)。**本文に画像が無い記事は文章のみで投稿**する(アイキャッチで代用しない)。ユーザーにX文面を見せるときは、各投稿に添付される画像の枚数(または「画像なし」)も併記する
    - フック文にはURLを含めない(`--url`の内容が2件目のリプライとして自動投稿される)
    - `.env`の`BUFFER_ACCESS_TOKEN`/`BUFFER_X_CHANNEL_ID`が未設定の場合は投稿だけスキップし、公開処理自体は止めない(Google Indexing/Naver IndexNowと同じフェイルセーフ方式)
    - 成功すると`tweet_url`(1件目のツイートURL)がJSONで返るので、結果報告に使う

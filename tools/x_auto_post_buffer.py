@@ -9,6 +9,10 @@ Buffer側の定額プラン内で行われるため従量課金が発生しな�
 投稿の型は旧スクリプトと同じ: 「1件目=画像+フック文+ハッシュタグ(URL無し)」
 「2件目=1件目へのリプライとしてURLのみ」の2連投(Xのスレッド機能で実現)。
 
+添付画像は**記事本文内の画像すべて**(アイキャッチではない、2026-09-27トモキ指示)。
+`--post-id`を渡すと公開済み記事の本文から<img>を抜き出し、リサイズ版(-375x500等)を
+原寸URLに戻して添付する。Xの上限により先頭4枚まで。本文に画像が無ければ文章のみで投稿する。
+
 事前準備(初回のみ、トモキ本人が実施):
   1. buffer.comで@chomoand17を接続
   2. developers.buffer.comでAPIキー(Personal Access Key)を発行
@@ -18,22 +22,25 @@ Buffer側の定額プラン内で行われるため従量課金が発生しな�
   python tools/x_auto_post_buffer.py \
     --text "今日好き夏休み編2024新メンバープロフィール!" \
     --hashtags "#今日好き #今日好きになりました" \
-    --image "https://chomoand.com/wp-content/uploads/xxxx.jpg" \
+    --post-id 1234 \
     --url "https://chomoand.com/?p=1234"
 
 他のスクリプト(publishスキル)から使う場合:
   from tools.x_auto_post_buffer import post_thread
-  post_thread(hook_text="...", hashtags="#a #b", image_url="...", article_url="...")
+  post_thread(hook_text="...", hashtags="#a #b", image_urls=[...], article_url="...")
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 
 ROOT = Path(__file__).parent.parent
 BUFFER_API_URL = "https://api.buffer.com"
+MAX_IMAGES = 4  # Xの1ツイートあたりの画像上限
 
 
 def load_env(path):
@@ -87,18 +94,44 @@ def compose_tweet_text(hook_text, hashtags, max_weight=280):
     return f"{hook_text}{separator}{hashtags}"
 
 
+def extract_article_images(content_html):
+    """記事本文HTMLから<img>のURLを出現順に抜き出す(重複除外)。WordPressのリサイズ版
+    (例: foo-375x500.jpg)は原寸(foo.jpg)に戻す。"""
+    urls = []
+    for tag in re.findall(r"<img\b[^>]*>", content_html):
+        m = re.search(r'\ssrc="([^"]+)"', tag)
+        if not m:
+            continue
+        url = re.sub(r"-\d+x\d+(\.\w+)$", r"\1", m.group(1))
+        if url not in urls:
+            urls.append(url)
+    return urls
+
+
+def fetch_article_images(site_url, post_id):
+    """公開済み記事の本文から画像URLを取得する(認証不要のREST APIを使用)。"""
+    resp = requests.get(
+        f"{site_url.rstrip('/')}/wp-json/wp/v2/posts/{post_id}",
+        params={"_fields": "content"},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    return extract_article_images(resp.json()["content"]["rendered"])
+
+
 def _gql_string(value):
     """GraphQLクエリに埋め込む文字列リテラルをエスケープする。"""
     escaped = value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
     return f'"{escaped}"'
 
 
-def post_thread(hook_text, hashtags, image_url, article_url, due_at=None):
-    """1件目(画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
+def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None):
+    """1件目(記事内画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
     スレッドをBuffer経由でXへ投稿する。due_at(ISO8601、例"2026-09-25T21:00:00+09:00")を
     渡すとその時刻に予約投稿、省略すると即時投稿。一括公開時の連投回避に使う(2026-09-25〜)。
     .envにBUFFER_ACCESS_TOKEN/BUFFER_X_CHANNEL_IDが無ければ何もせずNoneを返す
     (公開処理は止めない。Google Indexing/Naver IndexNowと同じフェイルセーフ方式)。
+    image_urlsは最大4枚(超過分は切り捨て)。空なら文章のみで投稿する。
     """
     env = load_env(ROOT / ".env")
     token = env.get("BUFFER_ACCESS_TOKEN")
@@ -108,6 +141,11 @@ def post_thread(hook_text, hashtags, image_url, article_url, due_at=None):
         return None
 
     text = compose_tweet_text(hook_text, hashtags)
+    if isinstance(image_urls, str):
+        image_urls = [image_urls]
+    image_urls = list(image_urls or [])[:MAX_IMAGES]
+    assets = ", ".join(f"{{ image: {{ url: {_gql_string(u)} }} }}" for u in image_urls)
+    assets_field = f"assets: [{assets}]" if image_urls else ""
     mode = f"mode: customScheduled\n        dueAt: {_gql_string(due_at)}" if due_at else "mode: shareNow"
 
     query = f"""
@@ -117,11 +155,11 @@ def post_thread(hook_text, hashtags, image_url, article_url, due_at=None):
         channelId: {_gql_string(channel_id)}
         schedulingType: automatic
         {mode}
-        assets: [{{ image: {{ url: {_gql_string(image_url)} }} }}]
+        {assets_field}
         metadata: {{
           twitter: {{
             thread: [
-              {{ text: {_gql_string(text)}, assets: [{{ image: {{ url: {_gql_string(image_url)} }} }}] }}
+              {{ text: {_gql_string(text)} {assets_field} }}
               {{ text: {_gql_string(article_url)} }}
             ]
           }}
@@ -162,6 +200,7 @@ def post_thread(hook_text, hashtags, image_url, article_url, due_at=None):
         "status": post["status"],
         "due_at": post.get("dueAt"),
         "tweet_url": post.get("externalLink"),
+        "images": image_urls,
     }
 
 
@@ -169,12 +208,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--text", required=True, help="フック文(URL・ハッシュタグは含めない)")
     parser.add_argument("--hashtags", default="", help="例: '#今日好き #今日好きになりました'")
-    parser.add_argument("--image", required=True, help="添付画像のURL(公開アクセス可能なもの)")
+    parser.add_argument("--post-id", type=int, default=None, help="記事ID。本文内の画像を全て(最大4枚)添付する。画像が無ければ文章のみ")
+    parser.add_argument("--image", action="append", default=[], help="添付画像URLを直接指定(複数可)。--post-id指定時はそちらを優先")
     parser.add_argument("--url", required=True, help="記事URL(リプライ投稿に使う)")
     parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
     args = parser.parse_args()
 
-    result = post_thread(args.text, args.hashtags, args.image, args.url, due_at=args.due_at)
+    images = args.image
+    if args.post_id:
+        site = urlparse(args.url)
+        images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
+
+    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at)
     if result is None:
         sys.exit(0)
     print(json.dumps(result, ensure_ascii=False, indent=2))

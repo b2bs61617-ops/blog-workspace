@@ -11,6 +11,7 @@ Bufferは公式にXとAPI連携している外部サービスで、投稿はBuff
 4. Buffer API(GraphQL、`https://api.buffer.com`)で実投稿テスト済み。`createPost`の`metadata.twitter.thread`でスレッド(1件目=画像+テキスト→2件目=リプライ)を組み、`mode: shareNow`で即時投稿。画像は公開URLを渡すだけでアップロード不要
 5. `tools/x_auto_post_buffer.py`を作成、`post_thread(hook_text, hashtags, image_url, article_url)`で呼び出し可能。戻り値に`tweet_url`(投稿されたツイートの実URL)を含む
 6. (2026-09-25追加)`--due-at`/`due_at`引数で予約投稿に対応(`mode: customScheduled`+`dueAt`)。一括公開時の連投回避に使う。**無料プランは予約枠が最大10件**なので、それ以上は枠が空いてから追加する
+7. (2026-09-27追加、トモキ指示)**添付画像はアイキャッチではなく記事本文内の画像すべて**。`--post-id {記事ID}`を渡すと公開済み記事の本文から`<img>`を抜き出し、リサイズ版(`-375x500`等)を原寸URLに戻して添付する(Xの上限で先頭4枚まで)。**本文に画像が無い記事は文章のみで投稿**する。関数は`post_thread(hook_text, hashtags, image_urls, article_url, due_at)`(`image_urls`はリスト、空なら画像なし)。複数画像・画像なしとも2026-09-27に予約投稿で動作確認済み
 
 以下は旧方式(X API直接利用)の検討記録。参考として残す。`tools/x_auto_post.py`自体もコードは削除せず置いてある(現在は未使用)。
 
