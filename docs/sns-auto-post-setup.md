@@ -1,5 +1,7 @@
 # SNS自動投稿セットアップ(Facebook/Instagram/Threads/X)
 
+**2026-09-29追記: Facebook/Instagram/ThreadsのJetpack自動共有はやめる方針。** トモキの決定で、SNSへの自動投稿はXとThreadsだけにし、ThreadsにはXと全く同じ内容をBuffer経由で投稿する(`tools/x_auto_post_buffer.py`、BufferにThreads「chomoand」チャンネルを接続済み)。きっかけは2026-09-28にchomoand-1.comで27本を一括公開したときの失敗で、Facebookは27本とも成功したが、InstagramはApplication request limit reachedで14本、Threadsは5本が失敗した。chomoand-1.comのJetpack Socialプラグインの無効化はトモキ側の対応待ち。無効化するまでは、公開のたびにJetpackからもThreadsへ投稿され、二重投稿になる。以下の記述は経緯の記録として残す。
+
 **2026-08-09追記: X(旧Twitter)部分は廃止・置き換え済み。** ZapierのCreate Tweetアクションは本文にURLを含めると読まれてしまいXのアルゴリズム上リーチが落ちる上、リプライスレッド(URLを2件目のリプライに逃がす形)も組めないという制約があったため、自前のPythonスクリプトに置き換えた。**X関連のセットアップは[docs/x-auto-post-setup.md](x-auto-post-setup.md)を参照**(このページのSTEP B以下は廃止済みの記録として残すのみ)。Facebook/Instagram/Threads部分(下記STEP A)は引き続き有効で、**2026-08-10〜chomoand.com・chomoand-0.comへの展開作業中**。
 
 記事を**公開(publish)したタイミング**で、Facebook・Instagram・Threads・X(旧Twitter)へ自動投稿するための設定手順。2026-07-30にトモキから依頼があり、既存調査([docs/wordpress.mdのSNS自動連携](wordpress.md)、2026-07-05実施)をベースに本格導入した。
