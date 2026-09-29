@@ -125,10 +125,11 @@ def _gql_string(value):
     return f'"{escaped}"'
 
 
-def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None):
+def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft=False):
     """1件目(記事内画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
     スレッドをBuffer経由でXへ投稿する。due_at(ISO8601、例"2026-09-25T21:00:00+09:00")を
     渡すとその時刻に予約投稿、省略すると即時投稿。一括公開時の連投回避に使う(2026-09-25〜)。
+    draft=TrueならBufferの下書きに保存するだけで投稿しない(2026-09-28〜、「Xは下書きだけ」指示用)。
     .envにBUFFER_ACCESS_TOKEN/BUFFER_X_CHANNEL_IDが無ければ何もせずNoneを返す
     (公開処理は止めない。Google Indexing/Naver IndexNowと同じフェイルセーフ方式)。
     image_urlsは最大4枚(超過分は切り捨て)。空なら文章のみで投稿する。
@@ -146,7 +147,12 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None):
     image_urls = list(image_urls or [])[:MAX_IMAGES]
     assets = ", ".join(f"{{ image: {{ url: {_gql_string(u)} }} }}" for u in image_urls)
     assets_field = f"assets: [{assets}]" if image_urls else ""
-    mode = f"mode: customScheduled\n        dueAt: {_gql_string(due_at)}" if due_at else "mode: shareNow"
+    if draft:
+        mode = "mode: addToQueue\n        saveToDraft: true"
+    elif due_at:
+        mode = f"mode: customScheduled\n        dueAt: {_gql_string(due_at)}"
+    else:
+        mode = "mode: shareNow"
 
     query = f"""
     mutation {{
@@ -212,6 +218,7 @@ if __name__ == "__main__":
     parser.add_argument("--image", action="append", default=[], help="添付画像URLを直接指定(複数可)。--post-id指定時はそちらを優先")
     parser.add_argument("--url", required=True, help="記事URL(リプライ投稿に使う)")
     parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
+    parser.add_argument("--draft", action="store_true", help="Bufferの下書きに保存するだけで投稿しない")
     args = parser.parse_args()
 
     images = args.image
@@ -219,7 +226,7 @@ if __name__ == "__main__":
         site = urlparse(args.url)
         images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
 
-    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at)
+    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft)
     if result is None:
         sys.exit(0)
     print(json.dumps(result, ensure_ascii=False, indent=2))
