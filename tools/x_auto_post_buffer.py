@@ -1,4 +1,5 @@
 """記事公開時にXへ自動投稿するスクリプト(Buffer経由、2026-09-23〜)。
+2026-09-29〜Threads(chomoand)にもXと全く同じ内容(本文・画像・URLリプライ・予約時刻)で投稿する。
 
 旧`tools/x_auto_post.py`はX API直接利用(2026年にPay-Per-Use化、URL付き投稿$0.20/件)の
 コスト問題とブラウザ自動化の凍結リスクを理由に、2026-08-09からXは意図的に手動投稿にしていた
@@ -41,6 +42,9 @@ import requests
 ROOT = Path(__file__).parent.parent
 BUFFER_API_URL = "https://api.buffer.com"
 MAX_IMAGES = 4  # Xの1ツイートあたりの画像上限
+# BufferのThreads(chomoand)チャンネル。IDは秘密情報ではないので既定値をコードに持つ
+# (.envはGoogleドライブから同期されるため、.envのBUFFER_THREADS_CHANNEL_IDは上書き用。空にすればThreads投稿を止められる)
+DEFAULT_THREADS_CHANNEL_ID = "6abbbed3ea19ca0bde22e2c8"
 
 
 def load_env(path):
@@ -125,7 +129,7 @@ def _gql_string(value):
     return f'"{escaped}"'
 
 
-def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft=False):
+def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft=False, threads=True):
     """1件目(記事内画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
     スレッドをBuffer経由でXへ投稿する。due_at(ISO8601、例"2026-09-25T21:00:00+09:00")を
     渡すとその時刻に予約投稿、省略すると即時投稿。一括公開時の連投回避に使う(2026-09-25〜)。
@@ -133,6 +137,8 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
     .envにBUFFER_ACCESS_TOKEN/BUFFER_X_CHANNEL_IDが無ければ何もせずNoneを返す
     (公開処理は止めない。Google Indexing/Naver IndexNowと同じフェイルセーフ方式)。
     image_urlsは最大4枚(超過分は切り捨て)。空なら文章のみで投稿する。
+    threads=TrueならThreads(chomoand)にも全く同じ内容で投稿し、結果を戻り値の"threads"キーに入れる
+    (2026-09-29トモキ指示。FB/Instagram/ThreadsのJetpack自動共有はやめ、ThreadsだけXと同じ内容にする)。
     """
     env = load_env(ROOT / ".env")
     token = env.get("BUFFER_ACCESS_TOKEN")
@@ -145,6 +151,23 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
     if isinstance(image_urls, str):
         image_urls = [image_urls]
     image_urls = list(image_urls or [])[:MAX_IMAGES]
+
+    result = _create_post(token, channel_id, "twitter", text, image_urls, article_url, due_at, draft)
+
+    # Threadsにも同じ内容(本文・画像・URLリプライ・予約時刻)で投稿する(2026-09-29〜)。
+    # 失敗してもXの結果は返す(フェイルセーフ)
+    threads_channel_id = env.get("BUFFER_THREADS_CHANNEL_ID", DEFAULT_THREADS_CHANNEL_ID)
+    if threads and threads_channel_id:
+        try:
+            result["threads"] = _create_post(token, threads_channel_id, "threads", text, image_urls, article_url, due_at, draft)
+        except Exception as e:
+            result["threads"] = {"error": str(e)}
+    return result
+
+
+def _create_post(token, channel_id, service, text, image_urls, article_url, due_at, draft):
+    """Bufferで1チャンネルへスレッド(1件目=画像+本文、2件目=URLのみ)を作成する。
+    serviceはPostInputMetaDataのキー("twitter"/"threads")"""
     assets = ", ".join(f"{{ image: {{ url: {_gql_string(u)} }} }}" for u in image_urls)
     assets_field = f"assets: [{assets}]" if image_urls else ""
     if draft:
@@ -163,7 +186,7 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
         {mode}
         {assets_field}
         metadata: {{
-          twitter: {{
+          {service}: {{
             thread: [
               {{ text: {_gql_string(text)} {assets_field} }}
               {{ text: {_gql_string(article_url)} }}
@@ -219,6 +242,7 @@ if __name__ == "__main__":
     parser.add_argument("--url", required=True, help="記事URL(リプライ投稿に使う)")
     parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
     parser.add_argument("--draft", action="store_true", help="Bufferの下書きに保存するだけで投稿しない")
+    parser.add_argument("--no-threads", action="store_true", help="Threadsには投稿せずXだけにする")
     args = parser.parse_args()
 
     images = args.image
@@ -226,7 +250,7 @@ if __name__ == "__main__":
         site = urlparse(args.url)
         images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
 
-    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft)
+    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft, threads=not args.no_threads)
     if result is None:
         sys.exit(0)
     print(json.dumps(result, ensure_ascii=False, indent=2))
