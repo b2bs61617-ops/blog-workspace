@@ -130,7 +130,7 @@ def main():
         plain = re.sub(r"<[^>]+>|<!--.*?-->", "", content, flags=re.S)
         print(f"[{base}] title={len(title)}字 body≈{len(re.sub(r'\s', '', plain))}字")
 
-        payload = {"content": content, "status": "draft", "categories": [37], "author": 4}
+        payload = {"content": content}
         if base in ids:
             endpoint = f"{WP_URL}/wp-json/wp/v2/posts/{ids[base]['id']}"
         else:
@@ -144,7 +144,8 @@ def main():
                 data=eyecatch.read_bytes(),
             )
             r.raise_for_status()
-            payload.update({"title": title, "slug": slug, "featured_media": r.json()["id"]})
+            payload.update({"title": title, "slug": slug, "featured_media": r.json()["id"],
+                            "status": "draft", "categories": [37], "author": 4})
             endpoint = f"{WP_URL}/wp-json/wp/v2/posts"
         r = requests.post(endpoint, headers={**HEADERS_AUTH, "Content-Type": "application/json"},
                           data=json.dumps(payload).encode("utf-8"))
