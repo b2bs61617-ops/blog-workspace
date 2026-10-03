@@ -201,6 +201,10 @@ def strip_group_name(title: str) -> str:
     # 文頭・「】」直後のグループ名は、続く助詞(の/が/は…)ごと消す(「【開幕戦】Travis Japanが履いた靴」→「【開幕戦】履いた靴」)
     t = re.sub(rf"(^|】)[ 　]*(?:{GROUP_WORD_RE.pattern})[のがはをにでともへ]*", lambda m: m.group(1), t, flags=re.IGNORECASE)
     t = GROUP_WORD_RE.sub("", t)
+    # Only trim leading particles left behind by a removed group name;
+    # titles like "はだかんぼうたち…" legitimately start with は.
+    if t == title.strip():
+        return t.strip()
     return LEADING_JUNK_RE.sub("", t).strip()
 
 
