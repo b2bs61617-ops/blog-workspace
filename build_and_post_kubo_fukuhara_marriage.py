@@ -51,6 +51,8 @@ ARTICLES = [
      "takefusa-kubo-annual-income", "久保建英の年収・年俸の内訳"),
     ("kubo_fukuhara_07_yubiwa_brand", "久保建英と福原遥の結婚指輪のブランドは？ブルガリのフェディか！",
      "kubo-fukuhara-wedding-ring-brand", "久保建英と福原遥の結婚指輪のブランド(ブルガリ「フェディ」説)"),
+    ("kubo_fukuhara_08_fukuhara_bracelet", "福原遥の結婚発表のブレスレットは？ブルガリのディーヴァ ドリームか！",
+     "haruka-fukuhara-bracelet-bvlgari", "福原遥が結婚発表でつけていたブルガリのブレスレット"),
 ]
 
 
