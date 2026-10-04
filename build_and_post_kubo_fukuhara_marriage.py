@@ -6,7 +6,7 @@ articles/kubo_fukuhara_0X_*.html を Gutenberg ブロックへ変換し、
 <!--RELATED--> は他5記事への関連記事boxに置き換える。
 再実行時は tmp_kubo_fukuhara_ids.json の記事IDを更新する(title/slugは送らない)。
 """
-import base64, json, os, re, subprocess, sys
+import base64, json, os, re, socket, subprocess, sys
 from pathlib import Path
 
 import requests
@@ -33,6 +33,8 @@ WP_URL = ENV["WP_TREND_URL"].rstrip("/")
 AUTH = base64.b64encode(f"{ENV['WP_TREND_USERNAME']}:{ENV['WP_TREND_APP_PASSWORD']}".encode()).decode()
 HEADERS_AUTH = {"Authorization": f"Basic {AUTH}"}
 IDS_FILE = ROOT / "tmp_kubo_fukuhara_ids.json"
+# docs/wordpress.md の投稿者表(chomoand.com): USER1=momo(3) / Tomoki=and(4)
+AUTHOR = 3 if socket.gethostname().upper() == "USER1" else 4
 
 ARTICLES = [
     ("kubo_fukuhara_01_naresome", "久保建英と福原遥の馴れ初めは？1〜2年の猛アタックで結婚！",
@@ -47,6 +49,8 @@ ARTICLES = [
      "kubo-fukuhara-wedding-ring-price", "久保建英と福原遥の結婚指輪の価格・ブランド予想"),
     ("kubo_fukuhara_06_kubo_nenshu", "久保建英の年収はいくら？年俸9億円超+CMで推定総額を計算！",
      "takefusa-kubo-annual-income", "久保建英の年収・年俸の内訳"),
+    ("kubo_fukuhara_07_yubiwa_brand", "久保建英と福原遥の結婚指輪のブランドは？ブルガリのフェディか！",
+     "kubo-fukuhara-wedding-ring-brand", "久保建英と福原遥の結婚指輪のブランド(ブルガリ「フェディ」説)"),
 ]
 
 
@@ -86,10 +90,10 @@ def style_table(inner):
 def to_blocks(src, self_slug):
     src = src.replace("<!--RELATED-->", related_box(self_slug))
     out = []
-    pattern = r"<div[^>]*>.*?</div>|<(p|h2|h3|table|ul)>(.*?)</\1>|<hr>"
+    pattern = r"<div[^>]*>.*?</div>|<iframe[^>]*>.*?</iframe>|<(p|h2|h3|table|ul)>(.*?)</\1>|<hr>"
     for m in re.finditer(pattern, src, re.S):
         whole, tag, inner = m.group(0), m.group(1), m.group(2)
-        if whole.startswith("<div"):
+        if whole.startswith(("<div", "<iframe")):
             out.append(f"<!-- wp:html -->\n{whole}\n<!-- /wp:html -->")
         elif tag is None:
             continue  # <hr> は全削除ルール
@@ -145,7 +149,7 @@ def main():
             )
             r.raise_for_status()
             payload.update({"title": title, "slug": slug, "featured_media": r.json()["id"],
-                            "status": "draft", "categories": [37], "author": 4})
+                            "status": "draft", "categories": [37], "author": AUTHOR})
             endpoint = f"{WP_URL}/wp-json/wp/v2/posts"
         r = requests.post(endpoint, headers={**HEADERS_AUTH, "Content-Type": "application/json"},
                           data=json.dumps(payload).encode("utf-8"))
