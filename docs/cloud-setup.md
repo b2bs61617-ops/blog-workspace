@@ -49,3 +49,5 @@
 - クラウドのマツもmainで作業してmainへpushする(CLAUDE.md参照)。拒否されたときだけ別ブランチに保存される → **帰宅後に「クラウドのブランチをmainにマージして」とマツに頼む。**
 - 仕組み: `.claude/settings.json` の SessionStart フックが、クラウドのときだけ `tools/cloud/session_start.sh` を実行し、
   `.env` 生成・Pythonパッケージ・日本語フォント・Chromium を準備する。WindowsのPowerShellフックはクラウドでは飛ばす。
+
+クラウドからのpushテスト 2026-10-05
