@@ -115,6 +115,17 @@ WordPressのアプリパスワード・Gemini APIキー・Google認証情報・L
 
 新しいPCでこのリポジトリを使い始めるときは [docs/setup-new-pc.md](docs/setup-new-pc.md) を参照。
 
+## クラウド版(スマホから)で動くとき
+
+Claude Code on the web(スマホのClaudeアプリ/claude.ai/code)で動いているとき(`CLAUDE_CODE_REMOTE=true`)は次に従う。設定手順・テスト手順は [docs/cloud-setup.md](docs/cloud-setup.md)。
+
+- OSはLinux。`python`ではなく`python3`、パスは`/`区切り。PowerShellは無い。
+- `.env`はセッション開始時に`tools/cloud/session_start.sh`がクラウド環境の環境変数から自動生成する。調子が悪いときはまず`python3 tools/cloud/cloud_check.py`を実行(読み取り専用。投稿・変更は一切しない)。
+- 楽天APIはIP制限で失敗することがある。失敗したらAmazonリンクだけで進め、記事は止めない(公開報告で楽天リンク無しを伝える)。
+- Xのログインセッション(`x_session/`)が無いので、Xのブラウザ収集系ツール(x-trend-monitor・x_scroll_captureなど)は使えない。ネタ探しはWebSearch/WebFetchで代用する。
+- アイキャッチは日本語フォントがLinux用(Noto CJK)になるので、生成後に画像を開いて文字化けが無いか必ず確認する。
+- 作業の最後に`git commit`→`git push`する。mainへpushできない場合はセッションのブランチにpushし、トモキに「帰ったらマージが必要ワン」と伝える。
+
 ## 運用ルール(複数PC共有)
 
 - 作業を始める前に `git pull` して最新の状態にする。

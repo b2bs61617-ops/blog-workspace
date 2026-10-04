@@ -6,6 +6,7 @@ WordPress の **must-use プラグイン**（`wp-content/mu-plugins/` に置く�
 | ファイル | 対象サイト | 役割 |
 |---|---|---|
 | `ko1keyz-i18n-autolink.php` | chomoand-1.com | `-kr` / `-en` slug 命名規則から JP/KR/EN を Polylang 翻訳グループへ自動紐付け（hreflang 出力のため）。`wp_after_insert_post` フック。 |
+| `rank-math-focus-keyword-rest.php` | chomoand.com | Rank Mathの「このページのキーワード」(`rank_math_focus_keyword`)をREST APIのmetaフィールドとして読み取り可能にする（読み取り専用・値の変更なし）。設置後は `GET /wp-json/wp/v2/posts/{id}?context=edit` の `meta.rank_math_focus_keyword` で取得できる。2026-09-22追加、記事ごとの狙いキーワードでの検索順位チェック用。 |
 
 ## ko1keyz-i18n-autolink.php
 

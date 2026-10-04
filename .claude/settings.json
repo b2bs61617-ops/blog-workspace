@@ -5,12 +5,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\git-pull.ps1\"",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" != \"true\" ] || bash \"$CLAUDE_PROJECT_DIR/tools/cloud/session_start.sh\"",
+            "timeout": 600
+          },
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] || powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\git-pull.ps1\"",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\koikeyz-monitor-check.ps1\"",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] || powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\koikeyz-monitor-check.ps1\"",
             "timeout": 15
           }
         ]
@@ -21,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\farewell-check.ps1\"",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] || powershell -ExecutionPolicy Bypass -NoProfile -File \".claude\\farewell-check.ps1\"",
             "timeout": 10
           }
         ]
