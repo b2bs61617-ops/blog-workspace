@@ -14,6 +14,9 @@ import requests
 ROOT = Path(__file__).parent
 sys.stdout.reconfigure(encoding="utf-8")
 ACCENT = "#1a3c4c"
+# 記事ごとの囲み色(未指定は紺)。ブレスレット記事はユーザー指示で淡いピンク(おめでたい記事、2026-10-04)
+# (アクセント, 背景, 枠線, 表の偶数行)
+ARTICLE_ACCENTS = {"kubo_fukuhara_08_fukuhara_bracelet": ("#d9849a", "#fdf4f6", "#f2d4dc", "#fdf6f8")}
 
 
 def load_env(path):
@@ -132,7 +135,11 @@ def main():
     for base, title, slug, _ in ARTICLES:
         if only and base not in only:
             continue
+        global ACCENT
+        ACCENT, bg, line, stripe = ARTICLE_ACCENTS.get(base, ("#1a3c4c", "#f7f7f7", "#ddd", "#f4f7f8"))
         content = to_blocks((ROOT / "articles" / f"{base}.html").read_text(encoding="utf-8"), slug)
+        content = (content.replace("#1a3c4c", ACCENT).replace("#f7f7f7", bg)
+                   .replace("border:1px solid #ddd", f"border:1px solid {line}").replace("#f4f7f8", stripe))
         plain = re.sub(r"<[^>]+>|<!--.*?-->", "", content, flags=re.S)
         print(f"[{base}] title={len(title)}字 body≈{len(re.sub(r'\s', '', plain))}字")
 
