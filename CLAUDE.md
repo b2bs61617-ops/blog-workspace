@@ -124,7 +124,7 @@ Claude Code on the web(スマホのClaudeアプリ/claude.ai/code)で動いて�
 - 楽天APIはIP制限で失敗することがある。失敗したらAmazonリンクだけで進め、記事は止めない(公開報告で楽天リンク無しを伝える)。
 - Xのログインセッション(`x_session/`)が無いので、Xのブラウザ収集系ツール(x-trend-monitor・x_scroll_captureなど)は使えない。ネタ探しはWebSearch/WebFetchで代用する。
 - アイキャッチは日本語フォントがLinux用(Noto CJK)になるので、生成後に画像を開いて文字化けが無いか必ず確認する。
-- 作業の最後に`git commit`→`git push`する。mainへpushできない場合はセッションのブランチにpushし、トモキに「帰ったらマージが必要ワン」と伝える。
+- セッションは`claude/...`ブランチで始まるが、作業前に`git checkout main && git pull`してmainで作業し、`git commit`→`git push origin main`まで行う(他のPCにすぐ反映させるため。クラウドのGitHubプロキシはmainへのpushを禁止していない)。pushが拒否されたときだけセッションのブランチにpushし、トモキに「帰ったらマージが必要ワン」と伝える。
 
 ## 運用ルール(複数PC共有)
 
