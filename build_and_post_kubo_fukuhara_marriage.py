@@ -57,7 +57,7 @@ ARTICLES = [
 def related_box(self_slug):
     items = "".join(
         f'<li><a href="{WP_URL}/{slug}/">{anchor}</a></li>'
-        for _, _, slug, anchor in ARTICLES if slug != self_slug
+        for _, _, slug, anchor in ARTICLES if slug not in (self_slug, "kubo-fukuhara-wedding-ring-brand")  # 12477は12452へ統合済み(下書き)
     )
     return (
         f'<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">'
