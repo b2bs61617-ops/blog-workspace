@@ -10,7 +10,7 @@
    - **ネットワークアクセス: 「Full(すべて許可)」**
      WordPress 7サイト・Buffer・楽天にアクセスするため。既定の「Trusted」だと投稿できない。
    - **環境変数**: Googleドライブの `ブログ関係/.env` を開き、中身の行(`KEY=値`)を**そのまま全部貼り付ける**。
-     (`GOOGLE_INDEXING_CREDENTIALS_PATH` の行は不要。下の4を参照)
+     (`GOOGLE_INDEXING_CREDENTIALS_PATH` の行は不要。下の5を参照)
    - **セットアップスクリプト**: 空でOK(セッション開始時にフックが自動で準備する)。
 3. **エックスサーバーの「国外IPアクセス制限」でREST APIをOFFにする**(サーバーパネル → WordPress → WordPressセキュリティ設定 → ドメインごと)。
    クラウドは海外IPなので、ONのままだとWordPressが全部403になる。ダッシュボード・XML-RPCはONのままでよい。
