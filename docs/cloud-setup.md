@@ -12,8 +12,11 @@
    - **環境変数**: Googleドライブの `ブログ関係/.env` を開き、中身の行(`KEY=値`)を**そのまま全部貼り付ける**。
      (`GOOGLE_INDEXING_CREDENTIALS_PATH` の行は不要。下の4を参照)
    - **セットアップスクリプト**: 空でOK(セッション開始時にフックが自動で準備する)。
-3. 環境変数は自分で貼るだけ。**チャットでマツに値を教えないこと。**
-4. (任意)Googleインデックス登録も使う場合は、`google-indexing-key.json` を base64 にした文字列を
+3. **エックスサーバーの「国外IPアクセス制限」でREST APIをOFFにする**(サーバーパネル → WordPress → WordPressセキュリティ設定 → ドメインごと)。
+   クラウドは海外IPなので、ONのままだとWordPressが全部403になる。ダッシュボード・XML-RPCはONのままでよい。
+   2026-10-04、旅行のためにOFFにした → **帰宅後はONに戻す**。
+4. 環境変数は自分で貼るだけ。**チャットでマツに値を教えないこと。**
+5. (任意)Googleインデックス登録も使う場合は、`google-indexing-key.json` を base64 にした文字列を
    `GOOGLE_INDEXING_KEY_B64=...` として環境変数に追加する。無くても記事公開・X投稿は動く。
    - PowerShellで作る例: `[Convert]::ToBase64String([IO.File]::ReadAllBytes("google-indexing-key.json"))`
 
