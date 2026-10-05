@@ -20,6 +20,11 @@
    `GOOGLE_INDEXING_KEY_B64=...` として環境変数に追加する。無くても記事公開・X投稿は動く。
    - PowerShellで作る例: `[Convert]::ToBase64String([IO.File]::ReadAllBytes("google-indexing-key.json"))`
 
+6. **新しいセッションを始めるときは、環境(Environment)が「ブログ」になっているか必ず確認する。**
+   最初からある「Default」環境には環境変数(パスワード類)が無く、ネットワークも「Trusted」なので、
+   WordPress・Bufferに一切つながらない。2026-10-05、Default環境で始めたセッションで「公開して」が
+   「認証情報が無い」で止まった(同じ時刻に「ブログ」環境のセッションでは公開できていた)。
+
 ## 2. 出発前のテスト
 
 スマホの Claude アプリ → Code → blog-workspace を選んで、次の順に送る。
