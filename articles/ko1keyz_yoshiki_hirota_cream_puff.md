@@ -9,11 +9,12 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 ヒロタのシュークリームは、1箱4個入りで展開されている定番商品が中心です。主な3種類は次のとおりです。
 
 <!-- wp:table -->
-<figure class="wp-block-table"><table class="has-fixed-layout"><tbody>
-<tr><td>商品名</td><td>中身</td><td>価格(1箱4個入り)</td></tr>
-<tr><td>カスタード</td><td>定番のカスタードクリーム</td><td>税込346円(税抜320円)</td></tr>
-<tr><td>チョコレート</td><td>チョコレートクリーム</td><td>税込346円(税抜320円)</td></tr>
-<tr><td>ツインフレッシュ</td><td>2種類のクリームを1個で味わえるヒロタの代表作</td><td>税込346円(税抜320円)</td></tr>
+<figure class="wp-block-table">
+<table class="has-fixed-layout" style="border-collapse:separate;border-spacing:0;border:1px solid #f1c6d3;border-radius:6px;overflow:hidden;width:100%;"><tbody>
+<tr><td style="background:#f9dbe5;color:#5a3a4a;font-weight:bold;padding:10px 12px;border-bottom:1px solid #f1c6d3;">商品名</td><td style="background:#f9dbe5;color:#5a3a4a;font-weight:bold;padding:10px 12px;border-bottom:1px solid #f1c6d3;">中身</td><td style="background:#f9dbe5;color:#5a3a4a;font-weight:bold;padding:10px 12px;border-bottom:1px solid #f1c6d3;">価格(1箱4個入り)</td></tr>
+<tr><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">カスタード</td><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">定番のカスタードクリーム</td><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">税込346円(税抜320円)</td></tr>
+<tr><td style="background:#fff6f9;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">チョコレート</td><td style="background:#fff6f9;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">チョコレートクリーム</td><td style="background:#fff6f9;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">税込346円(税抜320円)</td></tr>
+<tr><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">ツインフレッシュ</td><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">2種類のクリームを1個で味わえるヒロタの代表作</td><td style="background:#ffffff;color:#5a3a4a;padding:10px 12px;border-bottom:1px solid #f1c6d3;">税込346円(税抜320円)</td></tr>
 </tbody></table></figure>
 <!-- /wp:table -->
 
