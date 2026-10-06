@@ -1,6 +1,6 @@
 # YOSHIKIも食べた！？ヒロタのシュークリームの値段は？
 
-ヒロタのシュークリームは、1箱4個入りで税込346円。イオンなどのスーパーでも買える定番のお菓子です。<br>
+ヒロタのシュークリームは、1箱4個入りで税込346円。イオンなどのスーパーでも取り扱いがあるとされる定番のお菓子です。<br>
 KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリームを頬張っていました。そのシュークリームも、ヒロタのものとみられます。<br>
 この記事では、ヒロタのシュークリームの種類・値段・買える場所をまとめたうえで、YOSHIKIが食べていた場面についても紹介します。
 
@@ -19,8 +19,8 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 <!-- /wp:table -->
 
 「ツインフレッシュ」は、1つのシュー生地に2種類のクリームを組み合わせて詰めた、ヒロタの代表的なシュークリームです。ふたつのおいしさを一度に楽しめるのが特徴です。<br>
-このほかにも、直営店では100周年を記念した動物型のシュークリーム(1個378円税込)が売られていたり、月替わりの季節限定フレーバーが登場したりと、バリエーションは豊富です。<br>
-1個あたり80〜91kcalと軽めなので、気軽に買えるおやつとしても人気があります。
+このほかにも、創業100周年を記念した商品や、季節商品の「蜜芋」が公式サイトの商品一覧に掲載されています。<br>
+カロリーは1個あたり80〜91kcalと、公式サイトの商品一覧に表示されています。
 
 ## ヒロタのシュークリームはどこで買える？
 
@@ -28,8 +28,8 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 
 <!-- wp:html -->
 <div style="border:1px solid #ded9d2;border-left:4px solid #8a8378;border-radius:4px;padding:10px 16px;margin:0 0 16px 0;background:#f8f6f4;">
-<p style="margin:0;"><strong>スーパー:</strong>イオン、サミット、オオゼキ、京王ストアなどの洋菓子売場や催事コーナー</p>
-<p style="margin:6px 0 0 0;"><strong>直営店:</strong>大阪・なんば、神戸(2024年オープン)</p>
+<p style="margin:0;"><strong>スーパー:</strong>イオン、サミット、オオゼキ、京王ストアなどの洋菓子売場や催事コーナー(販売店の案内による)</p>
+<p style="margin:6px 0 0 0;"><strong>直営店:</strong>新橋駅前店(東京都港区)、大阪・えびすばし店(大阪市中央区)、千葉工場売店(千葉県芝山町)</p>
 <p style="margin:6px 0 0 0;"><strong>そのほか:</strong>百貨店や駅ナカのポップアップ・催事、公式オンラインショップ(冷凍シュークリームなど)</p>
 </div>
 <!-- /wp:html -->
@@ -49,7 +49,7 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 
 <!-- wp:html -->
 <iframe
-  src="https://maps.google.com/maps?q=洋菓子のヒロタ なんばウォーク店&t=&z=15&ie=UTF8&iwloc=&output=embed"
+  src="https://maps.google.com/maps?q=洋菓子のヒロタ 新橋駅前店&t=&z=15&ie=UTF8&iwloc=&output=embed"
   width="100%" height="350" frameborder="0" scrolling="no"
   style="border:0;" loading="lazy">
 </iframe>
@@ -58,7 +58,7 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 ## 洋菓子のヒロタってどんなお店？
 
 洋菓子のヒロタは1924年に創業し、2024年に創業100周年を迎えた老舗の洋菓子メーカーです。丸いシュークリームは、同社の看板商品として長く親しまれてきました。<br>
-直営店は大阪・なんば、神戸などにあり、百貨店や駅ナカの催事にも頻繁に出店しています。
+直営店は、公式サイトによると新橋駅前店・大阪えびすばし店・千葉工場売店の3か所です。百貨店や駅ナカの催事にも出店することがあります。
 
 ## YOSHIKIが楽屋で食べていたシュークリーム
 
@@ -70,7 +70,7 @@ KO1KEYZのYOSHIKIも、公式の「Behind」動画で楽屋でシュークリー
 <!-- IMG_ZOOM -->
 
 YOSHIKIが手にしていた箱は、白い紙箱の中に円すい形の仕切りが並んだプラスチックのトレーが入っているタイプです。丸くふくらんだ生地にクリームがたっぷり詰まっているのが見えます。<br>
-公式に商品名が発表されたわけではありません。映像の箱にはロゴが見えませんが、丸いシューの見た目から、YOSHIKIが食べていたシュークリームもヒロタのものとみられます。
+公式に商品名が発表されたわけではありません。映像では箱のほとんどが写っておらず、ロゴや商品名は確認できませんでした。箱の右下には緑色のラベルのようなものが見えますが、文字は読み取れません。この緑は、公式サイトのツインフレッシュの紹介画像の箱の緑と近い色に見えます。ただ、箱の一部しか映っていないため断定はできません。丸いシューの見た目とあわせて、ヒロタのものとみられる、という判断にとどめています。
 
 ## YOSHIKI(KO1KEYZ)ってどんな人？
 
@@ -98,6 +98,14 @@ KO1KEYZ(コイキーズ)は、『PRODUCE 101 JAPAN 新世界』から誕生し�
 <!-- /wp:html -->
 
 YOSHIKIが楽屋で「いっぱい食べました」と話していたように、ヒロタのシュークリームは手軽に楽しめるおやつです。スーパーの洋菓子コーナーで見かけたら、一度試してみるのもよさそうです。
+
+<!-- wp:html -->
+<div style="border:1px solid #efc3cf;border-left:4px solid #f0a5bc;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#fff6f9;">
+<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">この記事の情報源</p>
+<ul style="margin:0;padding-left:1.3em;"><li>洋菓子のヒロタ公式サイト(商品一覧・直営店の案内):<a href="https://www.the-hirota.co.jp/" target="_blank" rel="noopener">https://www.the-hirota.co.jp/</a></li><li>洋菓子のヒロタ 創業100周年特設サイト:<a href="https://www.the-hirota.co.jp/html/100th" target="_blank" rel="noopener">https://www.the-hirota.co.jp/html/100th</a></li><li>KO1KEYZ公式YouTube「2026 KO1KEYZ 1ST FAN MEETING Behind」(8分25秒あたり):<a href="https://youtu.be/8Yw9-RnsfW4" target="_blank" rel="noopener">https://youtu.be/8Yw9-RnsfW4</a></li></ul>
+<p style="margin:8px 0 0 0;font-size:0.95em;">確認できていないこと:YOSHIKIが食べたシュークリームの商品名、箱の色やパッケージの公式な説明、スーパーでの取り扱い店舗の最新情報。</p>
+</div>
+<!-- /wp:html -->
 
 <!-- wp:html -->
 <div style="border:1px solid #ded9d2;border-left:4px solid #8a8378;border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f8f6f4;">
