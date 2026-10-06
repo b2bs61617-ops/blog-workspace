@@ -49,7 +49,7 @@ RELATED = [
 def related_box():
     items = "".join(f'<li><a href="{WP_URL}/{slug}/">{anchor}</a></li>' for slug, anchor in RELATED)
     return (
-        f'<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">'
+        f'<div style="border:1px solid #c9dbe2;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#eef5f8;">'
         '<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">関連記事</p>'
         f'<ul style="margin:0;padding-left:1.3em;">{items}</ul></div>'
     )
@@ -65,7 +65,7 @@ def style_table(inner):
                 f'<td style="border:1px solid #ccc;padding:8px 12px;background:{ACCENT};color:#fff;"><strong>{c}</strong></td>'
                 for c in cells)
         else:
-            bg = "#ffffff" if i % 2 else "#f4f7f8"
+            bg = "#ffffff" if i % 2 else "#eef5f8"
             tds = "".join(
                 f'<td style="border:1px solid #ccc;padding:8px 12px;background:{bg};">{c}</td>' for c in cells)
         out.append(f"<tr>{tds}</tr>")
@@ -104,14 +104,14 @@ def to_blocks(src):
             if "&#10003;" in inner:
                 out.append(
                     "<!-- wp:html -->\n"
-                    '<div style="border:1px solid #ddd;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">'
+                    '<div style="border:1px solid #c9dbe2;border-radius:4px;margin:0 0 16px 0;overflow:hidden;">'
                     f'<p style="font-weight:bold;font-size:1.05em;margin:0;padding:10px 18px;background:{ACCENT};color:#fff;">この記事のまとめ</p>'
-                    f'<ul style="margin:0;padding:14px 18px 14px 34px;background:#f7f7f7;">{items}</ul></div>\n<!-- /wp:html -->'
+                    f'<ul style="margin:0;padding:14px 18px 14px 34px;background:#eef5f8;">{items}</ul></div>\n<!-- /wp:html -->'
                 )
             else:
                 out.append(
                     "<!-- wp:html -->\n"
-                    f'<div style="border:1px solid #ddd;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">'
+                    f'<div style="border:1px solid #c9dbe2;border-left:4px solid {ACCENT};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#eef5f8;">'
                     f'<ul style="margin:0;padding-left:1.2em;">{inner}</ul></div>\n<!-- /wp:html -->'
                 )
     return "\n\n".join(out)
