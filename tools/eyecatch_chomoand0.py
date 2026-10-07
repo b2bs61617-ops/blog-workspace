@@ -92,11 +92,13 @@ def wrap_title(title: str, max_lines: int = 4) -> list[str]:
         return [title]
 
     chunk_len = math.ceil(n / ideal_lines)
-    break_chars = "、。！？!?　 ・"
+    break_chars = "、。！？!?　 ・」』）)"
+    close_chars = set("」』）)")
     radius = 6
 
     def is_word_char(ch: str) -> bool:
-        return ch.isascii() and ch.isalnum()
+        # 英数字とカタカナ語(「ポリティカルパン」など)は途中で切らない
+        return (ch.isascii() and ch.isalnum()) or "ァ" <= ch <= "ヺ" or ch == "ー"
 
     def candidates(target: int, limit: int):
         # 目標の切れ目(target)に近い位置から順に試す(target, target-1, target+1, target-2, ...)
@@ -116,7 +118,8 @@ def wrap_title(title: str, max_lines: int = 4) -> list[str]:
         best = -1
         # 1) 句読点・記号の直後を、目標の切れ目に近い順に優先
         for i in candidates(chunk_len - 1, len(remaining)):
-            if remaining[i] in break_chars:
+            # 「？」のように直後が閉じ括弧なら括弧ごと同じ行に残す
+            if remaining[i] in break_chars and remaining[i + 1 : i + 2] not in close_chars:
                 best = i
                 break
         # 2) 見つからなければ、英数字の単語(ブランド名など)の途中を避けて探す
