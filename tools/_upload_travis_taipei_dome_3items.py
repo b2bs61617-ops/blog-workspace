@@ -33,8 +33,8 @@ POSTS = {
         "images": {
             "IMG_REHEARSAL": ("matsukura_taipei_hysteric_rehearsal.jpg",
                               "台北ドームのグラウンドで、グリーンのメッシュタンクトップとベージュのハーフパンツ姿でストレッチする松倉海斗", CAP),
-            "IMG_FACE": ("matsukura_taipei_hysteric_face.jpg",
-                         "頭にサングラスをのせ、グリーンのタンクトップにクロスのネックレスを合わせた松倉海斗", CAP),
+            "IMG_FACE": ("matsukura_taipei_hysteric_face2.jpg",
+                         "頭にサングラスをのせ、グリーンのタンクトップにクロスのネックレスを合わせて笑顔を見せる松倉海斗", CAP),
             "IMG_ZOOM": ("matsukura_taipei_hysteric_zoom.jpg",
                          "タンクトップの胸に入った「HYSTERIC」の文字と大きな「84」、数字に重なる女性のイラストのアップ", CAP_ZOOM),
             "IMG_END": ("matsukura_taipei_hysteric_end.jpg",
