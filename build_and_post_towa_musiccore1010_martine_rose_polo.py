@@ -108,8 +108,8 @@ JP_CONTENT = "\n\n".join([
       "SHINHAENG・SIYOUNG・TOWA・YOSHIKI・YUKI・YURAの6人が、「KO1KEYZ」の横断幕がかかった体育館で踊る動画です。<br>\n"
       "6人ともラグビーシャツやサッカーシャツ風のトップスにデニムを合わせていて、TOWAもこのポロに淡い色のワイドデニムと白いスニーカーで登場しています。"),
     img_html(m_group, "体育館で「KO1KEYZ」(Korean ver.)を踊るメンバー6人。左端のTOWAはグレーのボーダーのポロシャツ", f"出典：{SRC_TT}"),
-    p("公式写真と公式TikTokの両方に同じポロが出てくるので、この日の衣装として用意された1着とみてよさそうです。<br>\n"
-      "スタイリストが用意したものか、TOWA本人の私物かは明かされていません。"),
+    p("公式写真にも公式TikTokにも同じポロで登場していて、この日の「KO1KEYZ」の活動のために用意された衣装です。<br>\n"
+      "ほかの5人もラグビーシャツやサッカーシャツ風のトップスでそろえていて、体育館のセットとあわせて「スポーツチーム」のようなコンセプトになっていました。"),
 
     h2("どうしてマーティン・ローズと分かる？見分けポイントは？"),
     ui.minibox([("ポイント①：", "赤い三角+「martine」のロゴ"), ("ポイント②：", "「MARTINE SPORT」の紋章"), ("ポイント③：", "青い「TOTAL participation」の刺しゅう")]),
@@ -215,8 +215,8 @@ KR_CONTENT = "\n\n".join([
     p("같은 날 밤 공식 틱톡에는 SHINHAENG・SIYOUNG・TOWA・YOSHIKI・YUKI・YURA 6명이 체육관에서 'KO1KEYZ'(Korean ver.)를 추는 영상이 올라왔습니다.<br>\n"
       "TOWA는 이 폴로에 연한 와이드 데님과 흰 스니커즈를 매치했습니다."),
     img_html(m_group, "체육관에서 'KO1KEYZ'(Korean ver.)를 추는 6명. 왼쪽 끝 TOWA는 회색 스트라이프 폴로", f"출처: {SRC_TT}"),
-    p("공식 사진과 틱톡 모두에 같은 폴로가 나와 이날의 의상으로 보입니다.<br>\n"
-      "스타일리스트가 준비한 것인지 본인 소장품인지는 알려지지 않았습니다."),
+    p("공식 사진과 틱톡 모두 같은 폴로로 등장해, 이날 'KO1KEYZ' 활동을 위해 준비된 의상입니다.<br>\n"
+      "다른 5명도 럭비 셔츠・축구 셔츠풍 상의로 맞춰 체육관 세트와 함께 '스포츠 팀' 같은 콘셉트를 보여주었습니다."),
     h2("왜 마틴 로즈라고 할 수 있을까?"),
     img_html(m_towa, "틱톡 영상 속 TOWA. 가슴에 빨간 삼각형 로고와 파란 TOTAL 자수", f"출처: {SRC_TT}"),
     ui.barbox("마틴 로즈 상품 사진과 일치한 포인트", [
@@ -292,7 +292,8 @@ EN_CONTENT = "\n\n".join([
     p("That evening, the official TikTok posted a \"KO1KEYZ\" (Korean ver.) dance video of SHINHAENG, SIYOUNG, TOWA, YOSHIKI, YUKI and YURA in a gym set.<br>\n"
       "TOWA paired the same polo with light wide-leg jeans and white sneakers."),
     img_html(m_group, "Six KO1KEYZ members dancing \"KO1KEYZ\" (Korean ver.) in a gym; TOWA, far left, in the gray striped polo", f"Source: {SRC_TT}"),
-    p("Since it appears in both the official photo and the TikTok, it looks like his outfit for the day. Whether it was styled or his own hasn't been shared."),
+    p("It shows up in both the official photo and the TikTok, so it's his stage costume for the \"KO1KEYZ\" promotions that day.<br>\n"
+      "The other five also wore rugby- and football-style tops, matching the gym set for a sports-team concept."),
     h2("How do we know it's Martine Rose?"),
     img_html(m_towa, "TOWA in the TikTok video, showing the red triangle logo and blue TOTAL embroidery", f"Source: {SRC_TT}"),
     ui.barbox("Points that match the product photos", [
