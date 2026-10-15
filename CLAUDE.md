@@ -28,6 +28,18 @@
 - オシリ(子どもが3人いる)
 - ユカ(トモキの奥さん)
 
+## メンバーへのお知らせ(新しいツールの案内)
+
+トモキ以外のメンバー(ユカ・オシリ)がマツを使うとき、下の「未案内のお知らせ」があれば、**その会話の最初の返答で一度だけ**、短くやさしい言葉で案内する(専門用語・ファイルパスの羅列は避ける。手順は3つ以内)。相手が誰か分からなければ、案内の前に名前を聞く。トモキには案内しない。
+案内したら、そのPCの自動メモリに「〇〇のお知らせ案内済み」と記録し、同じ人に二度案内しない。
+
+- **サジェスト穴場ファインダー(2026-10-15〜)** — 案内する内容:
+  - 名前を入れると、Googleの検索候補(サジェスト)から「ライバル記事が少ないキーワード」を見つけて、記事タイトル案まで出してくれるソフト。マツのトークンは使わない
+  - 使い方: ①`blog-workspace\tools\suggest-finder`の**run.bat**をダブルクリック ②名前を入れてEnter ③終わると結果が開く
+  - 結果の見方: ◎=ライバルほぼ無し(書くならこれ)/○=少し(書いてOK)/×=多い(やめておく)
+  - 全部調べると45分くらいかかる(放っておけばOK)。初回だけ準備に数分かかる。マツに「〇〇でサジェスト調べて」と頼んでもOK
+  - タイトル案はたまに間違えるので使う前に確認する。結果はそのPCにだけ残るので、見せたいときはHTMLファイルを送る
+
 ## 権限方針
 
 - Read/Edit/Write/Glob/Grep/WebFetch/WebSearch/Bash/Agent/TodoWriteは基本すべて自動許可(`.claude/settings.json`参照)。`.claude/`配下(スキル・設定ファイルなど)へのEdit/Writeも同様に自動許可(2026-07-06追加、`Edit(.claude)`/`Write(.claude)`)。
@@ -89,7 +101,7 @@
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
 | YouTubeタレント監視(`tools/youtube-talent-monitor/`) | chomoand-0向け。旧ジャニーズ所属・出身タレントの公式YouTube新着を**RSS(APIキー不要)**でチェックし、文字起こし+**画像解析(服装・アクセサリー・ロケ地をGemini Visionで解析、フレームは`frames/`に保存)**付きでLINE通知(2026-07-29〜、タスクスケジューラで毎日23:00実行)。画像解析はClaude/マツを介さずスクリプト単体で完結(トークン消費防止)。監視対象は`channels.json`、詳細は[docs/tools.md](docs/tools.md) |
 | KO1KEYZ YouTube監視(`tools/koikeyz-youtube-monitor/`) | **2026-07-30〜未使用**(試作したがユーザー判断でKO1KEYZはX監視主軸の方針に決定、タスクスケジューラ登録は削除済み)。コードのみ将来用に残置。KO1KEYZの情報収集は`tools/koikeyz-monitor/`(X監視)を参照 |
-| 外部AI連携(`tools/ai_hub.py`) | **マツのトークン節約用(2026-10-05〜)**。調査・EN/KR翻訳・X投稿文案を外部AIに任せ、結果は`-o`でファイルに出してマツは要点だけ読む。対応=Gemini/Groq/OpenRouter(稼働中・無料)、Mistral/Cerebras/GitHub Models(無料、キー登録待ち)、検索=Tavily(月1000回無料、`research`で検索→他AIが要約)。Grok(`XAI_API_KEY`)は有料のため見送り中。中国系モデルはOpenRouter経由のみ(直APIは使わない)。キーがあるものだけ自動で使い、失敗時は次のAIへフォールバック。外部AIの出力は事実確認せずにそのまま公開しない |
+| 外部AI連携(`tools/ai_hub.py`) | **マツのトークン節約用(2026-10-05〜)**。調査・EN/KR翻訳・X投稿文案を外部AIに任せ、結果は`-o`でファイルに出してマツは要点だけ読む。対応=Gemini/Groq/OpenRouter(稼働中・無料)、Mistral/Cerebras(受け口のみ。無料枠の条件が合わず見送り)、検索=Tavily(月1000回無料、`research`で検索→他AIが要約)。Grok(`XAI_API_KEY`)は有料のため見送り中。中国系モデルはOpenRouter経由のみ(直APIは使わない)。キーがあるものだけ自動で使い、失敗時は次のAIへフォールバック。外部AIの出力は事実確認せずにそのまま公開しない |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | サジェスト穴場ファインダー(`tools/suggest-finder/`) | **ネタ探し用(2026-10-15〜)**。「名前+あいうえお」のGoogleサジェストを集め、Yahoo!上位10件で競合を◎穴場/○狙える/×激戦に判定し、◎○にGeminiでタイトル案を付けてHTML/CSVで出す。マツのトークン不要。メンバーは `run.bat` ダブルクリック→名前入力。マツが頼まれたら `python tools/suggest-finder/suggest_finder.py "名前" --no-open`(全件約45分なので急ぐときは`--max 50`)を実行し、◎○の上位だけ要約して伝える。タイトル案は外部AI製なので事実確認してから使う。詳細は[README](tools/suggest-finder/README.md) |
 | 検索順位チェック(`tools/rank_check.py`) | 指定キーワード×記事の実際の検索順位をその場で確認(2026-09-22追加)。`python tools/rank_check.py "キーワード" ドメイン`。**Yahoo!検索のみ対応**(Googleはヘッドレスアクセスを検知しブロックするため非対応)。Googleの順位はSearch Console API併用か目視確認で補う。詳細は[docs/tools.md](docs/tools.md) |
