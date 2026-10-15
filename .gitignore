@@ -61,3 +61,7 @@ __pycache__/
 # OS
 Thumbs.db
 desktop.ini
+
+# サジェスト穴場ファインダーのローカル生成データ(検索結果キャッシュ・レポート)
+tools/suggest-finder/out/
+tools/suggest-finder/cache/
