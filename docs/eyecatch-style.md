@@ -9,6 +9,7 @@
 | chomoand.com(恋リア以外の旧カテゴリ記事) | 対象外。第2次転換([docs/chomoand-pivot.md](chomoand-pivot.md))で凍結済みの旧記事(トレンド系・未分類など)はそのまま放置。新デザインを適用するのは恋リア記事のみ |
 | chomoand-0.com | **`tools/eyecatch_chomoand0.py`必須**(HTML+Playwrightで汎用テンプレを自動生成。手動でHTML/PowerShellを組む必要はない)。詳細は下記「汎用テンプレ」参照 |
 | chomoand-4.blog(Travis Japan専門、2026-09-13新設) | **`tools/eyecatch_torahja_canva.py`のCanva水彩デザイン必須**(2026-10-02〜、下記「chomoand-4.blog Canva水彩デザイン」参照)。旧ベージュ(`eyecatch_chomoand0_old.py`)と紫3行(`eyecatch_torahja.py`)は使わない |
+| chomoand-5.site(KEY TO LIT専門、2026-10-17〜) | **`tools/eyecatch_kitetsu.py`必須**。chomoand-4.blogの水彩デザインと同じ型(上段既定「KEY TO LIT」/中央=メンバー名or話題/下段1〜2行)で、色はKEY TO LITのメンバーカラー(岩﨑大昇=白、井上瑞稀=赤、中村嶺亜=ピンク、猪狩蒼弥=緑、佐々木大光=青、グループ回=`group`で5色まぜ) |
 
 ## chomoand-4.blog Canva水彩デザイン(2026-10-02〜、ユーザーOK済み)
 

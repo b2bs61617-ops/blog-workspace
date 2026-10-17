@@ -8,10 +8,11 @@
 | ジャニオタブログ | https://chomoand-0.com | ジャニーズ系記事全般(オーディション番組系だけでなく、グループ・メンバー個人の話題・ファンクラブ情報なども含む) | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
 | Travis Japan専門ブログ | https://chomoand-4.blog | **Travis Japan専門**(2026-09-13新設、サイト名「ちょものTravis Japan情報局」)。以前はTravis Japan記事もchomoand-0.comに投稿していたが、新設後は**新規記事のみ**こちらへ。既存のchomoand-0.com上のTravis Japan記事はそのまま残す(移行はしない) | `WP_CHOMO4_URL` / `WP_CHOMO4_USERNAME` / `WP_CHOMO4_APP_PASSWORD`(サイト新設時の命名の都合でキー名は`CHOMO4`のまま) |
+| KEY TO LIT専門ブログ | https://chomoand-5.site | **KEY TO LIT(キテレツ)専門**(2026-10-17〜、サイト名「ちょものKEY TO LIT情報局」)。運用はchomoand-4.blog(トラジャ)と同じ | `WP_CHOMO5_URL` / `WP_CHOMO5_USERNAME` / `WP_CHOMO5_APP_PASSWORD` |
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。
 
-**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事(Travis Japan以外)→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**。
+**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事(Travis Japan以外)→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**(2026-10-17〜)。
 
 ## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定/2026-08-06、chomoand-0.comは例外指定)
 
@@ -19,10 +20,10 @@
 
 **例外: chomoand-0.com(ジャニオタブログ)だけはPCによらず投稿者を`b2bs61617@gmail.com`(user id 1、認証に使っているアカウント本人)に固定する**(2026-08-06にユーザーから指示。「ジャニーズブログに関しては投稿者はb2bs61617@gmail.comでおっけー」)。下表の「chomoand-0.com」列はこの例外指定の対象外(chomoand.com・chomoand-1.comは引き続き下表のPCごとの名義を使う)。
 
-| PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com | chomoand-4.blog |
-|---|---|---|---|---|---|
-| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) |
-| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) |
+| PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com | chomoand-4.blog | chomoand-5.site |
+|---|---|---|---|---|---|---|
+| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) | user id 2(slug: momo、2026-10-17確認) |
+| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) | user id 1(slug: anco、2026-10-17確認) |
 
 - hostnameは`hostname`コマンドで確認できる。
 - [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
@@ -62,6 +63,23 @@ chomoand-4.blog(Travis Japan専門ブログ)は以下が判明済み(2026-09-13)
 | 4 | ジャニーズ |
 
 投稿時は基本`[3]`(Travis Japan)を指定する。グループ横断・他ジャニーズグループとの絡みなど「ジャニーズ全般」寄りの内容を含む記事は`[3, 4]`にする(chomoand-0.comの「Travis Japanは[3,7]両方付ける」ルールと同じ考え方)。
+
+chomoand-5.site(KEY TO LIT専門ブログ)は以下(2026-10-17にマツが作成):
+
+| ID | 名前 | 親 |
+|---|---|---|
+| 1 | 未分類 | - |
+| 4 | KEY TO LIT | - |
+| 5 | ジャニーズ | - |
+| 6 | 岩﨑大昇 | 4 |
+| 7 | 井上瑞稀 | 4 |
+| 8 | 中村嶺亜 | 4 |
+| 9 | 猪狩蒼弥 | 4 |
+| 10 | 佐々木大光 | 4 |
+
+投稿時は基本`[4]`+登場メンバーのカテゴリ(例: 猪狩蒼弥の記事なら`[4, 9]`)。他グループとの絡みなど「ジャニーズ全般」寄りの内容は`5`も足す。
+
+KEY TO LITの基本情報(2026-10-17調べ、記事を書くときは最新情報を確認すること): STARTO ENTERTAINMENTの5人組、2025年2月結成。メンバーとメンバーカラーは 岩﨑大昇=白(元美 少年)/井上瑞稀=赤(元HiHi Jets)/中村嶺亜=ピンク(元7 MEN 侍)/猪狩蒼弥=緑(元HiHi Jets)/佐々木大光=青(元7 MEN 侍)。
 
 ### 多言語化(2026-07-19〜、2026-08-19に英語追加)
 
