@@ -175,14 +175,15 @@ IMGS = {
     "hoodie": ("hoodie_sleeve.jpg", "袖にCarharttのロゴが入った宮近海斗のパーカー"),
     "beanie": ("nakamura_beanie.jpg", "中村海人のCHANELのビーニーとトムフォードのメガネ"),
     "glasses": ("nakamura_beanie_glasses_side.jpg", "中村海人のメガネのつるに付いたトムフォードのTのパーツ"),
-    "sit": ("outfits_sitting.jpg", "チュロス休憩中の中村海人(左)と宮近海斗(右)の全身"),
 }
 
+# 2026-10-19 下書き1583を作成済み。再実行は本文の更新だけ(画像は作成時にアップ済みのIDを使う)
+POST_ID = 1583
+MEDIA_IDS = {"two": 1576, "cap": 1577, "cap_back": 1578, "hoodie": 1579, "beanie": 1580, "glasses": 1581}
 media = {k: None for k in IMGS}
 if not DRY:
-    for k, (fn, _) in IMGS.items():
-        media[k] = upload_media(shrink(IMG_DIR / fn))
-        print("uploaded", k, media[k]["id"])
+    for k, mid in MEDIA_IDS.items():
+        media[k] = requests.get(f"{WP_URL}/wp-json/wp/v2/media/{mid}", headers=HEADERS_AUTH).json()
 
 
 def img(k):
@@ -201,7 +202,7 @@ b.append(p([
     "宮近さんはサングラス、中村さんはメガネで、宮近さんのサングラスは中村さんからの誕生日プレゼントとみられます。",
     "ほかにも、宮近さんの" + M("6CRAYONのキャップ") + "、中村さんの" + M("CHANELのビーニー") + "など、過去に着けていたアイテムが次々に登場しています。",
 ]))
-b.append(whatbox(["2人の服装の一覧", "宮近海斗のキャップ・サングラス・パーカー", "中村海人のビーニー・メガネ・シャツ", "値段と買える場所"]))
+b.append(whatbox(["2人の服装の一覧", "宮近海斗のキャップ・サングラス・パーカー", "中村海人のビーニー・メガネ", "値段と買える場所"]))
 
 # ---- 一覧 ----
 b.append(h2("ちゃかうみの原宿散歩コーデを一覧で"))
@@ -215,10 +216,8 @@ b.append(table(["", "アイテム", "ブランド・モデル"], [
     ["宮近海斗", "キャップ", "6CRAYON「Vintage Flat Top Casual Baseball Cap」(黒)"],
     ["宮近海斗", "サングラス", "TOM FORD(誕生日プレゼントとみられる)"],
     ["宮近海斗", "パーカー", "Carhartt(袖ロゴ入り、モデルは未確定)"],
-    ["宮近海斗", "パンツ・時計・ピアス", "黒のワイドパンツ、シルバー×ゴールドの時計、ゴールドのフープピアス(ブランドは未確定)"],
     ["中村海人", "ビーニー", "CHANEL「Beanie Cashmere」とみられる"],
     ["中村海人", "メガネ", "TOM FORD(ブルーライトカットレンズとみられる)"],
-    ["中村海人", "シャツ・インナー・デニム", "青×黒のチェックシャツ、白のリブタンクトップ、ライトブルーのデニム(ブランドは未確定)"],
 ]))
 
 # ---- お揃い ----
@@ -267,7 +266,6 @@ b.append(h2("宮近海斗の服装"))
 b.append(minibox([
     ("キャップ", "6CRAYON「Vintage Flat Top Casual Baseball Cap」"),
     ("パーカー", "Carharttの袖ロゴ入りフーディー"),
-    ("そのほか", "黒のワイドパンツ、コンビの時計、ゴールドのフープピアス"),
 ]))
 b.append(h3("キャップはコストコ回と同じ6CRAYON"))
 b.append(p([
@@ -300,23 +298,11 @@ b.append(p([
 b.append(p([
     "宮近さんはCarharttの服をよく着ていて、" + f'<a href="{URL_207}">コストコ回のTシャツ</a>' + "や" + f'<a href="{URL_703}">私服のチェックシャツ</a>' + "もCarharttでした。",
 ]))
-b.append(h3("時計とピアス、パンツ"))
-b.append(p([
-    "チュロス休憩の場面では、宮近さんの手首にシルバーとゴールドのコンビの腕時計が映ります。",
-    "白っぽい文字盤の丸い時計ですが、映ったのは一瞬で、ブランドまでは確認できませんでした。",
-    "耳には両耳ともゴールドのフープピアスが光っています。",
-]))
-b.append(p([
-    "下は黒のワイドパンツで、大きめのパーカーとあわせたゆったりしたシルエットです。",
-    "キャップとサングラスで顔まわりを引き締め、全体は黒とグレーでまとめたストリート寄りのコーデでした。",
-]))
 
 # ---- 中村 ----
 b.append(h2("中村海人の服装"))
 b.append(minibox([
     ("ビーニー", "CHANEL「Beanie Cashmere」とみられる"),
-    ("シャツ", "青×黒のチェックのネルシャツ"),
-    ("そのほか", "白のリブタンクトップ、ライトブルーのデニム、黒い靴"),
 ]))
 b.append(h3("ビーニーはCHANELのカメリアビーニーとみられる"))
 b.append(img("beanie"))
@@ -329,17 +315,6 @@ b.append(p([
     "カシミヤ100%の2023年秋冬のアイテムで、CHANELの公式サイトではブティックでの扱いのため価格が出ていません。",
     "海外の中古ショップでは650〜850ドル(約10万〜13万円)ほどで取引されている人気のモデルです。",
     "詳しくは" + f'<a href="{URL_729}">千賀健永の配信で中村海人がかぶってたビーニーの記事</a>' + "で紹介しています。",
-]))
-b.append(h3("シャツは青×黒のチェック"))
-b.append(img("sit"))
-b.append(p([
-    "トップスは、水色と黒のチェックがグラデーションのように切り替わる、厚手のネルシャツです。",
-    "胸にはふた付きのポケットが2つあり、インナーに白のリブタンクトップを合わせていました。",
-    "シャツのタグやロゴは映っておらず、ブランドは分かりませんでした。",
-]))
-b.append(p([
-    "下はライトブルーのゆったりしたデニムに、黒い靴を合わせています。",
-    "ニット帽とメガネ、チェックシャツにデニムという、秋らしい落ち着いた組み合わせでした。",
 ]))
 
 # ---- 価格 ----
@@ -385,6 +360,13 @@ plain = re.sub(r"<!--.*?-->|<[^>]+>", "", content, flags=re.S)
 print("chars:", len(re.sub(r"\s", "", plain)), "title len:", len(TITLE))
 (ROOT / "articles" / "chakaumi_harajuku_items_1017.html").write_text(content, encoding="utf-8")
 if DRY:
+    sys.exit()
+
+if POST_ID:
+    r = requests.post(f"{WP_URL}/wp-json/wp/v2/posts/{POST_ID}", headers=HJSON,
+                      data=json.dumps({"content": content, "status": "draft"}).encode("utf-8"))
+    r.raise_for_status()
+    print("UPDATED", r.json()["id"], r.json()["status"])
     sys.exit()
 
 payload = {"title": TITLE, "content": content, "status": "draft",
