@@ -1,0 +1,2136 @@
+{
+ "posts": {
+  "taisho_quiz_rl": 42,
+  "taiko_quiz_kamiya": 46,
+  "reia_quiz_play": 50,
+  "inoue_quiz_moscot": 54,
+  "inoue_quiz_onitsuka": 58,
+  "taisho_jr_celine": 62,
+  "reia_jr_galfy_hoodie": 65,
+  "reia_jr_galfy_pants": 68,
+  "inoue_jr_cullni": 71,
+  "reia_ueda_tomie": 74,
+  "reia_ueda_y3": 77,
+  "inoue_jr_v2k": 81,
+  "reia_buf_kitsune": 85,
+  "taisho_buf_hrm": 89,
+  "igari_buf_rl_camp": 93,
+  "taisho_uc_ami_shirt": 101,
+  "taisho_uc_ami_vest": 105,
+  "taiko_uc_satur": 109,
+  "reia_uc_hotleathers": 113,
+  "igari_uc_gap": 117
+ },
+ "media": {
+  "taisho_quiz_rl:a": 39,
+  "taisho_quiz_rl:b": 40,
+  "taiko_quiz_kamiya:a": 43,
+  "taiko_quiz_kamiya:b": 44,
+  "reia_quiz_play:a": 47,
+  "reia_quiz_play:b": 48,
+  "inoue_quiz_moscot:a": 51,
+  "inoue_quiz_moscot:b": 52,
+  "inoue_quiz_onitsuka:a": 55,
+  "inoue_quiz_onitsuka:b": 56,
+  "taisho_jr_celine:a": 59,
+  "taisho_jr_celine:b": 60,
+  "reia_jr_galfy_hoodie:a": 63,
+  "reia_jr_galfy_pants:a": 66,
+  "inoue_jr_cullni:a": 69,
+  "reia_ueda_tomie:a": 72,
+  "reia_ueda_y3:a": 75,
+  "inoue_jr_v2k:a": 78,
+  "inoue_jr_v2k:b": 79,
+  "reia_buf_kitsune:a": 82,
+  "reia_buf_kitsune:b": 83,
+  "taisho_buf_hrm:a": 86,
+  "taisho_buf_hrm:b": 87,
+  "igari_buf_rl_camp:a": 90,
+  "igari_buf_rl_camp:b": 91,
+  "taisho_uc_ami_shirt:a": 98,
+  "taisho_uc_ami_shirt:b": 99,
+  "taisho_uc_ami_vest:a": 102,
+  "taisho_uc_ami_vest:b": 103,
+  "taiko_uc_satur:a": 106,
+  "taiko_uc_satur:b": 107,
+  "reia_uc_hotleathers:a": 110,
+  "reia_uc_hotleathers:b": 111,
+  "igari_uc_gap:a": 114,
+  "igari_uc_gap:b": 115
+ },
+ "media_obj": {
+  "39": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a.jpg",
+   "media_details": {
+    "width": 1260,
+    "height": 930,
+    "file": "2026/10/ktl_taisho_quiz_rl_a.jpg",
+    "filesize": 122871,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_quiz_rl_a-300x221.jpg",
+      "width": 300,
+      "height": 221,
+      "filesize": 10444,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a-300x221.jpg"
+     },
+     "large": {
+      "file": "ktl_taisho_quiz_rl_a-1024x756.jpg",
+      "width": 1024,
+      "height": 756,
+      "filesize": 61295,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a-1024x756.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_quiz_rl_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5313,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taisho_quiz_rl_a-768x567.jpg",
+      "width": 768,
+      "height": 567,
+      "filesize": 40904,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a-768x567.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_quiz_rl_a.jpg",
+      "width": 1260,
+      "height": 930,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "40": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 660,
+    "file": "2026/10/ktl_taisho_quiz_rl_b.jpg",
+    "filesize": 208208,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_quiz_rl_b-300x103.jpg",
+      "width": 300,
+      "height": 103,
+      "filesize": 8254,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b-300x103.jpg"
+     },
+     "large": {
+      "file": "ktl_taisho_quiz_rl_b-1024x352.jpg",
+      "width": 1024,
+      "height": 352,
+      "filesize": 57430,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b-1024x352.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_quiz_rl_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6093,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taisho_quiz_rl_b-768x264.jpg",
+      "width": 768,
+      "height": 264,
+      "filesize": 36705,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b-768x264.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_taisho_quiz_rl_b-1536x528.jpg",
+      "width": 1536,
+      "height": 528,
+      "filesize": 102823,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b-1536x528.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_quiz_rl_b.jpg",
+      "width": 1920,
+      "height": 660,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_quiz_rl_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "43": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 1080,
+    "file": "2026/10/ktl_taiko_quiz_kamiya_a.jpg",
+    "filesize": 360576,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taiko_quiz_kamiya_a-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 11858,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_taiko_quiz_kamiya_a-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 87407,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taiko_quiz_kamiya_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5452,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taiko_quiz_kamiya_a-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 53913,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a-768x432.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_taiko_quiz_kamiya_a-1536x864.jpg",
+      "width": 1536,
+      "height": 864,
+      "filesize": 168004,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a-1536x864.jpg"
+     },
+     "full": {
+      "file": "ktl_taiko_quiz_kamiya_a.jpg",
+      "width": 1920,
+      "height": 1080,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "44": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b.jpg",
+   "media_details": {
+    "width": 1180,
+    "height": 830,
+    "file": "2026/10/ktl_taiko_quiz_kamiya_b.jpg",
+    "filesize": 173826,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taiko_quiz_kamiya_b-300x211.jpg",
+      "width": 300,
+      "height": 211,
+      "filesize": 14389,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b-300x211.jpg"
+     },
+     "large": {
+      "file": "ktl_taiko_quiz_kamiya_b-1024x720.jpg",
+      "width": 1024,
+      "height": 720,
+      "filesize": 96262,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b-1024x720.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taiko_quiz_kamiya_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6205,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taiko_quiz_kamiya_b-768x540.jpg",
+      "width": 768,
+      "height": 540,
+      "filesize": 63207,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b-768x540.jpg"
+     },
+     "full": {
+      "file": "ktl_taiko_quiz_kamiya_b.jpg",
+      "width": 1180,
+      "height": 830,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_quiz_kamiya_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "47": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_a.jpg",
+   "media_details": {
+    "width": 520,
+    "height": 780,
+    "file": "2026/10/ktl_reia_quiz_play_a.jpg",
+    "filesize": 60055,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_quiz_play_a-200x300.jpg",
+      "width": 200,
+      "height": 300,
+      "filesize": 9259,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_a-200x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_quiz_play_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4184,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_quiz_play_a.jpg",
+      "width": 520,
+      "height": 780,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "48": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 1080,
+    "file": "2026/10/ktl_reia_quiz_play_b.jpg",
+    "filesize": 314121,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_quiz_play_b-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 12821,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_reia_quiz_play_b-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 83057,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_quiz_play_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6646,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_reia_quiz_play_b-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 52871,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b-768x432.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_reia_quiz_play_b-1536x864.jpg",
+      "width": 1536,
+      "height": 864,
+      "filesize": 148466,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b-1536x864.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_quiz_play_b.jpg",
+      "width": 1920,
+      "height": 1080,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_quiz_play_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "51": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_a.jpg",
+   "media_details": {
+    "width": 500,
+    "height": 570,
+    "file": "2026/10/ktl_inoue_quiz_moscot_a.jpg",
+    "filesize": 45868,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_quiz_moscot_a-263x300.jpg",
+      "width": 263,
+      "height": 300,
+      "filesize": 11436,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_a-263x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_quiz_moscot_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4344,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_quiz_moscot_a.jpg",
+      "width": 500,
+      "height": 570,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "52": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 660,
+    "file": "2026/10/ktl_inoue_quiz_moscot_b.jpg",
+    "filesize": 208208,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_quiz_moscot_b-300x103.jpg",
+      "width": 300,
+      "height": 103,
+      "filesize": 8254,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b-300x103.jpg"
+     },
+     "large": {
+      "file": "ktl_inoue_quiz_moscot_b-1024x352.jpg",
+      "width": 1024,
+      "height": 352,
+      "filesize": 57430,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b-1024x352.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_quiz_moscot_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6093,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_inoue_quiz_moscot_b-768x264.jpg",
+      "width": 768,
+      "height": 264,
+      "filesize": 36705,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b-768x264.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_inoue_quiz_moscot_b-1536x528.jpg",
+      "width": 1536,
+      "height": 528,
+      "filesize": 102823,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b-1536x528.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_quiz_moscot_b.jpg",
+      "width": 1920,
+      "height": 660,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_moscot_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "55": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_a.jpg",
+   "media_details": {
+    "width": 480,
+    "height": 200,
+    "file": "2026/10/ktl_inoue_quiz_onitsuka_a.jpg",
+    "filesize": 19905,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_quiz_onitsuka_a-300x125.jpg",
+      "width": 300,
+      "height": 125,
+      "filesize": 6086,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_a-300x125.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_quiz_onitsuka_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 3716,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_quiz_onitsuka_a.jpg",
+      "width": 480,
+      "height": 200,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "56": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 660,
+    "file": "2026/10/ktl_inoue_quiz_onitsuka_b.jpg",
+    "filesize": 208208,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_quiz_onitsuka_b-300x103.jpg",
+      "width": 300,
+      "height": 103,
+      "filesize": 8254,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b-300x103.jpg"
+     },
+     "large": {
+      "file": "ktl_inoue_quiz_onitsuka_b-1024x352.jpg",
+      "width": 1024,
+      "height": 352,
+      "filesize": 57430,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b-1024x352.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_quiz_onitsuka_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6093,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_inoue_quiz_onitsuka_b-768x264.jpg",
+      "width": 768,
+      "height": 264,
+      "filesize": 36705,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b-768x264.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_inoue_quiz_onitsuka_b-1536x528.jpg",
+      "width": 1536,
+      "height": 528,
+      "filesize": 102823,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b-1536x528.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_quiz_onitsuka_b.jpg",
+      "width": 1920,
+      "height": 660,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_quiz_onitsuka_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "59": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_a.jpg",
+   "media_details": {
+    "width": 696,
+    "height": 1125,
+    "file": "2026/10/ktl_taisho_jr_celine_a.jpg",
+    "filesize": 160293,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_jr_celine_a-186x300.jpg",
+      "width": 186,
+      "height": 300,
+      "filesize": 11256,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_a-186x300.jpg"
+     },
+     "large": {
+      "file": "ktl_taisho_jr_celine_a-634x1024.jpg",
+      "width": 634,
+      "height": 1024,
+      "filesize": 83511,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_a-634x1024.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_jr_celine_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5014,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_jr_celine_a.jpg",
+      "width": 696,
+      "height": 1125,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "60": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_b.jpg",
+   "media_details": {
+    "width": 440,
+    "height": 400,
+    "file": "2026/10/ktl_taisho_jr_celine_b.jpg",
+    "filesize": 28728,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_jr_celine_b-300x273.jpg",
+      "width": 300,
+      "height": 273,
+      "filesize": 10699,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_b-300x273.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_jr_celine_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4051,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_jr_celine_b.jpg",
+      "width": 440,
+      "height": 400,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_jr_celine_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "63": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_hoodie_a.jpg",
+   "media_details": {
+    "width": 570,
+    "height": 860,
+    "file": "2026/10/ktl_reia_jr_galfy_hoodie_a.jpg",
+    "filesize": 83491,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_jr_galfy_hoodie_a-199x300.jpg",
+      "width": 199,
+      "height": 300,
+      "filesize": 9870,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_hoodie_a-199x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_jr_galfy_hoodie_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4574,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_hoodie_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_jr_galfy_hoodie_a.jpg",
+      "width": 570,
+      "height": 860,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_hoodie_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "66": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_pants_a.jpg",
+   "media_details": {
+    "width": 200,
+    "height": 400,
+    "file": "2026/10/ktl_reia_jr_galfy_pants_a.jpg",
+    "filesize": 17471,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_jr_galfy_pants_a-150x300.jpg",
+      "width": 150,
+      "height": 300,
+      "filesize": 6573,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_pants_a-150x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_jr_galfy_pants_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 3415,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_pants_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_jr_galfy_pants_a.jpg",
+      "width": 200,
+      "height": 400,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_jr_galfy_pants_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "69": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_cullni_a.jpg",
+   "media_details": {
+    "width": 400,
+    "height": 800,
+    "file": "2026/10/ktl_inoue_jr_cullni_a.jpg",
+    "filesize": 81179,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_jr_cullni_a-150x300.jpg",
+      "width": 150,
+      "height": 300,
+      "filesize": 10092,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_cullni_a-150x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_jr_cullni_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6260,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_cullni_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_jr_cullni_a.jpg",
+      "width": 400,
+      "height": 800,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_cullni_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "72": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_tomie_a.jpg",
+   "media_details": {
+    "width": 640,
+    "height": 1108,
+    "file": "2026/10/ktl_reia_ueda_tomie_a.jpg",
+    "filesize": 167464,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_ueda_tomie_a-173x300.jpg",
+      "width": 173,
+      "height": 300,
+      "filesize": 12488,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_tomie_a-173x300.jpg"
+     },
+     "large": {
+      "file": "ktl_reia_ueda_tomie_a-591x1024.jpg",
+      "width": 591,
+      "height": 1024,
+      "filesize": 89814,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_tomie_a-591x1024.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_ueda_tomie_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6103,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_tomie_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_ueda_tomie_a.jpg",
+      "width": 640,
+      "height": 1108,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_tomie_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "75": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a.jpg",
+   "media_details": {
+    "width": 1045,
+    "height": 2253,
+    "file": "2026/10/ktl_reia_ueda_y3_a.jpg",
+    "filesize": 481517,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_ueda_y3_a-139x300.jpg",
+      "width": 139,
+      "height": 300,
+      "filesize": 10281,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-139x300.jpg"
+     },
+     "large": {
+      "file": "ktl_reia_ueda_y3_a-475x1024.jpg",
+      "width": 475,
+      "height": 1024,
+      "filesize": 80234,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-475x1024.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_ueda_y3_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5475,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_reia_ueda_y3_a-768x1656.jpg",
+      "width": 768,
+      "height": 1656,
+      "filesize": 180057,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-768x1656.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_reia_ueda_y3_a-712x1536.jpg",
+      "width": 712,
+      "height": 1536,
+      "filesize": 159014,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-712x1536.jpg"
+     },
+     "2048x2048": {
+      "file": "ktl_reia_ueda_y3_a-950x2048.jpg",
+      "width": 950,
+      "height": 2048,
+      "filesize": 253423,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a-950x2048.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_ueda_y3_a.jpg",
+      "width": 1045,
+      "height": 2253,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_ueda_y3_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "78": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_a.jpg",
+   "media_details": {
+    "width": 350,
+    "height": 310,
+    "file": "2026/10/ktl_inoue_jr_v2k_a.jpg",
+    "filesize": 18282,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_jr_v2k_a-300x266.jpg",
+      "width": 300,
+      "height": 266,
+      "filesize": 8918,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_a-300x266.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_jr_v2k_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 3724,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_jr_v2k_a.jpg",
+      "width": 350,
+      "height": 310,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "79": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b.jpg",
+   "media_details": {
+    "width": 374,
+    "height": 1649,
+    "file": "2026/10/ktl_inoue_jr_v2k_b.jpg",
+    "filesize": 141778,
+    "sizes": {
+     "medium": {
+      "file": "ktl_inoue_jr_v2k_b-68x300.jpg",
+      "width": 68,
+      "height": 300,
+      "filesize": 5540,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b-68x300.jpg"
+     },
+     "large": {
+      "file": "ktl_inoue_jr_v2k_b-232x1024.jpg",
+      "width": 232,
+      "height": 1024,
+      "filesize": 38708,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b-232x1024.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_inoue_jr_v2k_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5222,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b-150x150.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_inoue_jr_v2k_b-348x1536.jpg",
+      "width": 348,
+      "height": 1536,
+      "filesize": 74805,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b-348x1536.jpg"
+     },
+     "full": {
+      "file": "ktl_inoue_jr_v2k_b.jpg",
+      "width": 374,
+      "height": 1649,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_inoue_jr_v2k_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "82": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 780,
+    "file": "2026/10/ktl_reia_buf_kitsune_a.jpg",
+    "filesize": 219378,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_buf_kitsune_a-300x122.jpg",
+      "width": 300,
+      "height": 122,
+      "filesize": 9960,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a-300x122.jpg"
+     },
+     "large": {
+      "file": "ktl_reia_buf_kitsune_a-1024x416.jpg",
+      "width": 1024,
+      "height": 416,
+      "filesize": 60213,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a-1024x416.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_buf_kitsune_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6910,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_reia_buf_kitsune_a-768x312.jpg",
+      "width": 768,
+      "height": 312,
+      "filesize": 39605,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a-768x312.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_reia_buf_kitsune_a-1536x624.jpg",
+      "width": 1536,
+      "height": 624,
+      "filesize": 106788,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a-1536x624.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_buf_kitsune_a.jpg",
+      "width": 1920,
+      "height": 780,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "83": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_b.jpg",
+   "media_details": {
+    "width": 340,
+    "height": 380,
+    "file": "2026/10/ktl_reia_buf_kitsune_b.jpg",
+    "filesize": 17929,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_buf_kitsune_b-268x300.jpg",
+      "width": 268,
+      "height": 300,
+      "filesize": 9142,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_b-268x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_buf_kitsune_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4025,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_buf_kitsune_b.jpg",
+      "width": 340,
+      "height": 380,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_buf_kitsune_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "86": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_a.jpg",
+   "media_details": {
+    "width": 300,
+    "height": 730,
+    "file": "2026/10/ktl_taisho_buf_hrm_a.jpg",
+    "filesize": 42550,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_buf_hrm_a-123x300.jpg",
+      "width": 123,
+      "height": 300,
+      "filesize": 8272,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_a-123x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_buf_hrm_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 3847,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_buf_hrm_a.jpg",
+      "width": 300,
+      "height": 730,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "87": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_b.jpg",
+   "media_details": {
+    "width": 960,
+    "height": 900,
+    "file": "2026/10/ktl_taisho_buf_hrm_b.jpg",
+    "filesize": 108407,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_buf_hrm_b-300x281.jpg",
+      "width": 300,
+      "height": 281,
+      "filesize": 13009,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_b-300x281.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_buf_hrm_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4821,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taisho_buf_hrm_b-768x720.jpg",
+      "width": 768,
+      "height": 720,
+      "filesize": 50632,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_b-768x720.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_buf_hrm_b.jpg",
+      "width": 960,
+      "height": 900,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_buf_hrm_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "90": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_a.jpg",
+   "media_details": {
+    "width": 650,
+    "height": 930,
+    "file": "2026/10/ktl_igari_buf_rl_camp_a.jpg",
+    "filesize": 120004,
+    "sizes": {
+     "medium": {
+      "file": "ktl_igari_buf_rl_camp_a-210x300.jpg",
+      "width": 210,
+      "height": 300,
+      "filesize": 13465,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_a-210x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_igari_buf_rl_camp_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4989,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_igari_buf_rl_camp_a.jpg",
+      "width": 650,
+      "height": 930,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "91": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b.jpg",
+   "media_details": {
+    "width": 1920,
+    "height": 1080,
+    "file": "2026/10/ktl_igari_buf_rl_camp_b.jpg",
+    "filesize": 455736,
+    "sizes": {
+     "medium": {
+      "file": "ktl_igari_buf_rl_camp_b-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 13407,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_igari_buf_rl_camp_b-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 106883,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_igari_buf_rl_camp_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6887,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_igari_buf_rl_camp_b-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 64631,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b-768x432.jpg"
+     },
+     "1536x1536": {
+      "file": "ktl_igari_buf_rl_camp_b-1536x864.jpg",
+      "width": 1536,
+      "height": 864,
+      "filesize": 207368,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b-1536x864.jpg"
+     },
+     "full": {
+      "file": "ktl_igari_buf_rl_camp_b.jpg",
+      "width": 1920,
+      "height": 1080,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_buf_rl_camp_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "98": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a.jpg",
+   "media_details": {
+    "width": 1280,
+    "height": 720,
+    "file": "2026/10/ktl_taisho_uc_ami_shirt_a.jpg",
+    "filesize": 289427,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_uc_ami_shirt_a-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 14445,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_taisho_uc_ami_shirt_a-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 116968,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_uc_ami_shirt_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 7048,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taisho_uc_ami_shirt_a-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 72615,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a-768x432.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_uc_ami_shirt_a.jpg",
+      "width": 1280,
+      "height": 720,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "99": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_b.jpg",
+   "media_details": {
+    "width": 360,
+    "height": 400,
+    "file": "2026/10/ktl_taisho_uc_ami_shirt_b.jpg",
+    "filesize": 43094,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_uc_ami_shirt_b-270x300.jpg",
+      "width": 270,
+      "height": 300,
+      "filesize": 16002,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_b-270x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_uc_ami_shirt_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 5537,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_uc_ami_shirt_b.jpg",
+      "width": 360,
+      "height": 400,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_shirt_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "102": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_a.jpg",
+   "media_details": {
+    "width": 350,
+    "height": 570,
+    "file": "2026/10/ktl_taisho_uc_ami_vest_a.jpg",
+    "filesize": 67662,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_uc_ami_vest_a-184x300.jpg",
+      "width": 184,
+      "height": 300,
+      "filesize": 14738,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_a-184x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_uc_ami_vest_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6181,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_uc_ami_vest_a.jpg",
+      "width": 350,
+      "height": 570,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "103": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b.jpg",
+   "media_details": {
+    "width": 1280,
+    "height": 720,
+    "file": "2026/10/ktl_taisho_uc_ami_vest_b.jpg",
+    "filesize": 289427,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taisho_uc_ami_vest_b-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 14445,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_taisho_uc_ami_vest_b-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 116968,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taisho_uc_ami_vest_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 7048,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taisho_uc_ami_vest_b-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 72615,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b-768x432.jpg"
+     },
+     "full": {
+      "file": "ktl_taisho_uc_ami_vest_b.jpg",
+      "width": 1280,
+      "height": 720,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taisho_uc_ami_vest_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "106": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a.jpg",
+   "media_details": {
+    "width": 1280,
+    "height": 720,
+    "file": "2026/10/ktl_taiko_uc_satur_a.jpg",
+    "filesize": 261208,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taiko_uc_satur_a-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 13719,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_taiko_uc_satur_a-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 107680,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taiko_uc_satur_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6751,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_taiko_uc_satur_a-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 66813,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a-768x432.jpg"
+     },
+     "full": {
+      "file": "ktl_taiko_uc_satur_a.jpg",
+      "width": 1280,
+      "height": 720,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "107": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_b.jpg",
+   "media_details": {
+    "width": 330,
+    "height": 310,
+    "file": "2026/10/ktl_taiko_uc_satur_b.jpg",
+    "filesize": 22375,
+    "sizes": {
+     "medium": {
+      "file": "ktl_taiko_uc_satur_b-300x282.jpg",
+      "width": 300,
+      "height": 282,
+      "filesize": 12197,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_b-300x282.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_taiko_uc_satur_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 4729,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_taiko_uc_satur_b.jpg",
+      "width": 330,
+      "height": 310,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_taiko_uc_satur_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "110": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_a.jpg",
+   "media_details": {
+    "width": 480,
+    "height": 660,
+    "file": "2026/10/ktl_reia_uc_hotleathers_a.jpg",
+    "filesize": 89421,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_uc_hotleathers_a-218x300.jpg",
+      "width": 218,
+      "height": 300,
+      "filesize": 15786,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_a-218x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_uc_hotleathers_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6005,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_a-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_uc_hotleathers_a.jpg",
+      "width": 480,
+      "height": 660,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "111": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_b.jpg",
+   "media_details": {
+    "width": 400,
+    "height": 340,
+    "file": "2026/10/ktl_reia_uc_hotleathers_b.jpg",
+    "filesize": 47249,
+    "sizes": {
+     "medium": {
+      "file": "ktl_reia_uc_hotleathers_b-300x255.jpg",
+      "width": 300,
+      "height": 255,
+      "filesize": 18643,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_b-300x255.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_reia_uc_hotleathers_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 7284,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_reia_uc_hotleathers_b.jpg",
+      "width": 400,
+      "height": 340,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_reia_uc_hotleathers_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "114": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a.jpg",
+   "media_details": {
+    "width": 1280,
+    "height": 720,
+    "file": "2026/10/ktl_igari_uc_gap_a.jpg",
+    "filesize": 248397,
+    "sizes": {
+     "medium": {
+      "file": "ktl_igari_uc_gap_a-300x169.jpg",
+      "width": 300,
+      "height": 169,
+      "filesize": 13253,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a-300x169.jpg"
+     },
+     "large": {
+      "file": "ktl_igari_uc_gap_a-1024x576.jpg",
+      "width": 1024,
+      "height": 576,
+      "filesize": 101888,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a-1024x576.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_igari_uc_gap_a-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6816,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a-150x150.jpg"
+     },
+     "medium_large": {
+      "file": "ktl_igari_uc_gap_a-768x432.jpg",
+      "width": 768,
+      "height": 432,
+      "filesize": 64222,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a-768x432.jpg"
+     },
+     "full": {
+      "file": "ktl_igari_uc_gap_a.jpg",
+      "width": 1280,
+      "height": 720,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_a.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  },
+  "115": {
+   "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_b.jpg",
+   "media_details": {
+    "width": 380,
+    "height": 420,
+    "file": "2026/10/ktl_igari_uc_gap_b.jpg",
+    "filesize": 43664,
+    "sizes": {
+     "medium": {
+      "file": "ktl_igari_uc_gap_b-271x300.jpg",
+      "width": 271,
+      "height": 300,
+      "filesize": 16201,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_b-271x300.jpg"
+     },
+     "thumbnail": {
+      "file": "ktl_igari_uc_gap_b-150x150.jpg",
+      "width": 150,
+      "height": 150,
+      "filesize": 6205,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_b-150x150.jpg"
+     },
+     "full": {
+      "file": "ktl_igari_uc_gap_b.jpg",
+      "width": 380,
+      "height": 420,
+      "mime_type": "image/jpeg",
+      "source_url": "https://chomoand-5.site/wp-content/uploads/2026/10/ktl_igari_uc_gap_b.jpg"
+     }
+    },
+    "image_meta": {
+     "aperture": "0",
+     "credit": "",
+     "camera": "",
+     "caption": "",
+     "created_timestamp": "0",
+     "copyright": "",
+     "focal_length": "0",
+     "iso": "0",
+     "shutter_speed": "0",
+     "title": "",
+     "orientation": "0",
+     "keywords": [],
+     "alt": ""
+    }
+   }
+  }
+ },
+ "eye": {
+  "taisho_quiz_rl": 41,
+  "taiko_quiz_kamiya": 45,
+  "reia_quiz_play": 49,
+  "inoue_quiz_moscot": 53,
+  "inoue_quiz_onitsuka": 57,
+  "taisho_jr_celine": 61,
+  "reia_jr_galfy_hoodie": 64,
+  "reia_jr_galfy_pants": 67,
+  "inoue_jr_cullni": 70,
+  "reia_ueda_tomie": 73,
+  "reia_ueda_y3": 76,
+  "inoue_jr_v2k": 80,
+  "reia_buf_kitsune": 84,
+  "taisho_buf_hrm": 88,
+  "igari_buf_rl_camp": 92,
+  "taisho_uc_ami_shirt": 100,
+  "taisho_uc_ami_vest": 104,
+  "taiko_uc_satur": 108,
+  "reia_uc_hotleathers": 112,
+  "igari_uc_gap": 116
+ }
+}
