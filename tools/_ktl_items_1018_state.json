@@ -16,7 +16,6 @@
   "taisho_buf_hrm": 89,
   "igari_buf_rl_camp": 93,
   "taisho_uc_ami_shirt": 101,
-  "taisho_uc_ami_vest": 105,
   "taiko_uc_satur": 109,
   "reia_uc_hotleathers": 113,
   "igari_uc_gap": 117
@@ -56,7 +55,8 @@
   "reia_uc_hotleathers:a": 110,
   "reia_uc_hotleathers:b": 111,
   "igari_uc_gap:a": 114,
-  "igari_uc_gap:b": 115
+  "igari_uc_gap:b": 115,
+  "taisho_uc_ami_shirt:c": 102
  },
  "media_obj": {
   "39": {
@@ -2127,10 +2127,13 @@
   "reia_buf_kitsune": 84,
   "taisho_buf_hrm": 88,
   "igari_buf_rl_camp": 92,
-  "taisho_uc_ami_shirt": 100,
+  "taisho_uc_ami_shirt": 161,
   "taisho_uc_ami_vest": 104,
   "taiko_uc_satur": 108,
   "reia_uc_hotleathers": 112,
   "igari_uc_gap": 116
+ },
+ "retired": {
+  "taisho_uc_ami_vest": 105
  }
 }

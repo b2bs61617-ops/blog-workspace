@@ -245,5 +245,3 @@ for _a in ARTICLES:
     if _a["scene"] == "buffet":
         _j = next(i for i, b in enumerate(_a["blocks"]) if "wp:heading" in b and i > 3)
         _a["blocks"][_j:_j] = _BUF_PLACE
-    if _a["key"] == "taisho_uc_ami_vest":
-        _a["blocks"][_i:_i] = _VEST_CARE
