@@ -45,6 +45,9 @@ MAX_IMAGES = 4  # Xの1ツイートあたりの画像上限
 # BufferのThreads(chomoand)チャンネル。IDは秘密情報ではないので既定値をコードに持つ
 # (.envはGoogleドライブから同期されるため、.envのBUFFER_THREADS_CHANNEL_IDは上書き用。空にすればThreads投稿を止められる)
 DEFAULT_THREADS_CHANNEL_ID = "6abbbed3ea19ca0bde22e2c8"
+# chomoand.comのトレンド記事専用のXアカウント(2026-10-18〜トモキ指示)。Xだけに流し、Threadsには流さない。
+# チャンネルIDはBuffer上の名前から実行時に引く(.envのBUFFER_TREND_X_CHANNEL_IDがあればそちらを優先)
+TREND_X_CHANNEL_NAME = "chomotirend"
 
 
 def load_env(path):
@@ -129,7 +132,31 @@ def _gql_string(value):
     return f'"{escaped}"'
 
 
-def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft=False, threads=True):
+def _gql(token, query):
+    resp = requests.post(
+        BUFFER_API_URL,
+        headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"},
+        json={"query": query},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    if "errors" in data:
+        raise RuntimeError(f"Buffer API error: {data['errors']}")
+    return data["data"]
+
+
+def find_x_channel_id(token, name):
+    """Bufferに接続済みのXチャンネルから名前(@なし)が一致するもののIDを返す。無ければNone。"""
+    for org in _gql(token, "{ account { organizations { id } } }")["account"]["organizations"]:
+        channels = _gql(token, f"{{ channels(input: {{organizationId: {_gql_string(org['id'])}}}) {{ id name service }} }}")["channels"]
+        for ch in channels:
+            if ch["service"] == "twitter" and ch["name"].lower() == name.lower():
+                return ch["id"]
+    return None
+
+
+def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft=False, threads=True, account="main"):
     """1件目(記事内画像+フック文+タグ、URL無し)→2件目(1件目へのリプライでURLのみ)の
     スレッドをBuffer経由でXへ投稿する。due_at(ISO8601、例"2026-09-25T21:00:00+09:00")を
     渡すとその時刻に予約投稿、省略すると即時投稿。一括公開時の連投回避に使う(2026-09-25〜)。
@@ -139,10 +166,18 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
     image_urlsは最大4枚(超過分は切り捨て)。空なら文章のみで投稿する。
     threads=TrueならThreads(chomoand)にも全く同じ内容で投稿し、結果を戻り値の"threads"キーに入れる
     (2026-09-29トモキ指示。FB/Instagram/ThreadsのJetpack自動共有はやめ、ThreadsだけXと同じ内容にする)。
+    account="trend"ならchomoand.comトレンド記事用の@chomotirendだけに投稿し、Threadsには流さない(2026-10-18〜)。
     """
     env = load_env(ROOT / ".env")
     token = env.get("BUFFER_ACCESS_TOKEN")
-    channel_id = env.get("BUFFER_X_CHANNEL_ID")
+    if account == "trend":
+        threads = False
+        channel_id = env.get("BUFFER_TREND_X_CHANNEL_ID") or (token and find_x_channel_id(token, TREND_X_CHANNEL_NAME))
+        if token and not channel_id:
+            print(f"@{TREND_X_CHANNEL_NAME}がBufferに未接続のためXへの自動投稿をスキップしたワン")
+            return None
+    else:
+        channel_id = env.get("BUFFER_X_CHANNEL_ID")
     if not token or not channel_id:
         print("BUFFER_ACCESS_TOKEN/BUFFER_X_CHANNEL_IDが.envに未設定のためXへの自動投稿をスキップしたワン")
         return None
@@ -243,6 +278,8 @@ if __name__ == "__main__":
     parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
     parser.add_argument("--draft", action="store_true", help="Bufferの下書きに保存するだけで投稿しない")
     parser.add_argument("--no-threads", action="store_true", help="Threadsには投稿せずXだけにする")
+    parser.add_argument("--account", choices=["main", "trend"], default="main",
+                        help="main=@chomoand17(+Threads) / trend=chomoand.comトレンド記事用の@chomotirend(Xのみ)")
     args = parser.parse_args()
 
     images = args.image
@@ -250,7 +287,7 @@ if __name__ == "__main__":
         site = urlparse(args.url)
         images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
 
-    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft, threads=not args.no_threads)
+    result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft, threads=not args.no_threads, account=args.account)
     if result is None:
         sys.exit(0)
     print(json.dumps(result, ensure_ascii=False, indent=2))
