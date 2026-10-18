@@ -78,6 +78,25 @@ def related_box(art, arts, state):
             f'<ul style="margin:0;padding-left:1.3em;">\n{lis}\n</ul>\n</div>\n<!-- /wp:html -->')
 
 
+# Member-color themes (2026-10-18 user rule: KTL item articles use the subject member's color)
+THEMES = {
+    "岩﨑大昇": dict(acc="#7d848c", light="#f3f4f5", border="#d5d8dc", cell="#e6e8eb", mark="#dfe2e6"),  # white -> silver gray
+    "井上瑞稀": dict(acc="#d2414f", light="#fdf0f1", border="#f2c4c9", cell="#fadde0", mark="#f9cbd0"),  # red
+    "中村嶺亜": dict(acc="#d6588a", light="#fdf1f6", border="#f3c6d9", cell="#fbe3ed", mark="#f8cfe0"),  # pink
+    "猪狩蒼弥": dict(acc="#3a9468", light="#edf7f1", border="#c2e3d0", cell="#d9efe2", mark="#c8ead6"),  # green
+    "佐々木大光": dict(acc="#3a78c9", light="#eef4fc", border="#c5d9f2", cell="#dce9f8", mark="#cddff6"),  # blue
+}
+
+
+def apply_theme(html, member):
+    t = THEMES[member]
+    html = (html.replace("#3d5a80", t["acc"]).replace("#eef3f8", t["light"])
+                .replace("#c9d6e6", t["border"]).replace("#e3ebf4", t["cell"]))
+    html = html.replace('<span class="swl-marker mark_yellow" style="font-size:1.1em;">',
+                        f'<span style="font-size:1.1em;background:linear-gradient(transparent 60%,{t["mark"]} 60%);">')
+    return html
+
+
 def render(art, state, arts, with_related):
     html = build(art["blocks"])
     for k, (path, alt, cap) in art["images"].items():
@@ -87,7 +106,7 @@ def render(art, state, arts, with_related):
     html = html.replace("[[RELATED]]", related_box(art, arts, state) if with_related else "")
     html = re.sub(r"<hr\s*/?>", "", html)
     assert "[[IMG:" not in html, art["key"]
-    return html
+    return apply_theme(html, art["member"])
 
 
 def main():
