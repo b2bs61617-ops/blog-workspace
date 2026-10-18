@@ -4,7 +4,7 @@
 
 **chomoand-5.site(2026-10-17〜運用開始)も登録済み**: 2026-10-17にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
 
-**chomoand-2.com(Snow Man、2026-10-18〜運用開始)は未登録**: 2026-10-18時点でIndexing APIが403。トモキがSearch Consoleでサービスアカウント(`chomoand-466@...`)をオーナー追加する必要あり(下記2章)。それまでは公開しても通知だけ失敗する(公開自体は止まらない)。
+**chomoand-2.com(Snow Man、2026-10-18〜運用開始)も登録済み**: 2026-10-18にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
 
 **鍵ファイルの置き場所**: `G:\マイドライブ\ブログ関係\google-indexing-key.json`(Google Drive。全PC共通パス)。`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`をこの絶対パスにする。`.gitignore`済み。
 
