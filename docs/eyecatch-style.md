@@ -10,6 +10,7 @@
 | chomoand-0.com | **`tools/eyecatch_chomoand0.py`必須**(HTML+Playwrightで汎用テンプレを自動生成。手動でHTML/PowerShellを組む必要はない)。詳細は下記「汎用テンプレ」参照 |
 | chomoand-4.blog(Travis Japan専門、2026-09-13新設) | **`tools/eyecatch_torahja_canva.py`のCanva水彩デザイン必須**(2026-10-02〜、下記「chomoand-4.blog Canva水彩デザイン」参照)。旧ベージュ(`eyecatch_chomoand0_old.py`)と紫3行(`eyecatch_torahja.py`)は使わない |
 | chomoand-5.site(KEY TO LIT専門、2026-10-17〜) | **`tools/eyecatch_kitetsu.py`必須**。chomoand-4.blogの水彩デザインと同じ型(上段既定「KEY TO LIT」/中央=メンバー名or話題/下段1〜2行)で、色はKEY TO LITのメンバーカラー(岩﨑大昇=白、井上瑞稀=赤、中村嶺亜=ピンク、猪狩蒼弥=緑、佐々木大光=青、グループ回=`group`で5色まぜ) |
+| chomoand-2.com(Snow Man専門、2026-10-18〜) | **`tools/eyecatch_snowman.py`必須**。キテレツと同じ水彩デザイン(上段既定「Snow Man」)で、色はSnow Manのメンバーカラー(岩本照=黄、深澤辰哉=紫、ラウール=白、渡辺翔太=青、向井康二=オレンジ、阿部亮平=緑、目黒蓮=黒(グレー)、宮舘涼太=赤、佐久間大介=ピンク、グループ回=`group`で色まぜ) |
 
 ## chomoand-4.blog Canva水彩デザイン(2026-10-02〜、ユーザーOK済み)
 

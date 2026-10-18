@@ -13,6 +13,7 @@
 - **chomoand-1.com** — コイキーズブログ
 - **chomoand-4.blog** — **Travis Japan専門ブログ**(2026-09-13新設、サイト名「ちょものTravis Japan情報局」)。Travis Japanのメンバー・グループの調査記事はこのサイトへ下書きする。既存の`chomoand-0.com`上のTravis Japan記事(カテゴリ「Travis Japan」)はそのまま残し、**今後の新規記事だけ**こちらへ振り分ける。記事の書き方自体は既存のジャニーズ系スキル([wiki-article](.claude/skills/wiki-article/SKILL.md)・[gakureki-kazoku-kanojo](.claude/skills/gakureki-kazoku-kanojo/SKILL.md))を流用する(専用スキルはまだ無い)。認証情報は`.env`の`WP_CHOMO4_*`(サイト新設時の命名の都合でキー名は`CHOMO4`のまま、`TRAVIS`ではない)。
 - **chomoand-5.site** — **KEY TO LIT(キテレツ)専門ブログ**(2026-10-17〜、サイト名「ちょものKEY TO LIT情報局」)。KEY TO LITのメンバー・グループの記事はこのサイトへ。書き方・アップ・公開の流れはトラジャ(chomoand-4.blog)と同じ。認証情報は`.env`の`WP_CHOMO5_*`。アイキャッチは`tools/eyecatch_kitetsu.py`(トラジャの水彩デザインをキテレツのメンバーカラーにしたもの)。カテゴリ・メンバー情報は[docs/wordpress.md](docs/wordpress.md)。
+- **chomoand-2.com** — **Snow Man専門ブログ**(2026-10-18〜、サイト名「ちょものSnow Manブログ」)。Snow Manのメンバー・グループの記事はこのサイトへ。書き方・アップ・公開の流れはトラジャ(chomoand-4.blog)・キテレツと同じ。認証情報は`.env`の`WP_CHOMO2_*`。アイキャッチは`tools/eyecatch_snowman.py`。カテゴリ・メンバー情報は[docs/wordpress.md](docs/wordpress.md)。
 
 ## アシスタントの人格
 
@@ -104,6 +105,7 @@
 | chomoand.comアイキャッチ生成(`tools/eyecatch_chomoand.py`) | **chomoand.com(恋愛リアリティ番組の出演者記事)のアイキャッチは必ずこれで作る**(2026-07-19〜、Canva MCPから移行)。カップルシルエット背景(実写ではない)+3段黒太文字。**背景はPollinations.ai(APIキー不要・無料)で記事ごとに毎回AI生成**(2026-07-30〜、失敗時は静的背景に自動フォールバック)。**背景色は`--hue`で毎回変える**。仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | トラジャ(chomoand-4.blog)アイキャッチ生成(`tools/eyecatch_torahja_canva.py`) | **chomoand-4.blogの記事を作ったら、確認なしで自動でこれ(Canva水彩デザイン、2026-10-02〜)を使ってアイキャッチを作る**。紫3行の`eyecatch_torahja.py`・旧ベージュの`eyecatch_chomoand0_old.py`は使わない。`--main`=メンバー名(グループ回は話題キーワード)+`--bottom`(1〜2行)+`--color-key`。手順は[blog-upload](.claude/skills/blog-upload/SKILL.md)STEP4、仕様は[docs/eyecatch-style.md](docs/eyecatch-style.md) |
 | キテレツ(chomoand-5.site)アイキャッチ生成(`tools/eyecatch_kitetsu.py`) | **chomoand-5.siteの記事を作ったら、確認なしで自動でこれを使う**(2026-10-17〜)。トラジャのCanva水彩デザインと同じ型で、上段は既定「KEY TO LIT」。`--main`=メンバー名(グループ回は話題キーワード)+`--bottom`(1〜2行)+`--color-key`(メンバー名/`group`/2人回は`井上瑞稀+猪狩蒼弥`)。手順は[blog-upload](.claude/skills/blog-upload/SKILL.md)STEP4 |
+| Snow Man(chomoand-2.com)アイキャッチ生成(`tools/eyecatch_snowman.py`) | **chomoand-2.comの記事を作ったら、確認なしで自動でこれを使う**(2026-10-18〜)。キテレツと同じ水彩デザインで上段は既定「Snow Man」。`--main`+`--bottom`(1〜2行)+`--color-key`(メンバー名/`group`/2人回は`目黒蓮+ラウール`)。手順は[blog-upload](.claude/skills/blog-upload/SKILL.md)STEP4 |
 | YouTube急上昇取得(`tools/youtube_trending.py`) | **現在未使用**(chomoand.com旧方針用)。詳細は[docs/tools.md](docs/tools.md) |
 | Xトレンド監視(`tools/x-trend-monitor/`) | **現在停止中**。再開の指示があるまで勝手に有効化しないこと。詳細は[docs/tools.md](docs/tools.md) |
 | YouTubeタレント監視(`tools/youtube-talent-monitor/`) | chomoand-0向け。旧ジャニーズ所属・出身タレントの公式YouTube新着を**RSS(APIキー不要)**でチェックし、文字起こし+**画像解析(服装・アクセサリー・ロケ地をGemini Visionで解析、フレームは`frames/`に保存)**付きでLINE通知(2026-07-29〜、タスクスケジューラで毎日23:00実行)。画像解析はClaude/マツを介さずスクリプト単体で完結(トークン消費防止)。監視対象は`channels.json`、詳細は[docs/tools.md](docs/tools.md) |

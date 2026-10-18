@@ -5,7 +5,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 # ブログアップロードスキル
 
-「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う(chomoand-4.blogは`WP_CHOMO4_*`、chomoand-5.siteは`WP_CHOMO5_*`)。既存のchomoand-0.com上のTravis Japan記事はそのまま残し移行しない。
+「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**、**Snow Man記事→chomoand-2.com**)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う(chomoand-4.blogは`WP_CHOMO4_*`、chomoand-5.siteは`WP_CHOMO5_*`、chomoand-2.comは`WP_CHOMO2_*`)。既存のchomoand-0.com上のTravis Japan記事はそのまま残し移行しない。
 
 ## STEP 1: 記事ファイルの読み込み・HTML変換
 
@@ -103,6 +103,11 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   2. `python tools/eyecatch_kitetsu.py --main "猪狩蒼弥" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 猪狩蒼弥 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`井上瑞稀+猪狩蒼弥`)。
   3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
   - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-5.siteの表(基本`[4]`+メンバーのカテゴリ)。
+- **chomoand-2.com(Snow Man専門ブログ)は、確認なしで自動的に`tools/eyecatch_snowman.py`で作る**(2026-10-18〜)。キテレツと同じ型で、色がSnow Manのメンバーカラー:
+  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「Snow Man」のまま。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
+  2. `python tools/eyecatch_snowman.py --main "目黒蓮" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 目黒蓮 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`目黒蓮+ラウール`)。
+  3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
+  - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-2.comの表(基本`[4]`+メンバーのカテゴリ)。
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定
