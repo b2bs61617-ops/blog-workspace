@@ -104,6 +104,7 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 python tools/Xiy/x_collector.py --keyword "釼持吉成"
 ```
 
+- `--site threads`: `--keyword`の検索先をThreadsにする(2026-10-25〜、下記「Threads収集」参照)。省略時はX
 - `--keyword "語句"`: Xでキーワード検索(デフォルトは「最新」タブ`f=live`。「話題のツイート」で見たい場合は`--tab top`)
 - `--url "https://x.com/..."` / `--url "https://instagram.com/..."`: キーワードの代わりにURLを直接指定(プロフィールページ・検索結果ページなど)
 - `--out "保存先ディレクトリ"`: 省略時は`tools/Xiy/posts_日時_キーワード/`に自動保存
@@ -112,6 +113,20 @@ python tools/Xiy/x_collector.py --keyword "釼持吉成"
 - ログイン済みプロファイル(`%USERPROFILE%\x_collector_profile`)をGUIモードと共用するので、事前にGUIで一度ログインしておく必要がある
 
 GUIモード(`起動.bat`)は従来通り引数なしで起動すれば使える。収集・保存・AI分析のロジックは内部でCLIと共通化されている。
+
+### Threads収集(2026-10-25〜)
+
+`threads.com`のURLを渡すか`--site threads --keyword "語句"`で、Threadsの投稿本文・投稿者・日時・いいね数・画像・返信(コメント)を収集できる。保存形式はXと同じ`posts.txt`(`[THREADS]`表記、`いいね: N`行つき)。
+
+```bash
+python3 tools/Xiy/x_collector.py --site threads --keyword "SnowMan" --tab top --no-ai
+```
+
+- `--tab top`=人気順(Threadsの既定表示)、`--tab live`(省略時)=最新順(`&filter=recent`)
+- **ログイン必須**: 未ログインでも20件前後は見えるが、そこでスクロールが止まる。Xiyのブラウザプロファイル(`~/x_collector_profile`)でThreads(Instagramアカウント)に一度ログインしておく。未ログインだと開始時に最大180秒ログインを待つ。ユカのMacは2026-10-25ログイン済み
+- 返信は投稿詳細ページを1件ずつ開いて取得する(bot検知対策はXと同じ)。詳細ページの返信の後ろに出る「関連するスレッド」(無関係なおすすめ投稿)は見出しで判定して除外している
+- ThreadsはXより**一般ファンの悩み・体験談(ライブ初参戦の持ち物、年齢層、FC会員番号など)**が多く、「〇〇 初参戦 持ち物」系の検索需要があるネタの掘り起こしに向く
+- Threadsはクラス名が難読化されているため、`data-pressable-container`・`a[href*="/post/"] time`・`div[lang]`だけで拾っている。0件になったらまずこの3つが今のDOMにあるか確認する
 
 ### 収集済みデータからのネタ掘り起こし方(2026-07-07実践)
 

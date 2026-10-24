@@ -101,6 +101,8 @@ def detect_platform(url: str) -> str:
         return "youtube"
     if "instagram.com" in url:
         return "instagram"
+    if "threads.com" in url or "threads.net" in url:
+        return "threads"
     if "x.com/explore" in url or "twitter.com/explore" in url:
         return "trending"
     return "x"
@@ -110,6 +112,13 @@ def build_x_search_url(keyword: str, tab: str = "live") -> str:
     url = f"https://x.com/search?q={quote(keyword)}"
     if tab == "live":
         url += "&f=live"
+    return url
+
+
+def build_threads_search_url(keyword: str, tab: str = "live") -> str:
+    url = f"https://www.threads.com/search?q={quote(keyword)}&serp_type=default"
+    if tab == "live":
+        url += "&filter=recent"
     return url
 
 
@@ -386,6 +395,181 @@ async def collect_x(page, context, should_continue, on_status, on_post):
         on_status(f"[X] 取得済み: {count}件 ／ 新着待機: {elapsed}秒 / 10秒")
 
 
+# ── Threads収集 ──
+# Threadsはクラス名が難読化されていて毎回変わるため、data属性・リンク構造だけで拾う。
+# 投稿1件 = div[data-pressable-container="true"]、投稿URLは<time>を包む a[href*="/post/"]、
+# 本文は div[lang]、投稿画像はCDNパスに"-15/"を含むimg(プロフィール写真は"-19/")。
+# 投稿詳細ページは返信の後ろに「関連するスレッド」(無関係なおすすめ投稿)が続くので、見出し以降は捨てる。
+THREADS_POST_SELECTOR = 'div[data-pressable-container="true"]'
+THREADS_LOGGED_OUT_SELECTOR = '[data-pagelet^="threads_logged_out"]'
+
+THREADS_EXTRACT_JS = """
+() => {
+  const related = [...document.querySelectorAll('span')].find(e => e.textContent.trim() === '関連するスレッド');
+  return [...document.querySelectorAll('div[data-pressable-container="true"]')]
+    .filter(c => !related || !(related.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING))
+    .map(c => {
+    const time = c.querySelector('a[href*="/post/"] time');
+    const link = time ? time.closest('a') : null;
+    const href = link ? link.getAttribute('href') : '';
+    const m = href.match(/^\\/@([^/]+)\\/post\\/([^/?]+)/);
+    const textEl = c.querySelector('div[lang]');
+    const imgs = [...c.querySelectorAll('img')]
+        .filter(i => (i.src || '').includes('-15/') && !(i.alt || '').includes('プロフィール写真'))
+        .map(i => i.src);
+    const likeSvg = [...c.querySelectorAll('svg')].find(v => (v.getAttribute('title') || '').includes('いいね'));
+    const likeBtn = likeSvg ? likeSvg.closest('[role="button"]') : null;
+    return {
+        author: m ? m[1] : '',
+        post_id: m ? m[2] : '',
+        url: href ? 'https://www.threads.com' + href : '',
+        datetime: time ? time.getAttribute('datetime') : '',
+        text: textEl ? textEl.innerText.trim() : '',
+        images: [...new Set(imgs)],
+        likes: likeBtn ? likeBtn.innerText.trim() : '',
+    };
+  });
+}
+"""
+
+
+def threads_date_str(dt_attr: str) -> str:
+    if not dt_attr:
+        return ""
+    dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00")).astimezone()
+    return dt.strftime("%Y/%m/%d %H:%M")
+
+
+async def is_threads_logged_in(page) -> bool:
+    try:
+        return await page.query_selector(THREADS_LOGGED_OUT_SELECTOR) is None
+    except Exception:
+        return False
+
+
+async def wait_for_threads_login(page, should_continue, on_status):
+    # 未ログインでも検索結果は少し見えるが、20件前後でスクロールが止まり返信も一部しか出ない。
+    # Xと同じく最大180秒ログインを待ち、ログインされなければ未ログインのまま続行する
+    if await is_threads_logged_in(page):
+        return
+    on_status("Threadsにログインしてください（ログイン完了まで待機、未ログインだと取得件数が限られます）...")
+    for _ in range(180):
+        if not should_continue():
+            return
+        await page.wait_for_timeout(1000)
+        if await is_threads_logged_in(page):
+            break
+    await page.wait_for_timeout(1500)
+
+
+async def fetch_threads_replies(context, post_url, max_replies=40, max_scroll=6):
+    """投稿詳細ページを個別に開いて返信(コメント)を取得する。先頭の要素は投稿本体なので除外。
+    bot検知対策はfetch_x_repliesと同じ(遷移前のランダム待機・マウス移動・伸び止まりで終了)。"""
+    replies = []
+    if not post_url:
+        return replies
+    reply_page = None
+    try:
+        await asyncio.sleep(random.uniform(1.5, 3.5))
+        reply_page = await context.new_page()
+        await reply_page.goto(post_url, wait_until="domcontentloaded", timeout=15000)
+        await reply_page.wait_for_timeout(random.randint(2000, 3000))
+
+        seen = set()
+        stall = 0
+        for _ in range(max_scroll):
+            items = await reply_page.evaluate(THREADS_EXTRACT_JS)
+            for item in items[1:]:
+                if len(replies) >= max_replies:
+                    break
+                key = item["post_id"] or item["text"]
+                if not item["text"] or key in seen:
+                    continue
+                seen.add(key)
+                replies.append({"author": item["author"], "text": item["text"]})
+
+            if len(replies) >= max_replies:
+                break
+
+            prev_count = len(replies)
+            try:
+                await reply_page.mouse.move(random.randint(200, 800), random.randint(200, 600))
+            except Exception:
+                pass
+            await reply_page.evaluate(f"window.scrollBy(0, {random.randint(500, 900)})")
+            await reply_page.wait_for_timeout(random.randint(1000, 1800))
+
+            if len(replies) == prev_count:
+                stall += 1
+                if stall >= 2:
+                    break
+            else:
+                stall = 0
+    except Exception:
+        pass
+    finally:
+        if reply_page:
+            try:
+                await reply_page.close()
+            except Exception:
+                pass
+    return replies
+
+
+async def collect_threads(page, context, should_continue, on_status, on_post):
+    await wait_for_threads_login(page, should_continue, on_status)
+    if not should_continue():
+        return
+
+    seen = set()
+    count = 0
+    last_new_time = time.monotonic()
+    reply_fetch_count = 0
+    next_cooldown_at = random.randint(10, 15)
+
+    while should_continue():
+        try:
+            items = await page.evaluate(THREADS_EXTRACT_JS)
+        except Exception:
+            items = []
+
+        for item in items:
+            if not should_continue():
+                break
+            if not item["text"] and not item["images"]:
+                continue
+            key = item["post_id"] or item["text"]
+            if key in seen:
+                continue
+            seen.add(key)
+
+            on_status(f"[THREADS] 返信取得中... ({count + 1}件目)")
+            comments = await fetch_threads_replies(context, item["url"])
+            reply_fetch_count += 1
+
+            post = {"platform": "threads", "date": threads_date_str(item["datetime"]),
+                    "text": item["text"], "images": item["images"], "url": item["url"],
+                    "author": item["author"], "likes": item["likes"], "comments": comments}
+            count += 1
+            on_post(post)
+            last_new_time = time.monotonic()
+
+            if reply_fetch_count >= next_cooldown_at:
+                cooldown = random.randint(15, 30)
+                on_status(f"[THREADS] bot検知対策のため{cooldown}秒休憩中...")
+                await page.wait_for_timeout(cooldown * 1000)
+                reply_fetch_count = 0
+                next_cooldown_at = random.randint(10, 15)
+
+        await page.evaluate(f"window.scrollBy(0, {random.randint(650, 1150)})")
+        await page.wait_for_timeout(random.randint(1500, 2500))
+
+        elapsed = int(time.monotonic() - last_new_time)
+        if elapsed >= 10:
+            break
+        on_status(f"[THREADS] 取得済み: {count}件 ／ 新着待機: {elapsed}秒 / 10秒")
+
+
 # ── Instagram収集（グリッドを左上から順にクリック） ──
 async def collect_instagram(page, should_continue, on_status, on_post):
     processed = set()
@@ -629,6 +813,8 @@ def save_posts_to_dir(save_path, posts, youtube_posts, ai_text=None):
         lines.append(f"[{i}] [{platform}] {post['date']}")
         if post.get("url"):
             lines.append(f"  URL: {post['url']}")
+        if post.get("likes"):
+            lines.append(f"  いいね: {post['likes']}")
         if post["text"]:
             lines.append(post["text"])
         for j, img_url in enumerate(post["images"], 1):
@@ -716,7 +902,7 @@ class PostCard(tk.Frame):
 
         header = tk.Frame(self, bg="#f0f4f8", padx=8, pady=4)
         header.pack(fill=tk.X)
-        platform_label = "X" if post.get("platform") == "x" else "Instagram"
+        platform_label = {"x": "X", "threads": "Threads"}.get(post.get("platform"), "Instagram")
         tk.Label(header,
                  text=f"#{index}  [{platform_label}]  {post['date']}",
                  fg="#333", bg="#f0f4f8", font=("Arial", 9, "bold")).pack(anchor=tk.W)
@@ -953,6 +1139,8 @@ class CollectorApp:
                 should_continue = lambda: self.is_running
                 if platform == "x":
                     await collect_x(page, context, should_continue, self.update_status, self._on_new_post)
+                elif platform == "threads":
+                    await collect_threads(page, context, should_continue, self.update_status, self._on_new_post)
                 elif platform == "trending":
                     await collect_trending(page, should_continue, self.update_status, self._on_new_post)
                 else:
@@ -1318,7 +1506,12 @@ async def run_cli(args):
         print("Playwrightが未インストールです: pip install playwright / playwright install chromium")
         return
 
-    url = args.url if args.url else build_x_search_url(args.keyword, tab=args.tab)
+    if args.url:
+        url = args.url
+    elif args.site == "threads":
+        url = build_threads_search_url(args.keyword, tab=args.tab)
+    else:
+        url = build_x_search_url(args.keyword, tab=args.tab)
     platform = detect_platform(url)
 
     posts = []
@@ -1344,6 +1537,8 @@ async def run_cli(args):
         should_continue = lambda: True
         if platform == "x":
             await collect_x(page, context, should_continue, on_status, on_post)
+        elif platform == "threads":
+            await collect_threads(page, context, should_continue, on_status, on_post)
         elif platform == "trending":
             await collect_trending(page, should_continue, on_status, on_post)
         else:
@@ -1373,11 +1568,13 @@ async def run_cli(args):
 
 
 def main_cli():
-    parser = argparse.ArgumentParser(description="Xiy CLI - GUIなしでX/Instagramを収集する")
-    parser.add_argument("--keyword", help="Xでこのキーワードを検索して収集する")
+    parser = argparse.ArgumentParser(description="Xiy CLI - GUIなしでX/Instagram/Threadsを収集する")
+    parser.add_argument("--keyword", help="Xでこのキーワードを検索して収集する(--site threadsならThreadsで検索)")
+    parser.add_argument("--site", choices=["x", "threads"], default="x",
+                         help="--keywordで検索するサイト(デフォルトx)")
     parser.add_argument("--url", help="収集対象のURLを直接指定する(--keywordの代わり)")
     parser.add_argument("--tab", choices=["live", "top"], default="live",
-                         help="X検索のタブ(live=最新, top=話題のツイート。デフォルトlive)")
+                         help="検索のタブ(live=最新, top=話題/人気。デフォルトlive。Threadsにも適用)")
     parser.add_argument("--out", help="保存先ディレクトリ(省略時はtools/Xiy配下に自動生成)")
     parser.add_argument("--no-ai", action="store_true", help="Gemini AI分析をスキップする")
     args = parser.parse_args()
