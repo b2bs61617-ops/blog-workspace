@@ -2,6 +2,8 @@
 
 **現在の状態(2026-09-23更新)**: 稼働中。プロジェクト`model-gearing-465707-d6`のサービスアカウントを4サイト(chomoand.com / chomoand-0.com / chomoand-1.com / chomoand-4.blog)のSearch Consoleオーナーとして登録済み(`chomoand-477@...`および`chomoand-466@...`。どちらの鍵でもIndexing APIは通る)。chomoand-4.blogは2026-09-13新設のため当初未登録で、公開記事のIndexing API送信が403で失敗する事象があったが、2026-09-23にオーナー登録して解消した。経緯は[docs/history.md](history.md)参照。
 
+**2026-10-25追記**: 上記「どちらの鍵でも通る」はchomoand-4.blogでは成り立っていなかった。chomoand-4.blogのオーナーは`chomoand-466@...`だけで`chomoand-477@...`が未登録だったため、477の鍵を使うPC(ユカのMac)からの送信が403になっていた。ユカがSearch Consoleで477をオーナー追加して解消。**403が出たら、そのPCの鍵(`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`のJSON内`client_email`)が対象サイトのオーナー一覧に入っているかを最初に確認する**。
+
 **chomoand-5.site(2026-10-17〜運用開始)も登録済み**: 2026-10-17にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
 
 **chomoand-2.com(Snow Man、2026-10-18〜運用開始)も登録済み**: 2026-10-18にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
