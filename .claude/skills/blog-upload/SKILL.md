@@ -65,6 +65,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - エンドポイント: `POST {サイトURL}/wp-json/wp/v2/posts`
 - 投稿データ: `title`・`content`(HTML)・`slug`(STEP2)・`status: draft`・`categories`(サイト・カテゴリに応じて設定)・`author`(作業中のPCのhostnameから[docs/wordpress.mdの投稿者設定表](../../../docs/wordpress.md)を引いて該当ユーザーIDを設定。省略するとサイトの認証ユーザー本人が投稿者になってしまうため必須)
 - 投稿成功後、**記事ID**を控える(STEP5で使用)
+- **chomoand-1.comは投稿直後に`python tools/check_ko1keyz_title.py {記事ID}`を実行する**(2026-10-24〜)。タイトルにグループ名「KO1KEYZ」が無いとNG(終了コード1)。NGならタイトルを「【KO1KEYZ】RYOGAの〜」の形に直してから次のSTEPへ進む(詳細は[docs/rules.md](../../../docs/rules.md)の「メンバー個人記事も、タイトルに必ずグループ名」)
 
 **【重要】PowerShell 5.1でJSONを組み立てる際の注意:**
 - `Get-Content -Raw`はFileInfoオブジェクトを返すため`ConvertTo-Json`すると`{"value":"...","ReadCount":1}`になる。必ず`[string]`キャストを使う: `$content = [string](Get-Content "path" -Raw -Encoding UTF8)`
@@ -125,7 +126,7 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 
 ## STEP 7(chomoand-1.com限定): 英語版下書きの自動生成(2026-08-19〜)
 
-コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・POSTする`lang`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。**slugは必ず元記事slug+`-en`にする**(翻訳グループの紐付けはmu-plugin `ko1keyz-i18n-autolink` がslug規則で自動判定。REST の `translations` フィールドは効かない)。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。
+コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・POSTする`lang`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。**slugは必ず元記事slug+`-en`にする**(翻訳グループの紐付けはmu-plugin `ko1keyz-i18n-autolink` がslug規則で自動判定。REST の `translations` フィールドは効かない)。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。あわせて`python tools/check_ko1keyz_title.py {日本語版ID} {韓国語版ID} {英語版ID}`を実行し、韓国語版・英語版のタイトルにも「KO1KEYZ」が入っていることを確認する(NGなら直す)。
 
 ## 完了報告
 
