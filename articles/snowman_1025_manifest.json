@@ -1,0 +1,130 @@
+[
+  {
+    "key": "allsuite_sapporo",
+    "title": "Snow Man札幌ドームの開演時間は？グッズ・寒さ対策も！",
+    "slug": "snow-man-sapporo-dome-start-time-goods",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_allsuite_sapporo.html",
+    "eyecatch": {
+      "main": "札幌ドーム公演",
+      "bottom": [
+        "開演時間は？",
+        "グッズ・寒さ対策も！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "first_live",
+    "title": "Snow Manライブ初参戦の持ち物は？身分証・年齢層も解説！",
+    "slug": "snow-man-first-live-what-to-bring-id",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_first_live.html",
+    "eyecatch": {
+      "main": "ライブ初参戦",
+      "bottom": [
+        "持ち物は？",
+        "身分証・年齢層も解説！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "lisa_soresno",
+    "title": "それスノのLISA出演はいつ？向井康二とカリスマックスも！",
+    "slug": "lisa-sore-snow-man-ni-yarasete-kudasai",
+    "categories": [
+      4,
+      8,
+      10,
+      13,
+      5
+    ],
+    "file": "articles/snowman_lisa_soresno.html",
+    "eyecatch": {
+      "main": "それスノ×LISA",
+      "bottom": [
+        "出演はいつ？",
+        "カリスマックスコラボも！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "meguro_uchimura",
+    "title": "目黒蓮が内村光良に一番に連絡？熊本地震の気づかいとは",
+    "slug": "ren-meguro-uchimura-kumamoto-earthquake",
+    "categories": [
+      4,
+      12
+    ],
+    "file": "articles/snowman_meguro_uchimura.html",
+    "eyecatch": {
+      "main": "目黒蓮",
+      "bottom": [
+        "内村光良に一番に連絡？",
+        "熊本地震の気づかい"
+      ],
+      "color_key": "目黒蓮"
+    }
+  },
+  {
+    "key": "meguro_elle",
+    "title": "目黒蓮のエル12月号特別版はいつ発売？カナダ撮影の中身！",
+    "slug": "ren-meguro-elle-japon-december-special",
+    "categories": [
+      4,
+      12
+    ],
+    "file": "articles/snowman_meguro_elle.html",
+    "eyecatch": {
+      "main": "目黒蓮",
+      "bottom": [
+        "エル12月号特別版は",
+        "いつ発売？カナダ撮影！"
+      ],
+      "color_key": "目黒蓮"
+    }
+  },
+  {
+    "key": "abe_berluti",
+    "title": "阿部亮平のベルルッティのジャケットは？価格と愛用品も！",
+    "slug": "ryohei-abe-berluti-jacket-price",
+    "categories": [
+      4,
+      11,
+      14
+    ],
+    "file": "articles/snowman_abe_berluti.html",
+    "eyecatch": {
+      "main": "阿部亮平",
+      "bottom": [
+        "ベルルッティのジャケットは？",
+        "価格と愛用品も！"
+      ],
+      "color_key": "阿部亮平"
+    }
+  },
+  {
+    "key": "sakuma_kazetsugu",
+    "title": "佐久間大介は風を継ぐもので何役？匿名オーディションの裏側",
+    "slug": "daisuke-sakuma-kaze-wo-tsugumono-role",
+    "categories": [
+      4,
+      14
+    ],
+    "file": "articles/snowman_sakuma_kazetsugu.html",
+    "eyecatch": {
+      "main": "佐久間大介",
+      "bottom": [
+        "風を継ぐもので何役？",
+        "匿名オーディションの裏側"
+      ],
+      "color_key": "佐久間大介"
+    }
+  }
+]
