@@ -14,7 +14,7 @@ MANIFEST = os.path.join(REPO, "articles", "snowman_1025_manifest.json")
 POSTED = os.path.join(REPO, "articles", "snowman_1025_posted.json")
 
 # docs/wordpress.md の投稿者表(chomoand-2.com列)
-AUTHORS = {"USER1": 2, "Tomoki": 1}
+AUTHORS = {"USER1": 2, "Tomoki": 1, "Yuka-MacBook-NEO": 1}
 
 env = {}
 for line in open(os.path.join(REPO, ".env"), encoding="utf-8"):
