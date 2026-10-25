@@ -43,6 +43,10 @@ description: 「ブログにアップして」「アップして」「WordPress�
 - **回避策**: capbox風の見た目が欲しい箇所は、クラス名(`swell-block-capbox`等)に頼らず、`<div style="border:1px solid #ddd;border-left:4px solid {アクセント色};border-radius:4px;padding:14px 18px;margin:0 0 16px 0;background:#f7f7f7;">`のようなインラインstyleで直接枠・背景を指定する(タイトル部分は`<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">`)。タイトルバー型(見出し行に背景色を敷くパターン)も同様に`<p style="...;padding:10px 18px;background:{アクセント色};color:#fff;">`+その下に`<ul>`/`<div>`をインラインstyleで続ける形にする。表(`swl-marker`ではなくtable)側で既にインラインstyle方式に切り替え済みなのと同じ考え方。KO1KEYZ記事でアクセント色を選ぶときは[docs/rules.mdの「UIボックスのアクセントカラーはメンバーカラーと被らせない」](../../../docs/rules.md#uiボックスのアクセントカラーはメンバーカラーと被らせないko1keyz2026-08-11追加)を参照。
 - **How to apply**: chomoand-0.com・chomoand-1.comどちらでも、新しくcapboxを使う記事を書くときは最初からこのインラインstyle版を使う(クラスベースの`swell-block-capbox`は`wp:html`経由では使わない)。もし将来的にクラスベースで正常表示されるケースを確認できたら(テーマ側の対応が入った等)、この回避策の要否を見直す。
 
+## STEP 1.55: メンバー名に「さん」を付ける(全サイト共通・必須、2026-10-25〜)
+
+STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group {グループ} 記事.html`をかけ、続けて`check`で抜けが0件なのを確認する(Snow Man=`snowman`、キテレツ=`ktl`、トラジャ=`travis`、KO1KEYZ=`ko1keyz`)。タイトル(`title`フィールド)には付けない。ルールの詳細・付けない箇所は[docs/rules.md](../../../docs/rules.md)の「本文中のメンバー名には必ず「さん」を付ける」。`GROUPS`に無い人物の記事は執筆時に手で付ける。
+
 ## STEP 1.6: 楽天/Amazonアフィリエイトリンクの自動挿入(chomoand-1.com・愛用品/私物特定記事限定、2026-09-07〜)
 
 **投稿先がchomoand-1.com(コイキーズブログ)で、かつ記事がKO1KEYZメンバー個人の「愛用品・使用アイテム・私服/アクセサリー特定」系(例: 愛用香水、ナイトルーティンの使用コスメ、私服のブランド特定)のときだけ**、STEP 1.5で作ったブロック付きHTMLに対して[koikeyz-affiliate](../koikeyz-affiliate/SKILL.md)スキルの「新規記事執筆時の自動付与」セクション(STEP 1.6)を**確認なしで自動実行**する。

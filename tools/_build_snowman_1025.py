@@ -7,7 +7,11 @@ articles/snowman_1025_manifest.json にまとめる。新記事どうしのリ�
 プレースホルダーにしておき、_upload_snowman_1025.py が投稿後に実IDへ置き換える。
 """
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from honorific import add_san  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://chomoand-2.com"
@@ -132,7 +136,7 @@ def article(key, title, slug, categories, palette, eyecatch):
         b = Builder(palette)
         fn(b)
         ARTICLES.append(dict(key=key, title=title, slug=slug, categories=categories,
-                             file=f"articles/snowman_{key}.html", eyecatch=eyecatch, html=b.render()))
+                             file=f"articles/snowman_{key}.html", eyecatch=eyecatch, html=add_san(b.render(), "snowman")))
         return fn
     return deco
 

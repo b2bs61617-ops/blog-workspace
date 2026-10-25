@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Upload the 7 Snow Man articles built by _build_snowman_1025.py to chomoand-2.com as drafts.
 
-usage: python tools/_upload_snowman_1025.py
+usage: python tools/_upload_snowman_1025.py [--update-content]
+--update-content: 投稿済みの下書きの本文だけを articles/ の最新HTMLで上書きする(タイトル・スラッグは触らない)。
 Reads articles/snowman_1025_manifest.json, posts each article as a draft with its eyecatch
 (images/snowman_{key}_eyecatch.jpg), then replaces the {{LINK:key}} placeholders with the new
 draft IDs. Already-posted keys are recorded in articles/snowman_1025_posted.json so a re-run
@@ -52,7 +53,10 @@ def main():
     articles = json.load(open(MANIFEST, encoding="utf-8"))
     posted = json.load(open(POSTED, encoding="utf-8")) if os.path.exists(POSTED) else {}
 
+    update_only = "--update-content" in sys.argv
     for a in articles:
+        if update_only:
+            break
         if a["key"] in posted:
             print(f"skip {a['key']} (already draft {posted[a['key']]})")
             continue
