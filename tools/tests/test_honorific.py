@@ -36,3 +36,12 @@ def test_no_san_in_headings_tables_toc_and_summary():
 
 def test_strips_san_already_in_no_san_blocks():
     assert add_san("<h3>阿部亮平さんの財布</h3>", "snowman") == "<h3>阿部亮平の財布</h3>"
+
+
+def test_extra_names_for_non_members():
+    out = add_san("<p>目黒蓮が内村光良に連絡。LISA(BLACKPINK)</p>", "snowman", ("内村光良", "LISA"))
+    assert out == "<p>目黒蓮さんが内村光良さんに連絡。LISA(BLACKPINK)</p>"
+
+
+def test_program_titles_in_double_brackets_untouched():
+    assert add_san("<p>『川島明 そもそもの話』で川島明が</p>", "snowman", ("川島明",)) == "<p>『川島明 そもそもの話』で川島明さんが</p>"

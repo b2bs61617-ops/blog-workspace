@@ -1,9 +1,12 @@
-"""記事本文のメンバー名に「さん」を付ける(2026-10-25 ユカ指示、全サイト必須)。
+"""記事本文の人名に「さん」を付ける(2026-10-25 ユカ指示、全サイト必須)。
+
+メンバーは GROUPS から自動で拾う。メンバー以外(共演者・ゲスト・スタッフなど)は記事ごとに
+--names(関数では extra)で渡す。役名・歴史上の人物は渡さない。
 
 タイトルには付けないので、これは本文HTMLにだけ通す。次の部分はそのまま残す:
 - HTMLタグの中(属性値など)
 - <a>〜</a> のリンク文字列(既存記事タイトルをそのまま使っているため)
-- 「」で囲んだ引用(本人やファンの言葉をそのまま載せる部分)
+- 「」で囲んだ引用(本人やファンの言葉をそのまま載せる部分)と『』で囲んだ番組名・作品名(「内村光良のオールナイトニッポン」など)
 - 商品名の一部(「目黒蓮特別版」など)や「〜担」
 - 見出し・表・まとめの枠・「この記事でわかること」の枠(2026-10-25 ユカ指示。ここは「さん」無しにそろえる。
   付いていたら外す)
@@ -11,6 +14,7 @@
 usage:
     python tools/honorific.py check <html...>   # 「さん」が抜けている箇所を表示(終了コード1)
     python tools/honorific.py fix <html...>     # その場で書き換える
+    --names "内村光良,LISA"                    # メンバー以外の人名(カンマ区切り)
 グループは --group で必ず指定する(名字だけの「中村」「阿部」などが他の人に誤爆しないよう、グループごとに分けている)。
 """
 import re
@@ -40,9 +44,9 @@ GROUPS = {
 }
 
 # 名前の直後がこれなら付けない(敬称済み・商品名・ファン呼称など)
-SKIP_AFTER = ("さん", "くん", "君", "様", "氏", "特別版", "担")
+SKIP_AFTER = ("さん", "くん", "君", "様", "氏", "特別版", "担", "(")
 
-_PROTECT = re.compile(r"<a\b[^>]*>.*?</a>|<[^>]+>|「[^「」]*」", re.S)
+_PROTECT = re.compile(r"<a\b[^>]*>.*?</a>|<[^>]+>|「[^「」]*」|『[^『』]*』", re.S)
 
 # 「さん」無しにする塊: 見出し / 表 / 「この記事でわかること」の枠 / まとめ見出し直後の枠・チェックマークの枠
 _NO_SAN_BLOCKS = re.compile(
@@ -66,8 +70,10 @@ def _pattern(names):
     return re.compile(f"(?:{'|'.join(alts)})(?!{skip})")
 
 
-def _names(group):
-    return GROUPS[group]
+def _names(group, extra=()):
+    names = dict(GROUPS[group])
+    names.update({n: None for n in extra})
+    return names
 
 
 def _segments(html):
@@ -93,8 +99,8 @@ def _strip_san(block, names):
     return re.sub(f"({'|'.join(alts)})さん", r"\1", block)
 
 
-def add_san(html, group):
-    names = _names(group)
+def add_san(html, group, extra=()):
+    names = _names(group, extra)
     pat = _pattern(names)
     out = []
     for text, kind in _segments(html):
@@ -106,8 +112,8 @@ def add_san(html, group):
     return "".join(out)
 
 
-def missing(html, group):
-    pat = _pattern(_names(group))
+def missing(html, group, extra=()):
+    pat = _pattern(_names(group, extra))
     hits = []
     for text, kind in _segments(html):
         if kind == "text":
@@ -121,16 +127,21 @@ def main(argv):
     i = argv.index("--group")
     group = argv[i + 1]
     argv = argv[:i] + argv[i + 2:]
+    extra = ()
+    if "--names" in argv:
+        j = argv.index("--names")
+        extra = tuple(n.strip() for n in argv[j + 1].split(",") if n.strip())
+        argv = argv[:j] + argv[j + 2:]
     mode, files = argv[0], argv[1:]
     bad = False
     for f in files:
         p = Path(f)
         html = p.read_text(encoding="utf-8")
         if mode == "fix":
-            p.write_text(add_san(html, group), encoding="utf-8")
+            p.write_text(add_san(html, group, extra), encoding="utf-8")
             print(f"fixed {f}")
         else:
-            for h in missing(html, group):
+            for h in missing(html, group, extra):
                 bad = True
                 print(f"{f}: …{h}…")
     return 1 if bad else 0

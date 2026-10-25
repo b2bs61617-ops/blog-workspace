@@ -130,13 +130,22 @@ def new(key, title):
 
 ARTICLES = []
 
+# メンバー以外で本文に出てくる人名(「さん」を付ける)。役名・歴史上の人物(サン＝テグジュペリ等)は入れない
+PEOPLE = {
+    "lisa_soresno": ("LISA", "JISOO", "JENNIE"),
+    "meguro_uchimura": ("内村光良",),
+    "abe_berluti": ("日村勇紀",),
+    "sakuma_kazetsugu": ("成井豊", "梶裕貴", "悠木碧", "内山昂輝", "中村悠一", "加瀬康之", "上川隆也",
+                         "岸田繁", "河村友宏", "川島明"),
+}
+
 
 def article(key, title, slug, categories, palette, eyecatch):
     def deco(fn):
         b = Builder(palette)
         fn(b)
         ARTICLES.append(dict(key=key, title=title, slug=slug, categories=categories,
-                             file=f"articles/snowman_{key}.html", eyecatch=eyecatch, html=add_san(b.render(), "snowman")))
+                             file=f"articles/snowman_{key}.html", eyecatch=eyecatch, html=add_san(b.render(), "snowman", PEOPLE.get(key, ()))))
         return fn
     return deco
 
@@ -397,7 +406,7 @@ def _(b):
         "この記事では、内村光良が語ったエピソードの中身と、2人の関係、そして目黒蓮の人柄が伝わる話をまとめます。")
     b.toc("内村光良が明かしたエピソード", "目黒蓮がカナダにいた理由", "令和8年熊本地震とは", "この話がここまで響いた理由", "ファンの反応", "目黒蓮の気づかいが伝わる話")
     b.h2("内村光良が明かしたエピソード")
-    b.info(("番組", "内村光良のオールナイトニッポンGOLD(ニッポン放送)"),
+    b.info(("番組", "『内村光良のオールナイトニッポンGOLD』(ニッポン放送)"),
            ("放送日", "2026年10月23日"),
            ("話題", "令和8年熊本地震のとき、目黒蓮が真っ先に連絡をくれた"))
     b.p("内村光良は熊本県出身です。",
