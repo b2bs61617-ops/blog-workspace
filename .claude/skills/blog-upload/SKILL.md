@@ -45,7 +45,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 ## STEP 1.55: メンバー名に「さん」を付ける(全サイト共通・必須、2026-10-25〜)
 
-STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group {グループ} 記事.html`をかけ、続けて`check`で抜けが0件なのを確認する(Snow Man=`snowman`、キテレツ=`ktl`、トラジャ=`travis`、KO1KEYZ=`ko1keyz`)。タイトル(`title`フィールド)には付けない。ルールの詳細・付けない箇所は[docs/rules.md](../../../docs/rules.md)の「本文中のメンバー名には必ず「さん」を付ける」。`GROUPS`に無い人物の記事は執筆時に手で付ける。
+STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group {グループ} 記事.html`をかけ、続けて`check`で抜けが0件なのを確認する(Snow Man=`snowman`、キテレツ=`ktl`、トラジャ=`travis`、KO1KEYZ=`ko1keyz`)。タイトル(`title`フィールド)・見出し・表・まとめの枠・「この記事でわかること」の枠には付けない(ツールが自動で除外し、付いていたら外す)。ルールの詳細・付けない箇所は[docs/rules.md](../../../docs/rules.md)の「本文中のメンバー名には必ず「さん」を付ける」。`GROUPS`に無い人物の記事は執筆時に手で付ける。
 
 ## STEP 1.6: 楽天/Amazonアフィリエイトリンクの自動挿入(chomoand-1.com・愛用品/私物特定記事限定、2026-09-07〜)
 

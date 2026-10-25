@@ -5,6 +5,8 @@
 - <a>〜</a> のリンク文字列(既存記事タイトルをそのまま使っているため)
 - 「」で囲んだ引用(本人やファンの言葉をそのまま載せる部分)
 - 商品名の一部(「目黒蓮特別版」など)や「〜担」
+- 見出し・表・まとめの枠・「この記事でわかること」の枠(2026-10-25 ユカ指示。ここは「さん」無しにそろえる。
+  付いていたら外す)
 
 usage:
     python tools/honorific.py check <html...>   # 「さん」が抜けている箇所を表示(終了コード1)
@@ -42,6 +44,15 @@ SKIP_AFTER = ("さん", "くん", "君", "様", "氏", "特別版", "担")
 
 _PROTECT = re.compile(r"<a\b[^>]*>.*?</a>|<[^>]+>|「[^「」]*」", re.S)
 
+# 「さん」無しにする塊: 見出し / 表 / 「この記事でわかること」の枠 / まとめ見出し直後の枠・チェックマークの枠
+_NO_SAN_BLOCKS = re.compile(
+    r"<h2\b[^>]*>まとめ[^<]*</h2>\s*<!-- /wp:heading -->\s*<!-- wp:html -->.*?<!-- /wp:html -->"
+    r"|<h[1-6]\b[^>]*>.*?</h[1-6]>"
+    r"|<figure class=\"wp-block-table\".*?</figure>|<table\b.*?</table>"
+    r"|<div\b(?:(?!<div\b).)*?この記事でわかること.*?</div>"
+    r"|<div\b(?:(?!<div\b).)*?&#10003;.*?</div>"
+    , re.S)
+
 
 def _pattern(names):
     alts = []
@@ -59,26 +70,48 @@ def _names(group):
     return GROUPS[group]
 
 
-def add_san(html, group):
-    pat = _pattern(_names(group))
-    out, pos = [], 0
-    for m in _PROTECT.finditer(html):
-        out.append(pat.sub(lambda x: x.group(0) + "さん", html[pos:m.start()]))
-        out.append(m.group(0))
+def _segments(html):
+    """(text, kind) に分ける。kind = "text"(さんを付ける) / "keep"(触らない) / "nosan"(さんを外す)"""
+    segs, pos = [], 0
+    for b in _NO_SAN_BLOCKS.finditer(html):
+        segs += _inline_segments(html[pos:b.start()])
+        segs.append((b.group(0), "nosan"))
+        pos = b.end()
+    return segs + _inline_segments(html[pos:])
+
+
+def _inline_segments(chunk):
+    segs, pos = [], 0
+    for m in _PROTECT.finditer(chunk):
+        segs += [(chunk[pos:m.start()], "text"), (m.group(0), "keep")]
         pos = m.end()
-    out.append(pat.sub(lambda x: x.group(0) + "さん", html[pos:]))
+    return segs + [(chunk[pos:], "text")]
+
+
+def _strip_san(block, names):
+    alts = sorted({re.escape(n) for full, short in names.items() for n in (full, short) if n}, key=len, reverse=True)
+    return re.sub(f"({'|'.join(alts)})さん", r"\1", block)
+
+
+def add_san(html, group):
+    names = _names(group)
+    pat = _pattern(names)
+    out = []
+    for text, kind in _segments(html):
+        if kind == "text":
+            text = pat.sub(lambda x: x.group(0) + "さん", text)
+        elif kind == "nosan":
+            text = _strip_san(text, names)
+        out.append(text)
     return "".join(out)
 
 
 def missing(html, group):
     pat = _pattern(_names(group))
-    hits, pos = [], 0
-    for m in list(_PROTECT.finditer(html)) + [None]:
-        end = m.start() if m else len(html)
-        for x in pat.finditer(html, pos, end):
-            hits.append(html[max(0, x.start() - 10):x.end() + 10].replace("\n", " "))
-        if m:
-            pos = m.end()
+    hits = []
+    for text, kind in _segments(html):
+        if kind == "text":
+            hits += [text[max(0, x.start() - 10):x.end() + 10].replace("\n", " ") for x in pat.finditer(text)]
     return hits
 
 
