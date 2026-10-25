@@ -88,6 +88,7 @@
 | [koikeyz-rewrite](.claude/skills/koikeyz-rewrite/SKILL.md) | コイキーズブログの既存記事リライト(対象範囲・実行フロー・監視ツール) |
 | [koikeyz-affiliate](.claude/skills/koikeyz-affiliate/SKILL.md) | コイキーズ記事のブランド・商品の言及に楽天/Amazonのアフィリエイトリンクを自動提案・挿入。既存記事は1件ずつOK待ち、KO1KEYZメンバー個人の愛用品/私物特定系の**新規記事**はblog-uploadのSTEP1.6で確認なし自動挿入(2026-09-07〜) |
 | [x-trend-article](.claude/skills/x-trend-article/SKILL.md) | Xトレンド監視が検知した新トレンドの自動記事化(リサーチ→執筆→chomoand.com下書きまで)。ヘッドレスClaudeから起動される |
+| [vivant-episode-kousatsu](.claude/skills/vivant-episode-kousatsu/SKILL.md) | ドラマ「VIVANT」をシーズン1第1話から1話ずつ深掘り考察する記事シリーズ(chomoand.com下書き)。**進捗表(どの話まで書いたか)もここ**。2026-10-25〜ユカ依頼 |
 | [shorts-video](.claude/skills/shorts-video/SKILL.md) | コイキーズ記事をTikTok/YouTube Shorts向け縦型動画に変換(試験導入・コイキーズ限定、動画生成までを自動化・投稿は手動) |
 
 アイキャッチ画像のデザインは [docs/eyecatch-style.md](docs/eyecatch-style.md) を参照。
