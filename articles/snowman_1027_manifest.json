@@ -1,0 +1,104 @@
+[
+  {
+    "key": "costume_exhibition",
+    "title": "Snow Man衣装展はどこ？日程・整理券・入り方まとめ！",
+    "slug": "snow-man-costume-exhibition-amenity",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_costume_exhibition.html",
+    "eyecatch": {
+      "main": "衣装展",
+      "bottom": [
+        "場所・日程は？",
+        "整理券と入り方も！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "goods_seiriken",
+    "title": "Snow Manのグッズはチケットなしで買える？整理券の取り方！",
+    "slug": "snow-man-all-suite-goods-without-ticket",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_goods_seiriken.html",
+    "eyecatch": {
+      "main": "グッズ整理券",
+      "bottom": [
+        "チケットなしで",
+        "買える？"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "uchiwa_rule",
+    "title": "Snow Manライブのうちわサイズは？手作りのルールと注意点！",
+    "slug": "snow-man-live-uchiwa-size-rule",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_uchiwa_rule.html",
+    "eyecatch": {
+      "main": "うちわのルール",
+      "bottom": [
+        "サイズは？",
+        "手作りの注意点も！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "perfume",
+    "title": "Snow Manの愛用香水は？9人の好きな香りとブランドまとめ！",
+    "slug": "snow-man-member-perfume",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_perfume.html",
+    "eyecatch": {
+      "main": "愛用香水",
+      "bottom": [
+        "9人の好きな香りと",
+        "ブランドまとめ！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "tv_1027",
+    "title": "Snow Manのテレビ出演は？10/27〜11/2の放送予定まとめ！",
+    "slug": "snow-man-tv-schedule-1027-1102",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_tv_1027.html",
+    "eyecatch": {
+      "main": "テレビ出演",
+      "bottom": [
+        "10/27〜11/2の",
+        "放送予定まとめ！"
+      ],
+      "color_key": "group"
+    }
+  },
+  {
+    "key": "amenity_stars",
+    "title": "AMENITYにSTARSが入ってない？収録曲と理由を解説！",
+    "slug": "snow-man-amenity-stars",
+    "categories": [
+      4
+    ],
+    "file": "articles/snowman_amenity_stars.html",
+    "eyecatch": {
+      "main": "AMENITY",
+      "bottom": [
+        "STARSが入ってない？",
+        "収録曲と理由！"
+      ],
+      "color_key": "group"
+    }
+  }
+]
