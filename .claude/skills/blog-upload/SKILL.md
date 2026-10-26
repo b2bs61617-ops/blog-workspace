@@ -103,16 +103,9 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   2. `python tools/eyecatch_torahja_canva.py --main "松田元太" --bottom "インスタライブのジャージはどこの？" --bottom "中村海人デザインと判明！" --color-key 松田元太 --out images/{ファイル名}_eyecatch_canva.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、複数メンバー回=`group_warm`)。
   3. 生成後に目視確認し、STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定する。完了報告に上段/中央/下段の分け方を一言添える。
   - 仕様の正は[docs/eyecatch-style.mdの「chomoand-4.blog Canva水彩デザイン」](../../../docs/eyecatch-style.md)。
-- **chomoand-5.site(KEY TO LIT専門ブログ)は、確認なしで自動的に`tools/eyecatch_kitetsu.py`で作る**(2026-10-17〜)。トラジャのCanva水彩デザインと同じ型で、色がKEY TO LITのメンバーカラーになっている。手順はトラジャと同じ:
-  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「KEY TO LIT」のまま。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
-  2. `python tools/eyecatch_kitetsu.py --main "猪狩蒼弥" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 猪狩蒼弥 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`井上瑞稀+猪狩蒼弥`)。
-  3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
-  - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-5.siteの表(基本`[4]`+メンバーのカテゴリ)。
-- **chomoand-2.com(Snow Man専門ブログ)は、確認なしで自動的に`tools/eyecatch_snowman.py`で作る**(2026-10-18〜)。キテレツと同じ型で、色がSnow Manのメンバーカラー:
-  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「Snow Man」のまま。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
-  2. `python tools/eyecatch_snowman.py --main "目黒蓮" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 目黒蓮 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`目黒蓮+ラウール`)。
-  3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
-  - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-2.comの表(基本`[4]`+メンバーのカテゴリ)。
+- **chomoand-2.com(Snow Man)・chomoand-5.site(KEY TO LIT)は、確認なしでトモキのCanvaデザインを上書きして作る**(2026-10-27〜、トモキ指示)。Snow Man=`DAHYbnGesOc`、KEY TO LIT=`DAHYbqcAORI`。メンバーのページ(グループ回はグループのページ)の文字を`find_and_replace_text`で置き換え→commit→jpg width1200で書き出し→STEP5でアップしてfeatured_mediaに設定。ページ対応・文字の型・ハマりどころは[docs/canva-snowman-kitetsu.md](../../../docs/canva-snowman-kitetsu.md)。
+  - `tools/eyecatch_snowman.py`・`tools/eyecatch_kitetsu.py`はCanva MCPが使えないときの予備(普段は使わない)。
+  - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)の各サイトの表(基本`[4]`+メンバーのカテゴリ)。
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定
