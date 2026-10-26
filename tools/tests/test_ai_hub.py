@@ -39,9 +39,9 @@ def test_load_env_strips_quotes(tmp_path):
 
 
 def test_new_providers_detected():
-    env = {"MISTRAL_API_KEY": "m", "CEREBRAS_API_KEY": "c", "GITHUB_MODELS_TOKEN": "g", "TAVILY_API_KEY": "t"}
-    assert ai_hub.available_providers(env) == ["mistral", "cerebras", "github"]
-    assert ai_hub.resolve_order("auto", env) == ["mistral", "cerebras", "github"]
+    env = {"MISTRAL_API_KEY": "m", "CEREBRAS_API_KEY": "c", "TAVILY_API_KEY": "t"}
+    assert ai_hub.available_providers(env) == ["mistral", "cerebras"]
+    assert ai_hub.resolve_order("auto", env) == ["mistral", "cerebras"]
 
 
 def test_format_sources_numbers_and_truncates():

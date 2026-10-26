@@ -8,7 +8,6 @@
                                   (中国企業の直APIはデータが中国国内に保存されるため使わない方針)
   mistral     MISTRAL_API_KEY     Experiment(無料)プラン。翻訳品質が高い。1分2回までなので連投は不可
   cerebras    CEREBRAS_API_KEY    無料枠(1日100万トークン)。とても速い
-  github      GITHUB_MODELS_TOKEN GitHub Models(無料)。1回に送れる量が少ないので短文向け
   tavily      TAVILY_API_KEY      AI用検索API(月1000回無料)。research でGrokが無いときの検索役
 
 モデル名は各社がよく改廃するので .env の *_MODEL で上書きできる。
@@ -32,7 +31,7 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 
 # auto のときに試す順番(無料で日本語に強い順)
-AUTO_ORDER = ["gemini", "mistral", "openrouter", "grok", "cerebras", "groq", "github"]
+AUTO_ORDER = ["gemini", "mistral", "openrouter", "grok", "cerebras", "groq"]
 
 OPENAI_COMPAT = {
     # name: (base_url, key_env, model_env, default_model)
@@ -41,7 +40,6 @@ OPENAI_COMPAT = {
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY", "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"),
     "mistral": ("https://api.mistral.ai/v1", "MISTRAL_API_KEY", "MISTRAL_MODEL", "mistral-large-latest"),
     "cerebras": ("https://api.cerebras.ai/v1", "CEREBRAS_API_KEY", "CEREBRAS_MODEL", "gpt-oss-120b"),
-    "github": ("https://models.github.ai/inference", "GITHUB_MODELS_TOKEN", "GITHUB_MODEL", "openai/gpt-4.1"),
 }
 GEMINI_MODELS = ["gemini-flash-latest", "gemini-3.5-flash", "gemini-3.1-flash-lite"]
 
