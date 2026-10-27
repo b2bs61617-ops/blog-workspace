@@ -24,7 +24,7 @@ description: 「公開して」「公開する」と言われたときに使う�
 5. **chomoand-1.com(コイキーズブログ)の記事のみ**、`python tools/naver_indexnow.py {公開URL}`も実行し、IndexNowプロトコル経由でNaverへ即時インデックス登録をリクエストする(2026-08-02〜)
    - **判定はサイト単位であって言語単位ではない。** chomoand-1.comの記事なら日本語版・韓国語版・英語版の**全URL**をNaverに送る(韓国語版だけではない)。日本語・英語URLを送ってもNaver側がクロール要否を判断するだけで害はない。
    - `.env`の`NAVER_INDEXNOW_KEY`が未設定の場合はスキップされるだけで、公開処理自体は止めない(セットアップ手順は[docs/naver-search-advisor-setup.md](../../../docs/naver-search-advisor-setup.md)参照)
-   - chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
+   - chomoand.com・chomoand-0.com(SixTONES)の記事にはこのSTEPは適用しない(Naverキー検証ファイルはchomoand-1.com直下にのみ置く運用のため)
 6. **Xへの自動投稿(2026-09-23〜、Buffer経由で再開)**。旧`tools/x_auto_post.py`(X API直接利用)はPay-Per-Use化によるコスト($0.20/URL付き投稿)を理由に2026-08-10に停止したが、Buffer(定額プラン、@chomoand17を全サイト共通で使用)経由の`tools/x_auto_post_buffer.py`に切り替えて再開した(経緯は[docs/x-auto-post-setup.md](../../../docs/x-auto-post-setup.md)参照)。
    - 下記「Xの投稿文の作り方」の型でフック文・ハッシュタグを作文したら、`python tools/x_auto_post_buffer.py --text "{フック文}" --hashtags "{ハッシュタグ}" --post-id {日本語版の記事ID} --url "{公開URL}"` を実行する。site指定は不要(**chomoand-4.blog(トラジャ)も含め全サイト同じ@chomoand17チャンネル**、2026-09-25トモキ確認)
    - **例外: chomoand.comのトレンド記事は`--account trend`を付けて@chomotirendだけに投稿する(2026-10-18〜トモキ指示)**。Threadsには流さない(`--account trend`で自動的にXのみになる)。@chomotirendがBufferに未接続ならX投稿だけスキップされ公開は止まらない。口調は下記「トレンド用(@chomotirend)の口調」に従う
@@ -57,6 +57,7 @@ description: 「公開して」「公開する」と言われたときに使う�
 | トラジャ(chomoand-4.blog) | 私物特定なら「気になった人いる?」、経歴・予想系はタイトル流用の疑問形 | `#TravisJapan`+登場メンバーの名前タグ(例`#宮近海斗`)、足りなければ`#トラジャ` | 2026-09-25〜。メンバー名は本名=活動名なのでそのまま |
 | キテレツ(chomoand-5.site) | トラジャと同じ(私物特定なら「気になった人いる?」、経歴・予想系はタイトル流用の疑問形) | `#KEYTOLIT`+登場メンバーの名前タグ(例`#猪狩蒼弥`)、足りなければ`#キテレツ` | 2026-10-17〜。X/Threadsは他サイトと同じ@chomoand17 |
 | Snow Man(chomoand-2.com) | トラジャと同じ(私物特定なら「気になった人いる?」、経歴・予想系はタイトル流用の疑問形) | `#SnowMan`+登場メンバーの名前タグ(例`#目黒蓮`)、足りなければ`#すの担` | 2026-10-18〜。X/Threadsは他サイトと同じ@chomoand17 |
+| SixTONES(chomoand-0.com) | トラジャと同じ(私物特定なら「気になった人いる?」、経歴・予想系はタイトル流用の疑問形) | `#SixTONES`+登場メンバーの名前タグ(例`#松村北斗`)、足りなければ`#スト担` | 2026-10-27〜。X/Threadsは他サイトと同じ@chomoand17 |
 
 いずれも本文は結論・フックを冒頭2行以内に収め、ハッシュタグは2〜4個(多すぎるとスパム的に見える)。
 
@@ -73,7 +74,7 @@ description: 「公開して」「公開する」と言われたときに使う�
 実はあの映像、"あの時期"のものだった…！真相はこちら👇
 #テレビミセス #MrsGREENAPPLE #大森元貴
 ```
-文字数・ハッシュタグ(本名併記含む)・記事内画像のルールは下と同じ。以下の女性ファン口調と書き出しルールは@chomoand17(トラジャ・キテレツ・Snow Man・KO1KEYZ等)用。
+文字数・ハッシュタグ(本名併記含む)・記事内画像のルールは下と同じ。以下の女性ファン口調と書き出しルールは@chomoand17(トラジャ・キテレツ・Snow Man・SixTONES・KO1KEYZ等)用。
 
 **口調は「女性ファンが自分で呟いている」風にする(2026-09-25にトモキ指示)。** 「〜すぎて無理😭💕」「待って、」「ねぇ〜な人いない？👀」「まとめたよ〜🫶✨」のような話し言葉・共感・問いかけにし、絵文字は1行に1〜3個とたっぷり使う。メンバーは「YURAくん」「KEITOくん」のようにくん付け。宣伝っぽい事務的な文は避ける。文字数は重み280(日本語・絵文字=2、ASCII=1)が上限で、超えると`x_auto_post_buffer.py`が本文を切り詰めるため、本文は約115文字以内に収めてハッシュタグまで確実に入るようにする。
 

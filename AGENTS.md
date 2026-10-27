@@ -7,7 +7,7 @@
 ## プロジェクト概要
 
 トレンドブログの作業場です。人物・話題の記事を調査・執筆し、WordPressに投稿します。
-運営サイトは3つ(chomoand.com / chomoand-0.com / chomoand-1.com)。詳細は [docs/wordpress.md](docs/wordpress.md)。
+運営サイトは chomoand.com(トレンド)/ chomoand-0.com(SixTONES)/ chomoand-1.com(KO1KEYZ)/ chomoand-2.com(Snow Man)/ chomoand-4.blog(Travis Japan)/ chomoand-5.site(KEY TO LIT)。詳細は [docs/wordpress.md](docs/wordpress.md)。
 
 ## 作業方針
 

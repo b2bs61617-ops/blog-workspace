@@ -42,6 +42,7 @@ SITES = [
     ("トレンド", "chomoand.com", "473419828", "#e8743b"),
     ("KO1KEYZ", "chomoand-1.com", "522443997", "#d6336c"),
     ("Snow Man", "chomoand-2.com", "552989311", "#4a90d9"),
+    ("SixTONES", "chomoand-0.com", "541752057", "#555555"),
     ("トラジャ", "chomoand-4.blog", "551881009", "#8e5ad6"),
     ("キテレツ", "chomoand-5.site", "552198888", "#2f9e77"),
 ]

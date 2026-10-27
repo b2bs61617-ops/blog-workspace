@@ -5,7 +5,7 @@ description: 「ブログにアップして」「アップして」「WordPress�
 
 # ブログアップロードスキル
 
-「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、オーディション記事→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**、**Snow Man記事→chomoand-2.com**)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う(chomoand-4.blogは`WP_CHOMO4_*`、chomoand-5.siteは`WP_CHOMO5_*`、chomoand-2.comは`WP_CHOMO2_*`)。既存のchomoand-0.com上のTravis Japan記事はそのまま残し移行しない。
+「ブログにアップして」と言われたら以下を順番に全て実行する。投稿先サイトは[docs/wordpress.md](../../../docs/wordpress.md)の判断基準(トレンド記事→chomoand.com、**SixTONES記事→chomoand-0.com**(2026-10-27〜)、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**、**Snow Man記事→chomoand-2.com**)に従い、対応する`.env`の`WP_<SITE>_URL` / `WP_<SITE>_USERNAME` / `WP_<SITE>_APP_PASSWORD`を使う(chomoand-4.blogは`WP_CHOMO4_*`、chomoand-5.siteは`WP_CHOMO5_*`、chomoand-2.comは`WP_CHOMO2_*`、chomoand-0.comは`WP_AUDITION_*`)。
 
 ## STEP 1: 記事ファイルの読み込み・HTML変換
 
@@ -106,6 +106,11 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 - **chomoand-2.com(Snow Man)・chomoand-5.site(KEY TO LIT)は、確認なしでトモキのCanvaデザインを上書きして作る**(2026-10-27〜、トモキ指示)。Snow Man=`DAHYbnGesOc`、KEY TO LIT=`DAHYbqcAORI`。メンバーのページ(グループ回はグループのページ)の文字を`find_and_replace_text`で置き換え→commit→jpg width1200で書き出し→STEP5でアップしてfeatured_mediaに設定。ページ対応・文字の型・ハマりどころは[docs/canva-snowman-kitetsu.md](../../../docs/canva-snowman-kitetsu.md)。
   - `tools/eyecatch_snowman.py`・`tools/eyecatch_kitetsu.py`はCanva MCPが使えないときの予備(普段は使わない)。
   - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)の各サイトの表(基本`[4]`+メンバーのカテゴリ)。
+- **chomoand-0.com(SixTONES専門ブログ)は、確認なしで自動的に`tools/eyecatch_sixtones.py`で作る**(2026-10-27〜。SixTONES用のCanvaデザインができたらSnow Manと同じ上書き方式に切り替える):
+  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「SixTONES」のまま。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
+  2. `python tools/eyecatch_sixtones.py --main "松村北斗" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 松村北斗 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`松村北斗+田中樹`)。
+  3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
+  - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-0.comの表(基本`[15]`+メンバーのカテゴリ)。
 - 保存先: `images/{ファイル名}_eyecatch.png`
 
 ## STEP 5: アイキャッチをWordPressにアップロード・設定

@@ -6,6 +6,8 @@
 
 **chomoand-5.site(2026-10-17〜運用開始)も登録済み**: 2026-10-17にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
 
+**chomoand-0.com(2026-10-27〜SixTONES専門に変更)**: 以前から登録済みのまま使える(2026-10-27に`chomoand-466@...`でAPI疎通を確認)。
+
 **chomoand-2.com(Snow Man、2026-10-18〜運用開始)も登録済み**: 2026-10-18にトモキがSearch Consoleで`chomoand-466@...`をオーナー追加し、Indexing APIの疎通を確認済み。
 
 **鍵ファイルの置き場所**: `G:\マイドライブ\ブログ関係\google-indexing-key.json`(Google Drive。全PC共通パス)。`.env`の`GOOGLE_INDEXING_CREDENTIALS_PATH`をこの絶対パスにする。`.gitignore`済み。

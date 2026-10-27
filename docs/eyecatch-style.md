@@ -7,7 +7,7 @@
 | **chomoand-1.com(コイキーズブログ)** | **KO1KEYZ統一テンプレ必須**(下記)。既存記事が全部このデザインで揃っているので勝手に変えない |
 | **chomoand.com(恋愛リアリティ番組の出演者記事)** | **`tools/eyecatch_chomoand.py`必須**(2026-07-19〜)。詳細は下記「chomoand.com統一テンプレ」参照。Canva MCP版(design_id: `DAHPjgiBOTI`、[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md))は2026-07-19に運用停止(経緯は同docs参照) |
 | chomoand.com(恋リア以外の旧カテゴリ記事) | 対象外。第2次転換([docs/chomoand-pivot.md](chomoand-pivot.md))で凍結済みの旧記事(トレンド系・未分類など)はそのまま放置。新デザインを適用するのは恋リア記事のみ |
-| chomoand-0.com | **`tools/eyecatch_chomoand0.py`必須**(HTML+Playwrightで汎用テンプレを自動生成。手動でHTML/PowerShellを組む必要はない)。詳細は下記「汎用テンプレ」参照 |
+| chomoand-0.com(SixTONES専門、2026-10-27〜) | **`tools/eyecatch_sixtones.py`必須**。Snow Man予備ツールと同じ水彩デザイン(上段既定「SixTONES」)で、色はSixTONESのメンバーカラー(ジェシー=赤、京本大我=ピンク、松村北斗=黒(グレー)、髙地優吾=黄、森本慎太郎=緑、田中樹=青、グループ回=`group`で6色まぜ)。旧ジャニオタブログ時代の`eyecatch_chomoand0.py`はもう使わない |
 | chomoand-4.blog(Travis Japan専門、2026-09-13新設) | **`tools/eyecatch_torahja_canva.py`のCanva水彩デザイン必須**(2026-10-02〜、下記「chomoand-4.blog Canva水彩デザイン」参照)。旧ベージュ(`eyecatch_chomoand0_old.py`)と紫3行(`eyecatch_torahja.py`)は使わない |
 | chomoand-5.site(KEY TO LIT専門、2026-10-17〜) | **2026-10-27〜はCanva`DAHYbqcAORI`の上書きが必須**([canva-snowman-kitetsu.md](canva-snowman-kitetsu.md))。以下の`tools/eyecatch_kitetsu.py`は予備:chomoand-4.blogの水彩デザインと同じ型(上段既定「KEY TO LIT」/中央=メンバー名or話題/下段1〜2行)で、色はKEY TO LITのメンバーカラー(岩﨑大昇=白、井上瑞稀=赤、中村嶺亜=ピンク、猪狩蒼弥=緑、佐々木大光=青、グループ回=`group`で5色まぜ) |
 | chomoand-2.com(Snow Man専門、2026-10-18〜) | **2026-10-27〜はCanva`DAHYbnGesOc`の上書きが必須**([canva-snowman-kitetsu.md](canva-snowman-kitetsu.md))。以下の`tools/eyecatch_snowman.py`は予備:キテレツと同じ水彩デザイン(上段既定「Snow Man」)で、色はSnow Manのメンバーカラー(岩本照=黄、深澤辰哉=紫、ラウール=白、渡辺翔太=青、向井康二=オレンジ、阿部亮平=緑、目黒蓮=黒(グレー)、宮舘涼太=赤、佐久間大介=ピンク、グループ回=`group`で色まぜ) |

@@ -5,7 +5,7 @@
 | サイト | URL | 用途 | 認証情報(.envのキー) |
 |---|---|---|---|
 | 恋リアブログ | https://chomoand.com | **恋愛リアリティ番組の出演者wiki**(2026-07-14〜)。旧「トレンドブログ」。`.env`のキー名は`WP_TREND_*`のまま(改名すると全PCの`.env`更新が必要なため据え置き) | `WP_TREND_URL` / `WP_TREND_USERNAME` / `WP_TREND_APP_PASSWORD` |
-| ジャニオタブログ | https://chomoand-0.com | ジャニーズ系記事全般(オーディション番組系だけでなく、グループ・メンバー個人の話題・ファンクラブ情報なども含む) | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD` |
+| SixTONES専門ブログ | https://chomoand-0.com | **SixTONES専門**(2026-10-27〜、サイト名「ちょものSixTONES情報局」)。運用はchomoand-4.blog(トラジャ)・chomoand-2.com(Snow Man)と同じ。旧ジャニオタブログ時代の記事73本は2026-10-27にトモキ許可のうえゴミ箱へ(バックアップは`backups/chomoand0_sixtones_reset_2026-10-27/`)。トラジャ旧URL34件→chomoand-4.blogの301(Redirectionプラグイン)は残しているので消さないこと | `WP_AUDITION_URL` / `WP_AUDITION_USERNAME` / `WP_AUDITION_APP_PASSWORD`(旧オーディションブログ時代のキー名のまま) |
 | コイキーズブログ | https://chomoand-1.com | コイキーズ関連の記事 | `WP_KOIKEYS_URL` / `WP_KOIKEYS_USERNAME` / `WP_KOIKEYS_APP_PASSWORD` |
 | Travis Japan専門ブログ | https://chomoand-4.blog | **Travis Japan専門**(2026-09-13新設、サイト名「ちょものTravis Japan情報局」)。以前はTravis Japan記事もchomoand-0.comに投稿していたが、新設後は**新規記事のみ**こちらへ。既存のchomoand-0.com上のTravis Japan記事はそのまま残す(移行はしない) | `WP_CHOMO4_URL` / `WP_CHOMO4_USERNAME` / `WP_CHOMO4_APP_PASSWORD`(サイト新設時の命名の都合でキー名は`CHOMO4`のまま) |
 | KEY TO LIT専門ブログ | https://chomoand-5.site | **KEY TO LIT(キテレツ)専門**(2026-10-17〜、サイト名「ちょものKEY TO LIT情報局」)。運用はchomoand-4.blog(トラジャ)と同じ | `WP_CHOMO5_URL` / `WP_CHOMO5_USERNAME` / `WP_CHOMO5_APP_PASSWORD` |
@@ -13,18 +13,18 @@
 
 ユーザー名はどのサイトも共通(`b2bs61617@gmail.com`)。実際のアプリパスワードの値は`.env`(このリポジトリ直下、Git管理外)に保存する。新しいPCでは`.env.example`をコピーして、パスワードマネージャー等の安全な経路で受け取った値を入力すること。
 
-**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、ジャニーズ系記事(Travis Japan以外)→chomoand-0.com、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**(2026-10-17〜)、**Snow Man記事→chomoand-2.com**(2026-10-18〜)。
+**どのサイトに投稿するかは記事の文脈で判断する**: 恋愛リアリティ番組の出演者記事→chomoand.com、**SixTONES記事→chomoand-0.com**(2026-10-27〜。それ以外のジャニーズ系は該当グループのサイトへ)、コイキーズ記事→chomoand-1.com、**Travis Japan記事(2026-09-13以降の新規記事)→chomoand-4.blog**、**KEY TO LIT(キテレツ)記事→chomoand-5.site**(2026-10-17〜)、**Snow Man記事→chomoand-2.com**(2026-10-18〜)。
 
 ## 投稿者(WordPress author)設定(2026-08-05〜、PCごとに固定/2026-08-06、chomoand-0.comは例外指定)
 
 記事のWordPress投稿者(`author`フィールド)は、**どのPCから作業しているかで固定**する運用にした(2026-08-05にユーザーから指示。「このパソコンから書く記事は全部MOMOにして」)。新しいPCで作業する場合は、ユーザーに投稿者名を確認してこの表に追記すること。
 
-**例外: chomoand-0.com(ジャニオタブログ)だけはPCによらず投稿者を`b2bs61617@gmail.com`(user id 1、認証に使っているアカウント本人)に固定する**(2026-08-06にユーザーから指示。「ジャニーズブログに関しては投稿者はb2bs61617@gmail.comでおっけー」)。下表の「chomoand-0.com」列はこの例外指定の対象外(chomoand.com・chomoand-1.comは引き続き下表のPCごとの名義を使う)。
+**例外: chomoand-0.com(ジャニオタブログ)だけはPCによらず投稿者を`b2bs61617@gmail.com`(user id 1、認証に使っているアカウント本人)に固定する**(→**2026-10-27のSixTONES化で廃止**。user id 1の表示名を`anco`、id 2を`momo`に変え、他サイトと同じく下表のPCごとの名義を使う)(2026-08-06にユーザーから指示。「ジャニーズブログに関しては投稿者はb2bs61617@gmail.comでおっけー」)。下表の「chomoand-0.com」列はこの例外指定の対象外(chomoand.com・chomoand-1.comは引き続き下表のPCごとの名義を使う)。
 
 | PCのhostname | 投稿者名(このPCから投稿する記事はこの名義に統一) | chomoand.com | chomoand-0.com | chomoand-1.com | chomoand-4.blog | chomoand-5.site | chomoand-2.com |
 |---|---|---|---|---|---|---|---|
-| USER1 | momo | user id 3(slug: momo) | ~~user id 2(slug: shiori)~~ → **2026-08-06〜user id 1(b2bs61617@gmail.com)に統一** | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) | user id 2(slug: momo、2026-10-17確認) | user id 2(slug: momo、2026-10-18確認) |
-| Tomoki | anco | user id 4(slug: and) | user id 1(b2bs61617@gmail.com、上記の例外指定に従う) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) | user id 1(slug: anco、2026-10-17確認) | user id 1(slug: anco、2026-10-18確認) |
+| USER1 | momo | user id 3(slug: momo) | user id 2(slug: momo、2026-10-27に改名) | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) | user id 2(slug: momo、2026-10-17確認) | user id 2(slug: momo、2026-10-18確認) |
+| Tomoki | anco | user id 4(slug: and) | user id 1(slug: anco、2026-10-27に改名) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) | user id 1(slug: anco、2026-10-17確認) | user id 1(slug: anco、2026-10-18確認) |
 | Yuka-MacBook-NEO(ユカのMac) | chomoand-2.comはanco(2026-10-25にユカ指定) | 未確認 | 未確認 | 未確認 | 未確認 | 未確認 | user id 1(slug: anco、2026-10-25確認) |
 
 - hostnameは`hostname`コマンドで確認できる。
@@ -45,7 +45,7 @@
 | 63 | 愛用品 |
 | 4 | 日プ4 |
 
-chomoand-0.com(ジャニオタブログ)は以下が判明済み(2026-08-10):
+~~chomoand-0.com(ジャニオタブログ)は以下が判明済み(2026-08-10):~~ **2026-10-27のSixTONES化でこの表と下のTravis Japanルールは無効。今のカテゴリは下の「chomoand-0.com(SixTONES専門ブログ)」の表を見る**
 
 | ID | 名前 |
 |---|---|
@@ -101,6 +101,23 @@ chomoand-2.com(Snow Man専門ブログ)は以下(2026-10-18にマツが作成):
 | 14 | 佐久間大介 | 4 |
 
 投稿時は基本`[4]`+登場メンバーのカテゴリ(例: 目黒蓮の記事なら`[4, 12]`)。他グループとの絡みなど「ジャニーズ全般」寄りの内容は`5`も足す。
+
+chomoand-0.com(SixTONES専門ブログ)は以下(2026-10-27にマツが作成):
+
+| ID | 名前 | 親 |
+|---|---|---|
+| 15 | SixTONES | - |
+| 3 | ジャニーズ(既定カテゴリ、slug johnnys) | - |
+| 16 | ジェシー | 15 |
+| 17 | 京本大我 | 15 |
+| 18 | 松村北斗 | 15 |
+| 19 | 髙地優吾 | 15 |
+| 20 | 森本慎太郎 | 15 |
+| 21 | 田中樹 | 15 |
+
+投稿時は基本`[15]`+登場メンバーのカテゴリ(例: 松村北斗の記事なら`[15, 18]`)。他グループとの絡みなど「ジャニーズ全般」寄りの内容は`3`も足す。パーマリンクは他サイトと同じ`/%postname%-%post_id%`。
+
+SixTONESの基本情報(記事を書くときは最新情報を確認すること): STARTO ENTERTAINMENT所属の6人組、2020年1月デビュー。メンバーカラーは ジェシー=赤/京本大我=ピンク/松村北斗=黒/髙地優吾=黄/森本慎太郎=緑/田中樹=青。
 
 Snow Manの基本情報(記事を書くときは最新情報を確認すること): STARTO ENTERTAINMENT所属の9人組、2020年1月デビュー。メンバーカラーは 岩本照=黄/深澤辰哉=紫/ラウール=白/渡辺翔太=青/向井康二=オレンジ/阿部亮平=緑/目黒蓮=黒/宮舘涼太=赤/佐久間大介=ピンク。
 
