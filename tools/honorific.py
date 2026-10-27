@@ -28,6 +28,10 @@ GROUPS = {
         "向井康二": "向井", "阿部亮平": "阿部", "目黒蓮": "目黒", "宮舘涼太": "宮舘",
         "佐久間大介": "佐久間",
     },
+    "sixtones": {
+        "ジェシー": None, "京本大我": "京本", "松村北斗": "松村", "髙地優吾": "髙地",
+        "森本慎太郎": "森本", "田中樹": None,
+    },
     "ktl": {
         "岩﨑大昇": "岩﨑", "井上瑞稀": "井上", "中村嶺亜": "中村", "猪狩蒼弥": "猪狩",
         "佐々木大光": "佐々木",
@@ -61,11 +65,13 @@ _NO_SAN_BLOCKS = re.compile(
 def _pattern(names):
     alts = []
     for full, short in names.items():
-        alts.append(re.escape(full))
+        alts.append((len(full), re.escape(full)))
         if short:
-            given = re.escape(full[len(short):])
-            alts.append(re.escape(short) + f"(?!{given})")
-    alts.sort(key=len, reverse=True)
+            # 「森本」は「森本慎太郎」だけでなく「森本龍太郎」など同じ名字の別人の一部としても当てない
+            rest = sorted({n[len(short):] for n in names if n.startswith(short) and n != short}, key=len, reverse=True)
+            alts.append((len(short), re.escape(short) + f"(?!{'|'.join(map(re.escape, rest))})"))
+    # 名前そのものの長さで並べる(先読み部分の長さで並べると「森本龍太郎」より「森本(?!慎太郎)」が先に当たる)
+    alts = [alt for _, alt in sorted(alts, key=lambda x: x[0], reverse=True)]
     skip = "|".join(re.escape(s) for s in SKIP_AFTER)
     return re.compile(f"(?:{'|'.join(alts)})(?!{skip})")
 
