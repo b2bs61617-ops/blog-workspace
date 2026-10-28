@@ -72,6 +72,7 @@ description: ネット上に情報がない人物の学歴・家族・出身地�
 - スクリプト: `tools/Xiy/x_collector.py`
 - 起動ファイル: `tools/Xiy/起動.bat`(ダブルクリックで起動)
 - ブラウザプロファイル: `%USERPROFILE%\x_collector_profile`(ログイン情報保存。PCごとに個別に必要)
+- **2つ目のブラウザ(2026-10-28〜)**: `x_collector_profile`が別の収集で使用中なら、自動で`x_collector_profile_2`(コピー)を使う。`tools/threads-questions`も同様に`threads_profile`→`threads_profile_2`。これで複数のマツが同時に収集できる。コピーが無いPCでは従来通り1つずつ。作り方: 元のプロファイルを誰も使っていない時に、キャッシュ系フォルダ(Cache/Code Cache/GPUCache等)を除いて`robocopy`で`_2`にコピーする(ログインは引き継がれる)。判定は`x_collector.pick_profile()`
 - 設定ファイル: `tools/Xiy/xiy_config.json`(Gemini APIキー。Gitには含めない。`xiy_config.json.example`参照)
 
 **機能:**

@@ -79,9 +79,32 @@ CONFIG_FILE = str(Path(__file__).parent / "xiy_config.json")
 STEALTH_KWARGS = dict(navigator_languages_override=("ja-JP", "ja"))
 
 
+def profile_in_use(profile_dir) -> bool:
+    """Chromeが起動中だとプロファイル直下のlockfileが排他オープンされていて開けない。"""
+    lock = Path(profile_dir) / "lockfile"
+    if not lock.exists():
+        return False
+    try:
+        open(lock, "a").close()
+        return False
+    except PermissionError:
+        return True
+
+
+def pick_profile(base_dir) -> str:
+    """base_dir が別の収集で使用中なら base_dir_2, _3... の空いているコピーを返す(複数のマツが同時に収集できるように)。"""
+    candidates = [str(base_dir)] + [f"{base_dir}_{i}" for i in range(2, 6)]
+    for d in candidates:
+        if Path(d).is_dir() and not profile_in_use(d):
+            if d != str(base_dir):
+                print(f"[profile] {Path(base_dir).name} は使用中なので {Path(d).name} を使います")
+            return d
+    raise RuntimeError(f"{Path(base_dir).name} とそのコピーが全部使用中です。少し待ってから再実行してください")
+
+
 async def launch_browser_context(p):
     context = await p.chromium.launch_persistent_context(
-        PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
+        pick_profile(PROFILE_DIR), headless=False, channel="chrome", slow_mo=50,
         args=["--disable-blink-features=AutomationControlled"],
     )
     if STEALTH_OK:

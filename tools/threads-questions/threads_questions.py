@@ -1,7 +1,7 @@
 """Threadsをキーワード検索し、自動スクロールで投稿(+上位投稿のリプライ)を集めて「？」付きの疑問を抜き出す
 (chomoand-2.com=Snow Man / chomoand-0.com=SixTONES記事のネタ探し用。Xの tools/x-sokuho/sokuho_questions.py のThreads版)。
 
-- ブラウザはThreads専用のログイン済みプロファイル(~/threads_profile)を使う。初回はログイン完了まで待つ
+- ブラウザはThreads専用のログイン済みプロファイル(~/threads_profile)を使う。使用中なら ~/threads_profile_2 に自動で切り替える。初回はログイン完了まで待つ
 - 出力: reports/threads_YYYYmmdd_HHMM.json と .md(疑問の多い順)
 - 使い方: python threads_questions.py [--group sixtones] [--keywords "Snow Man" 目黒蓮 ...] [--scrolls 10] [--replies 3]
 """
@@ -25,6 +25,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 from playwright.async_api import async_playwright  # noqa: E402
 from sokuho_questions import extract_questions  # noqa: E402
+from x_collector import pick_profile  # noqa: E402
 
 REPORTS_DIR = ROOT / "reports"
 PROFILE_DIR = os.path.expanduser("~/threads_profile")
@@ -33,6 +34,7 @@ GROUP_KEYWORDS = {
                 "向井康二", "阿部亮平", "目黒蓮", "宮舘涼太", "佐久間大介"],
     "sixtones": ["SixTONES", "ストーンズ", "ジェシー", "京本大我", "松村北斗", "髙地優吾",
                  "森本慎太郎", "田中樹"],
+    "kitetsu": ["KEY TO LIT", "キテレツ", "岩﨑大昇", "井上瑞稀", "中村嶺亜", "猪狩蒼弥", "佐々木大光"],
 }
 DEFAULT_KEYWORDS = GROUP_KEYWORDS["snowman"]
 POST_SEL = 'div[data-pressable-container="true"]'
@@ -101,7 +103,7 @@ async def run(args):
     results = []
     async with async_playwright() as p:
         context = await p.chromium.launch_persistent_context(
-            PROFILE_DIR, headless=False, channel="chrome", slow_mo=50,
+            pick_profile(PROFILE_DIR), headless=False, channel="chrome", slow_mo=50,
             args=["--disable-blink-features=AutomationControlled"],
         )
         page = context.pages[0] if context.pages else await context.new_page()
