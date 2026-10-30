@@ -1559,7 +1559,10 @@ async def run_cli(args):
 
         should_continue = lambda: True
         if platform == "x":
-            await collect_x(page, context, should_continue, on_status, on_post)
+            try:
+                await collect_x(page, context, should_continue, on_status, on_post)
+            except Exception as e:  # ブラウザが途中で落ちても、取れた分は保存する
+                print(f"\n[X] 収集が途中で止まりました({type(e).__name__})。取得済み{len(posts)}件を保存します")
         elif platform == "threads":
             await collect_threads(page, context, should_continue, on_status, on_post)
         elif platform == "trending":
