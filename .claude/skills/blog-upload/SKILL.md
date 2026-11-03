@@ -90,7 +90,7 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 ## STEP 4: アイキャッチ画像の生成
 
 - **2026-11-03〜 chomoand-1.com(コイキーズブログ)のアイキャッチはCanva`DAG_zqaJE_8`のページを上書き→書き出しで作る(トモキ指示)。手順は[docs/canva-snowman-kitetsu.md](../../../docs/canva-snowman-kitetsu.md)の「KO1KEYZ」節。KR/ENはJPと同じ画像。以下の`eyecatch_koikeyz.py`はCanva MCPが使えないときの予備。**
-- (旧ルール)**chomoand-1.com(コイキーズブログ)は、記事本文の写真の有無にかかわらず必ず`tools/eyecatch_koikeyz.py`の文字入りテンプレで生成する**(2026-08-17にユーザーが再確認・上書き。[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の「KO1KEYZ統一テンプレ必須、既存記事が全部このデザインで揃っているので勝手に変えない」が現行ルール)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`、KR下書きは`--lang kr`で韓国語版を別途生成し[[feedback-koikeyz-kr-eyecatch-language]]、JPと同じ画像を使い回さない)。
+- (旧ルール)**chomoand-1.com(コイキーズブログ)は、記事本文の写真の有無にかかわらず必ず`tools/eyecatch_koikeyz.py`の文字入りテンプレで生成する**(2026-08-17にユーザーが再確認・上書き。[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の「KO1KEYZ統一テンプレ必須、既存記事が全部このデザインで揃っているので勝手に変えない」が現行ルール)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`、KR/EN版はJPと同じ画像を使う。`--lang kr`で韓国語版を別に作る旧運用は2026-11-03に廃止)。
   - **(誤った過去の試験導入・現在は無効)2026-08-11〜08-17の一時期のみ、「本文中に埋め込んだ写真の1枚目をfeatured_mediaに使い、テキストeyecatchは作らない」という運用を試したことがあるが、2026-08-17にユーザーから「ちがうよ基本文字入れだよアイキャッチは」と明確に否定された。** KO1KEYZ「KO1WORLD」ロケ地特定記事(下書きID11410)でこの旧ルールに従い本文写真をfeatured_mediaにしたところ即座に修正指示が入り、テキスト入りeyecatchへ差し替えた実例あり。今後このSTEP4を読むときは本項目(文字入り必須)を正としてそのまま使うこと。
 - **chomoand.comの記事は必ずCanva MCPで作る**(2026-07-16〜、[docs/canva-mcp-chomoand.md](../../../docs/canva-mcp-chomoand.md)の運用フローに従う)。要点:
   - 専用マスターデザイン(design_id: `DAHPjgiBOTI`、1ページのみ)を`copy-design`で複製する(`page_numbers`指定不要)

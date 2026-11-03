@@ -50,6 +50,6 @@
 - メンバー1人の記事 → そのメンバーの既存ページ(例: p1〜p3 DAIKI、p4・p5 YOSHIKI)。メンバー別の背景色になっている。型は「KO1KEYZ(小)/メンバー名(大)/タイトル残り2行(小)」。
 - グループ・複数人の記事 → p33(元はVenue101サイン)。型は「タイトル前半(小)/KO1KEYZ(大)/残り1〜2行(小)」。行が3つで足りるときは不要な区切りを空文字に置換すればよい。
 - ページ番号はトモキがページを足すとずれるので、必ず`read-design`のサムネイルで中身を確かめてから上書きする。
-- KR/EN版はJPと同じ画像(同じメディアID)を使う。言語別に作らない。
+- KR/EN版はJPと同じ画像(同じメディアID)を使う。言語別に作らない。公開前に`tools/sync_ko1keyz_eyecatch.py {JP版ID}`でそろえる(publishスキルSTEP0.6)。2026-11-03に既存261本のズレを修正済み(`backups/chomoand1_kr_en_eyecatch_align_2026-11-03/`、`apply.py restore`で戻せる)。
 - WordPressへの反映は`backups/chomoand1_eyecatch_canva_2026-11-03/apply.py set <書き出しURL> <ファイル名> <JP記事ID> <KR記事ID> <EN記事ID>`で一度にできる(元の値はlog.jsonに残り、`restore`で戻せる)。
 - `tools/eyecatch_koikeyz.py`と[docs/canva-mcp.md](canva-mcp.md)の「複製して使う」方式は使わない(Canva MCPが使えないときの予備)。
