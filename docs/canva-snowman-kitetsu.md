@@ -1,4 +1,6 @@
-# Snow Man・KEY TO LIT のアイキャッチ(Canva上書き)
+# Snow Man・KEY TO LIT・KO1KEYZ のアイキャッチ(Canva上書き)
+
+2026-11-03〜、chomoand-1.com(KO1KEYZ)も同じ上書き方式にした(トモキ指示)。下の「KO1KEYZ」の節を参照。
 
 2026-10-27〜、chomoand-2.com(Snow Man)と chomoand-5.site(KEY TO LIT)のアイキャッチは、トモキが作ったCanvaデザインのページを**複製せず上書き**して書き出す。
 `tools/eyecatch_snowman.py` / `tools/eyecatch_kitetsu.py` は使わない(Canva MCPが使えないときの予備)。
@@ -6,11 +8,13 @@
 | サイト | デザイン | サイズ |
 |---|---|---|
 | chomoand-2.com | `DAHYbnGesOc`(https://www.canva.com/design/DAHYbnGesOc/U_MPN595p2Df79TlKsoGvA/edit) | 344×208 → 書き出し1200×725 |
+| chomoand-1.com | `DAG_zqaJE_8`(https://www.canva.com/design/DAG_zqaJE_8/l71cMlml1fFblZvnKOz0Tg/edit) | 1920×1080 → 書き出し1200×675 |
 | chomoand-5.site | `DAHYbqcAORI`(https://www.canva.com/design/DAHYbqcAORI/TKGEu3TgouFj_1BJ5DpYQw/edit) | 1920×1080 → 書き出し1200×675 |
 
 ## ページ
 
-- Snow Man: p1=グループ(青) p2=グループ(9色) p3佐久間大介 p4岩本照 p5深澤辰哉 p6ラウール p7渡辺翔太 p8向井康二 p9阿部亮平 p10目黒蓮 p11宮舘涼太
+- Snow Man(2026-11-03時点で14ページ): p1〜p5=グループ(色違い。p1・p2は「Snow Man/話題/残り」、p3〜p5は「話題/Snow Man/残り」の並び) p6佐久間大介 p7岩本照 p8深澤辰哉 p9ラウール p10渡辺翔太 p11向井康二 p12阿部亮平 p13目黒蓮 p14宮舘涼太
+  - ページが増えて番号がずれることがあるので、上書き前に`read-design`のサムネイルで中の名前を確かめる(2026-11-03、p3が佐久間ではなくグループになっていた)。
 - KEY TO LIT: p1〜p4=グループ(色違い) p5井上瑞稀 p6猪狩蒼弥 p7佐々木大光 p8中村嶺亜 p9岩﨑大昇
 - タイトルにメンバーが1人だけ→そのメンバーのページ。グループ・複数人→グループのページ。
 
@@ -39,3 +43,13 @@
 
 - 2行しかない枠に行を足すと、足した行が名前と同じ特大サイズになる。`add_text`で足すとフォントが普通のゴシックになって見本と合わない。→ 枠の作りが足りないときはトモキにCanva上で仮の行を入れてもらう。
 - 2026-10-27に既存記事を全部差し替え済み(Snow Man 14本+トモキ手作り4本はそのまま、KEY TO LIT 58本)。復元用: `backups/chomoand2_eyecatch_canva_2026-10-27/`・`backups/chomoand5_eyecatch_canva_2026-10-27/`(`apply.py restore`)。
+
+## KO1KEYZ(chomoand-1.com)
+
+- トモキが記事ごとにページを足してきたデザイン(2026-11-03時点で56ページ、1ページ=1記事)。**新しいページは足さず、近いページを上書きする**(トモキ選択。公開済みの画像はWordPressに残っているので記事には影響しない)。
+- メンバー1人の記事 → そのメンバーの既存ページ(例: p1〜p3 DAIKI、p4・p5 YOSHIKI)。メンバー別の背景色になっている。型は「KO1KEYZ(小)/メンバー名(大)/タイトル残り2行(小)」。
+- グループ・複数人の記事 → p33(元はVenue101サイン)。型は「タイトル前半(小)/KO1KEYZ(大)/残り1〜2行(小)」。行が3つで足りるときは不要な区切りを空文字に置換すればよい。
+- ページ番号はトモキがページを足すとずれるので、必ず`read-design`のサムネイルで中身を確かめてから上書きする。
+- KR/EN版はJPと同じ画像(同じメディアID)を使う。言語別に作らない。
+- WordPressへの反映は`backups/chomoand1_eyecatch_canva_2026-11-03/apply.py set <書き出しURL> <ファイル名> <JP記事ID> <KR記事ID> <EN記事ID>`で一度にできる(元の値はlog.jsonに残り、`restore`で戻せる)。
+- `tools/eyecatch_koikeyz.py`と[docs/canva-mcp.md](canva-mcp.md)の「複製して使う」方式は使わない(Canva MCPが使えないときの予備)。

@@ -1,5 +1,7 @@
 # Canva MCP連携(アイキャッチ作成)
 
+> **2026-11-03〜 KO1KEYZは`DAG_zqaJE_8`のページを直接上書きする方式に変更(トモキ指示)。手順は[docs/canva-snowman-kitetsu.md](canva-snowman-kitetsu.md)の「KO1KEYZ」節。下の「複製して使う」フローは旧方式。**
+
 chomoand-1.com(コイキーズブログ)のアイキャッチは、トモキがCanvaの「Webinar/Keynote Presentation」テンプレで作ったデザインで全記事統一されている。マツが記事を書くときも**同じ見た目**にする必要がある(2026-07-15)。
 
 **chomoand.com(恋愛リアリティ番組の出演者wiki)も2026-07-16からCanva MCPを使う。** ただしKO1KEYZとは別系統の独自マスターデザイン。手順は[docs/canva-mcp-chomoand.md](canva-mcp-chomoand.md)を参照。
