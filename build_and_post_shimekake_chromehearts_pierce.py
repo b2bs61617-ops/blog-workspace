@@ -1,28 +1,32 @@
 # -*- coding: utf-8 -*-
-# 七五三掛龍也のピアス=クロムハーツ タイニーE CHプラスドロップ 22K(インスタストーリー 2026年11月上旬)。chomoand-4.blog下書き、【未】付き
+# 七五三掛龍也のピアス=クロムハーツ タイニーE CHプラスドロップ 22K(インスタストーリー 2026年11月3日)。chomoand-4.blog下書き、【未】付き
 import sys
 import _jb_fc_lib as L
-from _jb_fc_lib import p, h2, h3, minibox, whatbox, table, titlebox, linkbox, checklist, marker, a, inner
+from _jb_fc_lib import p, h2, h3, minibox, whatbox, table, titlebox, linkbox, checklist, marker, a, inner, figure
 
 L.set_colors("#f3c6d9", "#e7a1c8", "#fdf1f6", "#fbe3ed")
 M = L.load_media(L.ROOT / "_shimekake_chromehearts_pierce_media.json", [
     ("eyecatch", "shimekake_chromehearts_pierce_eyecatch_canva.jpg"),
+    ("story", "shimekake_chromehearts_story_x.jpg"),
+    ("zoom", "shimekake_chromehearts_story_x_zoom.jpg"),
 ])
 
 IG_URL = "https://www.instagram.com/ryuya_shimekake_tj/"
 BS_URL = "https://www.black-symphony.com/SHOP/tiny-ch-plus-drop-earring-22k-d.html"
 RAKUTEN_URL = "https://item.rakuten.co.jp/gsc-rinkan/15165-260808-0416/"
 RAKUMA_URL = "https://item.fril.jp/61c5ba812bee1cdcc8550cf5ce1ea71b"
+X_URL = "https://x.com/pretty_shimepi/status/2117609965930303518"
 
 title = "【未】七五三掛龍也のピアスはどこの？クロムハーツのタイニーCHプラスで値段も調査！"
 b = []
 
 b.append(p([
-    "Travis Japanの七五三掛龍也さんが、2026年11月上旬に自身のInstagramのストーリーズに「今日の〆」という手書きの文字を添えて、マスク姿の自撮りを投稿しました。",
+    "Travis Japanの七五三掛龍也さんが、2026年11月3日、自身のInstagramのストーリーズに「今日の〆」という手書きの文字を添えて、マスク姿の自撮りを投稿しました。",
     "黒のトップスに白いマスク、頭にはサングラスをのせたラフな姿で、ピースした指のすぐそばの耳元には、小さなゴールドのピアスが揺れていました。",
     f"調査の結果、このピアスは{marker('クロムハーツ(Chrome Hearts)の「タイニーE CHプラスドロップ」の22Kゴールド')}とみられることが分かりました。",
     "この記事では、ピアスのデザインの特徴や素材、新品と中古の値段、今から手に入るかどうかをまとめます。",
 ]))
+b.append(figure(M["story"], "七五三掛龍也のインスタストーリーズ(クロムハーツのピアス)", f"出典:{X_URL}"))
 b.append(whatbox([
     "七五三掛龍也さんのピアスのブランドと商品名",
     "ピアスの素材・サイズ・デザインの特徴",
@@ -44,9 +48,11 @@ b.append(p([
     "十字は先端がとがった花のような形で、クロムハーツの代表的なモチーフ「CHプラス」と同じシルエットです。",
     "ボールのスタッドからCHプラスが揺れるこの作りは、クロムハーツの「タイニーE CHプラスドロップ」の特徴と一致します。",
 ]))
+b.append(figure(M["zoom"], "七五三掛龍也の耳元のクロムハーツのピアス(拡大)", f"出典:{X_URL}(耳元を拡大)"))
 b.append(p([
     "色は赤みのある濃いゴールドで、クロムハーツの22Kゴールドの色味ともよく合っていました。",
-    "写真が小さく、細かい彫りまでは確認できないため、まったく同じ商品と断定はできませんが、形・色・サイズ感から同じモデルの可能性が高いと考えられます。",
+    "耳元を拡大すると、十字の4方向に広がる花びらのような彫りまで見えて、CHプラスのモチーフだと分かります。",
+    "本人がブランドを明かしたわけではないため断定はできませんが、形・色・サイズ感から同じモデルの可能性が高いと考えられます。",
 ]))
 
 b.append(h3("2020年ごろから愛用しているピアスとみられる"))
@@ -80,7 +86,7 @@ b.append(p([
     "ダイヤ入りは、表と裏に1粒ずつダイヤモンドがセットされていて、揺れるたびにきらっと光るのが特徴です。",
 ]))
 b.append(p([
-    "七五三掛さんのストーリーズの写真では、モチーフの中心に白い光は見えず、全体が金色に見えました。",
+    "七五三掛さんのストーリーズの写真を拡大すると、モチーフの中心に白く光るダイヤは見えず、全体が金色でした。",
     f"2020年ごろに着けていたとみられるピアスも中心が金のボールのタイプだったため、{marker('七五三掛さんのピアスはダイヤなしのタイプ')}の可能性が高そうです。",
 ]))
 b.append(table(
@@ -168,5 +174,8 @@ b.append(linkbox("あわせて読みたい", [
     inner(970, "【御殿場】七五三掛龍也が買ったボーダーTはどこの？マルニと判明！"),
 ]))
 
-L.publish_draft(title, b, "shimekake-ryuya-chrome-hearts-tiny-ch-plus-earring", [3, 8],
-                M["eyecatch"]["id"], "shimekake_chromehearts_pierce.html", "--dry" in sys.argv)
+if "--update" in sys.argv:
+    L.update_draft(2204, b, "shimekake_chromehearts_pierce.html")
+else:
+    L.publish_draft(title, b, "shimekake-ryuya-chrome-hearts-tiny-ch-plus-earring", [3, 8],
+                    M["eyecatch"]["id"], "shimekake_chromehearts_pierce.html", "--dry" in sys.argv)
