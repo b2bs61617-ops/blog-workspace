@@ -7,18 +7,7 @@
       4,
       13
     ],
-    "images": {
-      "x": {
-        "file": "images/snowman_miyadate_tank_louis_1105_x.jpg",
-        "src": "https://x.com/bot31676934/status/2026624959670534239",
-        "alt": "宮舘涼太のNIRVANA Tシャツの私服とカルティエ タンク ルイ カルティエの比較画像"
-      },
-      "wrist": {
-        "file": "images/snowman_miyadate_tank_louis_1105_wrist.jpg",
-        "src": "https://x.com/bot31676934/status/2026624959670534239",
-        "alt": "宮舘涼太の手首のゴールドのカルティエの時計"
-      }
-    },
+    "images": {},
     "file": "articles/snowman_miyadate_tank_louis_1105.html"
   }
 ]
