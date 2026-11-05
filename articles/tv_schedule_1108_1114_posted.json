@@ -1,0 +1,44 @@
+{
+ "travis": {
+  "id": 2348,
+  "status": "draft",
+  "link": "https://chomoand-4.blog/?p=2348",
+  "media": 2347
+ },
+ "ktl": {
+  "id": 582,
+  "status": "draft",
+  "link": "https://chomoand-5.site/?p=582",
+  "media": 581
+ },
+ "snowman": {
+  "id": 523,
+  "status": "draft",
+  "link": "https://chomoand-2.com/?p=523",
+  "media": 522
+ },
+ "sixtones": {
+  "id": 1292,
+  "status": "draft",
+  "link": "https://chomoand-0.com/?p=1292",
+  "media": 1291
+ },
+ "ko1keyz_ja": {
+  "id": 15407,
+  "status": "draft",
+  "link": "https://chomoand-1.com/?p=15407",
+  "media": 15405
+ },
+ "ko1keyz_ko": {
+  "id": 15408,
+  "status": "draft",
+  "link": "https://chomoand-1.com/ko/?p=15408",
+  "media": 15406
+ },
+ "ko1keyz_en": {
+  "id": 15409,
+  "status": "draft",
+  "link": "https://chomoand-1.com/en/?p=15409",
+  "media": 15405
+ }
+}
