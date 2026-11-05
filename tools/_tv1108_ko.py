@@ -5,6 +5,8 @@ from _build_tv_schedule_1108_1114 import *
 
 T = Theme("#8a8378", "#f7f6f4", "#ddd9d3")
 M = '<span class="swl-marker mark_yellow">'
+Y = {"bg": "#fdeaf2"}  # YOSHIKI = pink
+G = {"bg": "#f7f6f4"}  # group / related
 
 # ---------- JP ----------
 b = ""
@@ -18,12 +20,13 @@ b += T.toc(["11/8〜11/14のテレビ・配信スケジュール早見表", "YOS
             "MV放送とYouTubeの更新日", "LAPOSTA 2027のFC先行の締め切り", "11月後半の出演予定"])
 b += h2("KO1KEYZのテレビ・配信スケジュール早見表(11/8〜11/14)")
 b += p("まずは1週間の予定を一覧にしました。",
-       "太字がメンバーの出演番組やイベントで、それ以外はMV放送や配信など関連する予定です。")
+       "太字がメンバーの出演番組やイベントで、それ以外はMV放送や配信など関連する予定です。",
+       "YOSHIKIの個人出演の行は、メンバーカラーのピンクにしています。")
 b += T.table(["日時", "番組・予定"], [
-    ["11/8(日)", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL(2日目)", True],
+    ["11/8(日)", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL(2日目)", True, G],
     ["11/8(日)22:00〜23:00", "エムオン!「あなたの推し曲は!? エムオン!リクエストアワー」(MV)"],
-    ["11/10(火)20:00〜21:00", "日本テレビ「踊る！さんま御殿!!」(YOSHIKI)", True],
-    ["11/12(木)9:45〜11:15", "スカチャン1(KNTV)「ショー！K-POPの中心」#966(字幕・再放送)", True],
+    ["11/10(火)20:00〜21:00", "日本テレビ「踊る！さんま御殿!!」(YOSHIKI)", True, Y],
+    ["11/12(木)9:45〜11:15", "スカチャン1(KNTV)「ショー！K-POPの中心」#966(字幕・再放送)", True, G],
     ["11/12(木)21:00〜", "公式YouTube「KO1! KO1! KO1KEYZ!」(毎週木曜更新)"],
     ["11/15(日)23:59", "「LAPOSTA 2027」FC会員先行の受付締め切り"],
 ])
@@ -104,10 +107,10 @@ k += p("데뷔 6주 차에 들어선 KO1KEYZ(코이키즈).",
        "11/8(일)에는 서울에서 '2026 KO1KEYZ 1ST FAN MEETING IN SEOUL' 둘째 날 공연이 있고, 11/12(목)에는 CS 채널 KNTV에서 '쇼! 음악중심' 일본어 자막판이 재방송됩니다.")
 k += p("이 글에서는 출연 프로그램 일정과 함께 MV 방송, YouTube 업데이트일, LAPOSTA 2027 FC 선행 마감일까지 날짜순으로 정리했습니다.", NOTE_KR)
 k += T.table(["일시(일본 시간)", "프로그램·일정"], [
-    ["11/8(일)", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL(2일 차)", True],
+    ["11/8(일)", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL(2일 차)", True, G],
     ["11/8(일) 22:00~23:00", "M-ON! '엠온! 리퀘스트 아워'(MV)"],
-    ["11/10(화) 20:00~21:00", "니혼TV '오도루! 산마 고텐!!'(YOSHIKI)", True],
-    ["11/12(목) 9:45~11:15", "스카챤1(KNTV) '쇼! 음악중심' #966(일본어 자막·재방송)", True],
+    ["11/10(화) 20:00~21:00", "니혼TV '오도루! 산마 고텐!!'(YOSHIKI)", True, Y],
+    ["11/12(목) 9:45~11:15", "스카챤1(KNTV) '쇼! 음악중심' #966(일본어 자막·재방송)", True, G],
     ["11/12(목) 21:00~", "공식 YouTube 'KO1! KO1! KO1KEYZ!'(매주 목요일 업데이트)"],
     ["11/15(일) 23:59", "'LAPOSTA 2027' FC 회원 선행 접수 마감"],
 ])
@@ -157,10 +160,10 @@ e += p("KO1KEYZ are now in their sixth week since debut.",
        "The week opens with day two of the \"2026 KO1KEYZ 1ST FAN MEETING IN SEOUL\" on Sunday, Nov 8, and KNTV re-airs the subtitled Show! Music Core episode featuring KO1KEYZ on Thursday, Nov 12.")
 e += p("This post lists the TV appearances along with MV airplay, the YouTube update day and the LAPOSTA 2027 fan club ticket deadline in date order.", NOTE_EN)
 e += T.table(["Date / time (JST)", "Program / event"], [
-    ["Sun 11/8", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL (Day 2)", True],
+    ["Sun 11/8", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL (Day 2)", True, G],
     ["Sun 11/8 22:00-23:00", "M-ON! \"M-ON! Request Hour\" (MV)"],
-    ["Tue 11/10 20:00-21:00", "Nippon TV \"Odoru! Sanma Goten!!\" (YOSHIKI)", True],
-    ["Thu 11/12 9:45-11:15", "Sky Channel 1 (KNTV) \"Show! Music Core\" #966 (subtitled rerun)", True],
+    ["Tue 11/10 20:00-21:00", "Nippon TV \"Odoru! Sanma Goten!!\" (YOSHIKI)", True, Y],
+    ["Thu 11/12 9:45-11:15", "Sky Channel 1 (KNTV) \"Show! Music Core\" #966 (subtitled rerun)", True, G],
     ["Thu 11/12 21:00-", "Official YouTube \"KO1! KO1! KO1KEYZ!\" (weekly Thursday update)"],
     ["Sun 11/15 23:59", "LAPOSTA 2027 fan club presale closes"],
 ])

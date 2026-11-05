@@ -68,6 +68,16 @@ class Theme:
                     f'<p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">{title}</p>\n<ul style="margin:0;padding-left:1.3em;">\n{lis}</ul>\n</div>')
 
 
+PASTEL = {"赤": "#fde8e8", "オレンジ": "#ffeedd", "黄": "#fff6d1", "黄緑": "#eef7dc", "緑": "#e6f4e8", "水色": "#e3f4f9",
+          "青": "#e5effc", "紺": "#e3e7f3", "紫": "#efe8f8", "ピンク": "#fdeaf2", "白": "#eef0f3", "黒": "#e6e6e6", "茶": "#f3ebe3"}
+
+
+def mc(colormap, *names):
+    """Row background from member colors: one member -> pastel, several -> horizontal gradient."""
+    cs = [PASTEL[colormap[n]] for n in names]
+    return {"bg": cs[0] if len(cs) == 1 else "linear-gradient(90deg," + ",".join(cs) + ")"}
+
+
 def save(name, body):
     with open(os.path.join(REPO, "articles", name), "w", encoding="utf-8") as f:
         f.write(body)
