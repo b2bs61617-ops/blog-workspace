@@ -15,7 +15,7 @@ EYECATCH = IMG_DIR / "tj_sansei_call_eyecatch_canva.jpg"
 STATE = IMG_DIR / "_state.json"
 DRY = "--dry" in sys.argv
 
-TITLE = "トラジャの「さんせーい」とは？円陣の掛け声がファンとのコールになった経緯！"
+TITLE = "トラジャの「さんせーい」はいつから？円陣の掛け声の由来と経緯！"
 SLUG = "travis-japan-sansei-call-origin"
 
 X_DIR = ROOT / "tools" / "Xiy"
