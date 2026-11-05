@@ -310,6 +310,9 @@ def build():
         "パナスタは万博記念公園駅から徒歩約15分のサッカー専用スタジアム",
         "7人そろってのハーフタイムライブは開幕戦・讃岐に続いて3回目",
     ]))
+    b.append(p([
+        "また宇佐美選手と元太の絡みが実現するのか！？見られるのか！？楽しみですね！",
+    ]))
     lis = "\n".join(f'<li style="margin:0 0 6px 0;"><a href="{SITE}{s}">{t}</a></li>' for t, s in RELATED)
     b.append(wphtml(f'''<div style="border:1px solid {BORDER};border-left:4px solid {ACC};border-radius:4px;margin:0 0 16px 0;padding:14px 18px;background:{BG};">
 <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">あわせて読みたいJリーグ関連の記事</p>
