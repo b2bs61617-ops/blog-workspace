@@ -280,7 +280,7 @@ def build(logo=None, miyazaki=None, frames=None):
     b.append(p([
         "2027年のツアーでも、どんな「〇〇しちゃってもいいですか！」が聞けるのか楽しみですね！",
         "我が家もチケットが当たれば、親子で参戦する予定です！",
-        "ファンのみんなが、トラジャと楽しい時間を過ごせますように！",
+        "トラジャ担のみんなが、トラジャと楽しい時間を過ごせますように！",
     ]))
     b.append(related([KOROPEN, PRODUCE, SCHEDULE, FC]))
     return "\n\n".join(b)
