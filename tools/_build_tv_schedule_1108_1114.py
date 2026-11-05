@@ -46,11 +46,14 @@ class Theme:
         th = "".join(f"<th>{x}</th>" for x in head)
         trs = []
         for r in rows:
+            r = list(r)
+            bg = r.pop() if r and isinstance(r[-1], dict) else None  # {"bg": "#xxxxxx"}
             bold = r[-1] is True
             cells = r[:-1] if bold else r
             if bold:
                 cells = [f"<strong>{c}</strong>" for c in cells]
-            trs.append("<tr>" + "".join(f"<td>{c}</td>" for c in cells) + "</tr>")
+            st = f' style="background:{bg["bg"]};"' if bg else ""
+            trs.append("<tr>" + "".join(f"<td{st}>{c}</td>" for c in cells) + "</tr>")
         return html(f'<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr>{th}</tr></thead><tbody>{"".join(trs)}</tbody></table></figure>')
 
     def summary(self, items):
