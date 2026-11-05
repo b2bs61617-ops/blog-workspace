@@ -311,8 +311,12 @@ def build():
         "7人そろってのハーフタイムライブは開幕戦・讃岐に続いて3回目",
     ]))
     b.append(p([
-        "また宇佐美選手と元太の絡みが実現するのか！？見られるのか！？楽しみですね！",
+        "そして、ガンバ大阪といえば宇佐美貴史選手です。",
+        f"松田元太さんは『けるとめる』で、{mark('子どものころから宇佐美選手に憧れて背番号7をつけていた')}と明かしています。",
+        "憧れの宇佐美選手のホーム・パナスタのピッチでパフォーマンスするので、宇佐美選手と元太さんの絡みがあるといいですね！",
+        "2人のツーショットが見られるのか、今から楽しみです！",
     ]))
+    b.append(src("https://www.oricon.co.jp/news/2413021/full/", "ORICON NEWS(『けるとめる』放送回の記事)"))
     lis = "\n".join(f'<li style="margin:0 0 6px 0;"><a href="{SITE}{s}">{t}</a></li>' for t, s in RELATED)
     b.append(wphtml(f'''<div style="border:1px solid {BORDER};border-left:4px solid {ACC};border-radius:4px;margin:0 0 16px 0;padding:14px 18px;background:{BG};">
 <p style="font-weight:bold;font-size:1.05em;margin:0 0 8px 0;">あわせて読みたいJリーグ関連の記事</p>
