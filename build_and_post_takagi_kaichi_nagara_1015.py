@@ -6,6 +6,9 @@
   カイチ: 所属 長良マネジメント/愛知県/2004-02-13/184cm/趣味 アニメ、楽器/特技 自分の良いところをいっぱい言える所/IG kaichiliu.my_shinsekai_
 - 髙城本人IG https://www.instagram.com/p/Def9P1Zs21O/ (2026-10-15 12:09 JST)「長良プロダクションに所属することになりました」
   カイチ本人のIG(最終投稿6/13)・X(@1ka_liu)には10/15時点で報告の投稿なし
+  →10/16 10:32 JST、カイチ本人IG https://www.instagram.com/p/DeiVvAlS0in/ (nagara.sparkleclubとの共同投稿)で「ご報告」
+    「長良プロダクション様と契約」/アイドルという職業に燃え尽き、少し気持ちが離れていた/長良の熱意でもう一度頑張ろうと思えた
+    (10/16リライト: 公開済みなのでタイトル・スラッグは変えず本文のみ更新。`--update`)
 - 長良公式ニュース https://www.nagarapro.co.jp/31804/ (10/15 12:00)「NAGARA SPARKLE CLUB」オープン
   対象: 田村継・伊勢之佑人・新田見直登・髙城暖人・リュウ・カイチ・黒木歩夢・鈴木恒守・松永幸士(FCブログ一覧には渡邊景日も)
 - 長良グループ公式X https://twitter.com/nagaragroup/status/2110566703012921793 (10/15 12:01 JST)
@@ -24,6 +27,7 @@ from build_and_post_uno_kaimu_sma_1010 import (ROOT, h2, h3, p, mark, html, mini
                                                 leftbox, linkbox, summarybox, make_eyecatch, post_draft)
 
 HARUTO_IG_POST = "https://www.instagram.com/p/Def9P1Zs21O/"
+KAICHI_IG_POST = "https://www.instagram.com/p/DeiVvAlS0in/"
 HARUTO_IG = "https://www.instagram.com/haruto__1026/"
 KAICHI_IG = "https://www.instagram.com/kaichiliu.my_shinsekai_/"
 NAGARA_X = "https://twitter.com/nagaragroup/status/2110566703012921793"
@@ -37,10 +41,10 @@ def a(url, text):
     return f'<a href="{url}" target="_blank" rel="noopener">{text}</a>'
 
 
-def ig_embed():
-    return html(f'<blockquote class="instagram-media" data-instgrm-permalink="{HARUTO_IG_POST}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" '
+def ig_embed(post=HARUTO_IG_POST):
+    return html(f'<blockquote class="instagram-media" data-instgrm-permalink="{post}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" '
                 'style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:1px auto;max-width:540px;min-width:326px;padding:0;width:calc(100% - 2px);">'
-                f'<a href="{HARUTO_IG_POST}" target="_blank" rel="noopener">{HARUTO_IG_POST}</a></blockquote>\n'
+                f'<a href="{post}" target="_blank" rel="noopener">{post}</a></blockquote>\n'
                 '<script async src="https://www.instagram.com/embed.js"></script>')
 
 
@@ -74,11 +78,12 @@ JP_CONTENT = "\n\n".join([
     p("『PRODUCE 101 JAPAN 新世界(日プ新世界・日プ4)』に出演していた髙城暖人(たかぎ・はると)さんとリュウ・カイチさんの所属事務所が決まりました。<br>\n"
       f"2026年10月15日、{mark('2人がそろって長良グループに所属したこと', True)}が、長良プロダクションの公式サイトで発表されています。<br>\n"
       "同じ日には、長良グループの若手俳優・アーティストによる公式ファンクラブ「NAGARA SPARKLE CLUB」もオープンし、2人もメンバーに名を連ねました。<br>\n"
+      "翌16日には、カイチさん本人もInstagramで報告し、アイドルという仕事への正直な気持ちをつづっています。<br>\n"
       "この記事では、長良グループがどんな事務所なのか、2人のプロフィールと日プでの歩み、ファンクラブの料金や入会方法をまとめます。"),
     infobox("髙城暖人さん・リュウ・カイチさんの所属の基本情報", [
         ("発表日", "2026年10月15日"),
         ("所属先", "長良グループ(公式プロフィールの所属は「長良マネジメント」)"),
-        ("発表した場所", "長良プロダクション公式サイト、髙城さん本人のInstagram"),
+        ("発表した場所", "長良プロダクション公式サイト、2人それぞれのInstagram(髙城さん10月15日・カイチさん10月16日)"),
         ("ファンクラブ", "NAGARA SPARKLE CLUB(10月15日オープン)"),
         ("会費", "月額330円・550円の2コース(税込、入会金なし)"),
         ("日プ新世界での最終順位", "髙城さん70位・カイチさん34位"),
@@ -88,6 +93,7 @@ JP_CONTENT = "\n\n".join([
         "長良グループはどんな事務所？",
         "NAGARA SPARKLE CLUBの料金と特典",
         "2人のプロフィール",
+        "カイチさんが本人のInstagramでつづった気持ち",
         "日プ新世界での成績と2人の意外な接点",
     ]),
 
@@ -97,13 +103,25 @@ JP_CONTENT = "\n\n".join([
       f"どちらのページにも{mark('所属「長良マネジメント」')}と書かれており、生年月日や身長、趣味・特技とあわせて、本人のInstagramへのリンクも載っています。"),
     p("髙城さんは同じ日のお昼に、自身のInstagramで「この度、長良プロダクションに所属することになりました」と報告しました。<br>\n"
       "長良プロダクションは長良グループの中心となる会社で、公式サイトに書かれている「長良マネジメント」もグループの会社です。<br>\n"
-      "本人の報告と公式サイトで表記は少し違いますが、どちらも長良グループへの所属を指していると考えてよさそうです。"),
+      "2人とも本人の報告では「長良プロダクション」と書いていて、公式サイトの表記とは少し違いますが、どちらも長良グループへの所属を指していると考えてよさそうです。"),
     ig_embed(),
     p("投稿では「オーディションを通して、たくさんの方と出会い、温かい応援をいただけたことは、僕にとってかけがえのないものです」と、日プ新世界のころから応援してくれたファンへの感謝をつづっています。<br>\n"
       "「いつか直接お会いして、感謝の気持ちを伝えられる日を楽しみにしています」という言葉もあり、ファンと会える場をつくりたいという気持ちが伝わってきます。"),
-    p("一方のカイチさんは、10月15日時点では本人のInstagramやXに報告の投稿は出ていません。<br>\n"
-      f"ただ、公式サイトのプロフィール({a(KAICHI_PAGE, 'リュウ・カイチ｜長良プロダクション')})が公開されているため、所属したことは確かです。<br>\n"
-      "番組の放送が終わってから約4か月、日プのあとの進路が気になっていたファンにとっては待ちに待った知らせになりました。"),
+    h3("カイチも10月16日に本人のInstagramで報告"),
+    p("カイチさんは、発表の当日には本人のInstagramやXで何も発信していませんでした。<br>\n"
+      f"そして翌日の{mark('10月16日の午前10時半ごろ、本人のInstagramに「ご報告」の投稿')}が上がりました。<br>\n"
+      "Instagramの更新は6月13日以来で、ファンクラブのアカウント(nagara.sparkleclub)との共同投稿になっています。"),
+    ig_embed(KAICHI_IG_POST),
+    p("投稿では「この度私は長良プロダクション様と契約させていただくことになりました」と所属を報告しています。<br>\n"
+      "目を引くのは、そのあとに続く飾らない言葉です。<br>\n"
+      f"日プという大きな挑戦を終えたあと、{mark('アイドルという仕事に対して燃え尽きたような気持ちになり、少し気持ちが離れていた')}と打ち明けました。<br>\n"
+      "今も、あのころと同じ気持ちで芸能界に挑めるかは正直わからない、とまで書いています。"),
+    p("それでも、長良プロダクションの熱意に触れて「もう一度頑張ってみてもいいかな」と思えたそうです。<br>\n"
+      "少しずつあのころの気持ちを取り戻し、心の底からアイドルという職業を選んでよかったと思えるように頑張りたい、と前を向いた言葉で締めくくっています。<br>\n"
+      "「皆さんに嘘をつきたくない」という理由で、迷いも含めて自分の言葉で伝えたところに、カイチさんらしい誠実さが表れています。"),
+    p("日プ新世界のグループバトルでは、リーダーとして「僕たちはアイドルを仕事にしようとしてるわけだから」とメンバーを引っ張っていたカイチさん。<br>\n"
+      "その「アイドルという仕事」に、もう一度向き合うと決めたことになります。<br>\n"
+      "番組の放送が終わってから約4か月、進路が気になっていたファンにとっては、本人の口から聞けた待ちに待った知らせになりました。"),
 
     h2("長良グループはどんな事務所？"),
     minibox([("創業：", "1963年(長良じゅんさんが立ち上げた長良事務所が始まり)"), ("得意分野：", "演歌・歌謡曲の歌手、俳優、タレント")]),
@@ -195,7 +213,8 @@ JP_CONTENT = "\n\n".join([
     ]),
     p("結果は1組の勝利で、カイチさんがリーダーとしてチームを引っ張りました。<br>\n"
       "カイチさんは練習中に「僕たちはアイドルを仕事にしようとしてるわけだから」とメンバーを鼓舞する場面もあり、まとめ役としての姿が印象に残っています。<br>\n"
-      "当時はライバルだった2人が、番組から約4か月後に同じ事務所に入ったことになります。"),
+      "当時はライバルだった2人が、番組から約4か月後に同じ事務所に入ったことになります。<br>\n"
+      "このとき口にした「アイドルを仕事に」という言葉は、10月16日の本人の報告とも重なります。"),
     h3("その後の2人の歩み"),
     p("髙城さんは第1回順位発表式で70位となり、上位50人に入れず脱落しました。<br>\n"
       "カイチさんは第2回順位発表式を31位で通過し、ポジションバトルでは優里の「ベテルギウス」、コンセプトバトルでは「DREAMER」に参加しました。<br>\n"
@@ -205,21 +224,24 @@ JP_CONTENT = "\n\n".join([
       "番組を終えた練習生たちが、それぞれの新しい場所で活動を始めています(<a href=\"https://chomoand-1.com/kaimu-uno-sony-music-artists-14519\">宇野海夢さんの所属の記事</a>)。"),
 
     h2("髙城暖人とリュウ・カイチの今後の活動は？"),
-    minibox([("決まっている活動：", "ファンクラブのブログ・生配信(2026年10月15日時点)"), ("チェック先：", "長良プロダクション公式サイト、各自のInstagram")]),
-    p("2026年10月15日時点では、2人のテレビや舞台などの出演予定はまだ発表されていません。<br>\n"
-      "長良グループのファンクラブは「若手俳優・アーティスト」向けとされているので、俳優とアーティストのどちらの道に進むのかも注目です。"),
+    minibox([("決まっている活動：", "ファンクラブのブログ・生配信(2026年10月16日時点)"), ("チェック先：", "長良プロダクション公式サイト、各自のInstagram")]),
+    p("2026年10月16日時点では、2人のテレビや舞台などの出演予定はまだ発表されていません。<br>\n"
+      "長良グループのファンクラブは「若手俳優・アーティスト」向けとされているので、俳優とアーティストのどちらの道に進むのかも注目です。<br>\n"
+      "カイチさんは本人の報告で「アイドル」という言葉をくり返し使っていて、アーティストとしての活動を思い描いていることがうかがえます。"),
     p(f"最新情報は、長良プロダクションの公式サイト({a(HARUTO_PAGE, '髙城暖人')}・{a(KAICHI_PAGE, 'リュウ・カイチ')})のお知らせ欄や、本人のInstagramで発表されるとみられます。<br>\n"
       "ファンクラブの生配信で、2人の口から今後の目標が語られる日も近そうです。"),
 
     h2("まとめ"),
     summarybox([
         "髙城暖人さんとリュウ・カイチさんは、2026年10月15日に長良グループ(長良マネジメント)への所属が発表された",
+        "カイチさんは10月16日に本人のInstagramで報告。アイドルの仕事に燃え尽きかけていたが、長良の熱意でもう一度頑張ると決めた",
         "長良グループは1963年創業の老舗で、水森かおりさんや辰巳ゆうとさんなどが所属している",
         "同じ日に公式ファンクラブ「NAGARA SPARKLE CLUB」がオープン。月額330円と550円の2コースで、入会金なし",
         "髙城さんは東京都出身の22歳、カイチさんは愛知県出身の22歳。日プではグループバトル「Love seeker」でリーダー同士として対決した",
         "テレビや舞台などの活動予定はまだ発表されていない",
     ]),
     p("練習生候補から投票で這い上がり、グループバトルでは対決した2人が、同じ事務所で新しいスタートを切りました。<br>\n"
+      "迷いも正直に打ち明けたカイチさんが、もう一度アイドルを楽しめる日が来るのを待ちたいですね。<br>\n"
       "番組のころから応援していた方も、これから知ったという方も、2人のこれからをぜひ一緒に見守っていきましょう！"),
     linkbox("髙城暖人・リュウ・カイチ・日プ新世界の関連記事", JP_REL),
 ])
@@ -238,7 +260,7 @@ KR_CONTENT = "\n\n".join([
     infobox("소속 발표 기본 정보", [
         ("발표일", "2026년 10월 15일"),
         ("소속", "나가라 그룹(공식 프로필 표기는 '나가라 매니지먼트')"),
-        ("발표 채널", "나가라 프로덕션 공식 사이트, 타카기 하루토 본인 Instagram"),
+        ("발표 채널", "나가라 프로덕션 공식 사이트, 두 사람 각자의 Instagram(하루토 10월 15일・카이치 10월 16일)"),
         ("팬클럽", "NAGARA SPARKLE CLUB(10월 15일 오픈)"),
         ("회비", "월 330엔・550엔 2개 코스(세금 포함, 입회비 없음)"),
         ("닛프 신세계 최종 순위", "타카기 70위・카이치 34위"),
@@ -249,7 +271,14 @@ KR_CONTENT = "\n\n".join([
       "타카기 하루토는 같은 날 낮 Instagram에 '나가라 프로덕션에 소속하게 되었습니다'라고 직접 알렸습니다."),
     ig_embed(),
     p("그는 '오디션을 통해 많은 분들을 만나고 따뜻한 응원을 받은 것은 저에게 둘도 없는 소중한 것'이라며 팬들에게 감사 인사를 전했습니다.<br>\n"
-      "류 카이치는 10월 15일 기준 본인 SNS에 별도 발표를 올리지 않았지만, 공식 사이트에 프로필이 공개되어 소속이 확인되었습니다."),
+      "류 카이치는 발표 당일에는 본인 SNS에 아무것도 올리지 않았습니다."),
+    h3("카이치도 10월 16일 Instagram으로 직접 보고"),
+    p(f"다음 날인 {mark('10월 16일 오전 10시 반쯤, 카이치가 Instagram에 보고 게시물')}을 올렸습니다.<br>\n"
+      "6월 13일 이후 첫 업데이트로, 팬클럽 계정(nagara.sparkleclub)과의 공동 게시물입니다."),
+    ig_embed(KAICHI_IG_POST),
+    p("그는 '나가라 프로덕션과 계약하게 되었다'고 알리면서, 큰 도전을 마친 뒤 아이돌이라는 직업에 대해 다 타버린 듯한 기분이 들어 마음이 조금 멀어져 있었다고 솔직하게 털어놓았습니다.<br>\n"
+      "그럼에도 나가라 측의 열의 덕분에 '한 번 더 해봐도 좋겠다'고 생각하게 되었고, 그때의 마음을 조금씩 되찾아 아이돌을 선택하길 잘했다고 진심으로 느낄 수 있도록 노력하겠다고 전했습니다.<br>\n"
+      "'여러분에게 거짓말을 하고 싶지 않다'며 망설임까지 그대로 전한 점에서 카이치다운 진솔함이 느껴집니다."),
     h2("나가라 그룹은 어떤 회사?"),
     minibox([("창업: ", "1963년(나가라 준이 세운 나가라 사무소에서 시작)"), ("강점: ", "엔카・가요 가수, 배우, 탤런트")]),
     p("나가라 그룹은 60년 넘는 역사를 가진 일본의 연예 기획사로, 엔카・가요에 강한 회사로 알려져 있습니다.<br>\n"
@@ -302,6 +331,7 @@ KR_CONTENT = "\n\n".join([
     h2("정리"),
     summarybox([
         "타카기 하루토와 류 카이치는 2026년 10월 15일 나가라 그룹 소속이 발표되었다",
+        "카이치는 10월 16일 Instagram으로 직접 보고. 아이돌에 지쳐 있었지만 나가라의 열의로 다시 도전하기로 했다",
         "같은 날 공식 팬클럽 'NAGARA SPARKLE CLUB'이 오픈. 월 330엔・550엔, 입회비 없음",
         "닛프에서는 그룹 배틀 'Love seeker'에서 리더끼리 맞대결했다",
         "TV・무대 등 활동 일정은 아직 발표되지 않았다",
@@ -324,7 +354,7 @@ EN_CONTENT = "\n\n".join([
     infobox("Announcement at a glance", [
         ("Date", "October 15, 2026"),
         ("Agency", "Nagara Group (listed as \"Nagara Management\" on their profiles)"),
-        ("Where", "Nagara Production's website and Haruto's Instagram"),
+        ("Where", "Nagara Production's website and both members' Instagram (Haruto on Oct 15, Kaichi on Oct 16)"),
         ("Fan club", "NAGARA SPARKLE CLUB (opened October 15)"),
         ("Fee", "330 or 550 yen per month (tax incl., no joining fee)"),
         ("Final rank on the show", "Haruto 70th, Kaichi 34th"),
@@ -335,7 +365,15 @@ EN_CONTENT = "\n\n".join([
       "Around noon, Haruto shared the news himself on Instagram: \"I have joined Nagara Production.\""),
     ig_embed(),
     p("He thanked his fans, saying that meeting so many people and receiving warm support through the audition meant the world to him.<br>\n"
-      "As of October 15, Kaichi had not posted about it on his own social media, but his official profile page confirms the move."),
+      "Kaichi stayed quiet on social media on the day of the announcement."),
+    h3("Kaichi shares his own announcement on October 16"),
+    p(f"The next day, {mark('around 10:30 a.m. on October 16, Kaichi posted an announcement on Instagram')}.<br>\n"
+      "It was his first Instagram post since June 13, shared as a collab post with the fan club account (nagara.sparkleclub)."),
+    ig_embed(KAICHI_IG_POST),
+    p("He confirmed that he has signed with Nagara Production, then opened up about how he really felt.<br>\n"
+      "After finishing such a big challenge, he said he had felt burnt out on being an idol and had drifted away from it a little, and that he honestly is not sure he can take on the industry with the same feelings as before.<br>\n"
+      "Even so, Nagara's enthusiasm made him think he could give it another try, and he wants to slowly win back those feelings so he can truly say he is glad he chose to be an idol.<br>\n"
+      "He wrote that he did not want to lie to his fans, and sharing his doubts so openly feels very much like Kaichi."),
     h2("What is Nagara Group?"),
     minibox([("Founded: ", "1963 (as Nagara Office by Jun Nagara)"), ("Known for: ", "Enka and kayokyoku singers, actors and TV personalities")]),
     p("Nagara Group is a Japanese entertainment agency with more than 60 years of history, best known for enka and kayokyoku singers.<br>\n"
@@ -388,6 +426,7 @@ EN_CONTENT = "\n\n".join([
     h2("Summary"),
     summarybox([
         "Haruto Takagi and Liu Kaichi joined Nagara Group (announced Oct 15, 2026)",
+        "Kaichi shared his own announcement on Instagram on Oct 16, admitting he had felt burnt out but decided to try again",
         "The official fan club NAGARA SPARKLE CLUB opened the same day, at 330 or 550 yen per month with no joining fee",
         "On the show, they faced off as leaders in the \"Love seeker\" group battle",
         "No TV or stage appearances have been announced yet",
@@ -400,6 +439,22 @@ EN_SUMMARY = ("Former PRODUCE 101 JAPAN SHINSEKAI trainees Haruto Takagi and Liu
               "Here's the fee for the new fan club NAGARA SPARKLE CLUB, their profiles and their link on the show.")
 
 if __name__ == "__main__":
+    if "--update" in sys.argv:
+        # 公開済み記事のリライト: タイトル・スラッグ・ステータスは送らず本文だけ更新
+        import requests
+        env = {}
+        for line in open(ROOT / ".env", encoding="utf-8"):
+            line = line.strip()
+            if "=" in line and not line.startswith("#"):
+                k, v = line.split("=", 1)
+                env[k] = v.strip().strip('"').strip("'")
+        auth = (env["WP_KOIKEYS_USERNAME"], env["WP_KOIKEYS_APP_PASSWORD"])
+        for pid, c in [(14815, JP_CONTENT), (14817, KR_CONTENT), (14818, EN_CONTENT)]:
+            r = requests.post(f"{env['WP_KOIKEYS_URL']}/wp-json/wp/v2/posts/{pid}", auth=auth, json={"content": c})
+            r.raise_for_status()
+            print("UPDATED", pid, r.json()["status"], r.json()["modified"])
+        sys.exit()
+
     if "--dry" in sys.argv:
         import re
         for name, c in [("JP", JP_CONTENT), ("KR", KR_CONTENT), ("EN", EN_CONTENT)]:

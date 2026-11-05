@@ -12,6 +12,9 @@ HTML+Playwrightで再現する。
         --out images/ko1keyz_xxx_eyecatch.png
 
 --bottom は複数指定で複数行になる。--seed を固定すると背景の滲みが毎回同じになる。
+--lang kr を付けると韓国語版(chomoand-1.comのKR下書き)用に、テキストをハングル対応の
+極太フォント(Black Han Sans)で描画する(既定の--lang jaはMPLUSRounded1c-Black)。
+KR版記事のアイキャッチを作るときは、--main/--top/--bottomに韓国語訳を渡した上で必ず--lang krを付けること。
 """
 
 from __future__ import annotations
@@ -25,7 +28,14 @@ CANVAS_W = 1200
 CANVAS_H = 675  # 16:9(既存アイキャッチと同じ比率)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-FONT_PATH = REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf"
+FONT_PATHS = {
+    "ja": REPO_ROOT / "assets" / "fonts" / "MPLUSRounded1c-Black.ttf",
+    "kr": REPO_ROOT / "assets" / "fonts" / "BlackHanSans-Regular.ttf",
+}
+FONT_FAMILY_FALLBACKS = {
+    "ja": "'Yu Gothic', sans-serif",
+    "kr": "'Malgun Gothic', sans-serif",
+}
 
 # 背景のパステルスモーク(既存テンプレの配色。統一感のため色は固定し、位置だけ揺らす)
 SMOKE_COLORS = [
@@ -46,7 +56,9 @@ MAX_SIZE_BOTTOM = 78
 FIT_WIDTH = 1090  # テキストを収める横幅(左右に少し余白)
 
 
-def build_html(top: str, main: str, bottom_lines: list[str], seed: int | None = None) -> str:
+def build_html(
+    top: str, main: str, bottom_lines: list[str], seed: int | None = None, lang: str = "ja"
+) -> str:
     """アイキャッチのHTMLを組み立てる(副作用なし)."""
     rng = random.Random(seed)
 
@@ -72,10 +84,11 @@ def build_html(top: str, main: str, bottom_lines: list[str], seed: int | None = 
         lines = "<br>".join(html_mod.escape(line) for line in bottom_lines)
         bottom_html = f'<div class="fit bottom" data-max="{MAX_SIZE_BOTTOM}">{lines}</div>'
 
-    font_url = FONT_PATH.as_uri()
+    font_url = FONT_PATHS[lang].as_uri()
+    html_lang = "ko" if lang == "kr" else "ja"
 
     return f"""<!DOCTYPE html>
-<html lang="ja">
+<html lang="{html_lang}">
 <head>
 <meta charset="UTF-8">
 <style>
@@ -94,7 +107,7 @@ body {{ width: {CANVAS_W}px; height: {CANVAS_H}px; overflow: hidden; }}
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 24px;
-  font-family: 'KoikeyzRounded', 'Yu Gothic', sans-serif;
+  font-family: 'KoikeyzRounded', {FONT_FAMILY_FALLBACKS[lang]};
   font-weight: 900;
   color: {TEXT_COLOR};
   text-align: center;
@@ -157,9 +170,17 @@ def main() -> None:
     parser.add_argument("--bottom", action="append", default=[], help="下段(複数指定で複数行)")
     parser.add_argument("--out", required=True, help="出力PNGパス")
     parser.add_argument("--seed", type=int, default=None, help="背景の滲みを固定する乱数シード")
+    parser.add_argument(
+        "--lang",
+        choices=["ja", "kr"],
+        default="ja",
+        help="ja(既定)=MPLUSRounded1c-Black / kr=Black Han Sans(chomoand-1.comのKR版記事用)",
+    )
     args = parser.parse_args()
 
-    path = render(build_html(args.top, args.main, args.bottom, args.seed), Path(args.out))
+    path = render(
+        build_html(args.top, args.main, args.bottom, args.seed, args.lang), Path(args.out)
+    )
     print(f"done: {path}")
 
 

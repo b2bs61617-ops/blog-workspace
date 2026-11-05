@@ -4,6 +4,7 @@ from urllib.parse import quote
 
 from build_and_post_hadakanboutachi_5 import (ROOT, SITE, AUTHOR_ID, BLUE, api, upload_media, para, h2, h3, html,
                                               mark, infobox, learnbox, minibox, table, summary, related, img)
+AUTHOR_ID = 2  # このPC(USER1)から投稿 -> momo (docs/wordpress.md)。_5はTomoki PC用で1(anco)
 
 TVER = "https://tver.jp/episodes/eposke12mg"
 TITLE = "はだかんぼうたち1話ロケ地はどこ？松田元太の靴店やホテルも！"
