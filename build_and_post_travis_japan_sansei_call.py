@@ -24,6 +24,15 @@ LOGO_URL = "https://x.com/tj__sweetO623/status/1335788454983024641"
 MIYAZAKI_SRC = X_DIR / "posts_1105_sansei_x_top" / "images" / "post_7_img_1.jpg"
 MIYAZAKI_URL = "https://x.com/MiyazakiCity_PR/status/2117079596797739475"
 
+# frames cut from official YouTube videos (rules.md: official YouTube -> cut frames directly)
+TEASER_URL = "https://www.youtube.com/watch?v=FsUisvoVOik"  # 's travelers Teaser, 0:04 / 0:08
+BONUS_URL = "https://www.youtube.com/watch?v=JIcOL8nzJOY"  # 's travelers Bonus Disc Trailer (Limited), 1:14
+FRAMES = {
+    "codeword": (IMG_DIR / "frame_teaser_codeword.jpg", "'s travelersの開演前にスクリーンに映る「Travis Japanと一緒にコンサート盛り上がっちゃってもいいですか？」", TEASER_URL),
+    "seven": (IMG_DIR / "frame_teaser_seven.jpg", "'s travelersのステージに登場したTravis Japanの7人", TEASER_URL),
+    "backstage": (IMG_DIR / "frame_bonus_backstage.jpg", "'s travelersの楽屋で円陣を組んで手を上げるTravis Japan", BONUS_URL),
+}
+
 KOROPEN = ("「コロペン」とは？ペンライトの色を変える意味を解説！", "what-is-koropen-penlight-color-change-597")
 PRODUCE = ("トラジャのアルバム・コンサートは毎年違うメンバーがプロデュース？", "is-toraja-concert-produced-by-214")
 SCHEDULE = ("トラジャ2027ツアー『Jewelry Basket』の会場・日程まとめ！", "travis-japan-2027-tour-jewelry-basket-schedule-1973")
@@ -74,7 +83,13 @@ def timeline_box():
 </div>''')
 
 
-def build(logo=None, miyazaki=None):
+def build(logo=None, miyazaki=None, frames=None):
+    frames = frames or {}
+
+    def fr(key):
+        if key in frames:
+            b.append(figure(frames[key], FRAMES[key][1], FRAMES[key][2]))
+
     b = []
     b.append(p([
         f"Travis Japanのライブで聞こえる「さんせーい！」は、{mark('もともとメンバー7人だけでやっていた円陣の掛け声')}です。",
@@ -123,6 +138,11 @@ def build(logo=None, miyazaki=None):
         f"みんなが手を重ねるとき、{mark('いちばん下の中村海人さんだけ手のひらを上に向けている')}ことです。",
         "「さんせーい！」のタイミングで、下から全員の手を押し上げるような形になっていて、「全員の手の重みを受け止めている」とファンの間では有名です。",
         "そして「さんせーい！」のあとは、メンバー全員でハグをするところまでが一連の流れになっています。",
+    ]))
+    fr("backstage")
+    b.append(p([
+        "2026年の「's travelers」ツアーのBlu-ray&DVD初回盤のツアードキュメンタリーにも、楽屋で円陣を組んで、全員で手を上げて「賛成」と叫ぶ場面が入っています。",
+        "ステージの上だけでなく、本番前の楽屋でも同じように円陣を組んでいることが分かります。",
     ]))
 
     # ---- origin ----
@@ -174,6 +194,14 @@ def build(logo=None, miyazaki=None):
     b.append(h3("2026年's travelers：「さんせーい」から始まるライブ"))
     b.append(p([
         f"2026年の「's travelers」ツアーでは、{mark('客席みんなの「さんせーい」からライブが始まる演出')}がありました。",
+        "公式のティーザー映像を見ると、開演前のスクリーンに「CODE WORD FINAL」として「Travis Japanと一緒にコンサート盛り上がっちゃってもいいですか？」と映し出され、会場全体が「さんせーい！！！」と答えています。",
+    ]))
+    fr("codeword")
+    b.append(p([
+        "この「さんせーい」を合図に、メンバー7人がステージに登場してライブが始まります。",
+    ]))
+    fr("seven")
+    b.append(p([
         "ライブの始まりと終わりの両方に「さんせーい」が入る形で、参加したファンからは「声を出してさんせーいしてから始まるコンサートが楽しすぎた」という声が多く見られます。",
         f'このツアーは松倉海斗さんがプロデュースした回です(<a href="{SITE}{PRODUCE[1]}">{PRODUCE[0]}</a>)。',
         "Blu-ray&DVDの発売時には、CDショップの告知でも「トラジャと一緒に時間旅行しちゃってもいいですかっ!?」「さんせーい」と書かれていて、お店側まで乗っかるほど定着しています。",
@@ -268,8 +296,12 @@ def main():
         state["logo"] = upload_with_sizes(LOGO_SRC, "IMAGE NATION ツアーロゴ", "Travis Japan Live tour 2021 IMAGE NATIONのツアーロゴ")
     if "miyazaki" not in state:
         state["miyazaki"] = upload_with_sizes(MIYAZAKI_SRC, "宮崎市観光案内所の黒板", "宮崎市観光案内所のトラジャ担歓迎の黒板")
+    state.setdefault("frames", {})
+    for key, (path, alt, _) in FRAMES.items():
+        if key not in state["frames"]:
+            state["frames"][key] = upload_with_sizes(path, alt, alt)
     STATE.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
-    html = build(state["logo"], state["miyazaki"])
+    html = build(state["logo"], state["miyazaki"], state["frames"])
     tmp = IMG_DIR / "_post.html"
     tmp.write_text(html, encoding="utf-8")
     subprocess.run([sys.executable, str(ROOT / "tools" / "honorific.py"), "fix", "--group", "travis", str(tmp)], check=True)
