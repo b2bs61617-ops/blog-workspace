@@ -151,7 +151,7 @@ def build(frames=None):
     ]))
 
     # ---- instagram ----
-    b.append(h2("シャボン玉を吹いたのは海斗？辰巳雄大のInstagram"))
+    b.append(h2("シャボン玉を吹いたのはまちゅ？辰巳雄大のInstagram"))
     b.append(p([
         "このシャボン玉事件、実は辰巳雄大さん本人のInstagramにも残っています。",
         "2024年11月18日、辰巳雄大さんは「元太と海斗がSHOCKに来たぞ～！」と、松松との3ショットを投稿しました。",
