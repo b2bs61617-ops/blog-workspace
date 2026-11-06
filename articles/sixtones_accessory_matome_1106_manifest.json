@@ -1,0 +1,53 @@
+[
+  {
+    "key": "accessory_matome",
+    "file": "articles/sixtones_accessory_matome_1106.html",
+    "title": "SixTONESが雑誌で着けたアクセサリーはどこの？田中樹・京本大我らのリングやネックレスのブランドと価格まとめ",
+    "slug": "sixtones-accessory-brand-matome",
+    "categories": [
+      15,
+      17,
+      18,
+      19,
+      20,
+      21
+    ],
+    "images": {
+      "spice": {
+        "file": "images/sixtones_acc_juri_spice.jpg",
+        "alt": "Spice Jewelryのbasil ring K10YG",
+        "src": "https://x.com/spicejewelry22/status/2117846708701085809"
+      },
+      "em": {
+        "file": "images/sixtones_acc_juri_em.jpg",
+        "alt": "e.m.のシルバーリング3本(2103-AR1083・2403-AR1199・2403-AR1203)",
+        "src": "https://x.com/em_grp_official/status/2117813171906118021"
+      },
+      "necklace": {
+        "file": "images/sixtones_acc_juri_necklace.jpg",
+        "alt": "MUのキューブ水晶＆淡水パールチェーンネックレス",
+        "src": "https://x.com/mu_accessory/status/2112765969458504171"
+      },
+      "mamimi": {
+        "file": "images/sixtones_acc_juri_mamimi.jpg",
+        "alt": "Mamimiのbeads ring gold",
+        "src": "https://x.com/mami__mi__/status/2103746134409662832"
+      },
+      "bracelet": {
+        "file": "images/sixtones_acc_kyomoto_bracelet.jpg",
+        "alt": "MUのケーブルチェーンブレスレット ゴールド",
+        "src": "https://x.com/mu_accessory/status/2106001205076033727"
+      },
+      "ring": {
+        "file": "images/sixtones_acc_kyomoto_ring.jpg",
+        "alt": "MUのジルコニアエタニティリング",
+        "src": "https://x.com/mu_accessory/status/2111289561913675856"
+      },
+      "oki": {
+        "file": "images/sixtones_acc_morimoto_oki.jpg",
+        "alt": "O-KIのThunder Necklace",
+        "src": "https://x.com/oki_jewelry/status/2050153846195061078"
+      }
+    }
+  }
+]
