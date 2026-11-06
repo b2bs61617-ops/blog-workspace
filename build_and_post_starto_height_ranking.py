@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""旧ジャニーズ(STARTO系)身長ランキング42人 -> chomoand.com(トレンドブログ) 下書き投稿.
+"""旧ジャニーズ(STARTO系)身長ランキング49人 -> chomoand.com(トレンドブログ) 下書き投稿.
 
 使い方: python build_and_post_starto_height_ranking.py [--dry]
 
-2026-11-06 オシリ依頼。きっかけはXで話題の「旧ジャニーズ42人の身長比較表」画像(第三者作成)。
+2026-11-06 オシリ依頼。きっかけはXで話題の「旧ジャニーズ49人の身長比較表」画像(第三者作成)。
 画像・投稿は記事に使わず、数値は独自に裏取りした([[feedback-no-third-party-identification-posts]])。
 画像の誤り: 「大倉和也168cm」(正しくは大倉忠義・178cm前後)、「山田流介」(山田涼介)、ラウール190cm(192cm報道あり)。
 主な出典:
@@ -40,7 +40,7 @@ CATEGORY = 37  # 芸能・トレンド
 ACCENT = "#6a1b9a"
 ACCENT_BG = "#f6f0fa"
 
-TITLE = "旧ジャニーズ身長ランキング42人！1位ラウールは何cm？意外な高身長は？"
+TITLE = "旧ジャニーズ身長ランキング49人！1位ラウールは何cm？意外な高身長は？"
 SLUG = "starto-height-ranking"
 
 # (名前, グループ, 身長cm)  ※身長は公表値・本人発言・主要プロフィールで多い数値
@@ -69,26 +69,33 @@ DATA = [
     ("加藤シゲアキ", "NEWS", 175),
     ("宮舘涼太", "Snow Man", 174),
     ("高橋海人", "King & Prince", 174),
+    ("中村海人", "Travis Japan", 173.1),
     ("松本潤", "嵐", 173),
+    ("川島如恵留", "Travis Japan", 173),
+    ("吉澤閑也", "Travis Japan", 173),
     ("渡辺翔太", "Snow Man", 172),
     ("櫻井翔", "嵐", 171),
     ("佐藤勝利", "timelesz", 171),
     ("平野紫耀", "Number_i", 171),
     ("増田貴久", "NEWS", 171),
+    ("松田元太", "Travis Japan", 169),
     ("二宮和也", "嵐", 168),
     ("堂本光一", "DOMOTO", 168),
     ("藤原丈一郎", "なにわ男子", 168),
+    ("宮近海斗", "Travis Japan", 167),
     ("岸優太", "Number_i", 167),
     ("松島聡", "timelesz", 167),
     ("西畑大吾", "なにわ男子", 167),
+    ("七五三掛龍也", "Travis Japan", 166),
     ("大野智", "嵐", 166),
     ("堂本剛", "DOMOTO", 166),
     ("大西流星", "なにわ男子", 166),
     ("山田涼介", "Hey! Say! JUMP", 164),
     ("有岡大貴", "Hey! Say! JUMP", 164),
+    ("松倉海斗", "Travis Japan", 163),
     ("知念侑李", "Hey! Say! JUMP", 159),
 ]
-assert len(DATA) == 42
+assert len(DATA) == 49
 
 
 def fmt(h):
@@ -149,24 +156,24 @@ def build():
 
     B.append(p([
         "旧ジャニーズのタレントで、一番背が高いのは誰なのでしょうか？",
-        "結論から言うと、人気の旧ジャニーズ(STARTO ENTERTAINMENT所属・出身)タレント42人で一番背が高いのは、"
+        "結論から言うと、人気の旧ジャニーズ(STARTO ENTERTAINMENT所属・出身)タレント49人で一番背が高いのは、"
         + marker("Snow Manのラウールさんで192cm") + "です。",
-        f"2位は目黒蓮さんの185cm、3位はジェシーさんの184cmで、42人の平均は約{avg:.1f}cmでした。",
-        "この記事では、報道・本人の発言・プロフィールの数値をもとに、42人の身長を一つずつ確かめてランキングにしました。",
+        f"2位は目黒蓮さんの185cm、3位はジェシーさんの184cmで、49人の平均は約{avg:.1f}cmでした。",
+        "この記事では、報道・本人の発言・プロフィールの数値をもとに、49人の身長を一つずつ確かめてランキングにしました。",
     ]))
 
     B.append(box("この記事でわかること", [
-        "旧ジャニーズ42人の身長ランキング一覧",
+        "旧ジャニーズ49人の身長ランキング一覧",
         "1位ラウールの身長は190cm？192cm？",
         "身長を知って驚かれた木村拓哉・堂本光一",
         "一番小柄な知念侑李は何cm？",
     ]))
 
     # ---------------- ranking
-    B.append(h2("旧ジャニーズ身長ランキング42人一覧【2026年最新】"))
+    B.append(h2("旧ジャニーズ身長ランキング49人一覧【2026年最新】"))
     B.append(p([
-        "まずは42人の一覧です。",
-        "42人は、知名度や人気、グループ・世代のバランスで選ばれたメンバーです。",
+        "まずは49人の一覧です。",
+        "人気グループのメンバーを中心に、世代のバランスも考えて49人を選びました。",
         "同じ身長の人は同じ順位にしています。",
     ]))
     rows = []
@@ -237,7 +244,7 @@ def build():
     ], ["アンケート", "結果"]))
     B.append(h3("木村拓哉は176cm"))
     B.append(p([
-        "木村拓哉さんは176cmで、42人の中では14位タイです。",
+        "木村拓哉さんは176cmで、49人の中では14位タイです。",
         "日本人男性の平均(約172cm)より4cmほど高いのですが、「170cmくらいだと思っていた」「もっと低いと思った」という声が集まって「身長を知って驚いた」の1位になりました。",
         "一方で、「存在感があるから大きく見える」という理由で「もっと高いように感じる」ランキングでも2位に入っていて、見る人によってイメージが分かれる人のようです。",
     ]))
@@ -249,7 +256,7 @@ def build():
     ]))
     B.append(h3("堂本光一は168cmでも「大きく見える」"))
     B.append(p([
-        "堂本光一さんは168cmで、42人の中では低い方です。",
+        "堂本光一さんは168cmで、49人の中では低い方です。",
         "それでも「もっと身長が高いように感じる男性アイドル」では1位で、「堂々とした立ち振る舞いのせいか、もっと背が高いと思っていた」という声がありました。",
         "舞台『Endless SHOCK』で長年座長を務めてきた姿勢の良さが、実際より大きく見せているのかもしれません。",
     ]))
@@ -257,10 +264,38 @@ def build():
     # ---------------- short
     B.append(h2("一番小柄なのは知念侑李で159cm"))
     B.append(p([
-        "42人の中で一番小柄なのは、Hey! Say! JUMPの知念侑李さんで159cmです。",
-        "同じグループの山田涼介さん・有岡大貴さんが164cmで続き、下位3人はHey! Say! JUMPのメンバーでした。",
+        "49人の中で一番小柄なのは、Hey! Say! JUMPの知念侑李さんで159cmです。",
+        "2番目に小柄なのはTravis Japanの松倉海斗さんで163cm、その次が164cmの山田涼介さん・有岡大貴さんです。",
         "知念さんはアクロバットが得意で、小柄な体を生かした身軽なパフォーマンスが魅力です。",
         "なにわ男子は道枝駿佑さん(180cm)と大西流星さん(166cm)で14cmの差があり、グループの中でも身長差が大きくなっています。",
+    ]))
+
+    # ---------------- travis
+    B.append(h2("Travis Japanの身長は？一番高いのは中村海人"))
+    tj = [(n, h) for n, g, h in DATA if g == "Travis Japan"]
+    B.append(p([
+        "Travis Japanの7人の身長は、雑誌『Myojo』2022年6月号に載った数値が元になっています。",
+        "一番高いのは中村海人さんの173.1cmで、川島如恵留さん・吉澤閑也さんの173cmとはわずか0.1cm差です。",
+        f"7人の平均は約{sum(h for _, h in tj) / len(tj):.1f}cmで、日本人男性の平均(約172cm)より少し低めです。",
+    ]))
+    B.append(table([[n, fmt(h)] for n, h in tj], ["名前", "身長"]))
+    B.append(h3("中村海人・川島如恵留・吉澤閑也は173cm台"))
+    B.append(p([
+        "中村海人さんは顔が小さく手足が長いので、数字以上にスタイルが良く見えるタイプです。",
+        "川島如恵留さんはバレエやアクロバットの経験があり、細身でもしっかり筋肉がついています。",
+        "吉澤閑也さんはグループの中で一番がっしりした体型で、体幹の強いダンスが持ち味です。",
+    ]))
+    B.append(h3("松田元太は169cm、宮近海斗は167cm"))
+    B.append(p([
+        "松田元太さんは169cmで、媒体によっては170cmと書かれることもあります。",
+        "リーダーの宮近海斗さんは167cmで、小柄な体を生かしたキレのあるダンスが魅力です。",
+    ]))
+    B.append(h3("七五三掛龍也は166cm、松倉海斗は163cm"))
+    B.append(p([
+        "七五三掛龍也さんは166cmで、グループで一番きゃしゃな体型と言われています。",
+        "松倉海斗さんはグループで一番小柄な163cm(164cmとする媒体もあります)で、49人の中でも知念侑李さんに次いで2番目に小柄です。",
+        "子どものころに水泳を習っていたこともあり、肩幅が広くがっしりして見えるのが特徴です。",
+        "Travis Japanは身長差が約10cmと大きくないので、7人そろったダンスの見栄えが良いのかもしれませんね。",
     ]))
 
     # ---------------- group
@@ -269,7 +304,7 @@ def build():
     for name, grp, h in DATA:
         groups.setdefault(grp, []).append(h)
     grows = []
-    for g in ["Snow Man", "SixTONES", "なにわ男子", "嵐", "NEWS", "timelesz", "Number_i", "Hey! Say! JUMP"]:
+    for g in ["Snow Man", "SixTONES", "なにわ男子", "嵐", "NEWS", "timelesz", "Number_i", "Travis Japan", "Hey! Say! JUMP"]:
         v = groups[g]
         grows.append([g, f"{len(v)}人", f"{sum(v) / len(v):.1f}cm"])
     B.append(table(grows, ["グループ", "ランキング内の人数", "平均身長"]))
@@ -287,9 +322,10 @@ def build():
     B.append(box("旧ジャニーズ身長ランキングのまとめ", [
         "1位はラウール。190cmと書かれることが多いが、2023年の報道では192cm",
         "2位は目黒蓮(185cm)、3位はジェシー(184cm)",
-        f"42人の平均は約{avg:.1f}cm、180cm以上は{tall}人",
+        f"49人の平均は約{avg:.1f}cm、180cm以上は{tall}人",
         "木村拓哉(176cm)は「身長を知って驚いた男性アイドル」1位",
         "堂本光一(168cm)は「もっと高く感じる男性アイドル」1位",
+        "Travis Japanで一番高いのは中村海人(173.1cm)",
         "一番小柄なのは知念侑李(159cm)",
     ]))
     B.append(p([
@@ -311,26 +347,26 @@ def main():
     auth = base64.b64encode(f"{ENV['WP_TREND_USERNAME']}:{ENV['WP_TREND_APP_PASSWORD']}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}"}
 
-    if "--update" in sys.argv:  # 既存下書きの本文だけ上書き
-        pid = sys.argv[sys.argv.index("--update") + 1]
-        r = requests.post(f"{wp_url}/wp-json/wp/v2/posts/{pid}",
-                          headers={**headers, "Content-Type": "application/json"},
-                          data=json.dumps({"content": content}).encode("utf-8"))
-        r.raise_for_status()
-        print("UPDATED", r.json()["id"], r.json()["status"])
-        return
-
-    eyecatch = ROOT / "images" / "starto_height_ranking_eyecatch.png"
+    eyecatch = ROOT / "images" / "starto_height_ranking49_eyecatch.png"
     if not eyecatch.exists():
         subprocess.run([sys.executable, str(ROOT / "tools" / "eyecatch_chomoand.py"),
                         "--top", "1位は何cm？", "--main", "旧ジャニーズ身長ランキング",
-                        "--bottom", "42人を徹底比較！", "--out", str(eyecatch)], check=True)
+                        "--bottom", "49人を徹底比較！", "--out", str(eyecatch)], check=True)
     r = requests.post(f"{wp_url}/wp-json/wp/v2/media",
                       headers={**headers, "Content-Type": "image/png",
                                "Content-Disposition": f'attachment; filename="{eyecatch.name}"'},
                       data=eyecatch.read_bytes())
     r.raise_for_status()
     media_id = r.json()["id"]
+
+    if "--update" in sys.argv:  # 既存下書きのタイトル・本文・アイキャッチを上書き
+        pid = sys.argv[sys.argv.index("--update") + 1]
+        r = requests.post(f"{wp_url}/wp-json/wp/v2/posts/{pid}",
+                          headers={**headers, "Content-Type": "application/json"},
+                          data=json.dumps({"title": TITLE, "content": content, "featured_media": media_id}).encode("utf-8"))
+        r.raise_for_status()
+        print("UPDATED", r.json()["id"], r.json()["status"], "MEDIA", media_id)
+        return
 
     payload = {"title": TITLE, "slug": SLUG, "content": content, "status": "draft",
                "categories": [CATEGORY], "author": AUTHOR, "featured_media": media_id}
