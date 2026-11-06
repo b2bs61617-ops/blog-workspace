@@ -66,6 +66,9 @@ STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group
 
 ## STEP 3: WordPressに下書き投稿
 
+- **【絶対】最初に下書きで上げるときは、どのサイトの記事でも`title`の先頭に必ず「【未】」を付ける**(例:「【未】【すとらじ】SixTONESの私服はどこの？…」、2026-11-06オシリ指示「これは絶対の約束事」)。KR/EN版の下書きも同じ。35文字制限は【未】を除いた本体で数える。【未】は公開時に外す([publish](../publish/SKILL.md) STEP0)。
+  - Why: 2026-11-06、すとらじ私服記事(chomoand-0.com ID1341)を【未】なしで下書きに上げて「【未】つけてってば」と指摘された。以前から付けていた記事もあったが、ルールとして書かれていなかったため抜けた。
+
 - エンドポイント: `POST {サイトURL}/wp-json/wp/v2/posts`
 - 投稿データ: `title`・`content`(HTML)・`slug`(STEP2)・`status: draft`・`categories`(サイト・カテゴリに応じて設定)・`author`(作業中のPCのhostnameから[docs/wordpress.mdの投稿者設定表](../../../docs/wordpress.md)を引いて該当ユーザーIDを設定。省略するとサイトの認証ユーザー本人が投稿者になってしまうため必須)
 - 投稿成功後、**記事ID**を控える(STEP5で使用)
