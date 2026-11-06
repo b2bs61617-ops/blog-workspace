@@ -1,0 +1,43 @@
+[
+  {
+    "key": "photorun_tatsumi",
+    "file": "articles/sixtones_photorun_tatsumi_1106.html",
+    "title": "【激走で激写】SixTONESフォトランのロケ地はどこ？江東区辰巳の撮影場所を調査",
+    "slug": "geki-run-and-photo-shoot-where",
+    "categories": [
+      15
+    ],
+    "images": {
+      "tatsumi": {
+        "file": "images/sixtones_photorun_tatsumi.jpg",
+        "alt": "SixTONESフォトラン 江東区辰巳で撮影する田中樹",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      },
+      "yudetaro": {
+        "file": "images/sixtones_photorun_yudetaro.jpg",
+        "alt": "フォトランでゆで太郎の看板の前を通るジェシー",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      },
+      "post": {
+        "file": "images/sixtones_photorun_post.jpg",
+        "alt": "フォトランのお題 郵便ポストの写真",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      },
+      "unga": {
+        "file": "images/sixtones_photorun_unga.jpg",
+        "alt": "フォトランで海を探して橋から見た運河",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      },
+      "skytree": {
+        "file": "images/sixtones_photorun_skytree.jpg",
+        "alt": "フォトランのお題 スカイツリーの写真",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      },
+      "train": {
+        "file": "images/sixtones_photorun_train.jpg",
+        "alt": "フォトランで映った高架を走る電車",
+        "src": "https://www.youtube.com/watch?v=asfrUVAtkPU"
+      }
+    }
+  }
+]
