@@ -13,9 +13,10 @@ b = ""
 b += p("デビュー6週目に入ったKO1KEYZ(コイキーズ)。",
        "11月8日(日)〜14日(土)のテレビ欄と公式サイトをチェックしたところ、今週いちばんの注目は、",
        f"<strong>{M}11/10(火)20:00の日本テレビ「踊る！さんま御殿!!」にYOSHIKIが“奈良県代表”で出演すること</span></strong>です。",
-       "週の初めの11/8(日)はソウルで「2026 KO1KEYZ 1ST FAN MEETING IN SEOUL」の2日目があり、11/12(木)にはCSのKNTVで「ショー！K-POPの中心」の字幕版が再放送されます。")
+       "週の初めの11/8(日)はソウルで「2026 KO1KEYZ 1ST FAN MEETING IN SEOUL」の2日目があり、11/12(木)にはDAIKIとRYUJIが日本テレビ「ヒルナンデス！」にスタジオゲストで出演します。",
+       "同じ11/12(木)の朝には、CSのKNTVで「ショー！K-POPの中心」の字幕版も再放送されます。")
 b += p("この記事では、出演番組の日時に加えて、MV放送やYouTubeの更新日、LAPOSTA 2027のFC先行の締め切りまで日付順にまとめています。", NOTE)
-b += T.toc(["11/8〜11/14のテレビ・配信スケジュール早見表", "YOSHIKIが出る「さんま御殿」の内容",
+b += T.toc(["11/8〜11/14のテレビ・配信スケジュール早見表", "YOSHIKIが出る「さんま御殿」の内容", "DAIKI・RYUJIが出る「ヒルナンデス！」",
             "ソウルのファンミーティング2日目", "KNTV「ショー！K-POPの中心」の再放送",
             "MV放送とYouTubeの更新日", "LAPOSTA 2027のFC先行の締め切り", "11月後半の出演予定"])
 b += h2("KO1KEYZのテレビ・配信スケジュール早見表(11/8〜11/14)")
@@ -27,12 +28,13 @@ b += T.table(["日時", "番組・予定"], [
     ["11/8(日)22:00〜23:00", "エムオン!「あなたの推し曲は!? エムオン!リクエストアワー」(MV)"],
     ["11/10(火)20:00〜21:00", "日本テレビ「踊る！さんま御殿!!」(YOSHIKI)", True, Y],
     ["11/12(木)9:45〜11:15", "スカチャン1(KNTV)「ショー！K-POPの中心」#966(字幕・再放送)", True, G],
+    ["11/12(木)11:55〜13:55", "日本テレビ「ヒルナンデス！」(DAIKI・RYUJI)", True, G],
     ["11/12(木)21:00〜", "公式YouTube「KO1! KO1! KO1KEYZ!」(毎週木曜更新)"],
     ["11/15(日)23:59", "「LAPOSTA 2027」FC会員先行の受付締め切り"],
 ])
 b += p("先週はソウルのファンミーティング1日目に向けて、KNTVの字幕版やMV放送が中心の1週間でした。",
-       "6週目は、メンバーが日本の地上波のゴールデン帯のトーク番組に出演します。",
-       "11月6日に出た11/13(金)までの番組表でも、グループでの日本のテレビ出演は見つからなかったので、新しい出演が決まったら追記します。")
+       "6週目は、YOSHIKIがゴールデン帯のトーク番組に、DAIKIとRYUJIが平日お昼の生放送に出演し、日本の地上波での個人出演が続きます。",
+       "11/14(土)の番組表はまだ出ていないので、新しい出演が決まったら追記します。")
 
 b += h2("11/10(火)「さんま御殿」にYOSHIKIが奈良県代表で出演")
 b += T.info([("放送日時", "11月10日(火)20:00〜21:00 日本テレビ"),
@@ -46,6 +48,17 @@ b += p("奈良県チームは、ロッチの中岡創一さん、柔道の野村
 b += p("番組表では、中岡創一さんが「リニア新幹線で奈良が京都を逆転する」と豪語したり、“奈良のウユニ塩湖”と呼ばれる絶景が紹介されたりと、奈良県チームの見せ場も予告されています。",
        "明石家さんまさんのトークの中で、YOSHIKIが地元・奈良のどんな魅力を話すのか、デビューしてすぐのゴールデン帯のトーク番組でどんな姿を見せるのかに注目です。",
        "KO1KEYZのメンバーとして番組表に名前が載っているので、録画予約は「KO1KEYZ」や「YOSHIKI」で検索すると見つけやすいです。")
+
+b += h2("11/12(木)「ヒルナンデス！」にDAIKI・RYUJIがスタジオゲストで出演")
+b += T.info([("放送日時", "11月12日(木)11:55〜13:55 日本テレビ"),
+             ("出演", "DAIKI・RYUJI(スタジオゲスト)"),
+             ("企画", "河口湖で1泊2食付き・予算2万5千円旅")])
+b += p("11月12日(木)11:55からの日本テレビ「ヒルナンデス！」に、DAIKIとRYUJIがスタジオゲストで出演します。",
+       f"番組表の出演者欄には、<strong>{M}【スタジオゲスト】なすなかにし、DAIKI・RYUJI(KO1KEYZ)</span></strong>と書かれています。",
+       "この日は、紅葉が見ごろの山梨県・河口湖を舞台に、宿代込みで1人2万5千円の予算で旅をする企画が放送されます。")
+b += p("VTRでは、SUPER EIGHTの横山裕さんとACEesの浮所飛貴さんが初共演し、富士山が見えるロープウェイや名物のほうとう、本格フレンチ付きの1万円台のお宿を巡ります。",
+       "コーナー初の“ピタリ賞”が出る回なので、スタジオの2人がどんなリアクションを見せるかにも注目です。",
+       "リーダーのDAIKIと、トークでも盛り上げ役のRYUJIの2人が、日本の平日お昼の生放送に出るのは貴重な機会です。")
 
 b += h2("11/8(日)ソウルのファンミーティング2日目")
 b += T.info([("公演名", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL"),
@@ -85,13 +98,14 @@ b += p("ソウルのファンミーティングのあとは、21日(土)に京�
 
 b += h2("まとめ")
 b += T.summary(["11/10(火)20:00「さんま御殿」にYOSHIKIが奈良県チームで出演",
+                "11/12(木)11:55「ヒルナンデス！」にDAIKI・RYUJIがスタジオゲストで出演",
                 "11/8(日)はソウルで1ST FAN MEETINGの2日目",
                 "11/12(木)9:45にKNTVで「ショー！K-POPの中心」#966字幕版の再放送",
                 "MVは11/8(日)22:00エムオン!、YouTube更新は11/12(木)21:00",
                 "LAPOSTA 2027のFC先行は11/15(日)23:59まで、当落は11/26(木)",
                 "11/21(土)MAMA AWARDS、11/22(日)SAPPORO COLLECTIONに出演"])
-b += p("デビュー6週目は、ソウルでのファンミーティングの締めくくりと、YOSHIKIの地上波トーク番組への出演が重なる1週間になりそうです。",
-       "さんま御殿はゴールデン帯の放送なので、録画予約を忘れないようにしておきましょう！")
+b += p("デビュー6週目は、ソウルでのファンミーティングの締めくくりと、YOSHIKI・DAIKI・RYUJIの地上波出演が重なる1週間になりそうです。",
+       "さんま御殿はゴールデン帯、ヒルナンデス！は平日のお昼の放送なので、録画予約を忘れないようにしておきましょう！")
 b += T.related("あわせて読みたいKO1KEYZの番組・スケジュール記事", [
     ("https://chomoand-1.com/ko1keyz-tv-schedule-1101-1107-15316", "KO1KEYZのテレビ出演 11/1〜11/7まとめ"),
     ("https://chomoand-1.com/ko1keyz-tv-schedule-1025-1031-15178", "KO1KEYZのテレビ出演 10/25〜10/31まとめ"),
@@ -104,13 +118,15 @@ k = ""
 k += p("데뷔 6주 차에 들어선 KO1KEYZ(코이키즈).",
        "11월 8일(일)~14일(토)의 일본 TV 편성표와 공식 사이트를 확인해 보니, 이번 주 가장 큰 화제는",
        f"<strong>{M}11/10(화) 20:00 니혼TV '오도루! 산마 고텐!!'에 YOSHIKI가 '나라현 대표'로 출연</span></strong>하는 것입니다.",
-       "11/8(일)에는 서울에서 '2026 KO1KEYZ 1ST FAN MEETING IN SEOUL' 둘째 날 공연이 있고, 11/12(목)에는 CS 채널 KNTV에서 '쇼! 음악중심' 일본어 자막판이 재방송됩니다.")
+       "11/8(일)에는 서울에서 '2026 KO1KEYZ 1ST FAN MEETING IN SEOUL' 둘째 날 공연이 있고, 11/12(목)에는 DAIKI와 RYUJI가 니혼TV '히루난데스!'에 스튜디오 게스트로 출연합니다.",
+       "같은 11/12(목) 오전에는 CS 채널 KNTV에서 '쇼! 음악중심' 일본어 자막판도 재방송됩니다.")
 k += p("이 글에서는 출연 프로그램 일정과 함께 MV 방송, YouTube 업데이트일, LAPOSTA 2027 FC 선행 마감일까지 날짜순으로 정리했습니다.", NOTE_KR)
 k += T.table(["일시(일본 시간)", "프로그램·일정"], [
     ["11/8(일)", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL(2일 차)", True, G],
     ["11/8(일) 22:00~23:00", "M-ON! '엠온! 리퀘스트 아워'(MV)"],
     ["11/10(화) 20:00~21:00", "니혼TV '오도루! 산마 고텐!!'(YOSHIKI)", True, Y],
     ["11/12(목) 9:45~11:15", "스카챤1(KNTV) '쇼! 음악중심' #966(일본어 자막·재방송)", True, G],
+    ["11/12(목) 11:55~13:55", "니혼TV '히루난데스!'(DAIKI·RYUJI)", True, G],
     ["11/12(목) 21:00~", "공식 YouTube 'KO1! KO1! KO1KEYZ!'(매주 목요일 업데이트)"],
     ["11/15(일) 23:59", "'LAPOSTA 2027' FC 회원 선행 접수 마감"],
 ])
@@ -123,6 +139,14 @@ k += p("11월 10일(화) 20:00부터 방송되는 니혼TV의 인기 토크 프�
        f"편성표 출연자 목록에서 <strong>{M}YOSHIKI는 '나라현' 팀</span></strong>에 이름을 올렸습니다.")
 k += p("나라현 팀은 롯치의 나카오카 소이치, 유도 선수 출신 노무라 타다히로, GALEDGE.의 YUINEKO, 유리양 레트리버, 그리고 YOSHIKI 5명입니다.",
        "아카시야 산마의 토크 속에서 YOSHIKI가 고향 나라의 어떤 매력을 이야기할지, 데뷔 직후 골든 타임 토크 프로그램에서 어떤 모습을 보여줄지 주목됩니다.")
+k += h2("11/12(목) '히루난데스!'에 DAIKI·RYUJI가 스튜디오 게스트로 출연")
+k += T.info([("방송", "11월 12일(목) 11:55~13:55 니혼TV"),
+             ("출연", "DAIKI·RYUJI(스튜디오 게스트)"),
+             ("기획", "가와구치코 1박 2식 포함 예산 2만 5천 엔 여행")])
+k += p("11월 12일(목) 11:55부터 방송되는 니혼TV의 낮 생방송 '히루난데스!'에 DAIKI와 RYUJI가 스튜디오 게스트로 출연합니다.",
+       f"편성표 출연자 목록에는 <strong>{M}[스튜디오 게스트] 나스나카니시, DAIKI·RYUJI(KO1KEYZ)</span></strong>라고 적혀 있습니다.",
+       "이날은 단풍이 절정인 야마나시현 가와구치코에서 숙박비 포함 1인 2만 5천 엔 예산으로 여행하는 코너가 방송됩니다.",
+       "리더 DAIKI와 분위기 메이커 RYUJI가 일본 평일 낮 생방송에서 어떤 리액션을 보여줄지 주목됩니다.")
 k += h2("11/8(일) 서울 팬미팅 2일 차")
 k += p("11월 8일(일)에는 서울 BLUESQUARE 우리WON뱅킹홀에서 '2026 KO1KEYZ 1ST FAN MEETING IN SEOUL' 2일 차 공연이 열립니다.",
        "현장에서는 FANCLUB BOOTH, KO1KEYZ Chat 회원 한정 'Plus Chat BOOTH', BLUE SQUARE NEMO의 굿즈·앨범 판매가 10:00~13:30, 14:30~18:00(현지 시간)에 진행됩니다.",
@@ -145,6 +169,7 @@ k += p("서울 팬미팅 이후에는 21일(토) 교세라돔 오사카에서 �
        "지난주 일정은 <a href=\"https://chomoand-1.com/ko/ko1keyz-tv-schedule-1101-1107-kr-15317\">11/1~11/7 방송 일정 정리</a>에서 확인할 수 있습니다.")
 k += h2("정리")
 k += T.summary(["11/10(화) 20:00 '산마 고텐'에 YOSHIKI가 나라현 팀으로 출연",
+                "11/12(목) 11:55 '히루난데스!'에 DAIKI·RYUJI가 스튜디오 게스트로 출연",
                 "11/8(일) 서울 1ST FAN MEETING 2일 차",
                 "11/12(목) 9:45 KNTV '쇼! 음악중심' #966 자막판 재방송",
                 "MV는 11/8(일) 22:00 M-ON!, YouTube 업데이트는 11/12(목) 21:00",
@@ -157,13 +182,15 @@ NOTE_EN = "*Information as of November 6, 2026 (all times JST). Listings for Nov
 e = ""
 e += p("KO1KEYZ are now in their sixth week since debut.",
        f"Looking through Japanese TV listings and the official site for November 8-14, the biggest news this week is that <strong>{M}YOSHIKI appears on Nippon TV's talk show \"Odoru! Sanma Goten!!\" on Tuesday, Nov 10 at 20:00 as a representative of Nara Prefecture</span></strong>.",
-       "The week opens with day two of the \"2026 KO1KEYZ 1ST FAN MEETING IN SEOUL\" on Sunday, Nov 8, and KNTV re-airs the subtitled Show! Music Core episode featuring KO1KEYZ on Thursday, Nov 12.")
+       "The week opens with day two of the \"2026 KO1KEYZ 1ST FAN MEETING IN SEOUL\" on Sunday, Nov 8, and on Thursday, Nov 12, DAIKI and RYUJI join Nippon TV's live lunchtime show \"Hirunandesu!\" as studio guests.",
+       "KNTV also re-airs the subtitled Show! Music Core episode featuring KO1KEYZ that same Thursday morning.")
 e += p("This post lists the TV appearances along with MV airplay, the YouTube update day and the LAPOSTA 2027 fan club ticket deadline in date order.", NOTE_EN)
 e += T.table(["Date / time (JST)", "Program / event"], [
     ["Sun 11/8", "2026 KO1KEYZ 1ST FAN MEETING IN SEOUL (Day 2)", True, G],
     ["Sun 11/8 22:00-23:00", "M-ON! \"M-ON! Request Hour\" (MV)"],
     ["Tue 11/10 20:00-21:00", "Nippon TV \"Odoru! Sanma Goten!!\" (YOSHIKI)", True, Y],
     ["Thu 11/12 9:45-11:15", "Sky Channel 1 (KNTV) \"Show! Music Core\" #966 (subtitled rerun)", True, G],
+    ["Thu 11/12 11:55-13:55", "Nippon TV \"Hirunandesu!\" (DAIKI, RYUJI)", True, G],
     ["Thu 11/12 21:00-", "Official YouTube \"KO1! KO1! KO1KEYZ!\" (weekly Thursday update)"],
     ["Sun 11/15 23:59", "LAPOSTA 2027 fan club presale closes"],
 ])
@@ -172,6 +199,11 @@ e += p("YOSHIKI joins Nippon TV's prime-time talk show \"Odoru! Sanma Goten!!\" 
        "The theme is a \"neighboring prefecture rivalry battle\" in which guests from Kyoto, Nara, Shiga and Mie promote the charms of their hometowns.",
        "According to the listing, YOSHIKI is on Team Nara alongside Soichi Nakaoka (Rotchi), judo legend Tadahiro Nomura, YUINEKO (GALEDGE.) and Yuriyan Retriever.",
        "It is one of the first solo appearances by a KO1KEYZ member on a prime-time terrestrial talk show, so it is well worth recording.")
+e += h2("DAIKI and RYUJI on \"Hirunandesu!\" (Thu 11/12)")
+e += p("DAIKI and RYUJI appear as studio guests on Nippon TV's live lunchtime variety show \"Hirunandesu!\" on Thursday, November 12 from 11:55 to 13:55.",
+       "The listing names them under studio guests alongside the comedy duo Nasunakanishi.",
+       "That day's main segment is a budget trip to Lake Kawaguchi in Yamanashi, with a total of 25,000 yen per person including a night's stay and two meals.",
+       "It is a rare chance to see the leader DAIKI and the group's mood-maker RYUJI on a weekday live show in Japan.")
 e += h2("Seoul fan meeting, Day 2 (Sun 11/8)")
 e += p("Day two of the \"2026 KO1KEYZ 1ST FAN MEETING IN SEOUL\" takes place on November 8 at BLUESQUARE WOORI WON BANKING HALL.",
        "The fan club booth, the KO1KEYZ Chat \"Plus Chat BOOTH\" and the merch and album sales at BLUE SQUARE NEMO run from 10:00-13:30 and 14:30-18:00 local time.",
@@ -193,6 +225,7 @@ e += p("After Seoul, KO1KEYZ will perform at the \"2026 MAMA AWARDS\" at Kyocera
        "Last week's schedule is in <a href=\"https://chomoand-1.com/en/ko1keyz-tv-schedule-1101-1107-en-15318\">KO1KEYZ TV Appearances 11/1-11/7</a>.")
 e += h2("Summary")
 e += T.summary(["Tue 11/10 20:00: YOSHIKI on \"Sanma Goten\" as Team Nara",
+                "Thu 11/12 11:55: DAIKI and RYUJI on \"Hirunandesu!\"",
                 "Sun 11/8: Day 2 of the 1ST FAN MEETING in Seoul",
                 "Thu 11/12 9:45: KNTV re-airs subtitled Show! Music Core #966",
                 "MV on M-ON! (Sun 11/8 22:00), YouTube update Thu 11/12 21:00",
