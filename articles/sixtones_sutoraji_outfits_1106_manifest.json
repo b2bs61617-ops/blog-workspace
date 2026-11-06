@@ -1,0 +1,42 @@
+[
+  {
+    "key": "sutoraji_outfits",
+    "file": "articles/sixtones_sutoraji_outfits_1106.html",
+    "title": "【すとらじ】SixTONESの私服はどこの？4人の着用ブランドを調査！",
+    "slug": "sixtones-sutoraji-outfit-brand",
+    "categories": [
+      15,
+      18,
+      19,
+      20,
+      21
+    ],
+    "images": {
+      "all": {
+        "file": "images/sixtones_sutoraji_all.jpg",
+        "alt": "すとらじで近況報告 SixTONES6人がトークする様子",
+        "src": "https://www.youtube.com/watch?v=_vikLYJCfaE"
+      },
+      "morimoto": {
+        "file": "images/sixtones_sutoraji_morimoto.jpg",
+        "alt": "TRIBAL×Mister Cartoonのジップパーカーを着た森本慎太郎",
+        "src": "https://www.youtube.com/watch?v=_vikLYJCfaE"
+      },
+      "kochi": {
+        "file": "images/sixtones_sutoraji_kochi.jpg",
+        "alt": "NEW ERAのネイビーのトラックジャケットを着た髙地優吾",
+        "src": "https://www.youtube.com/watch?v=_vikLYJCfaE"
+      },
+      "hokuto": {
+        "file": "images/sixtones_sutoraji_hokuto.jpg",
+        "alt": "adidasサッカー日本代表コレクションのトラックジャケットを着た松村北斗",
+        "src": "https://www.youtube.com/watch?v=_vikLYJCfaE"
+      },
+      "juri": {
+        "file": "images/sixtones_sutoraji_juri.jpg",
+        "alt": "田中樹が着けていたゴールドのリンクブレスレット",
+        "src": "https://www.youtube.com/watch?v=_vikLYJCfaE"
+      }
+    }
+  }
+]
