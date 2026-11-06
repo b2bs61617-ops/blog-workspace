@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Upload the SixTONES "Photo Run" Tatsumi location article (2026-11-06) to chomoand-0.com as a draft. Based on _upload_snowman_meguro_serpenti_live_1105.py.
+"""Upload the SixTONES asameshi (Kitchen ABC) location article + outfit article (2026-11-06) to chomoand-0.com as a draft. Based on _upload_snowman_meguro_serpenti_live_1105.py.
 
 usage: python tools/_upload_snowman_meguro_serpenti_live_1105.py [--update-content]
 --update-content: 投稿済みの下書きの本文だけを articles/ の最新HTMLで上書きする(タイトル・スラッグは触らない)。
@@ -113,7 +113,8 @@ def main():
         if "{{LINK:" not in html:
             continue
         fixed = re.sub(r"\{\{LINK:(\w+)\}\}", lambda m: f"{BASE}/?p={posted[m.group(1)]}", html)
-        jpost(f"/wp-json/wp/v2/posts/{posted[a['key']]}", {"content": fixed})
+        fixed = upload_figure(a, fixed)
+        jpost(f"/wp-json/wp/v2/posts/{posted[a['key']]}", {"content": fixed, "status": "draft"})
         print(f"links fixed {posted[a['key']]}")
 
     # --update-content: 下書きの本文だけ上書き(statusを明示しないと公開されるのでdraftを必ず付ける)

@@ -67,6 +67,32 @@
         "file": "images/sixtones_asameshi_pay.jpg",
         "alt": "オリカレーを頼んだ3人が10,140円を支払い",
         "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
+      }
+    }
+  },
+  {
+    "key": "asameshi_shifuku",
+    "file": "articles/sixtones_asameshi_shifuku_1106.html",
+    "title": "【未】【街洋食の名店で平和な朝メシ】慎太郎のブルガリや髙地のTシャツは？",
+    "slug": "sixtones-asameshi-shintaro-bvlgari-kochi-tshirt",
+    "categories": [
+      15
+    ],
+    "images": {
+      "necklace": {
+        "file": "images/sixtones_asameshi_necklace.jpg",
+        "alt": "森本慎太郎のゴールドのネックレス",
+        "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
+      },
+      "earring": {
+        "file": "images/sixtones_asameshi_earring.jpg",
+        "alt": "森本慎太郎のゴールドのフープイヤリング",
+        "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
+      },
+      "ring": {
+        "file": "images/sixtones_asameshi_ring.jpg",
+        "alt": "森本慎太郎のゴールドのリング",
+        "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
       },
       "ford": {
         "file": "images/sixtones_asameshi_ford.jpg",
@@ -76,11 +102,6 @@
       "cap": {
         "file": "images/sixtones_asameshi_cap.jpg",
         "alt": "田中樹のドジャースのメッシュキャップ",
-        "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
-      },
-      "earring": {
-        "file": "images/sixtones_asameshi_earring.jpg",
-        "alt": "森本慎太郎のゴールドのフープイヤリング",
         "src": "https://www.youtube.com/watch?v=N8v3vr518YI"
       }
     }
