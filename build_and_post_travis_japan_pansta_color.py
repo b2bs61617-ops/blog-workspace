@@ -14,7 +14,7 @@ EYECATCH = IMG_DIR / "tj_pansta_color_eyecatch_canva.jpg"
 STATE = IMG_DIR / "_state.json"
 DRY = "--dry" in sys.argv
 
-TITLE = "【未】【パナスタ】トラジャ担の服はピンク・緑NG？着ていく色とJ1チームカラー一覧"
+TITLE = "【未】【パナスタ】トラジャ担の服はピンク・緑NG？J1チームカラーも！"
 SLUG = "travis-japan-pansta-color-manner"
 SITE = "https://chomoand-4.blog/"
 
