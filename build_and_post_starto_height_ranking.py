@@ -160,7 +160,7 @@ def build():
         "旧ジャニーズ42人の身長ランキング一覧",
         "1位ラウールの身長は190cm？192cm？",
         "身長を知って驚かれた木村拓哉・堂本光一",
-        "比較画像で間違えられていた大倉忠義の本当の身長",
+        "比較表で168cmとされていた大倉忠義の本当の身長",
         "一番小柄な知念侑李は何cm？",
     ]))
 
@@ -168,6 +168,7 @@ def build():
     B.append(h2("旧ジャニーズ身長ランキング42人一覧【2026年最新】"))
     B.append(p([
         "まずは42人の一覧です。",
+        "42人は、知名度や人気、グループ・世代のバランスで選ばれたメンバーです。",
         "同じ身長の人は同じ順位にしています。",
     ]))
     rows = []
@@ -256,12 +257,13 @@ def build():
     ]))
 
     # ---------------- okura
-    B.append(h2("大倉忠義の身長は178cm！比較画像の168cmは間違い"))
+    B.append(h2("大倉忠義の身長は178cm！比較表の168cmは打ち間違い？"))
     B.append(p([
-        "SNSで出回った比較画像では、168cmのところに「大倉和也」という名前が載っていました。",
-        "でも、そのような名前の旧ジャニーズタレントはおらず、SUPER EIGHTの" + marker("大倉忠義さんの身長は178cm") + "とされています。",
-        "名前も身長も違っていたので、この記事のランキングでは大倉さんを178cmで7位タイに入れています。",
-        "ほかにも、Hey! Say! JUMPの山田涼介さんの名前が「山田流介」となっていたり、ラウールさんが190cmになっていたりと、気になるところがいくつかありました。",
+        "SNSで出回った比較表では、SUPER EIGHTの大倉忠義さんが168cmとされていました。",
+        "でも、" + marker("大倉忠義さんの身長は一般的に178cm") + "とされています。",
+        "10cmの打ち間違いの可能性があるので、この記事のランキングでは大倉さんを178cmで7位タイに入れています。",
+        "画像版では名前も「大倉和也」になっていたり、Hey! Say! JUMPの山田涼介さんが「山田流介」になっていたりと、気になるところがいくつかありました。",
+        "ラウールさんも190cmとされていましたが、先ほど紹介したとおり192cmという報道があります。",
         "身長の比較画像はよく出回りますが、名前や数字は一度確かめてから見るのが安心です。",
     ]))
 
@@ -301,7 +303,7 @@ def build():
         f"42人の平均は約{avg:.1f}cm、180cm以上は{tall}人",
         "木村拓哉(176cm)は「身長を知って驚いた男性アイドル」1位",
         "堂本光一(168cm)は「もっと高く感じる男性アイドル」1位",
-        "比較画像の「大倉和也168cm」は間違いで、大倉忠義は178cm",
+        "比較表の「大倉忠義168cm」は178cmの打ち間違いとみられる",
         "一番小柄なのは知念侑李(159cm)",
     ]))
     B.append(p([
@@ -322,6 +324,15 @@ def main():
     wp_url = ENV["WP_TREND_URL"].rstrip("/")
     auth = base64.b64encode(f"{ENV['WP_TREND_USERNAME']}:{ENV['WP_TREND_APP_PASSWORD']}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}"}
+
+    if "--update" in sys.argv:  # 既存下書きの本文だけ上書き
+        pid = sys.argv[sys.argv.index("--update") + 1]
+        r = requests.post(f"{wp_url}/wp-json/wp/v2/posts/{pid}",
+                          headers={**headers, "Content-Type": "application/json"},
+                          data=json.dumps({"content": content}).encode("utf-8"))
+        r.raise_for_status()
+        print("UPDATED", r.json()["id"], r.json()["status"])
+        return
 
     eyecatch = ROOT / "images" / "starto_height_ranking_eyecatch.png"
     if not eyecatch.exists():
