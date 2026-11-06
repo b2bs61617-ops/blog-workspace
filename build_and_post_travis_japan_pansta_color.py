@@ -14,7 +14,7 @@ EYECATCH = IMG_DIR / "tj_pansta_color_eyecatch_canva.jpg"
 STATE = IMG_DIR / "_state.json"
 DRY = "--dry" in sys.argv
 
-TITLE = "【パナスタ】トラジャ担の服はピンク・緑NG？着ていく色とJ1チームカラー一覧"
+TITLE = "【未】【パナスタ】トラジャ担の服はピンク・緑NG？着ていく色とJ1チームカラー一覧"
 SLUG = "travis-japan-pansta-color-manner"
 SITE = "https://chomoand-4.blog/"
 
@@ -349,7 +349,7 @@ def main():
                         "--bottom", "ピンク・緑はNG？", "--bottom", "着ていく色とチームカラー",
                         "--color-key", "group", "--out", str(EYECATCH)], check=True)
     if "eyecatch" not in state:
-        state["eyecatch"] = upload_media(EYECATCH, TITLE, TITLE)
+        state["eyecatch"] = upload_media(EYECATCH, TITLE.replace("【未】", ""), TITLE.replace("【未】", ""))
         STATE.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
     body = {"title": TITLE, "slug": SLUG, "content": html, "status": "draft",
             "categories": [3], "author": 2, "featured_media": state["eyecatch"]["id"]}
