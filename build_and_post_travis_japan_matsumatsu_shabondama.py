@@ -16,7 +16,7 @@ EYECATCH = IMG_DIR / "tj_matsumatsu_shabondama_eyecatch_canva.jpg"
 STATE = IMG_DIR / "_state.json"
 DRY = "--dry" in sys.argv
 
-TITLE = "トラジャ松松が辰巳雄大の家でシャボン玉？トークィーンズのエピソード！"
+TITLE = "【トークィーンズ】トラジャ松松が辰巳雄大の家でシャボン玉？エピソード！"
 SLUG = "travis-japan-matsumatsu-tatsumi-shabondama"
 
 TVER_URL = "https://tver.jp/episodes/epbvo4wenq"
