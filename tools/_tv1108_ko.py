@@ -32,7 +32,7 @@ b += T.table(["日時", "番組・予定"], [
 ])
 b += p("先週はソウルのファンミーティング1日目に向けて、KNTVの字幕版やMV放送が中心の1週間でした。",
        "6週目は、メンバーが日本の地上波のゴールデン帯のトーク番組に出演します。",
-       "グループでの日本のテレビ出演は11月5日時点で発表されていないので、新しい出演が決まったら追記します。")
+       "11月6日に出た11/13(金)までの番組表でも、グループでの日本のテレビ出演は見つからなかったので、新しい出演が決まったら追記します。")
 
 b += h2("11/10(火)「さんま御殿」にYOSHIKIが奈良県代表で出演")
 b += T.info([("放送日時", "11月10日(火)20:00〜21:00 日本テレビ"),
@@ -63,7 +63,7 @@ b += T.info([("放送日時", "11月12日(木)9:45〜11:15"),
 b += p("CSのKNTVでは、11月12日(木)9:45から、韓国MBCの音楽番組「ショー！K-POPの中心」#966の字幕版が再放送されます。",
        "番組表の出演者欄には、BOYNEXTDOOR、CRAVITY、NCT WISH、Hearts2Hearts、KickFlipなどと並んでKO1KEYZの名前があります。",
        "11/3(火)に初回放送された回なので、見逃した方はこの再放送でチェックできます。")
-b += p("なお、11/10(火)14:00からの#967の出演者欄には、11月5日時点でKO1KEYZの名前はありません。",
+b += p("なお、11/10(火)14:00からの#967の出演者欄には、11月6日時点でKO1KEYZの名前はありません。",
        "KNTVの視聴には、スカパー！などでの契約が必要です。")
 
 b += h2("MV放送とYouTubeの更新日")
@@ -80,7 +80,7 @@ b += p("2027年1月の東京ドーム、2月の京セラドーム大阪で行わ
 
 b += h2("11月後半の出演予定は？")
 b += p("ソウルのファンミーティングのあとは、21日(土)に京セラドーム大阪で行われる「2026 MAMA AWARDS」に出演し、翌22日(日)には札幌の「SAPPORO COLLECTION 2026 AUTUMN/WINTER」に出演します。",
-       "11/13(金)・14(土)の番組表や、テレビの新しい出演が発表されたら追記します。",
+       "11/14(土)の番組表や、テレビの新しい出演が発表されたら追記します。",
        "先週分は<a href=\"https://chomoand-1.com/ko1keyz-tv-schedule-1101-1107-15316\">11/1〜11/7の放送予定まとめ</a>にまとめているので、あわせてご覧ください。")
 
 b += h2("まとめ")
@@ -99,7 +99,7 @@ b += T.related("あわせて読みたいKO1KEYZの番組・スケジュール記
 save("ko1keyz_tv_schedule_1108_1114.html", b)
 
 # ---------- KR ----------
-NOTE_KR = "※2026년 11월 5일 기준 정보입니다. 11/13(금)·14(토)는 아직 편성표가 나오지 않아 알 수 있는 범위에서만 실었습니다. 방송 내용·시간은 바뀔 수 있으니 최신 정보는 공식 사이트나 편성표에서 확인해 주세요."
+NOTE_KR = "※2026년 11월 6일 기준 정보입니다. 11/14(토)는 아직 편성표가 나오지 않아 알 수 있는 범위에서만 실었습니다. 방송 내용·시간은 바뀔 수 있으니 최신 정보는 공식 사이트나 편성표에서 확인해 주세요."
 k = ""
 k += p("데뷔 6주 차에 들어선 KO1KEYZ(코이키즈).",
        "11월 8일(일)~14일(토)의 일본 TV 편성표와 공식 사이트를 확인해 보니, 이번 주 가장 큰 화제는",
@@ -153,7 +153,7 @@ k += T.summary(["11/10(화) 20:00 '산마 고텐'에 YOSHIKI가 나라현 팀으
 save("ko1keyz_tv_schedule_1108_1114_kr.html", k)
 
 # ---------- EN ----------
-NOTE_EN = "*Information as of November 5, 2026 (all times JST). Listings for Nov 13-14 have not been released yet. Broadcast details may change, so please check official sites and TV listings for the latest information."
+NOTE_EN = "*Information as of November 6, 2026 (all times JST). Listings for Nov 14 have not been released yet. Broadcast details may change, so please check official sites and TV listings for the latest information."
 e = ""
 e += p("KO1KEYZ are now in their sixth week since debut.",
        f"Looking through Japanese TV listings and the official site for November 8-14, the biggest news this week is that <strong>{M}YOSHIKI appears on Nippon TV's talk show \"Odoru! Sanma Goten!!\" on Tuesday, Nov 10 at 20:00 as a representative of Nara Prefecture</span></strong>.",
