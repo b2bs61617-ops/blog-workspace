@@ -14,6 +14,9 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(REPO, "articles", "sixtones_sutoraji_split_1106")
 POSTED = os.path.join(DIR, "posted.json")
 SRC = "https://www.youtube.com/watch?v=_vikLYJCfaE"
+MEMBER = {"hokuto": "松村北斗", "morimoto": "森本慎太郎", "kochi": "髙地優吾", "juri": "田中樹"}
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import sixtones_theme  # noqa: E402
 AUTHORS = {"USER1": 2, "Tomoki": 1, "Yuka-MacBook-NEO": 1}
 
 ARTICLES = [
@@ -123,6 +126,7 @@ def main():
                           for o in ARTICLES if o["key"] != a["key"])
         html = open(os.path.join(DIR, f"{a['key']}.html"), encoding="utf-8").read()
         html = html.replace("{{VIDEO}}", video).replace("{{RELATED}}", related_tpl.replace("{{RELATED_ITEMS}}", items))
+        html = sixtones_theme.apply_theme(html, MEMBER[a["key"]])  # member colors (docs/rules.md)
         tmp = os.path.join(DIR, f"_built_{a['key']}.html")
         open(tmp, "w", encoding="utf-8").write(html)
         hon = [sys.executable, os.path.join(REPO, "tools", "honorific.py")]

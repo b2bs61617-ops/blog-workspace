@@ -37,8 +37,13 @@ def apply_theme(html, member):
     return html
 
 
+# short names used in headings (e.g. 「樹は〜」「北斗は〜」)
+ALIASES = {"ジェシー": ["ジェシー"], "京本大我": ["京本", "大我"], "松村北斗": ["松村", "北斗"],
+           "髙地優吾": ["髙地", "高地", "優吾"], "森本慎太郎": ["森本", "慎太郎"], "田中樹": ["田中樹", "樹"]}
+
+
 def members_in(text):
-    return [m for m in ORDER if m in text]
+    return [m for m in ORDER if m in text or any(a in text for a in ALIASES[m])]
 
 
 def theme_by_headings(chunk, level):
@@ -51,7 +56,7 @@ def theme_by_headings(chunk, level):
         ms = members_in(h.group(1)) if h else []
         if len(ms) == 1:
             p = apply_theme(p, ms[0])
-        elif len(ms) > 1 and level == 2:
+        elif level == 2:  # group H2 (0 or 2+ members): try its H3s
             p = theme_by_headings(p, 3)
         out.append(p)
     return "".join(out)
