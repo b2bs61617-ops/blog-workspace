@@ -230,7 +230,7 @@ body = "".join([
              ("岩本照の愛称は？ひーくんと照兄の違い！", f"{SITE}/iwamoto-hikaru-nickname-244")]),
 ])
 
-TITLE = "【未】岩本照のバイクは何？ドラッグスターに乗ってた話と大型も！"
+TITLE = "【未】【ひかリュウ】岩本照のバイクは何？ドラッグスターに乗ってた！"
 _base = TITLE.replace("【未】", "")
 assert TITLE.startswith("【未】") and len(_base) <= 35, len(_base)
 
