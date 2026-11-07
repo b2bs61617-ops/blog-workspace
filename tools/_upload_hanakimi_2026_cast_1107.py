@@ -3,7 +3,7 @@
 usage: python tools/_upload_hanakimi_2026_cast_1107.py [--update-content]
 状態は articles/hanakimi_2026_cast_posted.json に控え、再実行で重複投稿しない。
 """
-import sys, os, json, base64, socket, urllib.request, urllib.error
+import sys, os, re, json, base64, socket, urllib.request, urllib.error
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ART = os.path.join(REPO, "articles", "hanakimi_2026_cast_heisei_reiwa.html")
@@ -20,6 +20,16 @@ IMAGES = {
     "fod2007": {"file": "images/hanakimi2007_cast_fod.jpg",
                 "alt": "2007年版ドラマ『花ざかりの君たちへ〜イケメン♂パラダイス〜』のキャスト集合ビジュアル",
                 "src": "https://x.com/fujitvplus/status/1456287754757677056"},
+}
+
+SRC = "https://x.com/TVGweb/status/2118826005930680724"
+CAST = {
+    "kawamura": ("芦屋瑞稀", "河村花"), "hasegawa": ("佐野泉", "長谷川慎(THE RAMPAGE)"),
+    "fujiwara": ("中津秀一", "藤原樹(THE RAMPAGE)"), "ito": ("野江伸二", "伊藤圭吾(龍宮城)"),
+    "tomita": ("関目京悟", "冨田侑暉(龍宮城)"), "takaoka": ("萱島大樹", "高岡ミロ(Lienel)"),
+    "morita": ("中央千里", "森田璃空(Lienel)"), "motonosuke": ("天王寺恵", "元之介"),
+    "kobayashi": ("難波南", "小林大悟(TAGRIGHT)"), "nishiyama": ("姫島正夫", "西山智樹(TAGRIGHT)"),
+    "sakurai": ("九条威月", "櫻井佑樹(劇団EXILE)"), "takahashi": ("神楽坂真言", "髙橋大翔"),
 }
 
 env = {}
@@ -85,7 +95,30 @@ def build_html():
                f'<figcaption style="font-size:0.8em;color:#888;">出典:<a href="{im["src"]}" target="_blank" rel="noopener">{im["src"]}</a></figcaption>\n'
                "</figure>\n<!-- /wp:html -->\n")
         html = html.replace("{{IMG:" + name + "}}", fig)
-    assert "{{IMG:" not in html
+    # 令和版キャスト個別写真(公式12人ビジュアルから切り出し)
+    def cast_url(name):
+        key = "cast:" + name
+        if key not in state:
+            state[key] = upload(os.path.join(REPO, "images", f"hanakimi2026_{name}.jpg"), "image/jpeg",
+                                f"令和版『花ざかりの君たちへ』{CAST[name][0]}役の{CAST[name][1]}")
+            save()
+        m = req(f"/wp-json/wp/v2/media/{state[key]}", method="GET")
+        sz = m["media_details"].get("sizes", {})
+        return sz.get("medium_large", sz.get("medium", {"source_url": m["source_url"]}))["source_url"]
+
+    def card(name, width):
+        role, person = CAST[name]
+        return (f'<figure style="margin:0;width:{width};max-width:100%;text-align:center;">'
+                f'<img src="{cast_url(name)}" alt="{role}役 {person}" style="width:100%;height:auto;border-radius:4px;" loading="lazy">'
+                f'<figcaption style="font-size:0.85em;margin-top:4px;"><strong>{role}</strong><br>{person}</figcaption></figure>')
+
+    credit = f'<p style="font-size:0.8em;color:#888;margin:6px 0 0 0;text-align:center;">出典:<a href="{SRC}" target="_blank" rel="noopener">TVガイドWeb公式X</a></p>'
+    html = re.sub(r"\{\{CASTIMG:(\w+)\}\}",
+                  lambda m: '<div style="margin:12px auto 0;max-width:240px;">' + card(m.group(1), "100%") + credit + "</div>", html)
+    html = re.sub(r"\{\{CASTGRID:([\w,]+)\}\}",
+                  lambda m: ("<!-- wp:html -->\n<div style=\"display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:0 0 8px 0;\">"
+                             + "".join(card(n, "160px") for n in m.group(1).split(",")) + "</div>" + credit + "\n<!-- /wp:html -->\n"), html)
+    assert "{{" not in html
     return html
 
 
