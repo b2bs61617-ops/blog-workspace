@@ -32,10 +32,10 @@ IMAGES = {
     "ext": ("tj_wylo_ramen_ext.jpg", "虎美寿ラーメンの看板をつけた赤レンガの店の前に並ぶTravis Japanの7人"),
     "sign": ("tj_wylo_ramen_sign.jpg", "Travis RAMENと書かれた虎美寿ラーメンの立て看板"),
     "counter": ("tj_wylo_ramen_counter.jpg", "赤い丸椅子と番号札が並ぶ木のカウンター席"),
-    "wide": ("tj_wylo_ramen_wide.jpg", "テーブル席が並ぶ店内を歩くメンバー"),
+    "wide": ("tj_wylo_ramen_wide2.jpg", "テーブル席が並ぶ店内で腕を組むメンバー"),
     "menuwall": ("tj_wylo_ramen_menuwall.jpg", "短冊メニューが並ぶ厨房で手を振るメンバー"),
-    "gourmet": ("tj_wylo_ramen_gourmet.jpg", "虎美寿ラーメンを食べるグルメなおじいさん"),
-    "members": ("tj_wylo_ramen_members.jpg", "テーブルに身を乗り出してリアクションするTravis Japanの7人"),
+    "gourmet": ("tj_wylo_ramen_gourmet2.jpg", "虎美寿ラーメンを食べるグルメなおじいさん"),
+    "members": ("tj_wylo_ramen_members2.jpg", "テーブルに身を乗り出してリアクションするTravis Japanの7人"),
     "entrance": ("tj_wylo_ramen_entrance.jpg", "入口の横のレジ台にもたれるメンバー"),
     "street": ("tj_wylo_ramen_street.jpg", "出前に向かう途中、大勢の人に追いかけられながら自転車で走るメンバー"),
 }
