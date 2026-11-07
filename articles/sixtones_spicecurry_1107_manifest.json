@@ -1,0 +1,60 @@
+[
+  {
+    "key": "spicecurry",
+    "file": "articles/sixtones_spicecurry_1107.html",
+    "title": "【未】【スパイスカレー】SixTONESは何を作った？フレンチと海賊カレー",
+    "slug": "sixtones-spice-curry-french-kaizoku",
+    "categories": [
+      15
+    ],
+    "images": {
+      "members": {
+        "file": "images/sixtones_spicecurry_members.jpg",
+        "alt": "スパイスカレー企画に挑戦するSixTONESの6人",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      },
+      "french": {
+        "file": "images/sixtones_spicecurry_french.jpg",
+        "alt": "チーム酸っぱい兄さんのフレンチカレー",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      },
+      "kaizoku": {
+        "file": "images/sixtones_spicecurry_kaizoku.jpg",
+        "alt": "チームスパイス兄さんの海賊カレー",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      },
+      "tasting": {
+        "file": "images/sixtones_spicecurry_tasting.jpg",
+        "alt": "フレンチカレーを試食するSixTONES",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      }
+    }
+  },
+  {
+    "key": "juri_watch",
+    "file": "articles/sixtones_juri_watch_1107.html",
+    "title": "【未】【スパイスカレー】田中樹の金の腕時計はどこの？ロレックス説を調査",
+    "slug": "sixtones-juri-tanaka-gold-rolex-watch",
+    "categories": [
+      15,
+      21
+    ],
+    "images": {
+      "scene": {
+        "file": "images/sixtones_juri_watch_scene.jpg",
+        "alt": "スパイスカレー回の試食シーンで金の腕時計をつけた田中樹",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      },
+      "up": {
+        "file": "images/sixtones_juri_watch_up.jpg",
+        "alt": "田中樹の金の腕時計のアップ(ジュビリーブレス・フルーテッドベゼル)",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      },
+      "scene2": {
+        "file": "images/sixtones_juri_watch_scene2.jpg",
+        "alt": "右手首に金のチェーンブレスレットをつけた田中樹",
+        "src": "https://www.youtube.com/watch?v=04i0PrJyDd0"
+      }
+    }
+  }
+]
