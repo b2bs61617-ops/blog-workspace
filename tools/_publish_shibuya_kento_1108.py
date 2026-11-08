@@ -9,7 +9,7 @@ import requests, google_indexing, x_auto_post_buffer as xb
 ENV_FILE = Path(os.environ.get("TREND_ENV_FILE") or ROOT / ".env")
 _orig = xb.load_env
 def load_env(_path):
-    env = _orig(ROOT / ".env"); env.update({k: v.strip("\"'") for k, v in _orig(ENV_FILE).items() if v and not k.startswith("GOOGLE_INDEXING")})  # ドライブ.envのIndexing鍵パスはWindows用なのでローカルを優先; return env
+    env = _orig(ROOT / ".env"); env.update({k: v.strip("\"'") for k, v in _orig(ENV_FILE).items() if v and not k.startswith("GOOGLE_INDEXING")}); return env  # ドライブ.envのIndexing鍵パスはWindows用なのでローカルを優先
 xb.load_env = google_indexing.load_env = load_env
 env = load_env(None)
 U = env["WP_TREND_URL"].rstrip("/"); A = (env["WP_TREND_USERNAME"], env["WP_TREND_APP_PASSWORD"])
