@@ -45,6 +45,10 @@ ARTICLES = [
      "vivant-movie-1204-ticket", "映画VIVANTはいつ公開？チケット発売日"),
     ("vivantfinal_05_nozaki", "VIVANT野崎とリュウはいつから組んでた？中央特務局とは？",
      "vivant-24-nozaki-ryu-itsukara", "野崎とリュウはいつから組んでた？中央特務局とは"),
+    ("vivantfinal_06_manju", "VIVANT最終回の別班饅頭の意味は？誰が置いたか次の任務を考察！",
+     "vivant-24-beppan-manju", "最終回の別班饅頭の意味は？誰が置いた？"),
+    ("vivantfinal_07_elisha", "VIVANTエリシャは最終回で死んだ？核融合データの在りかも解説！",
+     "vivant-24-elisha-data", "エリシャは死んだ？核融合データの在りか"),
 ]
 
 
@@ -128,7 +132,7 @@ def main():
         plain = re.sub(r"<[^>]+>|<!--.*?-->", "", content, flags=re.S)
         print(f"[{base}] title={len(title)}字 body≈{len(re.sub(r'\s', '', plain))}字")
 
-        payload = {"content": content, "status": "draft"}
+        payload = {"content": content}  # 既存記事のstatusは触らない(公開済みを下書きに戻さない)
         if base in ids:
             endpoint = f"{WP_URL}/wp-json/wp/v2/posts/{ids[base]['id']}"
         else:
