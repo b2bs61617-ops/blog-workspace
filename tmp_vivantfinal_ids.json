@@ -1,0 +1,27 @@
+{
+ "vivantfinal_01_kaoru": {
+  "id": 13007,
+  "media": 13019,
+  "slug": "vivant-24-kaoru-shotai"
+ },
+ "vivantfinal_02_beki": {
+  "id": 13008,
+  "media": 13023,
+  "slug": "vivant-24-beki-kaoru-kaomishiri"
+ },
+ "vivantfinal_03_juice": {
+  "id": 13009,
+  "media": 13020,
+  "slug": "vivant-24-nogi-kusuri-juice"
+ },
+ "vivantfinal_04_movie": {
+  "id": 13010,
+  "media": 13021,
+  "slug": "vivant-movie-1204-ticket"
+ },
+ "vivantfinal_05_nozaki": {
+  "id": 13011,
+  "media": 13022,
+  "slug": "vivant-24-nozaki-ryu-itsukara"
+ }
+}
