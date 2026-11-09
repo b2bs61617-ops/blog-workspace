@@ -185,6 +185,29 @@ b.append(p([
     "フリマアプリなどでは並行輸入品や中古品も多いので、長く使うなら正規の販売店で買うのが安心です。",
 ]))
 
+AFF = json.loads((ROOT / "articles" / "hokuto_suito_hydroflask_1109_affiliate.json").read_text(encoding="utf-8"))
+
+
+def product_card(name, note, d):
+    btn = "display:inline-block;padding:8px 18px;margin:4px 6px 0 0;border-radius:4px;color:#fff;font-weight:bold;text-decoration:none;font-size:0.92em;"
+    return wphtml(f'''<div style="border:1px solid {BORDER};border-radius:4px;margin:0 0 16px 0;padding:14px 16px;background:#fff;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+<a href="{d["rakuten"]}" target="_blank" rel="nofollow sponsored noopener" style="flex:0 0 120px;"><img src="{d["image"]}" alt="{name}" width="120" height="120" style="width:120px;height:120px;object-fit:contain;" loading="lazy"></a>
+<div style="flex:1 1 180px;min-width:0;">
+<p style="margin:0 0 4px 0;font-weight:bold;">{name}</p>
+<p style="margin:0 0 6px 0;font-size:0.88em;color:#555;">{note}</p>
+<a href="{d["rakuten"]}" target="_blank" rel="nofollow sponsored noopener" style="{btn}background:#bf0000;">楽天市場で見る</a><a href="{d["amazon"]}" target="_blank" rel="nofollow sponsored noopener" style="{btn}background:#ff9900;">Amazonで見る</a>
+</div>
+</div>''')
+
+
+b.append(h3("北斗と同じ黒のハイドロフラスクをチェック"))
+b.append(p([
+    "写真の水筒と同じ、ブラックのスタンダードマウス(フレックスキャップつき)です。",
+    "サイズで迷ったら、普段使いなら18oz、ライブやジムでたっぷり飲みたいなら21ozがおすすめです。",
+]))
+b.append(product_card("Hydro Flask スタンダードマウス 18oz(532mL) ブラック", "バッグに入れやすい定番サイズ", AFF["18"]))
+b.append(product_card("Hydro Flask スタンダードマウス 21oz(621mL) ブラック", "たっぷり入る少し背の高いサイズ", AFF["21"]))
+
 b.append(h2("まとめ"))
 b.append(summary([
     "松村北斗の愛用水筒は、ハイドロフラスクのスタンダードマウス(ブラック)とみられる(2022年4月時点)",
