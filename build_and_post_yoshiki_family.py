@@ -62,7 +62,7 @@ def build():
         ]),
         ui.titlebox("この記事でわかること", [
             "YOSHIKIは何人家族？", "父親は？さんま御殿で話す「関西でおなじみの会社」",
-            "母親は？テミンとJO1川尻蓮のファン", "お姉ちゃんは何歳差？", "日プ最終回の家族席", "家族思いのエピソード"]),
+            "母親は？テミンとJO1川尻蓮のファン", "お姉ちゃんは何歳差？", "実家は音楽一家？トランペットとバイオリン", "実家では猫を2匹飼っている", "日プ最終回の家族席", "家族思いのエピソード"]),
 
         h2("YOSHIKI(矢田佳暉)の家族構成は？"),
         ui.minibox("<strong>わかっている家族:</strong>父・母・姉(4歳上)・YOSHIKIさん本人",
@@ -124,6 +124,24 @@ def build():
           "「やっと自分専用のゲーム機ができた」とうれしかったそうなので、それまではお姉ちゃんとゲーム機を一緒に使っていたのかもしれません。",
           "年の近いきょうだいとして、いっしょに遊びながら育ってきた様子が想像できますね。"),
 
+        h2("実家は音楽一家？トランペットとバイオリンがある"),
+        ui.minibox("<strong>わかっていること:</strong>実家にトランペットとバイオリンがある",
+                   "<strong>出典:</strong>公式のQ&A動画(本人の回答)"),
+        p("公式のQ&A動画で「ギター以外にできる楽器はありますか？」という質問が届いたとき、YOSHIKIさんは「家にはトランペットとバイオリンがあるので」と答えていました。",
+          f"ギター以外にも、{mk('実家にあるトランペットやバイオリンに触れられる環境')}で育ったようです。"),
+        p("トランペットとバイオリンがふつうに家にあるのは珍しく、家族のだれかが演奏していた可能性もありそうです。",
+          "誰の楽器なのかまでは明かしていませんが、お母さんが長年のアイドル好きだったことも合わせると、音楽が身近な家庭だったことがうかがえます。",
+          "高校時代は軽音楽部で部長を務め、ギター＆ボーカルを担当していたYOSHIKIさんの音楽好きは、こうした家庭環境で育まれたのかもしれません。"),
+
+        h2("実家では猫を2匹飼っている"),
+        ui.minibox("<strong>わかっていること:</strong>猫を2匹飼っている",
+                   "<strong>出典:</strong>『MZINE』(2026年10月はじめ放送)の「素顔POINT」"),
+        p("デビュー直前のKO1KEYZを特集した『MZINE』では、メンバーが15秒で自分の魅力をアピールするコーナーがありました。",
+          f"そこで紹介されたYOSHIKIさんの「素顔POINT」の1つが{mk('猫を2匹飼っている')}です。",
+          "画面には、カゴの中でおなかを出してくつろぐキジトラ白の猫の写真が映っていました。"),
+        p("ほかの素顔POINTは「高校時代は軽音楽部(部長)」「ミセスの大ファン」「お菓子作りが得意」。",
+          "ファンのあいだで「デカ猫」と呼ばれるYOSHIKIさんですが、家族の一員として本物の猫2匹と暮らしてきたんですね。"),
+
         h2("日プ最終回には母と姉が家族席に"),
         p("6月6日に放送された『PRODUCE 101 JAPAN 新世界』の最終回では、会場の家族席が映る場面がありました。",
           "放送を見たファンによると、YOSHIKIさんの家族席にはお母さんとお姉ちゃんの姿があったそうです。"),
@@ -147,7 +165,7 @@ def build():
             "<strong>父親</strong>:関西ではおなじみの会社に勤める(さんま御殿11/10放送で思い出を披露)",
             "<strong>母親</strong>:テミンの長年のファンでソロコンサートにも。JO1川尻蓮さんのファンでもある",
             "<strong>姉</strong>:4歳上(9/21ヨントンで本人談)。日プ最終回は母と姉が家族席に",
-            "<strong>家庭環境</strong>:お母さんの影響でK-POPに触れて育ち、家族と仲が良いことがうかがえる",
+            "<strong>家庭環境</strong>:実家にはトランペットとバイオリン、猫が2匹。お母さんの影響でK-POPにも触れて育った",
         ]),
         p("『踊る！さんま御殿!!』でお父さんとのどんな思い出が語られるのか、放送が楽しみですね。",
           "放送後にはこの記事にもエピソードを追記します。家族の支えを受けて夢をつかんだYOSHIKIさんを、これからも応援していきましょう！"),
@@ -198,6 +216,9 @@ def build():
         ui.quotebox("9월 21일 영통", ["팬: 누나랑 몇 살 차이야?", f"YOSHIKI: {mk('4!')}"]),
         p("YOSHIKI는 2004년 6월생이니 누나는 2000년 무렵생으로 보여요.",
           "9월 5일 오사카 오프라인 특전회에서는 팬의 이름표를 보고 '누나랑 이름 똑같아!!!'라며 놀랐다고 해요. 누나는 일반인이라 이름은 적지 않아요."),
+        h2("본가에는 트럼펫과 바이올린, 고양이 2마리"),
+        p("공식 Q&A 영상에서 '기타 외에 다룰 수 있는 악기가 있나요?'라는 질문에 YOSHIKI는 '집에 트럼펫과 바이올린이 있어서'라고 답했어요.",
+          f"또 일본 방송 『MZINE』(10월 초 방송)의 '맨얼굴 POINT'에서는 {mk('고양이 2마리를 키우고 있다')}고 소개됐어요. 고등학교 때는 경음악부 부장이었다고 해요."),
         h2("일프 최종회 가족석에 엄마와 누나"),
         p(f"6월 6일 방송된 최종회에서 YOSHIKI는 {mk('최종 2위')}로 데뷔를 확정했어요. 방송에 비친 가족석에는 어머니와 누나가 있었다고 해요."),
         h2("팬들의 반응"),
@@ -211,6 +232,7 @@ def build():
             "<strong>아버지</strong>: 간사이에서 친숙한 회사 근무 (11/10 산마고텐에서 추억 공개)",
             "<strong>어머니</strong>: 태민의 오랜 팬, JO1 카와시리 렌의 팬",
             "<strong>누나</strong>: 4살 위 (9/21 영통 본인 발언). 최종회 가족석에 엄마와 함께",
+            "<strong>본가</strong>: 트럼펫과 바이올린이 있고 고양이 2마리를 키움",
         ]),
         p("방송 후 아버지와의 에피소드도 추가할게요. 가족의 응원을 받아 꿈을 이룬 YOSHIKI를 계속 응원해요!"),
     ]
@@ -256,6 +278,9 @@ def build():
         ui.quotebox("Sep 21 online fan call", ["Fan: How many years apart are you and your sister?", f"YOSHIKI: {mk('Four!')}"]),
         p("Since YOSHIKI was born in June 2004, his sister was likely born around 2000.",
           "At an offline event in Osaka on September 5, he reportedly glanced at a fan's name tag and exclaimed, \"Same name as my sister!\" She's a private individual, so we won't share her name."),
+        h2("A trumpet, a violin and two cats at home"),
+        p("In an official Q&A video, asked whether he plays any instruments besides guitar, YOSHIKI answered, \"We have a trumpet and a violin at home.\"",
+          f"On the TV show \"MZINE\" (aired in early October), one of his \"real me\" points was that {mk('he has two cats')}. He was also president of his high school's light music club."),
         h2("Mom and sister at the PRODUCE 101 finale"),
         p(f"YOSHIKI secured his debut by finishing {mk('2nd')} in the June 6 finale. Viewers noticed his mother and sister in the family seats."),
         h2("Summary"),
@@ -264,6 +289,7 @@ def build():
             "<strong>Father</strong>: works at a well-known Kansai company; story airs on Sanma Goten Nov 10",
             "<strong>Mother</strong>: longtime Taemin fan; also a fan of JO1's Ren Kawashiri",
             "<strong>Sister</strong>: four years older (Sep 21 fan call); attended the finale with their mom",
+            "<strong>Home</strong>: a trumpet and a violin, plus two cats",
         ]),
         p("We'll update this article after the broadcast. Keep cheering on YOSHIKI!"),
     ]
@@ -322,6 +348,13 @@ if __name__ == "__main__":
         sys.exit(0)
     (jt, jc, js), (kt, kc, ks), (et, ec, es) = built
     jc = honorific(jc)
+    if "--update" in sys.argv:
+        for pid, c in ((15541, jc), (15542, kc), (15543, ec)):
+            r = requests.post(f"{WP_URL}/wp-json/wp/v2/posts/{pid}", headers={**HA, "Content-Type": "application/json"},
+                              data=json.dumps({"content": c, "status": "draft"}).encode("utf-8"))
+            r.raise_for_status()
+            print("UPDATED", pid, r.json()["status"])
+        sys.exit(0)
     make_eyecatch()
     eye = upload(EYE, "image/png")["id"]
     jp = post_draft(jt, jc, BASE_SLUG, "ja", [66, 12, 84], eye, js)
