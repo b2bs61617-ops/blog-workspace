@@ -36,6 +36,22 @@ REL = {
            (L(11059), "TOWA(濱田永遠)の家族構成は？父親は韓国人と判明！")],
 }
 
+ASK_URL = "https://www.youtube.com/watch?v=4sIPpxIARr0&t=60s"
+MEDIA_TRUMPET = json.loads((WORK / "media_trumpet.json").read_text(encoding="utf-8")) if (WORK / "media_trumpet.json").exists() else None
+
+
+def fig(alt, cap):
+    M = MEDIA_TRUMPET
+    if not M:
+        return ""
+    Lg, Md, F = M["sizes"]["large"], M["sizes"]["medium"], M["sizes"]["full"]
+    return ('<!-- wp:image {"id":%d,"sizeSlug":"full","linkDestination":"none"} -->\n' % M["id"]
+            + f'<figure class="wp-block-image size-full"><img src="{F["source_url"]}" alt="{alt}" class="wp-image-{M["id"]}" width="{F["width"]}" height="{F["height"]}" '
+            f'style="max-width:100%;height:auto;" srcset="{Md["source_url"]} {Md["width"]}w, {Lg["source_url"]} {Lg["width"]}w, {F["source_url"]} {F["width"]}w" sizes="(max-width: 780px) 100vw, 780px">\n'
+            f'<figcaption class="wp-element-caption" style="text-align:center;font-size:12px;">{cap}</figcaption></figure>\n'
+            '<!-- /wp:image -->')
+
+
 ui = Ui("#d9819b", "#f2cfd9", "#fdf5f8", "rgba(217,129,155,0.07)")
 
 
@@ -126,9 +142,15 @@ def build():
 
         h2("実家は音楽一家？トランペットとバイオリンがある"),
         ui.minibox("<strong>わかっていること:</strong>実家にトランペットとバイオリンがある",
-                   "<strong>出典:</strong>公式のQ&A動画(本人の回答)"),
-        p("公式のQ&A動画で「ギター以外にできる楽器はありますか？」という質問が届いたとき、YOSHIKIさんは「家にはトランペットとバイオリンがあるので」と答えていました。",
-          f"ギター以外にも、{mk('実家にあるトランペットやバイオリンに触れられる環境')}で育ったようです。"),
+                   f"<strong>出典:</strong>KO1KEYZ公式YouTube「{a(ASK_URL, '💭 ASK KO1KEYZ｜YOSHIKI')}」(2026年7月21日公開)"),
+        p("KO1KEYZ公式YouTubeのQ&A企画「ASK KO1KEYZ」で、「ギター以外にできる楽器はありますか？」という質問にYOSHIKIさんが答えています。"),
+        ui.quotebox("「ASK KO1KEYZ｜YOSHIKI」での回答", [
+            "ギターがやっぱり1番得意なんですけど、軽音楽部でドラムとベースとかもやってて",
+            "キーボードは作曲する程度ぐらいで、片手で弾けるぐらいですね",
+            f"{mk('家にはトランペットとバイオリンがあるので、たまに触ったりしてます')}"]),
+        fig("「家にはトランペットとバイオリンがあるので」と話すYOSHIKI",
+            f"出典:KO1KEYZ公式YouTube「{a(ASK_URL, '💭 ASK KO1KEYZ｜YOSHIKI')}」"),
+        p(f"ギターだけでなく、{mk('実家にあるトランペットやバイオリンにも触れられる環境')}で育ったようです。"),
         p("トランペットとバイオリンがふつうに家にあるのは珍しく、家族のだれかが演奏していた可能性もありそうです。",
           "誰の楽器なのかまでは明かしていませんが、お母さんが長年のアイドル好きだったことも合わせると、音楽が身近な家庭だったことがうかがえます。",
           "高校時代は軽音楽部で部長を務め、ギター＆ボーカルを担当していたYOSHIKIさんの音楽好きは、こうした家庭環境で育まれたのかもしれません。"),
@@ -217,7 +239,10 @@ def build():
         p("YOSHIKI는 2004년 6월생이니 누나는 2000년 무렵생으로 보여요.",
           "9월 5일 오사카 오프라인 특전회에서는 팬의 이름표를 보고 '누나랑 이름 똑같아!!!'라며 놀랐다고 해요. 누나는 일반인이라 이름은 적지 않아요."),
         h2("본가에는 트럼펫과 바이올린, 고양이 2마리"),
-        p("공식 Q&A 영상에서 '기타 외에 다룰 수 있는 악기가 있나요?'라는 질문에 YOSHIKI는 '집에 트럼펫과 바이올린이 있어서'라고 답했어요.",
+        p("KO1KEYZ 공식 유튜브 'ASK KO1KEYZ'에서 '기타 외에 다룰 수 있는 악기가 있나요?'라는 질문에 YOSHIKI는 '집에 트럼펫과 바이올린이 있어서 가끔 만져 보기도 해요'라고 답했어요."),
+        fig("집에 트럼펫과 바이올린이 있다고 말하는 YOSHIKI",
+            f"출처: KO1KEYZ 공식 YouTube 「{a(ASK_URL, '💭 ASK KO1KEYZ｜YOSHIKI')}」"),
+        p(
           f"또 일본 방송 『MZINE』(10월 초 방송)의 '맨얼굴 POINT'에서는 {mk('고양이 2마리를 키우고 있다')}고 소개됐어요. 고등학교 때는 경음악부 부장이었다고 해요."),
         h2("일프 최종회 가족석에 엄마와 누나"),
         p(f"6월 6일 방송된 최종회에서 YOSHIKI는 {mk('최종 2위')}로 데뷔를 확정했어요. 방송에 비친 가족석에는 어머니와 누나가 있었다고 해요."),
@@ -279,7 +304,10 @@ def build():
         p("Since YOSHIKI was born in June 2004, his sister was likely born around 2000.",
           "At an offline event in Osaka on September 5, he reportedly glanced at a fan's name tag and exclaimed, \"Same name as my sister!\" She's a private individual, so we won't share her name."),
         h2("A trumpet, a violin and two cats at home"),
-        p("In an official Q&A video, asked whether he plays any instruments besides guitar, YOSHIKI answered, \"We have a trumpet and a violin at home.\"",
+        p("On KO1KEYZ's official YouTube Q&A \"ASK KO1KEYZ,\" asked whether he plays any instruments besides guitar, YOSHIKI said, \"We have a trumpet and a violin at home, so I play around with them sometimes.\""),
+        fig("YOSHIKI saying there's a trumpet and a violin at home",
+            f"Source: KO1KEYZ official YouTube \"{a(ASK_URL, '💭 ASK KO1KEYZ｜YOSHIKI')}\""),
+        p(
           f"On the TV show \"MZINE\" (aired in early October), one of his \"real me\" points was that {mk('he has two cats')}. He was also president of his high school's light music club."),
         h2("Mom and sister at the PRODUCE 101 finale"),
         p(f"YOSHIKI secured his debut by finishing {mk('2nd')} in the June 6 finale. Viewers noticed his mother and sister in the family seats."),
