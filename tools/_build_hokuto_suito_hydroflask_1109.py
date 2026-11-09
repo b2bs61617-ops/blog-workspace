@@ -253,7 +253,7 @@ POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2), encoding="ut
 print("POST_ID", post["id"], post["status"], post["link"])
 
 eye = subprocess.run([sys.executable, str(ROOT / "tools" / "eyecatch_sixtones.py"), "--main", "松村北斗",
-                      "--bottom", "愛用の水筒はどこの？", "--bottom", "ハイドロフラスクの黒",
+                      "--bottom", "愛用の水筒はどこの？", "--bottom", "アメリカのボトルブランド！",
                       "--color-key", "松村北斗", "--out", str(EYECATCH)],
                      capture_output=True, text=True, encoding="utf-8", errors="replace")
 print(eye.stdout[-300:], eye.stderr[-300:])
