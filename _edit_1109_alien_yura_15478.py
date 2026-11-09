@@ -81,7 +81,7 @@ t = rep(t, CK + "TOWAのものは瞳がグリーン、KOSUKEのものは瞳の�
 t = rep(t, "空港で並んだTOWAとKOSUKEのバッグに、さりげなくおそろいのキーホルダーが光っていました。<br>\n次の空港でも、2人のバッグのエイリアンに注目ですね！",
         "空港で並んだTOWAとKOSUKE、そしてYURAのバッグに、さりげなくおそろいのキーホルダーが光っていました。<br>\n次の空港では、ほかのメンバーのバッグにもエイリアンが増えているかもしれません！", 15478)
 t = rep(t, ">TOWA・KOSUKE・KO1KEYZの関連記事</p>", ">TOWA・KOSUKE・YURA・KO1KEYZの関連記事</p>", 15478)
-save(15478, "【未】【KO1KEYZ】TOWA・KOSUKE・YURAのエイリアンはどこの？", t)
+save(15478, "【未】【KO1KEYZ】TOWA・KOSUKE・YURAおそろいエイリアン！", t)
 
 # ---------------- KR ----------------
 d = get(15479); t = d["content"]["raw"]
