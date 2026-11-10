@@ -1,0 +1,75 @@
+{
+  "media": {
+    "sign": {
+      "id": 1467,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-sign-281x500.jpg",
+      "w": 281,
+      "h": 500,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-sign-281x500.jpg 281w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-sign-281x500.jpg 281w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-sign-scaled.jpg 1440w"
+    },
+    "lineup": {
+      "id": 1468,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-lineup-500x281.jpg",
+      "w": 500,
+      "h": 281,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-lineup-500x281.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-lineup-500x281.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-lineup.jpg 2028w"
+    },
+    "uniform": {
+      "id": 1469,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-uniform-375x500.jpg",
+      "w": 375,
+      "h": 500,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-uniform-375x500.jpg 375w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-uniform-375x500.jpg 375w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-uniform.jpg 1536w"
+    },
+    "dict": {
+      "id": 1470,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-dict-355x500.jpg",
+      "w": 355,
+      "h": 500,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-dict-355x500.jpg 355w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-dict-355x500.jpg 355w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-dict.jpg 1455w"
+    },
+    "notice": {
+      "id": 1471,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-notice-375x500.jpg",
+      "w": 375,
+      "h": 500,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-notice-375x500.jpg 375w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-notice-375x500.jpg 375w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-notice.jpg 1536w"
+    },
+    "letter": {
+      "id": 1472,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-letter-500x377.jpg",
+      "w": 500,
+      "h": 377,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-letter-500x377.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-letter-500x377.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-letter.jpg 1474w"
+    },
+    "record": {
+      "id": 1473,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-record-500x377.jpg",
+      "w": 500,
+      "h": 377,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-record-500x377.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-record-500x377.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-record.jpg 1474w"
+    },
+    "bike": {
+      "id": 1474,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-bike-500x457.jpg",
+      "w": 500,
+      "h": 457,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-bike-500x457.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-bike-500x457.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-bike.jpg 2048w"
+    },
+    "meimei": {
+      "id": 1475,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-meimei-281x500.jpg",
+      "w": 281,
+      "h": 500,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-meimei-281x500.jpg 281w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-meimei-281x500.jpg 281w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-meimei-scaled.jpg 1440w"
+    },
+    "scripts": {
+      "id": 1476,
+      "large": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-scripts-500x375.jpg",
+      "w": 500,
+      "h": 375,
+      "srcset": "https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-scripts-500x375.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-scripts-500x375.jpg 500w, https://chomoand-0.com/wp-content/uploads/2026/11/gyugyutten-minoru-scripts-scaled.jpg 2560w"
+    }
+  },
+  "post_id": 1477
+}
