@@ -76,13 +76,13 @@ def style_table(inner):
 def to_blocks(src, base):
     src = src.replace("<!--RELATED-->", related_box(base) if RELATED else "")
     out = []
-    pattern = r"<blockquote[^>]*>.*?</blockquote>|<div[^>]*>.*?</div>|<(p|h2|h3|table|ul)>(.*?)</\1>|<hr>"
+    pattern = r"<blockquote[^>]*>.*?</blockquote>|<figure[^>]*>.*?</figure>|<div[^>]*>.*?</div>|<(p|h2|h3|table|ul)>(.*?)</\1>|<hr>"
     for m in re.finditer(pattern, src, re.S):
         whole, tag, inner = m.group(0), m.group(1), m.group(2)
         if whole.startswith("<blockquote"):
             out.append("<!-- wp:html -->\n" + whole
                        + '\n<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>\n<!-- /wp:html -->')
-        elif whole.startswith("<div"):
+        elif whole.startswith("<div") or whole.startswith("<figure"):
             out.append(f"<!-- wp:html -->\n{whole}\n<!-- /wp:html -->")
         elif tag is None:
             continue  # <hr> は全削除ルール
