@@ -96,7 +96,8 @@ def linkbox(items):
 IG = "https://www.instagram.com/p/DfevzSpzJAU/"
 EMBED = wphtml(f'''<blockquote class="instagram-media" data-instgrm-permalink="{IG}?utm_source=ig_embed" data-instgrm-version="14" style="background:#FFF;border:0;margin:1px auto;max-width:540px;min-width:280px;width:calc(100% - 2px);"><a href="{IG}" target="_blank" rel="noopener">SixTONES公式Instagramの投稿を見る</a></blockquote>
 <script async src="//www.instagram.com/embed.js"></script>''')
-AMAZON = "https://www.amazon.co.jp/s?k=adidas+%E3%82%A2%E3%83%87%E3%82%A3%E3%82%B9%E3%82%BF%E3%83%BC+%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB+5+KJ8804&tag=chomoand03-22"
+AMAZON = "https://www.amazon.co.jp/s?k=%E3%82%A2%E3%83%87%E3%82%A3%E3%82%B9%E3%82%BF%E3%83%BC+%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB+5&tag=chomoand03-22"
+SNKRDUNK = "https://snkrdunk.com/products/KJ8804"
 
 b = []
 b.append(p([
@@ -190,17 +191,22 @@ b.append(box("買える場所", [
     "アディダス公式オンラインストア・アディダスの店舗",
     "atmos(アトモス)などのスニーカーショップ",
     "スニダン・StockXなどのスニーカー再販サイト(定価より高めの場合あり)",
-    "Amazonなどの通販",
+    "Amazon(KJ8804は出品なし、別カラーのみ ※2026年11月10日時点)",
 ]))
 b.append(p([
     "北斗さんの写真をきっかけに人気が出ると、残っているサイズもすぐになくなってしまうかもしれません。",
     "再販サイトで買うときは、品番が「KJ8804」になっているか必ず確認しましょう。",
 ]))
 btn = "display:inline-block;padding:8px 18px;margin:4px 6px 0 0;border-radius:4px;color:#fff;font-weight:bold;text-decoration:none;font-size:0.92em;"
+b.append(p([
+    "北斗さんと同じKJ8804(プリラブドブルー/ダークブラウン)は、2026年11月10日時点でAmazonには出品がありませんでした。",
+    "同じ色がほしい人は、スニダンなどの再販サイトで品番「KJ8804」を探してみてください。",
+    "Amazonでは、黒×シルバーなど同じアディスター コントロール 5の別カラーが見つかります。",
+]))
 b.append(wphtml(f'''<div style="border:1px solid {BORDER};border-radius:4px;margin:0 0 16px 0;padding:14px 16px;background:#fff;">
-<p style="margin:0 0 4px 0;font-weight:bold;">adidas ADISTAR CONTROL 5(KJ8804)</p>
-<p style="margin:0 0 6px 0;font-size:0.88em;color:#555;">プリラブドブルー/ダークブラウン/グレーファイブ</p>
-<a href="{AMAZON}" target="_blank" rel="nofollow sponsored noopener" style="{btn}background:#ff9900;">Amazonで見る</a>
+<p style="margin:0 0 4px 0;font-weight:bold;">adidas ADISTAR CONTROL 5</p>
+<p style="margin:0 0 6px 0;font-size:0.88em;color:#555;">北斗と同じ色(KJ8804)はスニダン、別カラーはAmazonで</p>
+<a href="{SNKRDUNK}" target="_blank" rel="noopener" style="{btn}background:#333333;">スニダンでKJ8804を見る</a><a href="{AMAZON}" target="_blank" rel="nofollow sponsored noopener" style="{btn}background:#ff9900;">Amazonで別カラーを見る</a>
 </div>'''))
 
 b.append(h2("まとめ"))
