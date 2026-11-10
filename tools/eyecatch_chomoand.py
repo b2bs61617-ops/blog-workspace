@@ -210,7 +210,11 @@ def main() -> None:
         help="背景をPollinations.aiで毎回AI生成する(既定で有効)。--no-ai-bgで静的背景に固定",
     )
     parser.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
+    parser.add_argument("--fallback-ok", action="store_true",
+                        help="予備ツールと承知のうえで使う(トレンド速報はCanva必須、2026-11-10ガード追加)")
     args = parser.parse_args()
+    if not args.fallback_ok:
+        parser.error("chomoand.com(トレンド速報)のアイキャッチは2026-11-03〜Canva DAGnrXY2_5Iの上書きが必須だワン(docs/canva-snowman-kitetsu.mdの「トレンド速報」節)。このツールはCanva MCPが使えないときの予備なので、ユーザーの了承を得たときだけ --fallback-ok を付けて実行すること")
 
     bg_path, tmp_bg = resolve_background(args.ai_bg, args.seed)
     try:

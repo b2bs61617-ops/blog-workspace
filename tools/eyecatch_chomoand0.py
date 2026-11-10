@@ -292,7 +292,11 @@ def main() -> None:
         choices=sorted(TRAVIS_JAPAN_COLORS),
         help="Travis Japanメンバーカラー(個人記事はメンバー名、グループ記事は'group')を固定で使う",
     )
+    parser.add_argument("--fallback-ok", action="store_true",
+                        help="予備ツールと承知のうえで使う(トレンド速報はCanva必須、2026-11-10ガード追加)")
     args = parser.parse_args()
+    if not args.fallback_ok:
+        parser.error("chomoand.com(トレンド速報)のアイキャッチは2026-11-03〜Canva DAGnrXY2_5Iの上書きが必須だワン(docs/canva-snowman-kitetsu.mdの「トレンド速報」節)。このツールはCanva MCPが使えないときの予備なので、ユーザーの了承を得たときだけ --fallback-ok を付けて実行すること")
     if not args.title and not args.main:
         parser.error("--title か --main のどちらかを指定してください")
 
