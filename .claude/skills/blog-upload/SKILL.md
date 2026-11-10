@@ -49,6 +49,10 @@ STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group
 
 **chomoand-0.com(SixTONES)はこのあと`tools/sixtones_theme.py`で枠・マーカー・表をメンバーカラーに差し替える**(1人の記事=`--member 名前`、まとめ記事=`--per-section`。2026-11-07〜、詳細は[docs/rules.md](../../../docs/rules.md)の「SixTONES(chomoand-0.com)の記事も、枠・マーカー・表の色はメンバーカラーにする」)。
 
+## STEP 1.56: スマホ向けのやさしい文章チェック(全サイト共通・必須、2026-11-10〜)
+
+STEP1.55のあと、本文HTMLに`python tools/easy_read.py fix 記事.html`(難しい漢字をひらがなに自動で直す。「」の引用・『』の作品名・リンク文字列は触らない)→`python tools/easy_read.py check 記事.html`をかける。**NGが1件でもあれば(終了コード1)、その箇所を書き直してから投稿する**(80字超の文は2〜3文に分ける、5文超・250字超の段落は2つに分ける、4列以上の表は分けるか箇条書きに、硬い言葉は候補を見て言い換え)。「注意」(60〜80字の文・長い見出し・max-widthの無い画像)も直せるものは直す。ルールの詳細は[docs/rules.md](../../../docs/rules.md)の「スマホで読みやすく、誰でも分かる言葉で書く」。
+
 ## STEP 1.6: 楽天/Amazonアフィリエイトリンクの自動挿入(chomoand-1.com・愛用品/私物特定記事限定、2026-09-07〜)
 
 **投稿先がchomoand-1.com(コイキーズブログ)で、かつ記事がKO1KEYZメンバー個人の「愛用品・使用アイテム・私服/アクセサリー特定」系(例: 愛用香水、ナイトルーティンの使用コスメ、私服のブランド特定)のときだけ**、STEP 1.5で作ったブロック付きHTMLに対して[koikeyz-affiliate](../koikeyz-affiliate/SKILL.md)スキルの「新規記事執筆時の自動付与」セクション(STEP 1.6)を**確認なしで自動実行**する。
