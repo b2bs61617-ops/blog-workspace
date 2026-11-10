@@ -137,6 +137,10 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 
 コイキーズブログ(chomoand-1.com)の記事は、STEP6(韓国語版)に続けて**確認なしで自動的に**英語版の下書きも作成する(2026-08-19〜、トモキ指示。海外展開の優先順位「韓国語→英語→中国語」の2段階目)。ローカライズの方法・POSTする`lang`フィールドの使い方は[docs/english-expansion.md](../../../docs/english-expansion.md)を参照。**slugは必ず元記事slug+`-en`にする**(翻訳グループの紐付けはmu-plugin `ko1keyz-i18n-autolink` がslug規則で自動判定。REST の `translations` フィールドは効かない)。韓国語版と同じく、日本語版と同じアイキャッチ画像をfeatured_mediaに設定する(英語専用のテキスト入りアイキャッチは作らない)。chomoand.com・chomoand-0.comの記事にはこのSTEPは適用しない。**適用範囲は2026-08-19以降の新規アップロードのみ**(既存記事への英語版バックフィルは別途指示があるまで行わない)。STEP7を終えたら、slugが元記事の`-en`命名規則に従っていることを確認する(次回以降のSTEP0の突き合わせに必要)。あわせて`python tools/check_ko1keyz_title.py {日本語版ID} {韓国語版ID} {英語版ID}`を実行し、韓国語版・英語版のタイトルにも「KO1KEYZ」が入っていることを確認する(NGなら直す)。
 
+## STEP 8(全サイト共通・必須): YouTube埋め込みの再生エラー対策(2026-11-10〜)
+
+下書きを全部(翻訳版も含む)作り終えたら、`python tools/fix_youtube_embeds.py --recent-minutes 60`を実行する。直近60分に更新された全サイトの記事を調べて、`referrerpolicy`が無いYouTube iframe(読者の画面で「エラー153」になって再生できない)を、WordPress標準の埋め込みブロックに置き換える。直した件数は完了報告に含める。YouTubeを埋め込むときは最初からiframeを手書きしないで`<!-- wp:embed -->`ブロックを使う(書き方は同ツールの`embed_block()`)。経緯は[publish](../publish/SKILL.md) 0.7。
+
 ## 完了報告
 
 全STEP終了後、以下をユーザーに報告する:

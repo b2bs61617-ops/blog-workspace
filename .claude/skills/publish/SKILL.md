@@ -16,6 +16,10 @@ description: 「公開して」「公開する」と言われたときに使う�
 
 0.6. **chomoand-1.com(コイキーズブログ)は公開前に`python tools/sync_ko1keyz_eyecatch.py {日本語版ID...}`を実行する**(2026-11-03〜トモキ指示「韓国版、英語版も今後は全てそろえて」)。韓国語版・英語版のアイキャッチを日本語版と同じ画像にそろえる。トモキが日本語版だけCanva画像に差し替えた場合もこれで追いつく。直した件数は報告に含める。
 
+0.7. **全サイト共通: 公開前に`python tools/fix_youtube_embeds.py --site {サイトのキー名(KOIKEYS/AUDITION/CHOMO4など)} --ids {公開する記事ID...}`を実行する**(3言語セットなら3件とも、2026-11-10〜)。手書きのYouTube iframeに`referrerpolicy`が無いと、読者の画面で「エラー153」になって再生できないため。直す所が無ければ「直す所なし」と出るだけ。直した件数は報告に含める(このスキル経由の更新なので確認は要らない)。
+   - Why: 2026-11-10、KO1KEYZの金浦空港記事(15474ほか)とクロムハーツ記事群(公開済み14本を含む)で、埋め込み動画が全部再生エラーになっていた。原因は記事作成スクリプトが`<iframe src="https://www.youtube.com/embed/...">`を手書きしていて`referrerpolicy`が無かったこと。
+   - YouTubeを埋め込むときは、iframeを手書きしないでWordPress標準の`<!-- wp:embed {"url":"https://www.youtube.com/watch?v=ID",...} -->`ブロックを使う(書き方は`tools/fix_youtube_embeds.py`の`embed_block()`)。
+
 1. 対象の記事IDを確認する(直前の作業の記事ID、または指定された記事ID)
    - **chomoand-1.com(コイキーズブログ)は、日本語版・韓国語版・英語版の3言語セットをまとめて公開する**(2026-09-06にトモキ確認)。日本語版の記事IDが対象なら、Polylangの`translations`フィールド(または`-kr`/`-en`のslug命名規則)から韓国語版・英語版の下書きIDも引き、3件とも`publish`にする。翻訳版がまだ下書きとして存在しない場合はその言語はスキップしてよい(後日STEP6/7で生成された時点で別途公開する)。chomoand.com・chomoand-0.comは多言語展開していないので対象の1件だけ。
 2. [docs/wordpress.md](../../../docs/wordpress.md)の接続情報でREST APIを叩き、ステータスを`publish`に変更(3言語セットなら各IDについて実行)

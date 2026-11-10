@@ -184,3 +184,11 @@ chomoand-1.com(コイキーズブログ)向けに、上記YouTubeタレント監
 - **Yahoo!検索のみ対応。Googleは非対応**: ヘッドレスChromeでGoogle検索を開くと`/sorry/index`(異常なトラフィック検知)へ即リダイレクトされブロックされる。ブラウザ偽装等の回避策は取らない方針のため、Googleの順位はこのツールでは取得できない。
 - Googleの順位を知りたい場合は、Search Console API(`searchAnalytics.query`。サービスアカウント`chomoand-466@model-gearing-465707-d6.iam.gserviceaccount.com`を対象サイトのSearch Consoleに追加すれば使える。[google-indexing-setup.md](google-indexing-setup.md)と同じ鍵を流用)で実績データを見るか、トモキ本人がシークレットウィンドウで目視確認する。
 - Search Console実績データ(過去のインプレッション・平均掲載順位)との違い: `rank_check.py`は「今この瞬間の順位」、Search Consoleは「Googleが記録した実際の検索結果からの実績」(2〜3日のラグあり、低頻度クエリはプライバシー保護で個別非表示)。両方見ると答え合わせになる。
+
+## YouTube埋め込みの再生エラー修正(`tools/fix_youtube_embeds.py`、2026-11-10〜)
+
+手書きのYouTube iframeに`referrerpolicy`が無いと、YouTubeが「エラー153」で再生を断る。このツールは`.env`に認証情報があるサイトの記事を調べて、`<!-- wp:html -->`で包んだiframeをWordPress標準の`wp:embed`ブロックに置き換え、それ以外のiframeには`referrerpolicy="strict-origin-when-cross-origin"`を足す。直す前の本文は`backups/youtube_embed_fix/`に保存する。
+- `--recent-minutes 60`: 直近に更新された記事だけ(blog-upload STEP8)
+- `--site KOIKEYS --ids 15474`: 指定の記事だけ(publish 0.7)
+- `--all --dry`: 全記事を調べて一覧を出すだけ
+- `--hook`: Claude Code PostToolUseフック用(`.claude/settings.json`への登録はまだ。登録するにはユーザーの許可が要る)
