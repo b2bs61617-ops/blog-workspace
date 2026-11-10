@@ -31,6 +31,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && { if command -v python3 >/dev/null 2>&1; then python3 tools/fix_youtube_embeds.py --hook; else python tools/fix_youtube_embeds.py --hook; fi; } 2>/dev/null; exit 0",
+            "timeout": 90
+          }
+        ]
+      }
     ]
   },
   "permissions": {

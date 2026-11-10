@@ -191,4 +191,4 @@ chomoand-1.com(コイキーズブログ)向けに、上記YouTubeタレント監
 - `--recent-minutes 60`: 直近に更新された記事だけ(blog-upload STEP8)
 - `--site KOIKEYS --ids 15474`: 指定の記事だけ(publish 0.7)
 - `--all --dry`: 全記事を調べて一覧を出すだけ
-- `--hook`: Claude Code PostToolUseフック用(`.claude/settings.json`への登録はまだ。登録するにはユーザーの許可が要る)
+- `--hook`: Claude Code PostToolUseフック用。`.claude/settings.json`に登録済み(2026-11-10、ユカ許可)。BashかPowerShellで`python ... .py`を実行するたびに、全サイトの直近30分に更新された記事を自動で検査・修正し、直したらマツに知らせる(約2〜3秒)
