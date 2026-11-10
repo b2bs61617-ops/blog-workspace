@@ -20,7 +20,7 @@ AUTHOR = 3  # USER1 PC -> momo (docs/wordpress.md)
 
 ARTICLES = [
     {"base": "senkyo4_next_ski", "slug": "senkyo-series-4-next-ski",
-     "title": "【未】占拠シリーズ第4弾の舞台はスキー場？Next画像の意味と放送時期を考察",
+     "title": "【未】占拠シリーズ第4弾の舞台は？画像の意味と放送時期を考察！",
      "eyecatch": ["--top", "占拠シリーズ", "--main", "第4弾の舞台は？", "--bottom", "Next画像の雪とスキーを考察"]},
 ]
 
