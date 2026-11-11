@@ -18,6 +18,7 @@ from build_and_post_shimekake_pokapoka_bag_items import IMAGES, IDS_FILE, TVER, 
 ROOT = Path(__file__).resolve().parent
 HTML_OUT = ROOT / "tmp_shimekake_pokapoka_boxyne_bag.html"
 PERFUME_ID = 2547
+PRICE_BIG = '<strong><span class="swl-marker mark_yellow" style="font-size:1.5em;">税込493,900円</span></strong>'  # 11/11オシリ指示で大きく
 
 TITLE = "【未】【ぽかぽか】七五三掛龍也のバッグはどこの？マルニのBOXYNE！"
 SLUG = "shimekake-ryuya-marni-boxyne-bag"
@@ -36,7 +37,7 @@ Travis Japanの七五三掛龍也が、2026年11月11日の『ぽかぽか』(�
 そのバッグは、{mark("MARNI(マルニ)の「BOXYNE スモールバッグ」", c)}です。
 """)
     b += para(f"""
-値段は税込{mark("493,900円", c)}で、デパートで今も買えるモデルです。
+値段は{PRICE_BIG}で、デパートで今も買えるモデルです。
 この記事では、バッグの商品名や値段、そう言える理由を、放送の画面とあわせてまとめます。
 バッグについていた「R」のチャームも紹介します。
 """)
@@ -52,7 +53,7 @@ Travis Japanの七五三掛龍也が、2026年11月11日の『ぽかぽか』(�
     b += h2("七五三掛龍也のバッグはマルニのBOXYNE スモールバッグ")
     b += minibox([("ブランド", "MARNI(マルニ)"), ("商品名", "BOXYNE(ボクシーン) スモールバッグ"),
                   ("品番", "BMMP0186U0P929400M72"), ("色", "こげ茶"),
-                  ("サイズ", "高さ約18cm×幅約28cm×奥行き約12cm"), ("値段", "493,900円(税込)")], c)
+                  ("サイズ", "高さ約18cm×幅約28cm×奥行き約12cm"), ("値段", PRICE_BIG)], c)
     b += pic("bag", "ぽかぽかで七五三掛龍也が持ってきたマルニのBOXYNE スモールバッグ")
     b += para("""
 七五三掛龍也は、ドラマ『小麦とバターと復讐と』で共演中の伊原六花と一緒に出演しました。
@@ -103,7 +104,7 @@ A4の書類は入りませんが、毎日の荷物を入れるにはちょうど
 
     b += h3("値段とどこで買える？")
     b += para(f"""
-BOXYNE スモールバッグの値段は、税込{mark("493,900円", c)}です。
+BOXYNE スモールバッグの値段は、{PRICE_BIG}です。
 2026年11月11日に見ると、高島屋・三越伊勢丹・松屋銀座のオンラインストアで在庫がありました。
 在庫はお店ごとにちがうので、気になる人は早めにチェックしてみてください。
 """)
@@ -190,6 +191,10 @@ if __name__ == "__main__":
         M = {k: api(f"media/{ids[k]}", method="GET") for k in ("bag", "logo", "charm")}
         HTML_OUT.write_text(build(M), encoding="utf-8")
         print("wrote", HTML_OUT)
+    if "--update" in sys.argv:  # 本文だけ差し替え(title/status/アイキャッチは触らない)
+        pid = int(sys.argv[sys.argv.index("--update") + 1])
+        r = api(f"posts/{pid}", {"content": HTML_OUT.read_text(encoding="utf-8")})
+        print("UPDATE", r["id"], r["status"])
     if "--post" in sys.argv:
         eye = Path(sys.argv[sys.argv.index("--post") + 1])
         final_html = HTML_OUT.read_text(encoding="utf-8")
