@@ -137,9 +137,9 @@ document.fonts.ready.then(() => {{
 """
 
 
-def build_pollinations_url(seed: int) -> str:
+def build_pollinations_url(seed: int, prompt: str = BG_GEN_PROMPT) -> str:
     """Pollinations.aiのリクエストURLを組み立てる(副作用なし)."""
-    encoded_prompt = urllib.parse.quote(BG_GEN_PROMPT)
+    encoded_prompt = urllib.parse.quote(prompt)
     query = urllib.parse.urlencode({
         "width": CANVAS_W,
         "height": CANVAS_H,
@@ -150,10 +150,10 @@ def build_pollinations_url(seed: int) -> str:
     return f"{POLLINATIONS_BASE_URL}{encoded_prompt}?{query}"
 
 
-def generate_ai_background(seed: int) -> bytes:
+def generate_ai_background(seed: int, prompt: str = BG_GEN_PROMPT) -> bytes:
     """Pollinations.ai(APIキー不要)で新しい背景バリエーションを1枚生成する.
     既定のPython-urllib User-Agentは403で弾かれるため、ブラウザ相当のUser-Agentを付ける。"""
-    url = build_pollinations_url(seed)
+    url = build_pollinations_url(seed, prompt)
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=POLLINATIONS_TIMEOUT_SEC) as resp:
         if resp.status != 200:
@@ -161,13 +161,13 @@ def generate_ai_background(seed: int) -> bytes:
         return resp.read()
 
 
-def resolve_background(use_ai: bool, seed: int | None = None) -> tuple[Path, Path | None]:
+def resolve_background(use_ai: bool, seed: int | None = None, prompt: str = BG_GEN_PROMPT) -> tuple[Path, Path | None]:
     """使用する背景パスを決める。戻り値は(背景パス, 生成した場合は削除すべき一時ファイルパス)。
     AI生成が無効・生成失敗のいずれかの場合は静的背景にフォールバックする。"""
     if not use_ai:
         return BG_PATH, None
     try:
-        image_bytes = generate_ai_background(seed if seed is not None else random.randint(0, 2**31 - 1))
+        image_bytes = generate_ai_background(seed if seed is not None else random.randint(0, 2**31 - 1), prompt)
         if not image_bytes:
             raise RuntimeError("Pollinations.aiから画像データが返らなかった")
         tmp_path = Path(tempfile.gettempdir()) / f"chomoand_ai_bg_{uuid.uuid4().hex}.jpg"
@@ -209,6 +209,8 @@ def main() -> None:
         "--ai-bg", action=argparse.BooleanOptionalAction, default=True,
         help="背景をPollinations.aiで毎回AI生成する(既定で有効)。--no-ai-bgで静的背景に固定",
     )
+    parser.add_argument("--bg-image", default=None, help="背景に使う画像ファイル(1200x675推奨)。指定するとAI生成・静的背景より優先")
+    parser.add_argument("--bg-prompt", default=None, help="AI背景の英語プロンプトを差し替える(恋リア以外の話題でカップル背景が合わないとき用)。未指定なら既定のカップルシルエット")
     parser.add_argument("--seed", type=int, default=None, help="背景生成のseedを固定する場合に指定(未指定ならランダム)")
     parser.add_argument("--fallback-ok", action="store_true",
                         help="予備ツールと承知のうえで使う(トレンド速報はCanva必須、2026-11-10ガード追加)")
@@ -216,7 +218,10 @@ def main() -> None:
     if not args.fallback_ok:
         parser.error("chomoand.com(トレンド速報)のアイキャッチは2026-11-03〜Canva DAGnrXY2_5Iの上書きが必須だワン(docs/canva-snowman-kitetsu.mdの「トレンド速報」節)。このツールはCanva MCPが使えないときの予備なので、ユーザーの了承を得たときだけ --fallback-ok を付けて実行すること")
 
-    bg_path, tmp_bg = resolve_background(args.ai_bg, args.seed)
+    if args.bg_image:
+        bg_path, tmp_bg = Path(args.bg_image).resolve(), None
+    else:
+        bg_path, tmp_bg = resolve_background(args.ai_bg, args.seed, args.bg_prompt or BG_GEN_PROMPT)
     try:
         path = render(build_html(args.top, args.main, args.bottom, args.hue, bg_path), Path(args.out))
         print(f"done: {path}")
