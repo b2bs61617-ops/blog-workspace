@@ -27,7 +27,7 @@ U = "https://chomoand-4.blog"
 PINK = dict(accent="#e7a1c8", border="#f3c6d9", bg="#fdf1f6", marker="mark_yellow")
 c = PINK
 
-TITLE = "【ぽかぽか】七五三掛龍也の香水はどこの？元太とおそろいはル ラボ！"
+TITLE = "【ぽかぽか】七五三掛龍也の愛用香水3本は？元太とおそろいはル ラボ！"
 BAG_ID = 2550  # バッグ記事(2026-11-11に分割)
 SLUG = "shimekake-ryuya-perfume-lelabo-bergamote22"
 CATEGORIES = [3, 8, 7]  # Travis Japan / 七五三掛龍也 / 松田元太
