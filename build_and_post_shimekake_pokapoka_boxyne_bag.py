@@ -20,7 +20,7 @@ HTML_OUT = ROOT / "tmp_shimekake_pokapoka_boxyne_bag.html"
 PERFUME_ID = 2547
 PRICE_BIG = '<strong><span class="swl-marker mark_yellow" style="font-size:1.5em;">税込493,900円</span></strong>'  # 11/11オシリ指示で大きく
 
-TITLE = "【未】【ぽかぽか】七五三掛龍也のバッグはどこの？マルニのBOXYNE！"
+TITLE = "【ぽかぽか】七五三掛龍也のバッグはどこの？マルニのBOXYNE！"
 SLUG = "shimekake-ryuya-marni-boxyne-bag"
 CATEGORIES = [3, 8]  # Travis Japan / 七五三掛龍也
 AUTHOR = 2  # momo
