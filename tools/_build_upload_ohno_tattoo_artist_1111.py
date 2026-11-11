@@ -10,7 +10,7 @@ import sys, os, json, base64, socket, urllib.request, urllib.error
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "articles", "ohno_tattoo_artist.html")
 POSTED = os.path.join(REPO, "articles", "ohno_tattoo_artist_posted.json")
-BASE_TITLE = "大野智のタトゥーの彫り師は誰？恵比寿のJA¥！柄の意味やいつからかも"
+BASE_TITLE = "大野智のタトゥーの彫り師は誰？恵比寿のJA¥！柄の意味は？いつから？"
 assert len(BASE_TITLE) <= 35, len(BASE_TITLE)
 TITLE = "【未】" + BASE_TITLE
 SLUG = "ohno-satoshi-tattoo-artist"
