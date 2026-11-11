@@ -17,6 +17,24 @@ NONSTOP_1023_X = "https://x.com/nonstop_fujitv/status/2113444112397676934"
 ZOJI_PRODUCT = "https://www.zojirushi.co.jp/syohin/rice/ricecooker/nx-ab/"
 ZOJI_NEWS = "https://www.zojirushi.co.jp/corp/news/2026/260514/NXAB.html"
 KAKAKU_MAG = "https://kakakumag.com/seikatsu-kaden/?id=22482"
+# 楽天(生活家電ディープライス NX-AB10-BZ 107,500円 2026/11/11時点)・Amazon検索。affiliate_linker.pyで取得
+RAKUTEN_URL = ("https://hb.afl.rakuten.co.jp/hgc/g00pqhin.vxz95d17.g00pqhin.vxz96678/?pc=https%3A%2F%2Fitem.rakuten.co.jp"
+               "%2Fd-price%2Fnx-ab10-bz%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fd-price%2Fi%2F10099801%2F"
+               "&rafcid=wsc_i_is_04cda4eb-00a4-43bd-be26-fcaa4d5caf0c")
+RAKUTEN_IMG = "https://thumbnail.image.rakuten.co.jp/@0_mall/d-price/cabinet/d74/nx-ab10-bz_1.jpg?_ex=400x400"
+AMAZON_URL = "https://www.amazon.co.jp/s?k=%E8%B1%A1%E5%8D%B0+%E7%82%8E%E8%88%9E%E7%82%8A%E3%81%8D+NX-AB10&tag=chomoand03-22"
+SPON = 'target="_blank" rel="nofollow sponsored noopener"'
+
+
+def productbox():
+    btn = "display:inline-block;margin:4px;padding:10px 18px;border-radius:4px;color:#fff;font-weight:bold;text-decoration:none;"
+    return wphtml(f'''<div style="border:1px solid {C_BORDER};border-radius:4px;padding:16px;margin:0 0 16px 0;background:#fff;text-align:center;">
+<a href="{RAKUTEN_URL}" {SPON}><img src="{RAKUTEN_IMG}" alt="象印 圧力IH炊飯ジャー 炎舞炊き NX-AB10-BZ(黒)" width="300" height="300" style="max-width:100%;height:auto;"></a>
+<p style="margin:8px 0 4px 0;font-weight:bold;">象印 圧力IH炊飯ジャー 炎舞炊き NX-AB10(5.5合炊き)</p>
+<p style="margin:0 0 8px 0;font-size:0.85em;color:#888;">写真は黒(NX-AB10-BZ)。白(NX-AB10-WZ)もあります</p>
+<a href="{RAKUTEN_URL}" {SPON} style="{btn}background:#bf0000;">楽天で見る</a>
+<a href="{AMAZON_URL}" {SPON} style="{btn}background:#232f3e;">Amazonで見る</a>
+</div>''')
 
 
 def wphtml(s): return f"<!-- wp:html -->\n{s}\n<!-- /wp:html -->"
@@ -77,6 +95,7 @@ TITLE = "【未】【ぽかぽか】七五三掛龍也の炊飯器はどこの�
 SLUG = "shimekake-ryuya-zojirushi-enbudaki-rice-cooker"
 b = []
 
+b.append(wphtml('<p style="font-size:12px;color:#888;">本記事はプロモーションを含みます</p>'))
 b.append(p([
     "Travis Japanの七五三掛龍也が、2026年11月11日の『ぽかぽか』(フジテレビ系)に出演しました。",
     "番組の「ベストバイ」で紹介したのは、なんと自宅で使っている炊飯器です。",
@@ -104,6 +123,7 @@ b.append(minibox([
     ("発売日", "2026年6月21日"),
     ("値段", "オープン価格(ネットでは10万円前後)"),
 ]))
+b.append(productbox())
 b.append(p([
     "七五三掛龍也は、11月11日の『ぽかぽか』に、伊原六花と一緒に出演しました。",
     "2人はドラマ『小麦とバターと復讐と』で共演していて、その宣伝をかねた出演です。",
@@ -146,7 +166,7 @@ b.append(p([
 ]))
 b.append(p([
     f"{a(KAKAKU_MAG, '価格.comマガジン')}の2026年9月の記事では、最安値は95,437円でした。",
-    "お店や時期によっては、これより高く売られていることもあります。",
+    "2026年11月11日に楽天市場を見ると、黒は10万6千円くらいから売られていました。",
     f"だいたい{marker('10万円前後')}の、かなり高い炊飯器です。",
 ]))
 b.append(table(
@@ -170,8 +190,9 @@ b.append(p([
 ]))
 b.append(titlebox("購入先", [
     a(ZOJI_PRODUCT, "象印公式サイト(炎舞炊き NX-AB型)"),
+    f'<a href="{RAKUTEN_URL}" {SPON}>楽天市場(NX-AB10-BZ 黒)</a>',
+    f'<a href="{AMAZON_URL}" {SPON}>Amazon(炎舞炊き NX-AB10)</a>',
     "家電量販店(店頭・ネットショップ)",
-    "Amazon・楽天市場などの通販サイト",
 ]))
 
 # ---- features ----
@@ -320,3 +341,16 @@ if "--post" in sys.argv:
         "title": TITLE, "content": final_html, "slug": SLUG, "status": "draft",
         "categories": [3, 8, 10], "author": 2, "featured_media": m.get("id")}).json()
     print("POST", r.get("id"), r.get("status"), r.get("link"))
+
+if "--update" in sys.argv:  # 下書き2530の本文だけ差し替える(写真・アフィリエイト追加 2026-11-11 ユカ依頼)
+    import requests
+    sys.path.insert(0, str(ROOT / "tools"))
+    import x_auto_post_buffer as xb
+    env = xb.load_env(ROOT / ".env")
+    env.update({k: v.strip("\"'") for k, v in xb.load_env(Path(os.path.expanduser(
+        "~/Library/CloudStorage/GoogleDrive-b2bs61617@gmail.com/マイドライブ/.env"))).items() if v})
+    WP = env["WP_CHOMO4_URL"].rstrip("/"); A = (env["WP_CHOMO4_USERNAME"], env["WP_CHOMO4_APP_PASSWORD"])
+    pid = int(sys.argv[sys.argv.index("--update") + 1])
+    r = requests.post(f"{WP}/wp-json/wp/v2/posts/{pid}", auth=A, timeout=120,
+                      json={"content": HTML_OUT.read_text(encoding="utf-8")}).json()
+    print("UPDATE", r.get("id"), r.get("status"), r.get("title", {}).get("rendered"))
