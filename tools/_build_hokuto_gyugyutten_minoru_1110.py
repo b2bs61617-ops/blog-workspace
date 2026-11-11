@@ -381,7 +381,7 @@ posted["post_id"] = post["id"]
 POSTED.write_text(json.dumps(posted, ensure_ascii=False, indent=2), encoding="utf-8")
 print("POST_ID", post["id"], post["status"], post["link"])
 
-eye = subprocess.run([sys.executable, str(ROOT / "tools" / "eyecatch_sixtones.py"), "--main", "松村北斗",
+eye = subprocess.run([sys.executable, str(ROOT / "tools" / "eyecatch_sixtones.py"), "--top", "カムカムエヴリバディ", "--main", "松村北斗",
                       "--bottom", "稔の学生服はどんな展示？", "--bottom", "ぎゅぎゅっと展レポ！",
                       "--color-key", "松村北斗", "--out", str(EYECATCH)],
                      capture_output=True, text=True, encoding="utf-8", errors="replace")
