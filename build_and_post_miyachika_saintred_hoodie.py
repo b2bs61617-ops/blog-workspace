@@ -25,6 +25,7 @@ CAP_IG = f'出典:{a("https://www.instagram.com/travis_japan_official/", "Travis
 SR_IG = "https://www.instagram.com/liveforsaintred/"
 SR_POST = "https://www.instagram.com/liveforsaintred/p/DDzsNQavyJT/"
 SR_STORE = "https://saintred.store/"
+CAP_URL = "https://www.finishline.com/pdp/new-era-philadelphia-phillies-mlb-9forty-a-frame-snapback-hat/prod30143683/71029302/300"
 
 
 def ig_embed(url, label):
@@ -47,6 +48,7 @@ b.append(whatbox([
     "SAINT REDと分かった理由(胸のワッペン)",
     "SAINT REDはどんなブランドか",
     "パーカーの値段と、今から買えるか",
+    "白いキャップのブランドと値段",
     "戸塚祥太との放送で話していたこと",
 ]))
 
@@ -157,15 +159,37 @@ b.append(titlebox("公式情報", [
 ]))
 
 # ---- キャップ ----
-b.append(h3("白いキャップはレンジャーズのロゴ"))
+b.append(h3("白いキャップはニューエラのレンジャーズ"))
 b.append(p([
-    "パーカーと合わせていた白いキャップには、赤い「T」のロゴが入っていました。",
-    "これはアメリカのメジャーリーグの球団、テキサス・レンジャーズのロゴです。",
-    "赤いパーカーと赤いロゴで色をそろえた、まとまりのあるコーデでした。",
+    f"パーカーと合わせていた白いキャップは、{marker('ニューエラ「9FORTY A-Frame」のテキサス・レンジャーズモデル')}とみられます。",
+    "カラーは「Chrome/Black」で、クリーム色の生地に黒い「T」のロゴが入っています。",
+    "黒い「T」の後ろに、赤いふちを少しずらして重ねたデザインが一致しています。",
+]))
+b.append(table(
+    ["項目", "内容"],
+    [
+        ["商品名", "New Era Texas Rangers MLB 9FORTY Snapback Hat"],
+        ["カラー", "Chrome/Black"],
+        ["値段", "37ドル(約5,500円)"],
+        ["形", "前が高めのA-Frame・後ろで調整できるスナップバック"],
+    ],
+))
+b.append(p([
+    "アメリカの通販サイトFinish Lineでは、37ドルで売られています。",
+    "1ドル150円で計算すると、約5,500円です。",
+    "日本の通販サイトでは、11月11日の時点で同じカラーは見つかりませんでした。",
 ]))
 b.append(p([
-    "キャップのメーカーや型番までは、写真からは分かりませんでした。",
+    "ひとつ注意したいのが、つばの色です。",
+    "この商品はつばの上が黒ですが、写真ではつばの上の面がはっきり映っていませんでした。",
+    "そのため、ロゴと生地の色が一致していることから「とみられる」としています。",
+]))
+b.append(p([
+    "赤いパーカーと、ロゴの赤で色をそろえたコーデでした。",
     f"宮近海斗のキャップ好きは有名で、{inner(2155, 'ROLLING CRADLEの鳥のキャップの記事')}でも紹介しています。",
+]))
+b.append(titlebox("キャップの購入先", [
+    a(CAP_URL, "New Era Texas Rangers MLB 9FORTY Snapback Hat(Chrome/Black)|Finish Line"),
 ]))
 
 # ---- 放送内容 ----
@@ -206,7 +230,7 @@ b.append(checklist([
     "胸の「SAINT / RED」のワッペンから、アメリカのブランドSAINT REDとみられる",
     "看板アイテムEXPRESS HOODの値段は350ドル(約5万円)",
     "11月11日の時点で、公式ストアは閉店中で買えない状態",
-    "白いキャップはテキサス・レンジャーズの「T」ロゴ入り",
+    "白いキャップはニューエラ9FORTY A-Frameのレンジャーズ(Chrome/Black、37ドル)とみられる",
 ]))
 b.append(p([
     "日本ではまだ知る人の少ないブランドを、さらっと着こなしていた宮近海斗でした。",
@@ -228,6 +252,11 @@ out.write_text(content, encoding="utf-8")
 plain = re.sub(r"<[^>]+>", "", re.sub(r"<!--.*?-->", "", content))
 print("chars:", len(re.sub(r"\s", "", plain)), "title_len:", len(BASE_TITLE))
 if "--dry" in sys.argv:
+    sys.exit()
+if "--update" in sys.argv:
+    L.update_draft(2497, [content])
+    po = requests.get(f"{L.WP_URL}/wp-json/wp/v2/posts/2497?context=edit", headers=L.HEADERS_AUTH).json()
+    print("verify", po["status"], "9FORTY A-Frame" in po["content"]["raw"], "Finish Line" in po["content"]["raw"])
     sys.exit()
 
 payload = {"title": title, "content": content, "status": "draft",
