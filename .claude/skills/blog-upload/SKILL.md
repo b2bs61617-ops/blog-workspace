@@ -53,16 +53,20 @@ STEP1.5のあと、POSTする本文HTMLに`python tools/honorific.py fix --group
 
 STEP1.55のあと、本文HTMLに`python tools/easy_read.py fix 記事.html`(難しい漢字をひらがなに自動で直す。「」の引用・『』の作品名・リンク文字列は触らない)→`python tools/easy_read.py check 記事.html`をかける。**NGが1件でもあれば(終了コード1)、その箇所を書き直してから投稿する**(80字超の文は2〜3文に分ける、5文超・250字超の段落は2つに分ける、4列以上の表は分けるか箇条書きに、硬い言葉は候補を見て言い換え)。「注意」(60〜80字の文・長い見出し・max-widthの無い画像)も直せるものは直す。ルールの詳細は[docs/rules.md](../../../docs/rules.md)の「スマホで読みやすく、誰でも分かる言葉で書く」。
 
-## STEP 1.6: 楽天/Amazonアフィリエイトリンクの自動挿入(chomoand-1.com・愛用品/私物特定記事限定、2026-09-07〜)
+## STEP 1.6: 楽天/Amazonアフィリエイトの自動挿入(全サイト・楽天/Amazonで買える商品の記事、2026-11-11〜ユカ指示)
 
-**投稿先がchomoand-1.com(コイキーズブログ)で、かつ記事がKO1KEYZメンバー個人の「愛用品・使用アイテム・私服/アクセサリー特定」系(例: 愛用香水、ナイトルーティンの使用コスメ、私服のブランド特定)のときだけ**、STEP 1.5で作ったブロック付きHTMLに対して[koikeyz-affiliate](../koikeyz-affiliate/SKILL.md)スキルの「新規記事執筆時の自動付与」セクション(STEP 1.6)を**確認なしで自動実行**する。
+**どのサイトでも、記事で紹介する商品が楽天かAmazonで売られていれば、確認なしでアフィリエイトを入れる**(2026-11-11ユカ指示「次回の記事から、楽天やアマゾンで取り扱いのある商品の記事はアフィリエイトを入れてほしい」。それまではchomoand-1.comの私物特定記事だけだった)。私服・アクセサリー・コスメ・家電・食品・本・グッズなど、商品の種類は問わない。
 
-- ブランド名+商品カテゴリが厳密一致で書かれている言及の直後に、`(<a href="{楽天アフィリエイトURL}" ... rel="nofollow sponsored noopener">楽天で見る</a> / <a href="{Amazon検索URL}" ... rel="nofollow sponsored noopener">Amazonで見る</a>)`をinlineで追記する。
-- 別ブランド・別商品としか思えない候補しか出ない言及はスキップ(記事自体は投稿する)。同一商品は本文で最初の1回だけ。
-- リンクを1つ以上入れたら本文冒頭に`<p style="font-size:12px;color:#888;">本記事はプロモーションを含みます</p>`(重複させない)。
-- rules.mdで必須の「購入先」box/箇条書きは、このinlineリンクとは別に従来どおり必ず置く。
-- 対象外の記事(ファンミレポート・スケジュール・プロフィール等、私物特定が主眼でないもの)ではこのSTEPは丸ごとスキップ。他2サイト(chomoand.com・chomoand-0.com)も対象外。
-- 詳細な判定基準・実行手順・見送りルールは[koikeyz-affiliateスキル](../koikeyz-affiliate/SKILL.md)を正とする。韓国語版・英語版(STEP 6/7)にはリンクを引き継がない。
+1. **記事の主役の商品**: `python tools/affiliate_box.py "ブランド 商品名 型番"`で楽天の候補を出し、**型番・色が記事の商品と合う候補**を選んで`--pick N --title "…" --note "色違いなど" --amazon "Amazon検索語" --border "{記事のアクセント色}" -o 枠.html`で「商品写真+楽天で見る/Amazonで見る」の枠を作る。答えを書いた最初のH2の情報ボックスのすぐ下に置く(例: chomoand-4.blog ID2530 しめちゃんの炊飯器記事)。
+   - ふるさと納税・中古・セット品・別型番は選ばない(ツールが×を付ける)。合う候補が無ければ楽天は見送り、Amazon検索リンクだけ(`build_box`は片方だけでも作れる)。韓国ブランドなど両方に無ければ枠ごと見送る。
+   - 写真は楽天の商品画像をそのままリンク(画像URLをWordPressにアップし直さない)。他人の「特定」投稿の画像を使わないルール([docs/rules.md](../../../docs/rules.md))があるので、商品写真が欲しいときはこの枠で出す。
+2. **それ以外に出てくる商品**: ブランド名+商品が厳密一致で書かれている言及の直後に、`(<a href="{楽天アフィリエイトURL}" ... rel="nofollow sponsored noopener">楽天で見る</a> / <a href="{Amazon検索URL}" ... rel="nofollow sponsored noopener">Amazonで見る</a>)`をinlineで追記する。同一商品は本文で最初の1回だけ。判定基準・見送りルールは[koikeyz-affiliate](../koikeyz-affiliate/SKILL.md)の「新規記事執筆時の自動付与」と同じ(コイキーズ以外のサイトにもそのまま当てはめる)。
+3. リンクを1つ以上入れたら本文の一番上に`python tools/affiliate_box.py --notice`のPR表記(本記事はプロモーションを含みます)を入れる(重複させない)。
+4. 「購入先」box(rules.mdで必須)にも楽天/Amazonのリンクを並べる(公式ショップがあればそれが先)。
+5. 値段を書くときは「〇月〇日に楽天市場を見ると〜円くらいから」のように日付を付ける(値段は毎日変わる)。
+6. 商品がない記事(ライブ・番組・スケジュール・プロフィールなど)ではこのSTEPは丸ごとスキップ。韓国語版・英語版(STEP 6/7)にはリンクを引き継がない。
+- キーはローカル`.env`、無ければGoogleドライブの`.env`から`affiliate_box.py`が自動で読む。
+- 既存記事に後から足すときは、本文を丸ごと差し替える前に最新リビジョンを確認し、人が管理画面で直した分を上書きしない(2026-11-11 ID2530で上書きしてしまい、差分から入れ直した)。
 
 ## STEP 2: スラッグの生成
 
@@ -151,6 +155,6 @@ chomoand-1.com向けにこのスキルを実行する**最初に**、`python too
 - 記事ID・スラッグ・確認URL(`{サイトURL}/?p={id}`)
 - アイキャッチ画像のメディアID(chomoand-1.com以外)
 - (chomoand-1.comの場合)韓国語下書き・英語下書きのID・スラッグ
-- (STEP1.6を実行した場合)どの言及に楽天/Amazonリンクを挿入したか、見送った言及があればその理由
+- (STEP1.6を実行した場合)どの商品に楽天/Amazonの枠・リンクを入れたか(楽天はどの店・値段か)、見送った商品があればその理由
 
-**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜7を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP1.6(愛用品/私物特定記事のみ・アフィリエイトリンク自動挿入)→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6→STEP7、それ以外のサイトはSTEP1→STEP1.5→STEP2〜5(STEP1.6・STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
+**How to apply:** 「ブログにアップして」「アップして」「WordPressに反映して」などの発言をトリガーとしてSTEP1〜7を順番に実行する。STEP1.5(ブロック変換)は全サイト共通で必ず行う。chomoand-1.comはSTEP0(セッション最初の1回のみ)→STEP1→STEP1.5→STEP1.6(楽天/Amazonで買える商品の記事・アフィリエイト自動挿入)→STEP2→STEP3→STEP3.5(SNS投稿文)→STEP4→STEP5→STEP6→STEP7、それ以外のサイトはSTEP1→STEP1.5→STEP1.6(商品の記事のみ)→STEP2〜5(STEP3.5は現状コイキーズ限定)。記事の削除は絶対に行わない([docs/wordpress.md](../../../docs/wordpress.md))。公開自体は別途[publishスキル](../publish/SKILL.md)で行う。公開後の自動SNS投稿(Facebook/Instagram/Threads=Jetpack Social・X=手動運用)の仕組みは[docs/sns-auto-post-setup.md](../../../docs/sns-auto-post-setup.md)参照。
