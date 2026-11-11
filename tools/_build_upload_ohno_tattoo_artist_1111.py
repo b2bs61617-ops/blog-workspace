@@ -18,6 +18,7 @@ CATEGORIES = [37]
 AUTHORS = {"USER1": 3, "Tomoki": 4}
 EYECATCH = os.path.join(REPO, "images", "ohno_tattoo_artist_eyecatch.png")
 IG = "https://www.instagram.com/p/De1LpIUHU7Z/"
+IG_OFFICIAL = "https://www.instagram.com/reel/DahAVMwSyZy/"  # satojima_official 告知動画(タトゥーが見える)
 
 A, B, BG = "#1e88e5", "#bbdefb", "#f1f7fd"
 TH = f"border:1px solid #ccc;padding:8px 12px;background:{A};color:#fff;"
@@ -155,6 +156,11 @@ out += table(("時期", "出来事"), [
 ])
 out += p("左腕のタトゥーが最初に話題になったのは、7月のさと島の告知動画です。",
          "ひじから手首にかけて、「SATOSHI」と読める大きな絵柄が入っていました。")
+out += html(f'''<blockquote class="instagram-media" data-instgrm-permalink="{IG_OFFICIAL}?utm_source=ig_embed" data-instgrm-version="14" style="background:#FFF;border:0;margin:1px auto;max-width:540px;min-width:280px;width:calc(100% - 2px);"><a href="{IG_OFFICIAL}" target="_blank" rel="noopener">さと島公式Instagramの投稿を見る</a></blockquote>
+<script async src="//www.instagram.com/embed.js"></script>''')
+out += p("こちらが、さと島の公式Instagramに投稿された告知動画です。",
+         "ソファに座って話す場面で、" + mark("左腕のタトゥー") + "がはっきり見えます。",
+         "シャツ姿の場面でも、手首の近くに色の入ったタトゥーがのぞいていました。")
 out += p("8月に公開された写真では、オレンジや白などの色が加わっていて、デザインが変わっていたそうです。",
          "時間をかけて少しずつ仕上げていったのかもしれません。",
          "10月のJA¥さんの「ご来店」は、その仕上げや色の追加だった可能性もありそうです。")
