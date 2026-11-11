@@ -126,6 +126,52 @@ def fetch_article_images(site_url, post_id):
     return extract_article_images(resp.json()["content"]["rendered"])
 
 
+MAX_IMAGE_BYTES = 5 * 1024 * 1024  # Bufferの画像上限(5.0MB)
+
+
+def _content_length(url):
+    try:
+        r = requests.head(url, allow_redirects=True, timeout=20)
+        return int(r.headers.get("content-length", 0))
+    except Exception:
+        return 0
+
+
+def shrink_oversized_images(image_urls):
+    """5MBを超える画像を、WordPressのリサイズ版(5MB以下で一番大きいもの)に差し替える
+    (2026-11-11〜、原寸PNG 6.2MBでBuffer投稿が失敗したため)。WordPressのメディアから
+    小さい版が見つからなければ、その画像だけ外す(投稿全体を失敗させない)。"""
+    out = []
+    for url in image_urls:
+        size = _content_length(url)
+        if size <= MAX_IMAGE_BYTES:
+            out.append(url)
+            continue
+        p = urlparse(url)
+        slug = re.sub(r"\.\w+$", "", p.path.rsplit("/", 1)[-1])
+        picked = None
+        try:
+            # メディアのslugはタイトル由来でファイル名と一致しないことがあるので、ファイル名で検索して原寸URLで照合する
+            media = requests.get(f"{p.scheme}://{p.netloc}/wp-json/wp/v2/media",
+                                 params={"search": slug, "per_page": 20, "_fields": "source_url,media_details"},
+                                 timeout=20).json()
+            hit = [m for m in media if m.get("source_url") == url]
+            sizes = hit[0]["media_details"].get("sizes", {}) if hit else {}
+            for s in sorted(sizes.values(), key=lambda s: s.get("width", 0), reverse=True):
+                fs = s.get("filesize") or _content_length(s["source_url"])
+                if 0 < fs <= MAX_IMAGE_BYTES:
+                    picked = s["source_url"]
+                    break
+        except Exception:
+            pass
+        if picked:
+            print(f"画像が{size / 1048576:.1f}MBで上限超え→小さい版に差し替え: {picked}", file=sys.stderr)
+            out.append(picked)
+        else:
+            print(f"画像が{size / 1048576:.1f}MBで上限超え、小さい版も無いので外す: {url}", file=sys.stderr)
+    return out
+
+
 def _gql_string(value):
     """GraphQLクエリに埋め込む文字列リテラルをエスケープする。"""
     escaped = value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
@@ -168,6 +214,7 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
     (2026-09-29トモキ指示。FB/Instagram/ThreadsのJetpack自動共有はやめ、ThreadsだけXと同じ内容にする)。
     account="trend"ならchomoand.comトレンド記事用の@chomotirendだけに投稿し、Threadsには流さない(2026-10-18〜)。
     """
+    image_urls = shrink_oversized_images(image_urls[:MAX_IMAGES])
     env = load_env(ROOT / ".env")
     token = env.get("BUFFER_ACCESS_TOKEN")
     if account == "trend":
