@@ -33,7 +33,7 @@ def ig_embed(url, label):
 <script async src="https://www.instagram.com/embed.js"></script>''')
 
 
-BASE_TITLE = "宮近海斗の赤パーカーはどこの？SAINT REDと判明！"
+BASE_TITLE = "【TOKYO SPEAKEASY】宮近海斗の赤パーカーはどこの？"
 assert len(BASE_TITLE) <= 35, len(BASE_TITLE)
 title = "【未】" + BASE_TITLE
 b = []
