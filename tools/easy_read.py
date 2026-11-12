@@ -7,6 +7,7 @@ fix  … 難しい漢字をひらがなに直す(意味が変わらないもの�
        作品の略称もそろえる(ABBREV。例: いろはの恋→恋とき ※正式タイトルは残す)
 check… 直しきれないものを一覧にする。NG があれば終了コード1(書き直してから投稿する)
   NG  : 1文が80字超 / 1段落が5文超 or 250字超 / 表が4列以上 / 難しい言葉(言い換え候補つき)が残っている
+        / 「まとめ」見出しがあるのに、枠の外に一言感想の段落が無い(2026-11-12 ユカ指示「まとめに必ず一言感想」)
   注意: 1文が60〜80字(できれば2文に分ける) / 見出しが32字超(スマホで3行になる)
 
 対象外(そのまま残す):「」の引用(本人・ファンの言葉は原文のまま)、『』の作品名、<a>のリンク文字列、HTMLタグの中。
@@ -121,6 +122,25 @@ def _sentences(text):
     return [s for s in out if s]
 
 
+def _has_summary_comment(body):
+    """最後の「まとめ」h2 から次の h2(なければ末尾)までに、枠(div)の外の空でない <p> があるか。
+    「まとめ」見出しが無い記事は対象外で True を返す。"""
+    heads = [m for m in re.finditer(r"<h2\b[^>]*>(.*?)</h2>", body, re.S) if _plain(m.group(1)).startswith("まとめ")]
+    if not heads:
+        return True
+    start = heads[-1].end()
+    nxt = re.search(r"<h2\b", body[start:])
+    sec = body[start:start + nxt.start()] if nxt else body[start:]
+    depth = 0
+    for m in re.finditer(r"<(/?)div\b[^>]*>|<p\b[^>]*>(.*?)</p>", sec, re.S):
+        if m.group(0).startswith("<p"):
+            if depth == 0 and _plain(m.group(2)):
+                return True
+        else:
+            depth += -1 if m.group(1) else 1
+    return False
+
+
 def check(html):
     ng, warn = [], []
     body = re.sub(r"<!--.*?-->", "", html, flags=re.S)
@@ -154,6 +174,9 @@ def check(html):
         tag = m.group(0)
         if "max-width" not in tag and "wp-image-" not in tag and "size-" not in tag:
             warn.append(f"画像に max-width:100% が無い(スマホではみ出すかも): {tag[:60]}")
+
+    if not _has_summary_comment(body):
+        ng.append("まとめに一言感想が無い(まとめの枠の直後に、ファン目線の感想・呼びかけを1〜2文の<p>で足す)")
 
     for pat, rep in ABBREV:
         for m in pat.finditer(re.sub(r"<[^>]+>", "", body)):
