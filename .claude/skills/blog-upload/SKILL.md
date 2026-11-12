@@ -102,6 +102,10 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 
 ## STEP 4: アイキャッチ画像の生成
 
+- **【全サイト共通】YouTube動画の回の記事は、アイキャッチ上段(小さい1行目)にYouTubeの企画名を入れる**(2026-11-12ユカ指示「次回の記事から、YouTubeの名前は上に入れてほしい」→同日「他のサイトも同じようにしてほしい」。見本: chomoand-0.com ID1503「手作りスパイスカレー/松村北斗/ピンクのジャージはどこの？/品番や値段は？」)。
+  - ツールで作るサイト(SixTONES・トラジャ・予備ツール全般): `--top "企画名"`を付ける(既定のグループ名の代わり)。
+  - Canva上書きのサイト(Snow Man・KEY TO LIT・KO1KEYZ・トレンド速報): 1行目(小)の区切りを企画名に置き換える(グループ名・タイトル前半・前置きの代わり)。2行目(大)はメンバー名/話題のまま、下段はタイトルの残り。
+  - 企画名はYouTubeのタイトルの【】の中など、短い呼び名にする(長ければ約12字までに縮める)。YouTube回でない記事は今まで通り。
 - **2026-11-03〜 chomoand-1.com(コイキーズブログ)のアイキャッチはCanva`DAG_zqaJE_8`のページを上書き→書き出しで作る(トモキ指示)。手順は[docs/canva-snowman-kitetsu.md](../../../docs/canva-snowman-kitetsu.md)の「KO1KEYZ」節。KR/ENはJPと同じ画像。以下の`eyecatch_koikeyz.py`はCanva MCPが使えないときの予備。**
 - (旧ルール)**chomoand-1.com(コイキーズブログ)は、記事本文の写真の有無にかかわらず必ず`tools/eyecatch_koikeyz.py`の文字入りテンプレで生成する**(2026-08-17にユーザーが再確認・上書き。[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の「KO1KEYZ統一テンプレ必須、既存記事が全部このデザインで揃っているので勝手に変えない」が現行ルール)。使い方は`tools/eyecatch_koikeyz.py`のdocstring参照(`--top`/`--main`/`--bottom`/`--out`、KR/EN版はJPと同じ画像を使う。`--lang kr`で韓国語版を別に作る旧運用は2026-11-03に廃止)。
   - **(誤った過去の試験導入・現在は無効)2026-08-11〜08-17の一時期のみ、「本文中に埋め込んだ写真の1枚目をfeatured_mediaに使い、テキストeyecatchは作らない」という運用を試したことがあるが、2026-08-17にユーザーから「ちがうよ基本文字入れだよアイキャッチは」と明確に否定された。** KO1KEYZ「KO1WORLD」ロケ地特定記事(下書きID11410)でこの旧ルールに従い本文写真をfeatured_mediaにしたところ即座に修正指示が入り、テキスト入りeyecatchへ差し替えた実例あり。今後このSTEP4を読むときは本項目(文字入り必須)を正としてそのまま使うこと。
@@ -114,7 +118,7 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   - Canva MCPが使えないときのフォールバックは[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)の汎用テンプレ(1200×630px)
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - **chomoand-4.blog(Travis Japan専門ブログ)は、確認なしで自動的に`tools/eyecatch_torahja_canva.py`のCanva水彩デザインで作る**(2026-10-02〜。**紫3行の`eyecatch_torahja.py`・旧ベージュの`eyecatch_chomoand0_old.py`は使わない**。2026-10-04にこのSTEPが紫3行のまま古く、記事ID1213で誤って紫3行を使い作り直した)。手順:
-  1. `--main`=個人記事はメンバー名、グループ・2人以上が同格の回は話題キーワード。`--top`は既定の「Travis Japan」のまま。`--bottom`=タイトルの残り(1〜2行、`--bottom`を2回まで)。記号は全角(？！)。
+  1. `--main`=個人記事はメンバー名、グループ・2人以上が同格の回は話題キーワード。`--top`は既定の「Travis Japan」(YouTube回は企画名、上の全サイト共通ルール)。`--bottom`=タイトルの残り(1〜2行、`--bottom`を2回まで)。記号は全角(？！)。
   2. `python tools/eyecatch_torahja_canva.py --main "松田元太" --bottom "インスタライブのジャージはどこの？" --bottom "中村海人デザインと判明！" --color-key 松田元太 --out images/{ファイル名}_eyecatch_canva.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、複数メンバー回=`group_warm`)。
   3. 生成後に目視確認し、STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定する。完了報告に上段/中央/下段の分け方を一言添える。
   - 仕様の正は[docs/eyecatch-style.mdの「chomoand-4.blog Canva水彩デザイン」](../../../docs/eyecatch-style.md)。
