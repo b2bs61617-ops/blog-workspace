@@ -4,6 +4,7 @@
 執筆時の注意書きだけだと別セッションで守られないので、blog-upload STEP1.56 でこのツールを必ず通す。
 
 fix  … 難しい漢字をひらがなに直す(意味が変わらないものだけ。例: 殆ど→ほとんど、出来る→できる)
+       作品の略称もそろえる(ABBREV。例: いろはの恋→恋とき ※正式タイトルは残す)
 check… 直しきれないものを一覧にする。NG があれば終了コード1(書き直してから投稿する)
   NG  : 1文が80字超 / 1段落が5文超 or 250字超 / 表が4列以上 / 難しい言葉(言い換え候補つき)が残っている
   注意: 1文が60〜80字(できれば2文に分ける) / 見出しが32字超(スマホで3行になる)
@@ -79,7 +80,23 @@ def _text_parts(html):
         yield True, html[pos:]
 
 
+# 作品の略称をそろえる(「」の中も含めて直す。HTMLタグの中は触らない)。
+# 正式タイトル「いろはの恋は時代(とき)をかける」はそのまま残し、略称だけ公式の「恋とき」にする(2026-11-12 ユカ指示)。
+ABBREV = [
+    (re.compile(r"いろはの恋(?!は時代)"), "恋とき"),
+]
+
+
+def _fix_abbrev(html):
+    parts = re.split(r"(<[^>]+>)", html)
+    for i in range(0, len(parts), 2):
+        for pat, rep in ABBREV:
+            parts[i] = pat.sub(rep, parts[i])
+    return "".join(parts)
+
+
 def fix(html):
+    html = _fix_abbrev(html)
     return "".join(_KANA_RE.sub(lambda m: KANA[m.group(0)], s) if ok else s for ok, s in _text_parts(html))
 
 
@@ -138,6 +155,9 @@ def check(html):
         if "max-width" not in tag and "wp-image-" not in tag and "size-" not in tag:
             warn.append(f"画像に max-width:100% が無い(スマホではみ出すかも): {tag[:60]}")
 
+    for pat, rep in ABBREV:
+        for m in pat.finditer(re.sub(r"<[^>]+>", "", body)):
+            ng.append(f"略称「{m.group(0)}」→「{rep}」(fix で自動で直る)")
     for ok, s in _text_parts(body):
         if not ok:
             continue
