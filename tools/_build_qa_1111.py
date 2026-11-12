@@ -50,7 +50,7 @@ def article(key, site, title, slug, categories, palette, eyecatch, color="group"
 
 def yt(b, vid, title):
     b.html('<div style="position:relative;width:100%;padding-top:56.25%;margin:0 0 16px 0;">\n'
-           f'<iframe loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/{vid}" '
+           f'<iframe loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/{vid}" referrerpolicy="strict-origin-when-cross-origin" '
            f'title="{title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '
            'allowfullscreen></iframe>\n</div>')
 
@@ -889,6 +889,7 @@ def _(b):
             "コーヒーのお店は横浜アリーナのすぐ近く(名前は次回)",
             "ルートは尻手黒川道路から新横浜へ",
             "面白い場面はショート動画で出ることもある")
+    b.p("ゆり組のゆるい会話に、向井康二さんのツッコミがぴったりで、ずっと笑顔で見られる回でした。", "次の回のコーヒータイムも楽しみです！")
     b.related([(f"{SM}/?p=574", "【ジョナサン人気TOP10を当てろ！】ロケ地はどこ？店舗とランキング！"),
                (f"{SM}/?p=381", "すのちゅーぶ松茸回のロケ地はどこ？割烹峰屋の場所とコース料金！"),
                (f"{SM}/?p=99", "それスノのLISA出演はいつ？向井康二とカリスマックスも！")])

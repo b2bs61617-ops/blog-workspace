@@ -47,16 +47,24 @@ IFRAME_RE = re.compile(r'<iframe\b[^>]*youtube(?:-nocookie)?\.com/embed/[^>]*>',
 HOOK_CMD_RE = re.compile(r'python[0-9.]*\s.*\.py', re.S)
 
 
+# このMacの .env で空欄の鍵はGoogleドライブの .env から補う(ビルドスクリプトと同じ読み方)。
+# 補わないと、ドライブにしか鍵が無いサイト(chomoand-2.com等)を黙ってスキップしてしまう(2026-11-12 Snow Man ID626で発覚)
+DRIVE_ENV = Path(os.path.expanduser("~/Library/CloudStorage/GoogleDrive-b2bs61617@gmail.com/マイドライブ/.env"))
+
+
 def load_env():
     env = {}
-    p = ROOT / ".env"
-    if p.exists():
+    for p in (ROOT / ".env", DRIVE_ENV):
+        if not p.exists():
+            continue
         for line in p.read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if not line or line.startswith("#") or "=" not in line:
                 continue
             k, v = line.split("=", 1)
-            env[k.strip()] = v.strip().strip('"\'')
+            k, v = k.strip(), v.strip().strip('"\'')
+            if v and not env.get(k):
+                env[k] = v
     env.update({k: v for k, v in os.environ.items() if k.startswith("WP_")})
     return env
 
