@@ -122,7 +122,7 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
   - `tools/eyecatch_snowman.py`・`tools/eyecatch_kitetsu.py`はCanva MCPが使えないときの予備(普段は使わない)。
   - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)の各サイトの表(基本`[4]`+メンバーのカテゴリ)。
 - **chomoand-0.com(SixTONES専門ブログ)は、確認なしで自動的に`tools/eyecatch_sixtones.py`で作る**(2026-10-27〜。SixTONES用のCanvaデザインができたらSnow Manと同じ上書き方式に切り替える):
-  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「SixTONES」のまま。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
+  1. `--main`=個人記事はメンバー名、グループ回は話題キーワード。`--top`は既定の「SixTONES」。**ただしYouTube動画の回の記事は、`--top`にYouTubeの企画名(例:`--top "手作りスパイスカレー"`)を入れる**(2026-11-12ユカ指示「次回の記事から、YouTubeの名前は上に入れてほしい」。ID1503で初適用)。`--bottom`=タイトルの残り(1〜2行)。記号は全角(？！)。
   2. `python tools/eyecatch_sixtones.py --main "松村北斗" --bottom "私服のジャケットはどこの？" --bottom "ブランドを調査！" --color-key 松村北斗 --out images/{ファイル名}_eyecatch.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、2人回=`松村北斗+田中樹`)。
   3. 目視確認→STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定。
   - カテゴリIDは[docs/wordpress.md](../../../docs/wordpress.md)のchomoand-0.comの表(基本`[15]`+メンバーのカテゴリ)。
