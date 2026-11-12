@@ -32,6 +32,7 @@ Buffer側の定額プラン内で行われるため従量課金が発生しな�
 """
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -48,6 +49,7 @@ DEFAULT_THREADS_CHANNEL_ID = "6abbbed3ea19ca0bde22e2c8"
 # chomoand.comのトレンド記事専用のXアカウント(2026-10-18〜トモキ指示)。Xだけに流し、Threadsには流さない。
 # チャンネルIDはBuffer上の名前から実行時に引く(.envのBUFFER_TREND_X_CHANNEL_IDがあればそちらを優先)
 TREND_X_CHANNEL_NAME = "chomotirend"
+DRIVE_ENV = Path(os.path.expanduser("~/Library/CloudStorage/GoogleDrive-b2bs61617@gmail.com/マイドライブ/.env"))
 
 
 def load_env(path):
@@ -216,6 +218,10 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
     """
     image_urls = shrink_oversized_images(image_urls[:MAX_IMAGES])
     env = load_env(ROOT / ".env")
+    # このMacの.envに無い鍵はGoogleドライブの.envから補う(2026-11-12、ユカのMacで.envにBuffer鍵が無く投稿が黙ってスキップされた)。
+    # .envに空欄で書いてある鍵(BUFFER_THREADS_CHANNEL_ID= でThreads停止など)はそのまま尊重する
+    for k, v in load_env(DRIVE_ENV).items():
+        env.setdefault(k, v)
     token = env.get("BUFFER_ACCESS_TOKEN")
     if account == "trend":
         threads = False
