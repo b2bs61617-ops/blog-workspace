@@ -89,6 +89,17 @@ def related(items):
 
 
 
+
+import sys, urllib.parse
+sys.path.insert(0, os.path.join(REPO, "tools"))
+import affiliate_box as ab
+RK_ITEM = "https://item.rakuten.co.jp/zoff/zk192001_14e1/"
+RK = (f"https://hb.afl.rakuten.co.jp/hgc/{ab.load_keys()['RAKUTEN_AFFILIATE_ID']}/?pc="
+      + urllib.parse.quote(RK_ITEM, safe="") + "&m=" + urllib.parse.quote(RK_ITEM, safe=""))
+RK_BOX = ab.build_box(RK, "https://thumbnail.image.rakuten.co.jp/@0_mall/zoff/cabinet/item2023_2/zk192001_14e1.jpg?_ex=400x400",
+                      "Zoff CLASSIC ボストン型メガネ ZK192001-14E1(ブラック)", None,
+                      note="Zoff楽天市場店の公式出品。11/12時点で12,100円", border=ACC) + "\n"
+
 YT_CM = "e2g_uF2NToQ"
 YT_MK = "SIxlXG9OVlk"
 
@@ -103,6 +114,7 @@ def yt(vid):
 
 
 body = "".join([
+    html('<p style="font-size:0.85em;color:#888;margin:0 0 12px 0;">本記事はプロモーションを含みます</p>'),
     p("2026年11月12日、Zoffの公式サイトで、目黒蓮さんの新しい広告ビジュアルが公開されました。",
       "「紫外線 vs. Zoff」シリーズの、透明なメガネをかけた1枚です。",
       "このメガネは、" + mk("Zoffの「ZK192001-14E1」(1万2,100円)") + "です。"),
@@ -125,6 +137,7 @@ body = "".join([
     p("黒くて細い丸いフチに、金色の鼻の部分(ブリッジ)とつるを合わせたメガネです。",
       "広告の写真でも、黒いフチと金色のブリッジがはっきり見えます。"),
     p(f"公式ページ:{a(ZUV, 'Zoff「紫外線 vs. Zoff」特設ページ')}・{a(ZK, '商品ページ(ZK192001-14E1)')}"),
+    RK_BOX,
 
     h2("値段は？CMと同じにするといくら？"),
     p("フレームの値段は1万2,100円(税込)です。",
@@ -171,9 +184,12 @@ body = "".join([
 
     h2("どこで買える？オンラインでの買い方"),
     listbox("購入先", [f"Zoff公式オンラインストア:{a(ZK, 'ZK192001-14E1の商品ページ')}",
+                    f'楽天市場:<a href="{RK}" target="_blank" rel="nofollow sponsored noopener">Zoff楽天市場店(楽天で見る)</a>',
                     "全国のZoffのお店(在庫は公式サイトの「店頭の在庫を探す」で確認できる)"]),
     p("11月12日の時点で、オンラインストアでは「在庫残りわずか」と表示されていました。",
       "広告の公開で人気が集まりそうなので、気になる人は早めにチェックしてください。"),
+    p("楽天市場の「Zoff楽天市場店」でも、同じ型番が12,100円で売られていました(11月12日に確認)。",
+      "楽天ポイントをためたい人は、こちらも見てみてください。"),
     h3("オンラインでUVクリアレンズにする方法"),
     listbox("オンラインストアでの手順", ["メガネをカートに入れる",
                                   "カートの画面で「サイト上で選ぶ」を選ぶ",
