@@ -9,7 +9,7 @@ import sys, os, json, base64, socket, urllib.request, urllib.error
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "articles", "chinen_menkyo_gasshuku_1113.html")
 POSTED = os.path.join(REPO, "articles", "chinen_menkyo_gasshuku_posted.json")
-BASE_TITLE = "知念侑李の免許合宿はどこ？浜松自動車学校が有力【いのありちねん】"
+BASE_TITLE = "【いのありちねん】知念侑李の免許合宿はどこ？浜松自動車学校が有力"
 assert len(BASE_TITLE) <= 35, len(BASE_TITLE)
 TITLE = "【未】" + BASE_TITLE
 SLUG = "chinen-yuri-menkyo-gasshuku-inoarichinen"
