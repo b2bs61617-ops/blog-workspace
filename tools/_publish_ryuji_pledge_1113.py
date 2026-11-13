@@ -22,7 +22,7 @@ for PID in (JA, KR, EN):
 for PID, link in links.items():
     for tool in ("google_indexing.py", "naver_indexnow.py"):
         out = subprocess.run([sys.executable, str(ROOT / "tools" / tool), link], capture_output=True, text=True)
-        print(tool, PID, (out.stdout + out.stderr).strip().splitlines()[-1:] , flush=True)
+        print(tool, PID, " ".join(out.stdout.split())[:200], flush=True)
 imgs = xb.fetch_article_images(U, JA)
 try: print("X JA", len(imgs), "imgs", xb.post_thread(JA_TEXT, JA_TAGS, imgs, links[JA]), flush=True)
 except Exception as e: print("X JA FAIL", e, flush=True)
