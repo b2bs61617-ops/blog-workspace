@@ -1,0 +1,23 @@
+[
+  {
+    "key": "nawatobi",
+    "title": "【未】SixTONES縄跳び検定の結果は？最高3級は慎太郎と樹！",
+    "slug": "sixtones-jump-rope-test-results",
+    "categories": [
+      15
+    ],
+    "images": {
+      "result": {
+        "file": "images/sixtones_nawatobi_result.jpg",
+        "alt": "SixTONES縄跳び検定の最終結果 慎太郎3級 樹3級 髙地6級 ジェシー6級 北斗4級 京本6級",
+        "src": "https://www.youtube.com/watch?v=4Ec-Qzoqj9c"
+      },
+      "title": {
+        "file": "images/sixtones_nawatobi_title.jpg",
+        "alt": "SixTONESの縄跳び検定に挑戦しよう!のタイトル画面",
+        "src": "https://www.youtube.com/watch?v=4Ec-Qzoqj9c"
+      }
+    },
+    "file": "articles/sixtones_nawatobi_1113.html"
+  }
+]
