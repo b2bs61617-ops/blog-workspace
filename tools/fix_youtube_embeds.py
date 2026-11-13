@@ -38,8 +38,12 @@ BACKUP_DIR = ROOT / "backups" / "youtube_embed_fix"
 STATUSES = "publish,draft,future,pending,private"
 REFPOL = 'referrerpolicy="strict-origin-when-cross-origin"'
 
+# <figure>でくるんでfigcaption(出典)を付けた形もある。referrerpolicyが付いていても
+# カスタムHTMLの手書きiframeは編集画面・プレビューで再生エラーになるため、標準ブロックにする
+# (2026-11-13 chomoand.com ID13157で発覚)
 WRAPPED_RE = re.compile(
-    r'<!-- wp:html -->\s*<div[^>]*>\s*<iframe[^>]*src="https://www\.youtube(?:-nocookie)?\.com/embed/([\w-]{11})[^"]*"[^>]*>\s*</iframe>\s*</div>\s*<!-- /wp:html -->'
+    r'<!-- wp:html -->\s*(<figure[^>]*>\s*)?<div[^>]*>\s*<iframe[^>]*src="https://www\.youtube(?:-nocookie)?\.com/embed/([\w-]{11})[^"]*"[^>]*>\s*</iframe>\s*</div>\s*'
+    r'(?(1)(?:<figcaption[^>]*>(.*?)</figcaption>\s*)?</figure>\s*)<!-- /wp:html -->', re.S
 )
 IFRAME_RE = re.compile(r'<iframe\b[^>]*youtube(?:-nocookie)?\.com/embed/[^>]*>', re.I)
 
@@ -86,14 +90,15 @@ def sites(env, only=None):
     return out
 
 
-def embed_block(vid):
+def embed_block(vid, caption=None):
     url = f"https://www.youtube.com/watch?v={vid}"
     return (
         f'<!-- wp:embed {{"url":"{url}","type":"video","providerNameSlug":"youtube","responsive":true,'
         f'"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"}} -->\n'
         f'<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube '
         f'wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">\n{url}\n'
-        f"</div></figure>\n<!-- /wp:embed -->"
+        "</div>" + (f'<figcaption class="wp-element-caption">{caption}</figcaption>' if caption else "")
+        + "</figure>\n<!-- /wp:embed -->"
     )
 
 
@@ -103,10 +108,10 @@ def fix_html(raw):
 
     def to_embed(m):
         nonlocal n1
-        if "referrerpolicy" in m.group(0).lower():  # already playable; leave as is
+        if "referrerpolicy" in m.group(0).lower() and not m.group(1):  # already playable; leave as is
             return m.group(0)
         n1 += 1
-        return embed_block(m.group(1))
+        return embed_block(m.group(2), m.group(3))
 
     new = WRAPPED_RE.sub(to_embed, raw)
 

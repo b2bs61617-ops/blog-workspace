@@ -35,3 +35,13 @@ def test_hook_command_filter():
     assert HOOK_CMD_RE.search("python3 build_and_post_x.py")
     assert HOOK_CMD_RE.search('cd a && python tools/_edit_1110.py --dry')
     assert not HOOK_CMD_RE.search("git status")
+
+
+def test_figure_wrapped_iframe_with_caption_becomes_embed_even_with_refpol():
+    raw = ('<!-- wp:html -->\n<figure style="margin:0;"><div style="position:relative;padding-top:56.25%;">'
+           '<iframe referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/jyOGNyCCnfs" allowfullscreen></iframe>'
+           '</div><figcaption style="text-align:center;">出典:YouTube</figcaption></figure>\n<!-- /wp:html -->')
+    new, n = fix_html(raw)
+    assert n == 1
+    assert "<!-- wp:embed" in new and "<iframe" not in new
+    assert '<figcaption class="wp-element-caption">出典:YouTube</figcaption>' in new
