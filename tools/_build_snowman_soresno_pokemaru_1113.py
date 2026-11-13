@@ -231,7 +231,7 @@ body = "".join([
 ])
 
 ARTICLES = [
-    {"key": "soresno_pokemaru", "title": "【未】それスノポケマルの疑問まとめ！マウンテンライオンや渡辺翔太の指さしは？",
+    {"key": "soresno_pokemaru", "title": "【未】【それスノ】ポケマル疑問まとめ！ナミヲ歌唱中の渡辺翔太は何を指した？",
      "slug": "sore-snow-man-pokemaru-arizona",
      "categories": [4, 14, 10], "frames": [], "html": body},
 ]
