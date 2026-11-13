@@ -1,0 +1,56 @@
+"""11/13それスノSP(ポケマルinアリゾナ)放送中のX投稿を集める(返信なし)。"""
+import asyncio, json, sys
+from pathlib import Path
+HERE = Path(__file__).parent
+sys.path.insert(0, str(HERE.parent))
+import x_collector as xc
+from playwright.async_api import async_playwright
+
+async def no_replies(*a, **k):
+    return []
+xc.fetch_x_replies = no_replies
+xc.fetch_threads_replies = no_replies
+
+QW = "(なんで OR なぜ OR どこ OR 誰 OR いつ OR 知りたい OR 教えて OR わかる人 OR 気になる OR どういう OR 何の)"
+JOBS = [
+    ("q", "x", f'(それスノ OR ポケマル) {QW} lang:ja -filter:retweets'),
+    ("q2", "x", '(それスノ OR ポケマル) (どういうこと OR 何それ OR 誰 OR なんで OR 結局 OR 見つかった OR 正体) lang:ja -filter:retweets'),
+    ("all", "x", '(#それスノ OR #ポケマル) lang:ja -filter:retweets'),
+    ("animal", "x", '(それスノ OR ポケマル) (マウンテンライオン OR ビッグホーン OR ボブキャット OR 激レア) lang:ja -filter:retweets'),
+    ("q", "threads", "それスノ"),
+]
+LIMIT = 200
+
+async def main():
+    only = sys.argv[1:]
+    async with async_playwright() as p:
+        ctx = await xc.launch_browser_context(p)
+        page = ctx.pages[0] if ctx.pages else await ctx.new_page()
+        for group, site, kw in JOBS:
+            if only and site not in only:
+                continue
+            posts = []
+            url = xc.build_threads_search_url(kw) if site == "threads" else xc.build_x_search_url(kw)
+            print(f"\n■ {group}/{site}: {url}", flush=True)
+            if (HERE / f"{group}_{site}.json").exists():
+                print("  skip (exists)", flush=True); continue
+            try:
+                await page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            except Exception as e:
+                print(f"  goto失敗 {e}", flush=True); continue
+            await page.wait_for_timeout(4000)
+            if site == "x":
+                await xc.switch_to_latest_tab(page)
+            cont = lambda: len(posts) < LIMIT
+            try:
+                fn = xc.collect_threads if site == "threads" else xc.collect_x
+                await fn(page, ctx, cont, lambda m: None, posts.append)
+            except Exception as e:
+                print(f"  中断 {type(e).__name__}: {e}", flush=True)
+            out = HERE / f"{group}_{site}.json"
+            out.write_text(json.dumps(posts, ensure_ascii=False, indent=1), encoding="utf-8")
+            print(f"  {len(posts)}件 -> {out.name}", flush=True)
+            await page.wait_for_timeout(5000)
+        await ctx.close()
+
+asyncio.run(main())
