@@ -119,6 +119,7 @@ Facebook/Instagram/Threadsへの自動投稿(publishスキルからJetpack Socia
 - chomoand-0.comのデザイン仕様は[docs/eyecatch-style.md](../../../docs/eyecatch-style.md)参照(1200×630px)
 - **chomoand-4.blog(Travis Japan専門ブログ)は、確認なしで自動的に`tools/eyecatch_torahja_canva.py`のCanva水彩デザインで作る**(2026-10-02〜。**紫3行の`eyecatch_torahja.py`・旧ベージュの`eyecatch_chomoand0_old.py`は使わない**。2026-10-04にこのSTEPが紫3行のまま古く、記事ID1213で誤って紫3行を使い作り直した)。手順:
   1. `--main`=個人記事はメンバー名、グループ・2人以上が同格の回は話題キーワード。`--top`は既定の「Travis Japan」(YouTube回は企画名、上の全サイト共通ルール)。`--bottom`=タイトルの残り(1〜2行、`--bottom`を2回まで)。記号は全角(？！)。
+     - **七五三掛KITCHEN(しめちゃんの料理企画)の記事は`--top "七五三掛KITCHEN" --main "七五三掛龍也" --bottom "{料理名}" --bottom "レシピと作り方は？" --color-key 七五三掛龍也`で作る**(2026-11-13ユカ指示、ID2689で確定)。上段を既定の「Travis Japan」にしない。
   2. `python tools/eyecatch_torahja_canva.py --main "松田元太" --bottom "インスタライブのジャージはどこの？" --bottom "中村海人デザインと判明！" --color-key 松田元太 --out images/{ファイル名}_eyecatch_canva.jpg`(`--color-key`は個人=メンバー名、グループ=`group`、複数メンバー回=`group_warm`)。
   3. 生成後に目視確認し、STEP5で`image/jpeg`としてアップロードしてfeatured_mediaに設定する。完了報告に上段/中央/下段の分け方を一言添える。
   - 仕様の正は[docs/eyecatch-style.mdの「chomoand-4.blog Canva水彩デザイン」](../../../docs/eyecatch-style.md)。
