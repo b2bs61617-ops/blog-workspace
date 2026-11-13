@@ -17,7 +17,7 @@ description: 日曜劇場「VIVANT」をシーズン1第1話から1話ずつ深�
 
 ## 投稿先
 
-- 「トレンド速報」＝**chomoand.com**(`.env`の`WP_TREND_*`)。カテゴリ37「芸能・トレンド」、author 4、**status=draft**(公開はユーザーの「公開して」待ち)
+- 「トレンド速報」＝**chomoand.com**(`.env`の`WP_TREND_*`)。カテゴリは`[38, 37]`(38「ドラマ」+37「芸能・トレンド」、2026-11-13〜)、author 4、**status=draft**(公開はユーザーの「公開して」待ち)
 - ユカのMac(Yuka-MacBook-NEO)はリポジトリ`.env`の`WP_TREND_*`が空欄。ユカの指示で**Googleドライブの`マイドライブ/.env`**を読む: `VIVANT_ENV_FILE="$HOME/Library/CloudStorage/GoogleDrive-b2bs61617@gmail.com/マイドライブ/.env"`。他のPCは自分の`.env`に値があればそのままでよい(値は表示しない)
 
 ## 手順
