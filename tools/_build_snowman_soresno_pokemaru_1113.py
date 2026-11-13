@@ -231,7 +231,7 @@ body = "".join([
 ])
 
 ARTICLES = [
-    {"key": "soresno_pokemaru", "title": "【未】それスノポケマルinアリゾナの疑問まとめ！ラウールはなぜいた？",
+    {"key": "soresno_pokemaru", "title": "【未】それスノポケマルの疑問まとめ！マウンテンライオンや渡辺翔太の指さしは？",
      "slug": "sore-snow-man-pokemaru-arizona",
      "categories": [4, 14, 10], "frames": [], "html": body},
 ]
