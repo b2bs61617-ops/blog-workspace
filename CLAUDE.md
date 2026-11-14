@@ -47,9 +47,15 @@
   3. 「黒い画面が出たワン。終わると結果が自動で開くから、そのまま待っててワン(全部で45分くらい)」と伝える
   4. マツが結果を読みに行く必要はない(トークン節約)。結果の見方を聞かれたときだけ答える
 
+- **マツの道具箱(2026-11-14〜)** — 案内する内容:
+  - マツがいなくても動く道具をまとめたソフト。①投稿前の事実チェック(日付と曜日・名前の字・リンク切れ)②伸びしろ診断(直すと効く記事の順番)③ネタ先読みカレンダー(今週・来週書くネタ)④X投稿文の案出し、がボタンで動く
+  - 使い方: **マツに「道具箱ひらいて」と言うだけ**(自分で開くときは`blog-workspace\tools\toolbox`の**run.bat**(Macは**run.command**)をダブルクリック)
+  - 記事を勝手に書き換えたり公開したりはしない(読むだけ)。初めてのPCでは、いちばん下の「点検する」を押すと足りないものが分かる
+- **ユカ・オシリが「道具箱ひらいて」「事実チェックしたい」「伸びしろ見たい」等と言ったら、場所を説明せずマツが自動で開く**: Windowsは `Start-Process -FilePath "<リポジトリ>\tools\toolbox\run.bat" -WorkingDirectory "<リポジトリ>"`、Macは `open "<リポジトリ>/tools/toolbox/run.command"`。「ブラウザに道具箱が開いたワン。黒い画面は閉じないでワン」と伝える。マツが結果を読みに行く必要はない(聞かれたときだけ)
+
 ## 進行中の引き継ぎ
 
-- **Fable 5.2がいるうちに作る「マツの道具」5つ(2026-11-14 ユカ依頼、未着手)** — 「道具作りの続きやって」「引き継ぎの続き」と言われたら[docs/handover-fable-toolkit.md](docs/handover-fable-toolkit.md)を読んで続ける。全部できたらこの行とファイルを消す。
+- **「マツの道具」(2026-11-14 ユカ依頼)は作成ずみ** — 使い方・データの直し方・新しいPCの準備は[docs/toolbox.md](docs/toolbox.md)。残りは[docs/handover-fable-toolkit.md](docs/handover-fable-toolkit.md)の冒頭「残っていること」だけ(各PCでの点検、Macでの動作確認、リンク切れの直し方の返事待ち)。全部済んだらこの行とそのファイルを消す。
 
 ## 権限方針
 
@@ -121,6 +127,7 @@
 | 外部AI連携(`tools/ai_hub.py`) | **マツのトークン節約用(2026-10-05〜)**。調査・EN/KR翻訳・X投稿文案を外部AIに任せ、結果は`-o`でファイルに出してマツは要点だけ読む。対応=Gemini/Groq/OpenRouter(稼働中・無料)、Mistral/Cerebras(受け口のみ。無料枠の条件が合わず見送り)、検索=Tavily(月1000回無料、`research`で検索→他AIが要約)。Grok(`XAI_API_KEY`)は有料のため見送り中。中国系モデルはOpenRouter経由のみ(直APIは使わない)。キーがあるものだけ自動で使い、失敗時は次のAIへフォールバック。外部AIの出力は事実確認せずにそのまま公開しない |
 | Googleインデックス登録(`tools/google_indexing.py`) | 記事公開時に自動送信(publishスキルから)。未設定でも公開処理は止まらない。セットアップは[docs/google-indexing-setup.md](docs/google-indexing-setup.md) |
 | サジェスト穴場ファインダー(`tools/suggest-finder/`) | **ネタ探し用(2026-10-15〜)**。「名前+あいうえお」のGoogleサジェストを集め、Yahoo!上位10件で競合を◎穴場/○狙える/×激戦に判定し、◎○にGeminiでタイトル案を付けてHTML/CSVで出す。マツのトークン不要。メンバーは `run.bat` ダブルクリック→名前入力。マツが頼まれたら `python tools/suggest-finder/suggest_finder.py "名前" --no-open`(全件約45分なので急ぐときは`--max 50`)を実行し、◎○の上位だけ要約して伝える。タイトル案は外部AI製なので事実確認してから使う。詳細は[README](tools/suggest-finder/README.md) |
+| マツの道具箱(`tools/toolbox/`) | **マツ無しでも回せる道具の入口(2026-11-14〜)**。`run.bat`/`run.command`でブラウザに開く。中身=事実チェック係(`tools/fact_check.py`、**投稿前に必須**=blog-upload STEP1.57)/伸びしろ診断(`tools/nobishiro/`)/ネタ先読みカレンダー(`tools/neta_calendar/`)/X投稿文の案出し(`tools/xpost_ideas.py`、**公開前に`check`必須**)/パソコンに入れるAI(Ollama、`ai_hub.py`の最後の予備)。**新しい記事スクリプトは`tools/_template_article.py`をコピーし、共通の部品`tools/blogkit.py`を使う**(req()や.env読み込みを書き写さない。古い`_build_*.py`は消さない)。名簿=`tools/data/members.json`、行事=`tools/data/events.json`(誕生日や日にちを記憶で書かない)。詳細・新PCの準備は[docs/toolbox.md](docs/toolbox.md) |
 | サイト集計ページ(`tools/site-dashboard/`) | **全サイトのPV・アドセンス収益をスマホで一覧(2026-10-19〜)**。https://chomoand-3.moe/mypage-stats (パスワード付き)をGEEKOM機のタスク`BlogSiteDashboard`が1時間おきに更新。サイトを新設したらGA4にサービスアカウントを閲覧者追加+`SITES`に追記。詳細は[README](tools/site-dashboard/README.md) |
 | 検索順位チェック(`tools/rank_check.py`) | 指定キーワード×記事の実際の検索順位をその場で確認(2026-09-22追加)。`python tools/rank_check.py "キーワード" ドメイン`。**Yahoo!検索のみ対応**(Googleはヘッドレスアクセスを検知しブロックするため非対応)。Googleの順位はSearch Console API併用か目視確認で補う。詳細は[docs/tools.md](docs/tools.md) |
 | Naverインデックス登録(`tools/naver_indexnow.py`) | コイキーズブログの記事公開時に自動送信(publishスキルから、2026-08-02〜)。IndexNowプロトコル使用、OAuth不要でGETのみ。**サイト直下へのキー検証ファイル設置だけトモキ本人が未実施**。未設定でも公開処理は止まらない。セットアップは[docs/naver-search-advisor-setup.md](docs/naver-search-advisor-setup.md) |

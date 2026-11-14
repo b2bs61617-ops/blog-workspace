@@ -6,6 +6,7 @@ from pathlib import Path
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent
 
-for p in (TOOLS_DIR, TOOLS_DIR / "koikeyz-monitor", TOOLS_DIR / "Xiy", TOOLS_DIR / "x-trend-monitor", TOOLS_DIR / "youtube-talent-monitor", TOOLS_DIR / "shorts", TOOLS_DIR / "suggest-finder"):
+for p in (TOOLS_DIR, TOOLS_DIR / "koikeyz-monitor", TOOLS_DIR / "Xiy", TOOLS_DIR / "x-trend-monitor", TOOLS_DIR / "youtube-talent-monitor", TOOLS_DIR / "shorts", TOOLS_DIR / "suggest-finder",
+          TOOLS_DIR / "nobishiro", TOOLS_DIR / "neta_calendar", TOOLS_DIR / "toolbox"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))

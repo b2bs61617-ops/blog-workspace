@@ -1,0 +1,30 @@
+{
+  "_note": "ネタ先読みカレンダーの元データ。誕生日は members.json から自動で入るのでここには書かない。verified=false は「日にち・内容を確かめていない」印(画面に『要確認』と出る)。確かめたら true にして source に出どころを書く。day が null のものは『その月のどこか』。lead_days = 何日前に記事を仕込むか(省くと種類ごとの既定)。",
+  "lead_days": {"birthday": 14, "anniversary": 14, "yearly": 21, "season": 21, "weekly": 0, "once": 10},
+  "events": [
+    {"name": "紅白歌合戦", "kind": "yearly", "month": 12, "day": 31, "sites": ["trend", "snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "出場歌手の発表は11月ごろ。発表直後の「初出場は誰？」「落選は誰？」、当日は歌う順番・曲目", "lead_days": 45, "verified": true, "source": "docs/annual-event-calendar.md"},
+    {"name": "M-1グランプリ決勝", "kind": "yearly", "month": 12, "day": null, "sites": ["trend"], "angle": "決勝進出コンビの「何者？」は発表直後が勝負。当日は優勝予想・点数", "lead_days": 30, "verified": true, "source": "docs/annual-event-calendar.md(日にちは毎年ちがう)"},
+    {"name": "箱根駅伝", "kind": "yearly", "month": 1, "day": 2, "sites": ["trend"], "angle": "出場校・エントリー選手の発表は12月。エース区間の予想、当日は区間新・タスキの速報", "lead_days": 25, "verified": true, "source": "docs/annual-event-calendar.md"},
+    {"name": "有馬記念", "kind": "yearly", "month": 12, "day": null, "sites": ["trend"], "angle": "出走登録は1週間前。有力馬の情報、当日はオッズ・結果", "lead_days": 10, "verified": true, "source": "docs/annual-event-calendar.md(日にちは毎年ちがう)"},
+    {"name": "24時間テレビ", "kind": "yearly", "month": 8, "day": null, "sites": ["trend"], "angle": "ランナー発表は6〜7月。本番中の「今どこ？」実況が本命(過去7万PV)", "lead_days": 60, "verified": true, "source": "docs/annual-event-calendar.md(8月末の土日)"},
+    {"name": "夏の甲子園", "kind": "yearly", "month": 8, "day": null, "sites": ["trend"], "angle": "組み合わせ抽選のあと、注目選手のプロフィールを登場前に", "lead_days": 14, "verified": true, "source": "docs/annual-event-calendar.md"},
+
+    {"name": "バレンタイン", "kind": "season", "month": 2, "day": 14, "sites": ["snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "メンバーのチョコの思い出・理想のバレンタイン・関連CMや雑誌", "verified": true, "source": "暦"},
+    {"name": "ホワイトデー", "kind": "season", "month": 3, "day": 14, "sites": ["snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "お返しの発言まとめ・関連グッズ", "verified": true, "source": "暦"},
+    {"name": "ハロウィン", "kind": "season", "month": 10, "day": 31, "sites": ["trend", "snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "仮装まとめ・イベントの混み具合(2026年は池袋ハロウィン・仮装記事を公開ずみ)", "verified": true, "source": "暦"},
+    {"name": "クリスマス", "kind": "season", "month": 12, "day": 25, "sites": ["trend", "snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "クリスマス曲・コラボケーキ・プレゼント企画・イルミネーションのロケ地", "verified": true, "source": "暦"},
+    {"name": "お正月・年始特番", "kind": "season", "month": 1, "day": 1, "sites": ["trend", "snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "年始のテレビ出演表・福袋・おみくじ企画・新年のあいさつ動画", "lead_days": 20, "verified": true, "source": "暦"},
+
+    {"name": "年末の大型音楽番組(FNS歌謡祭・ベストアーティスト・Mステ スーパーライブ・CDTV年越しなど)", "kind": "yearly", "month": 12, "day": null, "sites": ["snowman", "sixtones", "travis", "ktl", "ko1keyz"], "angle": "出演者・タイムテーブル・曲目の発表直後に。衣装・コラボ相手も狙い目。放送日は毎年ちがうので公式で確かめる", "lead_days": 30, "verified": false, "source": ""},
+    {"name": "年越しカウントダウン公演・配信", "kind": "yearly", "month": 12, "day": 31, "sites": ["snowman", "sixtones", "travis", "ktl"], "angle": "今年あるか・出演者・配信の見方。開催は毎年公式発表で確かめる", "lead_days": 30, "verified": false, "source": ""},
+
+    {"name": "Snow Man デビュー記念日", "kind": "anniversary", "month": 1, "day": null, "sites": ["snowman"], "angle": "デビューからの歩み・記念企画・記念グッズ(2020年1月デビュー。日にちは公式で確かめる)", "verified": false, "source": "docs/wordpress.md(月まで)"},
+    {"name": "SixTONES デビュー記念日", "kind": "anniversary", "month": 1, "day": null, "sites": ["sixtones"], "angle": "デビューからの歩み・記念企画・記念グッズ(2020年1月デビュー。日にちは公式で確かめる)", "verified": false, "source": "docs/wordpress.md(月まで)"},
+    {"name": "KEY TO LIT 結成記念日", "kind": "anniversary", "month": 2, "day": null, "sites": ["ktl"], "angle": "結成からの1年・これまでの活動まとめ(2025年2月結成。日にちは公式で確かめる)", "verified": false, "source": "docs/wordpress.md(月まで)"},
+
+    {"name": "LOST10(毎週金曜)", "kind": "weekly", "weekday": "金", "until": "2026-12-18", "sites": ["trend"], "angle": "放送直後に考察5本(犯人・伏線・ゲスト)。前の話の記事に追記も", "verified": false, "source": "公開記録(第4話=2026-11-06、全10話)。最終回の日は要確認"},
+    {"name": "恋とき(毎週火曜)", "kind": "weekly", "weekday": "火", "sites": ["trend"], "angle": "放送直後に考察・次回予想。ID12608に追記", "verified": false, "source": "公開記録(第4話=2026-11-03)。最終回の日は要確認"},
+    {"name": "ポリティカルパン(毎週水曜)", "kind": "weekly", "weekday": "水", "sites": ["trend"], "angle": "放送直後にゲスト・伏線の記事", "verified": false, "source": "公開記録(第5話=2026-11-04)。最終回の日は要確認"},
+    {"name": "それSnow Manにやらせて下さい(毎週金曜)", "kind": "weekly", "weekday": "金", "sites": ["snowman"], "angle": "放送後のXの疑問まとめ・ロケ地・衣装", "verified": false, "source": "公開記録(2026-11-13放送回の記事ID687)。休止・特番の週は要確認"}
+  ]
+}

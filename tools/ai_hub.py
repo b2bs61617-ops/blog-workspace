@@ -22,6 +22,7 @@
 """
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -118,13 +119,70 @@ def _call_openai_compat(name, prompt, env, system=None):
     return r.json()["choices"][0]["message"]["content"]
 
 
+# ---- パソコンに入れたAI(Ollama)。ネットが無いとき・無料枠が切れたときの最後の予備(2026-11-14〜) ----
+# 鍵は不要。Ollamaが動いていて、モデルが1つでも入っていれば使える。入れ方は docs/toolbox.md
+def ollama_base(env):
+    host = env.get("OLLAMA_HOST") or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434"
+    return (host if host.startswith("http") else "http://" + host).rstrip("/")
+
+
+def pick_ollama_model(installed, wanted=None):
+    """使うモデルを決める。指定があって入っていればそれ、無ければ入っているものの先頭。"""
+    if not installed:
+        return None
+    if wanted:
+        for name in installed:
+            if name == wanted or name.split(":")[0] == wanted:
+                return name
+    return installed[0]
+
+
+def ollama_model(env):
+    try:
+        r = requests.get(ollama_base(env) + "/api/tags", timeout=2)
+        installed = [m["name"] for m in r.json().get("models", [])]
+    except Exception:  # noqa: BLE001  (入っていない・止まっているPCでは静かに飛ばす)
+        return None
+    return pick_ollama_model(installed, env.get("OLLAMA_MODEL"))
+
+
+def _call_ollama(prompt, env, system=None):
+    model = ollama_model(env)
+    if not model:
+        raise RuntimeError("ollama が動いていないか、モデルが入っていない")
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
+    r = requests.post(ollama_base(env) + "/api/chat", json={"model": model, "messages": messages, "stream": False},
+                      timeout=900)
+    if r.status_code != 200:
+        raise RuntimeError(f"ollama HTTP {r.status_code}: {r.text[:300]}")
+    return r.json()["message"]["content"]
+
+
+def call_order(provider, env):
+    """resolve_order に、最後の予備として ollama を足した順番。"""
+    order = []
+    if provider != "ollama":
+        try:
+            order = resolve_order(provider, env)
+        except SystemExit:
+            if provider != "auto":
+                raise
+    if provider in ("auto", "ollama") and ollama_model(env):
+        order.append("ollama")
+    if not order:
+        raise SystemExit(f"使えるAIがありません(指定={provider}。.envの鍵も、パソコンに入れたAIも見つからない)")
+    return order
+
+
 def call(prompt, provider="auto", env=None, system=None):
     """プロバイダを順に試し、(使ったプロバイダ名, 応答テキスト)を返す。"""
     env = env if env is not None else load_env()
     errors = []
-    for p in resolve_order(provider, env):
+    for p in call_order(provider, env):
         for attempt in range(2):
             try:
+                if p == "ollama":
+                    return p, _call_ollama(prompt, env, system)
                 text = _call_gemini(prompt, env, system) if p == "gemini" else _call_openai_compat(p, prompt, env, system)
                 return p, text
             except Exception as e:  # noqa: BLE001
@@ -253,6 +311,12 @@ def translate_prompt(text, lang):
 
 
 def xpost_prompt(text):
+    """いまの型(答えを隠す・誘導なし)は tools/xpost_ideas.py が持つ。読めないときだけ下の古い型。"""
+    try:
+        import xpost_ideas
+        return xpost_ideas.build_prompt(text)
+    except ImportError:
+        pass
     return (
         "以下のブログ記事を告知するX投稿文を3案作って。\n"
         "ルール: 女性ファンの話し言葉(「〜すぎて無理😭💕」系)で絵文字多め、メンバーはくん付け、"
@@ -300,6 +364,8 @@ def main(argv=None):
         for p in ["gemini", *OPENAI_COMPAT]:
             print(f"{p:11s} {'OK' if p in avail else '未設定'}")
         print(f"{'tavily':11s} {'OK' if env.get('TAVILY_API_KEY') else '未設定'}  (検索専用)")
+        om = ollama_model(env)
+        print(f"{'ollama':11s} {'OK ' + om if om else '未設定'}  (パソコンに入れたAI・最後の予備)")
         return
     if a.cmd == "research":
         used, text = research(a.input, env, a.provider)

@@ -1,0 +1,79 @@
+{
+  "_note": "メンバー名簿。事実チェック係・ネタ先読みカレンダー・伸びしろ診断が使う。birthdayは確かめたものだけ入れる(出どころをsourceに書く)。確かめていないものはnullのまま。wrongは「よくある字のまちがい」(髙→高などの旧字は道具が自動で作るので書かなくてよい)。",
+  "groups": {
+    "snowman": {
+      "label": "Snow Man",
+      "aliases": ["スノーマン", "スノ"],
+      "wrong": ["SnowMan", "Snowman", "snow man"],
+      "members": [
+        {"name": "岩本照", "color": "黄", "birthday": "1993-05-17", "source": "Wikipedia日本語版「岩本照」(2026-11-14確認)", "wrong": ["岩本輝", "岩元照"]},
+        {"name": "深澤辰哉", "color": "紫", "birthday": "1992-05-05", "source": "Wikipedia日本語版「深澤辰哉」(2026-11-14確認)", "wrong": ["深澤達也", "深澤辰也"]},
+        {"name": "ラウール", "color": "白", "birthday": "2003-06-27", "source": "Wikipedia日本語版「ラウール (アイドル)」(2026-11-14確認)", "wrong": ["ラウ一ル"]},
+        {"name": "渡辺翔太", "color": "青", "birthday": "1992-11-05", "source": "Wikipedia日本語版「渡辺翔太」(2026-11-14確認)", "wrong": ["渡邊翔太", "渡邉翔太", "渡辺翔大"]},
+        {"name": "向井康二", "color": "オレンジ", "birthday": "1994-06-21", "source": "Wikipedia日本語版「向井康二」(2026-11-14確認)", "wrong": ["向井康ニ", "向井浩二", "向井康司"]},
+        {"name": "阿部亮平", "color": "緑", "birthday": "1993-11-27", "source": "Wikipedia日本語版「阿部亮平 (アイドル)」(2026-11-14確認)", "wrong": ["安部亮平", "阿部良平", "阿部亮介"]},
+        {"name": "目黒蓮", "color": "黒", "birthday": "1997-02-16", "source": "Wikipedia日本語版「目黒蓮」(2026-11-14確認)", "wrong": ["目黒連", "目黒漣"]},
+        {"name": "宮舘涼太", "color": "赤", "birthday": "1993-03-25", "source": "Wikipedia日本語版「宮舘涼太」(2026-11-14確認)", "wrong": ["宮舘亮太", "宮館亮太", "宮舘凉太"]},
+        {"name": "佐久間大介", "color": "ピンク", "birthday": "1992-07-05", "source": "Wikipedia日本語版「佐久間大介」(2026-11-14確認)", "wrong": ["佐久間大輔", "佐久間大助"]}
+      ]
+    },
+    "sixtones": {
+      "label": "SixTONES",
+      "aliases": ["ストーンズ", "スト"],
+      "wrong": ["SixTones", "Sixtones", "SIXTONES", "sixTONES"],
+      "members": [
+        {"name": "ジェシー", "color": "赤", "birthday": "1996-06-11", "source": "Wikipedia日本語版「ジェシー (アイドル)」(2026-11-14確認)", "wrong": ["ジェシ一"]},
+        {"name": "京本大我", "color": "ピンク", "birthday": "1994-12-03", "source": "Wikipedia日本語版「京本大我」(2026-11-14確認)", "wrong": ["京本大雅", "京本太我"]},
+        {"name": "松村北斗", "color": "黒", "birthday": "1995-06-18", "source": "Wikipedia日本語版「松村北斗」(2026-11-14確認)", "wrong": ["松村北都", "松村北人"]},
+        {"name": "髙地優吾", "color": "黄", "birthday": null, "wrong": ["髙地優悟", "髙地祐吾", "高知優吾"]},
+        {"name": "森本慎太郎", "color": "緑", "birthday": "1997-07-15", "source": "Wikipedia日本語版「森本慎太郎」(2026-11-14確認)", "wrong": ["森本慎太朗", "森本真太郎", "森本新太郎"]},
+        {"name": "田中樹", "color": "青", "birthday": "1995-06-15", "source": "Wikipedia日本語版「田中樹」(2026-11-14確認)", "wrong": []}
+      ]
+    },
+    "ktl": {
+      "label": "KEY TO LIT",
+      "aliases": ["キテレツ"],
+      "wrong": ["KEYTOLIT", "Key To Lit", "KEY TO LIGHT", "KEY TO RIT"],
+      "members": [
+        {"name": "岩﨑大昇", "color": "白", "birthday": "2002-08-23", "source": "Wikipedia日本語版「岩﨑大昇」(2026-11-14確認)", "wrong": ["岩﨑大翔", "岩﨑太昇"]},
+        {"name": "井上瑞稀", "color": "赤", "birthday": "2000-10-31", "source": "Wikipedia日本語版「井上瑞稀」(2026-11-14確認)", "wrong": ["井上瑞希", "井上瑞樹", "井上瑞貴"]},
+        {"name": "中村嶺亜", "color": "ピンク", "birthday": "1997-04-02", "source": "Wikipedia日本語版「中村嶺亜」(2026-11-14確認)", "wrong": ["中村嶺亞", "中村玲亜", "中村領亜"]},
+        {"name": "猪狩蒼弥", "color": "緑", "birthday": "2002-09-20", "source": "Wikipedia日本語版「猪狩蒼弥」(2026-11-14確認)", "wrong": ["猪狩蒼也", "猪狩蒼矢", "猪狩蒼哉", "猪刈蒼弥"]},
+        {"name": "佐々木大光", "color": "青", "birthday": "2002-05-20", "source": "Wikipedia日本語版「佐々木大光」(2026-11-14確認)", "wrong": ["佐々木太光", "佐々木大晃"]}
+      ]
+    },
+    "travis": {
+      "label": "Travis Japan",
+      "aliases": ["トラジャ", "トラビスジャパン"],
+      "wrong": ["TravisJapan", "Travis japan", "Travis Japn", "Trevis Japan"],
+      "members": [
+        {"name": "宮近海斗", "color": "赤", "birthday": "1997-09-22", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["宮近海人", "宮地海斗"]},
+        {"name": "中村海人", "color": "緑", "birthday": "1997-04-15", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["中村海斗"]},
+        {"name": "七五三掛龍也", "color": "ピンク", "birthday": "1995-06-23", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["七五三掛竜也", "七五三掛龍哉", "七五三掛龍弥"]},
+        {"name": "川島如恵留", "color": "白", "birthday": "1994-11-22", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["川島如恵瑠", "川島如江留", "川嶋如恵留"]},
+        {"name": "吉澤閑也", "color": "黄", "birthday": "1995-08-10", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["吉澤閑哉", "吉澤静也", "吉澤閑弥"]},
+        {"name": "松田元太", "color": "青", "birthday": "1999-04-19", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["松田元大", "松田源太", "松田元汰"]},
+        {"name": "松倉海斗", "color": "オレンジ", "birthday": "1997-11-14", "source": "docs/research-notes/travis-japan-members-spec.md", "wrong": ["松倉海人", "松蔵海斗"]}
+      ]
+    },
+    "ko1keyz": {
+      "label": "KO1KEYZ",
+      "aliases": ["コイキーズ", "코이키즈"],
+      "wrong": ["KOIKEYZ", "KO1KEYS", "KOIKEYS", "Ko1keyz", "KO1KEZY"],
+      "members": [
+        {"name": "加藤大樹", "stage": "DAIKI", "birthday": "2004-10-08", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["加藤大輝", "加藤大貴"]},
+        {"name": "柳谷伊冴", "stage": "ISSA", "birthday": "2005-03-10", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["柳谷伊砂", "柳屋伊冴", "柳谷伊冱"]},
+        {"name": "小野慶人", "stage": "KEITO", "birthday": "2000-07-25", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["小野慶斗", "小野啓人"]},
+        {"name": "照井康祐", "stage": "KOSUKE", "birthday": "2007-12-02", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["照井康佑", "照井康介", "照井幸祐"]},
+        {"name": "飯塚亮賀", "stage": "RYOGA", "birthday": "2005-01-21", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["飯塚亮雅", "飯塚涼賀", "飯塚亮我"]},
+        {"name": "杉山竜司", "stage": "RYUJI", "birthday": "2006-07-07", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["杉山龍司", "杉山竜二", "杉山竜次"]},
+        {"name": "オシンヘン", "stage": "SHINHAENG", "birthday": "2004-05-03", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["SHINHENG", "SINHAENG"]},
+        {"name": "パクシヨン", "stage": "SIYOUNG", "birthday": "2003-05-06", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["SIYONG", "SHIYOUNG"]},
+        {"name": "濱田永遠", "stage": "TOWA", "birthday": "2007-06-05", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["浜田永遠", "濱田永久", "濵田永遠"]},
+        {"name": "矢田佳暉", "stage": "YOSHIKI", "birthday": "2004-06-18", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["矢田佳輝", "矢田佳樹", "矢田圭暉"]},
+        {"name": "後藤結", "stage": "YUKI", "birthday": "2007-12-24", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["後藤結希", "後藤結樹"]},
+        {"name": "安部結蘭", "stage": "YURA", "birthday": "2005-06-16", "source": "docs/research-notes/ko1keyz-members-spec.md", "wrong": ["阿部結蘭", "安倍結蘭", "安部結欄"]}
+      ]
+    }
+  }
+}

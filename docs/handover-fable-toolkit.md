@@ -1,7 +1,17 @@
 # 引き継ぎ: Fable 5.2 がいるうちに作る「マツの道具」5つ(2026-11-14 ユカ依頼)
 
-別のPCのマツがこの続きをやるためのメモ。**まだ何も作っていない。調査と設計まで終わった状態**。
-全部できたらこのファイルを消し、CLAUDE.mdの「進行中の引き継ぎ」の行も消す。
+**2026-11-14 GEEKOM(トモキ)で1〜6と道具箱を作成ずみ・テストずみ。** 使い方は[toolbox.md](toolbox.md)。下の「作るもの」は設計の記録として残してある。
+全部済んだらこのファイルを消し、CLAUDE.mdの「進行中の引き継ぎ」の行も消す(ファイルの削除はユーザーに確認してから)。
+
+## 残っていること
+
+- **各PCでの点検**: `git pull`のあと道具箱の「点検する」を押す。投稿者が「未登録」のPC・サイトは`tools/blogkit.py`の`SITES`と`docs/wordpress.md`の表に足す(GEEKOMのchomoand-1.com、ユカのMacのSnow Man以外、が未登録)。
+- **MacでのPython 3.9動作確認**: GEEKOM(3.12)でしか動かしていない。3.9で落ちない書き方にしてあるが、ユカのMacで`python3 -m pytest tools/tests/test_toolbox.py tools/tests/test_toolbox_apps.py -q`を一度通す。
+- **パソコンに入れるAI**: GEEKOMだけ導入ずみ(gemma3:12b)。ほかのPCは持ち主に聞いてから(手順はtoolbox.md)。
+- **髙地優吾の誕生日**: Wikipediaから自動で取れなかった。公式で確かめて`tools/data/members.json`に入れる。
+- **リンク切れの直し方**(2026-11-14調査の102記事): A外す/B差し替え/C週1自動チェック、トモキの返事待ち。調べる部品は`fact_check.check_url`と`nobishiro.py --links`に入れてある。
+- **使い捨てスクリプトの大そうじ**: 新しい記事から`tools/_template_article.py`を使う。古い約190本は消していない(消すならユーザー確認)。
+- KO1KEYZの公開(韓国語・英語・アイキャッチそろえ・韓国語のX)は`blogkit.publish`に入れていない。今までどおりpublishスキルの手順でやる。
 
 ## ユカの依頼(原文の要点)
 
