@@ -1,5 +1,5 @@
 {
-  "_note": "見張るライバルブログの名簿(tools/rival_watch/rival_watch.py)。足すときは --add URL --group グループ名、候補さがしは --discover。groupsが1つだけのブログは専門ブログとして全部の記事を見る。2つ以上のブログは、タイトルにうちのグループやメンバーの名前が出た記事だけ見る。ignoreは候補さがしで出てきても足さないドメイン(公式・大手メディアなど)。",
+  "_note": "見張るライバルブログの名簿(tools/rival_watch/rival_watch.py)。足すときは --add URL --group グループ名、候補さがしは --discover。groupsが1つだけのブログは専門ブログとして全部の記事を見る(general: true なら、いろいろ書くブログとして名前が出た記事だけ)。2つ以上のブログは、タイトルにうちのグループやメンバーの名前が出た記事だけ見る。ignoreは候補さがしで出てきても足さないドメイン(公式・大手メディアなど)。",
   "blogs": [
     {
       "name": "oshitabi.net",
@@ -251,15 +251,272 @@
       ],
       "added": "2026-11-14",
       "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "dokuzetunoryuugi.hatenablog.com",
+      "url": "https://dokuzetunoryuugi.hatenablog.com/",
+      "feed": "https://dokuzetunoryuugi.hatenablog.com/feed",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "ko1keyz",
+        "travis",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "gourmet.oshikatsu-guide.com",
+      "url": "https://gourmet.oshikatsu-guide.com/",
+      "feed": "https://gourmet.oshikatsu-guide.com/feed",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "money-press.info",
+      "url": "https://money-press.info/",
+      "feed": "https://www.money-press.info/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "numaochi-39.com",
+      "url": "https://numaochi-39.com/",
+      "feed": "https://numaochi-39.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman",
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "okaruotaku.com",
+      "url": "https://okaruotaku.com/",
+      "feed": "https://okaruotaku.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "fashion-collemi.hatenablog.com",
+      "url": "https://fashion-collemi.hatenablog.com/",
+      "feed": "https://fashion-collemi.hatenablog.com/feed",
+      "kind": "feed",
+      "groups": [
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "uttenainaze.com",
+      "url": "https://uttenainaze.com/",
+      "feed": "https://uttenainaze.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "oshikatsu-lab.com",
+      "url": "https://oshikatsu-lab.com/",
+      "feed": "https://oshikatsu-lab.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "ninki-jyun.com",
+      "url": "https://ninki-jyun.com/",
+      "feed": "https://ninki-jyun.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "ko1keyz"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "ticket.co.jp",
+      "url": "https://ticket.co.jp/",
+      "feed": "https://www.ticket.co.jp/sitemap.xml",
+      "kind": "sitemap",
+      "groups": [
+        "ko1keyz"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "takashi0blog.com",
+      "url": "https://takashi0blog.com/",
+      "feed": "https://takashi0blog.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "snowman",
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "ameblo.jp/nurarihyon55",
+      "url": "https://ameblo.jp/nurarihyon55/",
+      "feed": "http://rssblog.ameba.jp/nurarihyon55/rss20.xml",
+      "kind": "feed",
+      "groups": [
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "nwfabricshow.com",
+      "url": "https://nwfabricshow.com/",
+      "feed": "https://www.nwfabricshow.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "note.com/sora1118",
+      "url": "https://note.com/sora1118/",
+      "feed": "https://note.com/sora1118/rss",
+      "kind": "feed",
+      "groups": [
+        "snowman",
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "tjnews.net",
+      "url": "https://tjnews.net/",
+      "feed": "https://tjnews.net/feed/",
+      "kind": "feed",
+      "groups": [
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "zawawa755.hatenablog.com",
+      "url": "https://zawawa755.hatenablog.com/",
+      "feed": "https://zawawa755.hatenablog.com/feed",
+      "kind": "feed",
+      "groups": [
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "note.com/ochiyochiyo",
+      "url": "https://note.com/ochiyochiyo/",
+      "feed": "https://note.com/ochiyochiyo/rss",
+      "kind": "feed",
+      "groups": [
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)",
+      "general": true
+    },
+    {
+      "name": "ameblo.jp/rrayd",
+      "url": "https://ameblo.jp/rrayd/",
+      "feed": "http://rssblog.ameba.jp/rrayd/rss20.xml",
+      "kind": "feed",
+      "groups": [
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
+    },
+    {
+      "name": "junior-oboegaki.hatenablog.jp",
+      "url": "https://junior-oboegaki.hatenablog.jp/",
+      "feed": "https://junior-oboegaki.hatenablog.jp/feed",
+      "kind": "feed",
+      "groups": [
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "マツが選定(Yahoo!広域検索 2026-11-14)"
     }
   ],
   "ignore": [
+    "ameblo.jp/blackbiz-ginza",
+    "au.utapass.auone.jp",
+    "bangumi.org",
+    "biteki.com",
+    "chunichi.co.jp",
+    "dimora.jp",
     "ellegirl.jp",
-    "web.familyclub.jp",
-    "jp.pinterest.com",
     "fashionsnap.com",
-    "spur.hpplus.jp",
     "fc.ccb.or.jp",
-    "ko1keyz.com"
+    "hmv.co.jp",
+    "ikebukuro.stores.jp",
+    "inredweb.jp",
+    "joysound.com",
+    "jp.pinterest.com",
+    "ko1keyz.com",
+    "lignea.co.jp",
+    "mentrecording.jp",
+    "note.com/loyal_gnu2078",
+    "note.com/tag",
+    "ranking.net",
+    "rankingoo.net",
+    "realsound.jp",
+    "shop.asahi.co.jp",
+    "sixtones.jp",
+    "skyperfectv.co.jp",
+    "sp.universal-music.co.jp",
+    "spur.hpplus.jp",
+    "store.lapone.jp",
+    "store.plusmember.jp",
+    "thefirsttimes.jp",
+    "ticketcircle.jp",
+    "ticketjam.jp",
+    "tvguide.myjcom.jp",
+    "utaten.com",
+    "web.familyclub.jp",
+    "www2.meetv.jp"
   ]
 }

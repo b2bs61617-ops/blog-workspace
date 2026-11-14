@@ -402,13 +402,20 @@ def add_blog(url, groups, name="", source="手で追加"):
 
 
 # ---------------------------------------------------------------- 候補さがし(Yahoo!検索)
-def discover_queries(members, sites, per_site=10):
+DEEP_SUFFIXES = ["グッズ", "チケット 倍率", "テレビ出演", "私服", "ロケ地 どこ", "香水", "愛用品", "髪型", "仲良し", "まとめ",
+                 "読み方", "メンバーカラー", "人気順", "ファン 呼び方", "YouTube ロケ地"]
+
+
+def discover_queries(members, sites, per_site=10, deep=False):
     out = []
     for key in sites:
         g = blogkit.SITES[key]["group"]
         if not g:
             continue
         conf = members[g]
+        if deep:  # グループ名×いろいろな話題で、専門ブログを広く探す
+            out += [(g, "{} {}".format(conf["label"], w)) for w in DEEP_SUFFIXES]
+            continue
         qs = ["{} 私服 ブランド 特定".format(conf["label"]), "{} ロケ地 特定".format(conf["label"])]
         for i, m in enumerate(conf["members"]):
             shown = m.get("stage") and "{} {}".format(conf["label"], m["stage"]) or m["name"]
@@ -437,7 +444,7 @@ def count_candidates(results, ignore=()):
     return sorted(found.values(), key=lambda c: -len(c["queries"]))
 
 
-def discover(sites, save=False, min_hits=2, headless=True):
+def discover(sites, save=False, min_hits=2, headless=True, deep=False):
     import random
     from playwright.sync_api import sync_playwright
     sys.path.insert(0, str(TOOLS / "suggest-finder"))
@@ -455,7 +462,7 @@ def discover(sites, save=False, min_hits=2, headless=True):
         save_rivals(data)
         print("さっき探した候補から、名簿に{}件足したワン。外したいブログは tools/data/rivals.json から消してワン".format(len(cands)))
         return 0
-    queries = discover_queries(load_members(), sites)
+    queries = discover_queries(load_members(), sites, deep=deep)
     print("Yahoo!で{}回検索して、よく出てくるブログを探すワン(約{}分)".format(len(queries), len(queries) * 6 // 60 + 1), flush=True)
     results = []
     with sync_playwright() as p:
@@ -494,7 +501,7 @@ def discover(sites, save=False, min_hits=2, headless=True):
     cache.write_text(json.dumps(cands, ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n大手メディアや公式サイトが混ざっていたら、tools/data/rivals.json の ignore にドメインを書くと外れるワン。")
     if save:
-        return discover(sites, save=True)
+        return discover(sites, save=True, deep=deep)
     print("名簿に足すなら、同じコマンドに --save を付けてワン(24時間以内なら検索し直さない)")
     return 0
 
@@ -523,7 +530,7 @@ def collect(blogs, table, hours, now, state):
             if not recent:
                 continue
             groups, names = tag_title(it["title"], table)
-            if not groups and len(b.get("groups", [])) != 1:
+            if not groups and (len(b.get("groups", [])) != 1 or b.get("general")):
                 continue  # いろいろ書くブログの、うちのグループと関係ない記事は数えない
             posts.append({"blog": b["name"], "blog_url": b["url"], "title": it["title"], "url": it["url"], "date": it["date"],
                           "groups": groups or list(b.get("groups", []))[:1] if len(b.get("groups", [])) == 1 or groups else [],
@@ -695,6 +702,7 @@ def main(argv=None):
     ap.add_argument("--name", default="")
     ap.add_argument("--discover", action="store_true", help="Yahoo!検索からライバル候補を探す")
     ap.add_argument("--save", action="store_true", help="--discover で見つけた候補を名簿に足す")
+    ap.add_argument("--deep", action="store_true", help="--discover をグループ名×15の話題で広く探す")
     a = ap.parse_args(argv)
     sites = [s.strip() for s in a.site.split(",") if s.strip()]
     for s in sites:
@@ -704,7 +712,7 @@ def main(argv=None):
     if a.add:
         return add_blog(a.add, [g.strip() for g in a.group.split(",") if g.strip()], a.name)
     if a.discover:
-        return discover(sites or [k for k, s in blogkit.SITES.items() if s["group"]], save=a.save)
+        return discover(sites or [k for k, s in blogkit.SITES.items() if s["group"]], save=a.save, deep=a.deep)
 
     members = load_members()
     data = load_rivals()
