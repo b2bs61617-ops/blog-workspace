@@ -193,6 +193,21 @@ def build_command(tool, q):
         if not name:
             raise ValueError("名前を入れる")
         return _py("suggest-finder/suggest_finder.py", name, *(["--max", "50"] if q.get("quick") else []))
+    if tool == "hasshin":
+        hours = q.get("hours", "30")
+        return _py("hasshin/hasshin.py", "--hours", hours if hours.isdigit() else "30", *(["--site", site] if site else []),
+                   "--no-browser" if q.get("ytonly") else None)
+    if tool == "rival":
+        hours = q.get("hours", "48")
+        return _py("rival_watch/rival_watch.py", "--hours", hours if hours.isdigit() else "48", *(["--site", site] if site else []))
+    if tool == "rival-add":
+        url = q.get("url", "").strip()
+        if not url.startswith(("http://", "https://")) or any(c.isspace() for c in url):
+            raise ValueError("ブログのURLを https:// から入れる")
+        group = blogkit.SITES[site]["group"] if site else None
+        if not group:
+            raise ValueError("どのグループのブログかを選ぶ")
+        return _py("rival_watch/rival_watch.py", "--add", url, "--group", group)
     if tool in ("doctor", "install", "setup-ai"):
         return [sys.executable, "-u", str(Path(__file__).resolve()), "--" + tool]
     raise ValueError("知らない道具")
@@ -256,6 +271,15 @@ input,select,textarea{background:#16181c;color:#e6e6e6;border-color:#555}}</styl
 <div class="card"><h2>⑤ サジェスト穴場ファインダー</h2><p class="sub">名前を入れると、ライバルの少ない検索キーワードを探す(全部で約45分。別の画面に結果が開く)。</p>
 <form data-tool="suggest"><input name="name" placeholder="調べたい名前" size="18"> <label><input type="checkbox" name="quick"> 急ぎ(約5分)</label><br>
 <button>探す</button></form></div>
+
+<div class="card"><h2>⑥ 毎日の発信あつめ</h2><p class="sub">公式と本人のYouTube・X・Instagramから、写真つきの新しい発信を集める。ブラウザが開いて自動で動く(全部で約10分。さわらないで待つ)。</p>
+<form data-tool="hasshin">__SITES_ALL__ <label>直近 <input name="hours" value="30" size="3" inputmode="numeric"> 時間</label>
+<label><input type="checkbox" name="ytonly"> YouTubeだけ(すぐ終わる)</label><br><button>集める</button></form></div>
+
+<div class="card"><h2>⑦ ライバルブログ見張り</h2><p class="sub">ほかのアイドルブログの新着タイトルを集める。複数のブログが同時に書いたネタと、うちがまだ書いていないネタが分かる(約1分)。</p>
+<form data-tool="rival">__SITES_ALL__ <label>直近 <input name="hours" value="48" size="3" inputmode="numeric"> 時間</label><br><button>見に行く</button></form>
+<p class="sub" style="margin-top:12px">見張るブログを足す:</p>
+<form data-tool="rival-add"><input name="url" placeholder="https://ブログのURL" size="30"> __SITES__ <button class="sm">足す</button></form></div>
 
 <div class="card"><h2>このパソコンの点検</h2><p class="sub">道具が動く準備ができているかを調べる。足りないものと直し方が出る。</p>
 <form data-tool="doctor" style="display:inline"><button class="sm">点検する</button></form>

@@ -1,0 +1,67 @@
+{
+  "_note": "毎日の発信あつめ(tools/hasshin/hasshin.py)が見に行くアカウントの名簿。X・Instagramは checked に確かめた日付が入っているものだけ見る(なりすましを拾わないため)。足すときは checked を null で書き、python tools/hasshin/hasshin.py --check で表示名と認証バッジを見てから日付を入れる。memberはメンバー個人のアカウントのときだけ書く(members.jsonの名前と同じ字で)。",
+  "groups": {
+    "sixtones": {
+      "youtube": [
+        {"name": "SixTONES公式YouTube", "channel_id": "UCwjAKjycHHT1QzHrQN5Stww"}
+      ],
+      "x": [
+        {"handle": "SixTONES_SME", "name": "SixTONES公式X", "checked": "2026-11-14"}
+      ],
+      "instagram": [
+        {"handle": "sixtones_official", "name": "SixTONES公式Instagram", "checked": "2026-11-14"}
+      ]
+    },
+    "ko1keyz": {
+      "youtube": [
+        {"name": "KO1KEYZ公式YouTube", "channel_id": "UCU23GMwI7z5zSMCHIanbSkQ"}
+      ],
+      "x": [
+        {"handle": "KO1KEYZofficial", "name": "KO1KEYZ公式X", "checked": "2026-11-14"}
+      ],
+      "instagram": []
+    },
+    "snowman": {
+      "youtube": [
+        {"name": "Snow Man公式YouTube", "channel_id": "UCuFPaemAaMR8R5cHzjy23dQ"}
+      ],
+      "x": [
+        {"handle": "SN__20200122", "name": "Snow Man公式X", "checked": "2026-11-14"}
+      ],
+      "instagram": [
+        {"handle": "snowman.official.9", "name": "Snow Man公式Instagram", "checked": "2026-11-14"},
+        {"handle": "hikaru.iwamoto_sn_official", "name": "岩本照", "member": "岩本照", "checked": "2026-11-14"},
+        {"handle": "sn_tatsuya.fukazawa_official", "name": "深澤辰哉", "member": "深澤辰哉", "checked": "2026-11-14"},
+        {"handle": "raul_official_sn", "name": "ラウール", "member": "ラウール", "checked": "2026-11-14"},
+        {"handle": "shota_watanabe_sn_official", "name": "渡辺翔太", "member": "渡辺翔太", "checked": "2026-11-14"},
+        {"handle": "sn_kojimukai_official", "name": "向井康二", "member": "向井康二", "checked": "2026-11-14"},
+        {"handle": "sn_ryohei.abe_official", "name": "阿部亮平", "member": "阿部亮平", "checked": "2026-11-14"},
+        {"handle": "sn_meguro.ren_official", "name": "目黒蓮", "member": "目黒蓮", "checked": "2026-11-14"},
+        {"handle": "ryota.miyadate0325_sn_official", "name": "宮舘涼太", "member": "宮舘涼太", "checked": "2026-11-14"},
+        {"handle": "daisuke.sakuma_sn_official", "name": "佐久間大介", "member": "佐久間大介", "checked": "2026-11-14"}
+      ]
+    },
+    "travis": {
+      "youtube": [
+        {"name": "Travis Japan公式YouTube", "channel_id": "UCoEIdZkDEZdrCDCJSqwifzw"}
+      ],
+      "x": [
+        {"handle": "TravisJapan_cr", "name": "Travis Japan公式X", "checked": "2026-11-14"}
+      ],
+      "instagram": [
+        {"handle": "travis_japan_official", "name": "Travis Japan公式Instagram", "checked": "2026-11-14"}
+      ]
+    },
+    "ktl": {
+      "youtube": [
+        {"name": "KEY TO LIT公式YouTube", "channel_id": "UC-S4wziPnbFiIb3RXKlNG6g", "note": "@key_to_lit_official(2026-11-14にチャンネルページから確認)"}
+      ],
+      "x": [
+        {"handle": "KEYTOLIT_UM", "name": "KEY TO LIT公式X(ユニバーサル)", "checked": "2026-11-14"}
+      ],
+      "instagram": [
+        {"handle": "key_to_lit_official", "name": "KEY TO LIT公式Instagram", "checked": "2026-11-14"}
+      ]
+    }
+  }
+}

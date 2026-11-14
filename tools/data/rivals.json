@@ -1,0 +1,265 @@
+{
+  "_note": "見張るライバルブログの名簿(tools/rival_watch/rival_watch.py)。足すときは --add URL --group グループ名、候補さがしは --discover。groupsが1つだけのブログは専門ブログとして全部の記事を見る。2つ以上のブログは、タイトルにうちのグループやメンバーの名前が出た記事だけ見る。ignoreは候補さがしで出てきても足さないドメイン(公式・大手メディアなど)。",
+  "blogs": [
+    {
+      "name": "oshitabi.net",
+      "url": "https://oshitabi.net/",
+      "feed": "https://oshitabi.net/sitemap.xml",
+      "kind": "sitemap",
+      "groups": [
+        "sixtones",
+        "snowman",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "vestick.jp",
+      "url": "https://vestick.jp/",
+      "feed": "https://vestick.jp/sitemap_index.xml",
+      "kind": "sitemap",
+      "groups": [
+        "sixtones",
+        "snowman",
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "fananablog.com",
+      "url": "https://fananablog.com/",
+      "feed": "https://fananablog.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "fumichen2.livedoor.blog",
+      "url": "https://fumichen2.livedoor.blog/",
+      "feed": "https://fumichen2.livedoor.blog/index.rdf",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "kosodate-and.net",
+      "url": "https://kosodate-and.net/",
+      "feed": "https://kosodate-and.net/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "mom-eat.com",
+      "url": "https://mom-eat.com/",
+      "feed": "https://mom-eat.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "snowman",
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "oshiloke.com",
+      "url": "https://oshiloke.com/",
+      "feed": "https://oshiloke.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "travis",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "perfume-matome.com",
+      "url": "https://perfume-matome.com/",
+      "feed": "https://perfume-matome.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "travis",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "ameblo.jp/stjuri615",
+      "url": "https://ameblo.jp/stjuri615/",
+      "feed": "http://rssblog.ameba.jp/stjuri615/rss20.xml",
+      "kind": "feed",
+      "groups": [
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "drama-tv-fashion.com",
+      "url": "https://drama-tv-fashion.com/",
+      "feed": "https://drama-tv-fashion.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "note.com/long_owl2681",
+      "url": "https://note.com/long_owl2681/",
+      "feed": "https://note.com/long_owl2681/rss",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "scentpick.jp",
+      "url": "https://scentpick.jp/",
+      "feed": "https://scentpick.jp/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "yuzumiyu.com",
+      "url": "https://yuzumiyu.com/",
+      "feed": "https://yuzumiyu.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "sixtones",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "rurino.com",
+      "url": "https://rurino.com/",
+      "feed": "https://rurino.com/sitemap.xml",
+      "kind": "sitemap",
+      "groups": [
+        "sixtones",
+        "ktl"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "thepath.tokyo",
+      "url": "https://thepath.tokyo/",
+      "feed": "https://thepath.tokyo/feed.xml",
+      "kind": "feed",
+      "groups": [
+        "ko1keyz",
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "snowman-information.com",
+      "url": "https://snowman-information.com/",
+      "feed": "https://snowman-information.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "snowman"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "illmnt.com",
+      "url": "https://illmnt.com/",
+      "feed": "https://illmnt.com/sitemap.xml",
+      "kind": "sitemap",
+      "groups": [
+        "snowman",
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "meecoco-blog.com",
+      "url": "https://meecoco-blog.com/",
+      "feed": "https://meecoco-blog.com/feed/",
+      "kind": "feed",
+      "groups": [
+        "snowman",
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "cutie-media.com",
+      "url": "https://cutie-media.com/",
+      "feed": "https://cutie-media.com/feed",
+      "kind": "feed",
+      "groups": [
+        "snowman",
+        "sixtones"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "ameblo.jp/eight0922xeighter0813",
+      "url": "https://ameblo.jp/eight0922xeighter0813/",
+      "feed": "http://rssblog.ameba.jp/eight0922xeighter0813/rss20.xml",
+      "kind": "feed",
+      "groups": [
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    },
+    {
+      "name": "note.com/pichan137",
+      "url": "https://note.com/pichan137/",
+      "feed": "https://note.com/pichan137/rss",
+      "kind": "feed",
+      "groups": [
+        "travis"
+      ],
+      "added": "2026-11-14",
+      "source": "Yahoo!検索の候補さがし(2026-11-14)"
+    }
+  ],
+  "ignore": [
+    "ellegirl.jp",
+    "web.familyclub.jp",
+    "jp.pinterest.com",
+    "fashionsnap.com",
+    "spur.hpplus.jp",
+    "fc.ccb.or.jp",
+    "ko1keyz.com"
+  ]
+}

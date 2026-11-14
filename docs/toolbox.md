@@ -21,6 +21,8 @@ Fable 5.2 がいなくなっても、マツ無しでも回せる道具をまと�
 | X投稿文の案出し | `tools/xpost_ideas.py` | いまの型で案を作り、URL入り・誘導の一言・長さ超え・固有名詞なし・答えバレを機械で落とす |
 | パソコンに入れるAI | `tools/ai_hub.py` の `ollama` | 外部AIが全部だめなときの最後の予備。鍵いらず・ネットいらず |
 | 記事スクリプトのひな形 | `tools/_template_article.py` | コピーして本文のデータだけ書く。部品の書き写しをやめる |
+| 毎日の発信あつめ | `tools/hasshin/hasshin.py` | 公式と本人のYouTube・X・Instagramから、直近30時間の写真つきの発信を集めて1ページにする。Xの返信からは「？」の文だけ抜く(2026-11-14〜) |
+| ライバルブログ見張り | `tools/rival_watch/rival_watch.py` | ほかのアイドルブログの新着タイトルを集め、複数のブログが書いたネタ・うちがまだ書いていないネタ・ネタの種類の数を出す(2026-11-14〜) |
 
 どれも記事を勝手に書き換えない・公開しない。公開は今までどおりユーザーの承認のあと(`blogkit.publish`)。
 
@@ -40,7 +42,40 @@ python tools/blogkit.py check                                                   
 - 新しい記事スクリプトは `tools/_template_article.py` をコピーして作る。古い `_build_*.py` は消さない。
 - `blogkit.upload_draft` は投稿の前に事実チェックを自動でかけ、NGがあれば止まる。
 
+## ネタ探しの2つの道具(2026-11-14〜)
+
+ライターがmomo一人なので、「ネタを見つける」所を道具とマツが受け持つためのもの。**選ぶ・裏を取る・出すかどうか決めるのは人**。
+
+```
+python tools/hasshin/hasshin.py                      # 発信あつめ(ブラウザが開く。全サイトで約10分)
+python tools/hasshin/hasshin.py --site snowman --hours 48
+python tools/hasshin/hasshin.py --no-browser         # YouTubeだけ(すぐ終わる)
+python tools/hasshin/hasshin.py --check              # 名簿のアカウントを開いて表示名と認証バッジを出す
+python tools/rival_watch/rival_watch.py              # ライバル見張り(約1分)
+python tools/rival_watch/rival_watch.py --add https://ブログ/ --group snowman
+python tools/rival_watch/rival_watch.py --discover   # Yahoo!検索からライバル候補を探す(約5分)。足すなら --save
+```
+
+- 発信あつめの結果は `tools/hasshin/out/日付_時刻/`。`index.html` が人が見るページ、`items.json` と `img/` はマツが写真を読むためのもの。
+  **写真はPCの中だけ**(リポジトリに入れない・記事にそのまま使わない)。
+- マツの使い方: 発信あつめを回す → `img/` の写真を1枚ずつ見る → 6つの方向(物・人・場所・前との違い・過去・この後)で
+  「次の疑問」を出す → 答えを複数の道すじで調べる → 下書き。みんなが最初に思う疑問(どこで・なぜ・いつ)は大手が書くので狙わない。
+- **一般の人のアカウントは調べない**。Xの返信は「？」の文だけを抜き、書いた人の名前もプロフィールも集めない。
+  学歴などは本人の発言・公式・報道で確かめる。
+- ブラウザはXiyと同じログインずみプロファイル(`~/x_collector_profile`、使用中なら `_2` `_3`)。Instagramは開きすぎると
+  ログインを止められるので、1アカウント4投稿まで・見たことのある投稿は開かない、にしてある。1日1〜2回までにする。
+- ライバル見張りはタイトルとURLだけを見る(本文は読まない・写さない)。フィードが無いブログはサイトマップで見張り、
+  日時のうしろに「(更新)」と出る(公開日ではなく更新日)。回すたびに `tools/rival_watch/history.jsonl` にたまり、
+  「直近30日のネタの種類」に出る。
+
 ## データの直し方(ここを育てると道具が賢くなる)
+
+- `tools/data/sources.json` … 発信あつめが見るアカウントの名簿。足すときは `checked` を `null` で書き、`--check` で
+  表示名と認証バッジを見てから日付を入れる(2026-11-14に `travisjapan_official` が別人のアカウントだと分かった。正しくは
+  `travis_japan_official`)。**足りないもの(2026-11-14時点): SixTONES・トラジャ・キテレツのメンバー個人のInstagram、KO1KEYZのInstagram。**
+- `tools/data/rivals.json` … 見張るライバルブログの名簿。`groups` が1つだけなら専門ブログとして全部の記事を見る。
+  2つ以上なら、タイトルにうちのグループやメンバーの名前が出た記事だけ見る。大手や公式は `ignore` に書く。
+  ネタの種類の分け方は `rival_watch.py` の `TOPICS`。
 
 - `tools/data/members.json` … 名簿。メンバーの追加、よくある字のまちがい(`wrong`)、メンバーカラー、誕生日。
   誕生日は記憶で書かない。`python tools/neta_calendar/verify_birthdays.py` がWikipediaで確かめて埋める。

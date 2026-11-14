@@ -65,3 +65,11 @@ desktop.ini
 # サジェスト穴場ファインダーのローカル生成データ(検索結果キャッシュ・レポート)
 tools/suggest-finder/out/
 tools/suggest-finder/cache/
+
+# 毎日の発信あつめ・ライバルブログ見張りのローカル生成データ(PCごとの状態・集めた写真。写真は著作権があるのでリポジトリに含めない)
+tools/hasshin/out/
+tools/hasshin/state.json
+tools/rival_watch/out/
+tools/rival_watch/state.json
+tools/rival_watch/candidates.json
+tools/rival_watch/history.jsonl
