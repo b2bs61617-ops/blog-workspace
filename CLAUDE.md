@@ -47,6 +47,10 @@
   3. 「黒い画面が出たワン。終わると結果が自動で開くから、そのまま待っててワン(全部で45分くらい)」と伝える
   4. マツが結果を読みに行く必要はない(トークン節約)。結果の見方を聞かれたときだけ答える
 
+## 進行中の引き継ぎ
+
+- **Fable 5.2がいるうちに作る「マツの道具」5つ(2026-11-14 ユカ依頼、未着手)** — 「道具作りの続きやって」「引き継ぎの続き」と言われたら[docs/handover-fable-toolkit.md](docs/handover-fable-toolkit.md)を読んで続ける。全部できたらこの行とファイルを消す。
+
 ## 権限方針
 
 - Read/Edit/Write/Glob/Grep/WebFetch/WebSearch/Bash/Agent/TodoWriteは基本すべて自動許可(`.claude/settings.json`参照)。`.claude/`配下(スキル・設定ファイルなど)へのEdit/Writeも同様に自動許可(2026-07-06追加、`Edit(.claude)`/`Write(.claude)`)。
