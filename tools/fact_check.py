@@ -231,6 +231,9 @@ def check_shape(html, min_chars=2500):
         ng.append("[形] H2見出しが無い")
     if "【未】" in plain(html):
         warn.append("[形] 本文に【未】が入っている")
+    # 制作側(マツ)を本文に出さない(docs/rules.md、2026-11-15 ID718で再発したので機械で止める)
+    if re.search(r"マツ(?:の|は|が|も|で|と|に|自身)", plain(html)):
+        ng.append("[形] 本文に「マツ」が出ている(制作側の名前は書かない。「予想では」などにする)")
     no_br = 0
     for p in re.findall(r"<p\b[^>]*>(.*?)</p>", html, re.S):
         no_br += len(re.findall("。(?!\\s*(?:<br|$|」|』|\\)|）|</))", p.strip()))
