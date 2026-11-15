@@ -8,7 +8,7 @@
 動画: https://youtu.be/BMtVphHGjgA (46分) / 生配信: https://www.youtube.com/live/ppWGyr7qYo8
 画像は動画・生配信のコマ(images/ktl_kusatsu_1115_*.jpg)。メディアIDは articles/ktl_kusatsu_1115_media.json に控える。
 iwasaki(生配信の私服)はオシリが送ったXの投稿がきっかけ。他人の特定投稿なので記事では画像も名前も出さない。
-楽天APIが403のため、商品の枠はAmazon検索リンクだけ(2026-11-15)。
+楽天APIが403(IP制限)のため、楽天は検索結果ページへのアフィリエイトリンク(2026-11-15)。
 """
 import json
 import sys
@@ -76,9 +76,13 @@ def fig(name, alt, src, ids, upload):
 
 
 def amazon_box(title, kw, note):
+    """楽天APIはこのPCのIPが許可されず403(CLIENT_IP_NOT_ALLOWED)なので、楽天は検索結果ページへのアフィリエイトリンクにする。"""
+    import urllib.parse
     env = ab.load_keys()
     url = al.build_amazon_search_url(kw, env.get("AMAZON_ASSOCIATE_TAG"))
-    return ab.build_box(None, None, title, url, note, "#c9d6e6") + "\n", url
+    q = urllib.parse.quote("https://search.rakuten.co.jp/search/mall/" + urllib.parse.quote(kw) + "/", safe="")
+    rk = "https://hb.afl.rakuten.co.jp/hgc/{}/?pc={}&m={}".format(env["RAKUTEN_AFFILIATE_ID"], q, q)
+    return ab.build_box(rk, None, title, url, note, "#c9d6e6") + "\n", rk + " / " + url
 
 
 # ------------------------------------------------------------------ 1. 概要
@@ -372,8 +376,8 @@ def igari(F):
     o += b.p("おもな探し方は、次の3つです。")
     o += b.checks(["古着屋(アメカジ・レーシング系に強いお店)",
                    "フリマアプリ・オークション",
-                   "Amazonなどの通販(ヴィンテージの出品)"])
-    o += b.p("Amazonでの探し方は、上の枠の「Amazonで見る」からどうぞ。")
+                   "楽天・Amazonなどの通販(ヴィンテージの出品)"])
+    o += b.p("楽天やAmazonでの探し方は、上の枠のボタンからどうぞ。")
     o += b.h3("猪狩蒼弥とレーシングジャケット")
     o += b.p("猪狩蒼弥は、同じ日の夜の生配信でも、ピンクのフェラーリのレーシングジャケットを着ていました。",
              "古着やモータースポーツっぽい服が好きなのかもしれませんね。")
