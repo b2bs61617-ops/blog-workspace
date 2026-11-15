@@ -26,11 +26,11 @@ import affiliate_linker as al  # noqa: E402
 
 SITE = "travis"
 KEY = "travis_umigen_bbq_1115"
-TITLE = "【うみげんの部屋】BBQロケ地は表参道のどこ？しずや海人の服は？"
+TITLE = "【うみげんの部屋】BBQロケ地は表参道のどこ？しずやうみの服は？"
 SLUG = "umigen-no-heya-bbq-location-outfits"
 CATEGORIES = [3]
 NAMES = []
-EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch_canva.jpg")
+EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch_canva_v2.jpg")
 EYECATCH_ALT = "うみげんの部屋 BBQ回のロケ地と服"
 YT = "https://www.youtube.com/watch?v=fuKm3Pnsrxw"
 ROLE = "https://chomoand-4.blog/sabazaki-ryo-genta-matsuda-role-1184"
