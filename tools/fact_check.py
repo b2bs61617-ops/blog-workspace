@@ -231,6 +231,11 @@ def check_shape(html, min_chars=2500):
         ng.append("[形] H2見出しが無い")
     if "【未】" in plain(html):
         warn.append("[形] 本文に【未】が入っている")
+    # グループ名には「さん」を付けない(2026-11-15 ID718「Aぇ! groupさん」でオシリ指摘)
+    g = re.search(r"(?:group|Japan|Snow Man|SixTONES|KEY TO LIT|KO1KEYZ|timelesz|WEST\.|JUMP|King & Prince|Kis-My-Ft2|"
+                  r"NEWS|なにわ男子|キテレツ|トラジャ|スノ|スト)さん", plain(html))
+    if g:
+        ng.append("[形] グループ名に「さん」が付いている(「{}」。グループ名には付けない)".format(g.group(0)))
     # 制作側(マツ)を本文に出さない(docs/rules.md、2026-11-15 ID718で再発したので機械で止める)
     if re.search(r"マツ(?:の|は|が|も|で|と|に|自身)", plain(html)):
         ng.append("[形] 本文に「マツ」が出ている(制作側の名前は書かない。「予想では」などにする)")
