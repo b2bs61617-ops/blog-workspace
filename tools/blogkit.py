@@ -36,15 +36,15 @@ SITES = {
     "trend": {"env": "WP_TREND", "domain": "chomoand.com", "label": "トレンド", "group": None,
               "x_account": "trend", "authors": {"user1": 3, "tomoki": 4, "yuka": 4}},
     "sixtones": {"env": "WP_AUDITION", "domain": "chomoand-0.com", "label": "SixTONES", "group": "sixtones",
-                 "x_account": "main", "authors": {"user1": 2, "tomoki": 1}},
+                 "x_account": "main", "authors": {"user1": 2, "tomoki": 1, "yuka": 1}},
     "ko1keyz": {"env": "WP_KOIKEYS", "domain": "chomoand-1.com", "label": "KO1KEYZ", "group": "ko1keyz",
-                "x_account": "main", "authors": {"user1": 2}},
+                "x_account": "main", "authors": {"user1": 2, "yuka": 1}},
     "snowman": {"env": "WP_CHOMO2", "domain": "chomoand-2.com", "label": "Snow Man", "group": "snowman",
                 "x_account": "main", "authors": {"user1": 2, "tomoki": 1, "yuka": 1}},
     "travis": {"env": "WP_CHOMO4", "domain": "chomoand-4.blog", "label": "トラジャ", "group": "travis",
-               "x_account": "main", "authors": {"user1": 2, "tomoki": 1}},
+               "x_account": "main", "authors": {"user1": 2, "tomoki": 1, "yuka": 1}},
     "ktl": {"env": "WP_CHOMO5", "domain": "chomoand-5.site", "label": "キテレツ", "group": "ktl",
-            "x_account": "main", "authors": {"user1": 2, "tomoki": 1}},
+            "x_account": "main", "authors": {"user1": 2, "tomoki": 1, "yuka": 1}},
 }
 LOCAL_FIRST_PREFIXES = ("GOOGLE_INDEXING",)  # PCごとにパスが違うのでローカルの値を優先するキー
 
