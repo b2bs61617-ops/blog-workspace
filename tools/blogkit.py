@@ -34,7 +34,7 @@ UA = "Mozilla/5.0 (blog-workspace toolbox)"
 # authors: hostnameの先頭(小文字で比較) → そのサイトのWordPressユーザーID(docs/wordpress.mdの表と同じ)
 SITES = {
     "trend": {"env": "WP_TREND", "domain": "chomoand.com", "label": "トレンド", "group": None,
-              "x_account": "trend", "authors": {"user1": 3, "tomoki": 4}},
+              "x_account": "trend", "authors": {"user1": 3, "tomoki": 4, "yuka": 4}},
     "sixtones": {"env": "WP_AUDITION", "domain": "chomoand-0.com", "label": "SixTONES", "group": "sixtones",
                  "x_account": "main", "authors": {"user1": 2, "tomoki": 1}},
     "ko1keyz": {"env": "WP_KOIKEYS", "domain": "chomoand-1.com", "label": "KO1KEYZ", "group": "ko1keyz",

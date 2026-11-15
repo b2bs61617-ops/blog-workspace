@@ -25,7 +25,7 @@
 |---|---|---|---|---|---|---|---|
 | USER1 | momo | user id 3(slug: momo) | user id 2(slug: momo、2026-10-27に改名) | user id 2(slug: momo) | user id 2(slug: momo、2026-09-13確認) | user id 2(slug: momo、2026-10-17確認) | user id 2(slug: momo、2026-10-18確認) |
 | Tomoki | anco | user id 4(slug: and) | user id 1(slug: anco、2026-10-27に改名) | 未確認(このPCから投稿時に要確認) | user id 1(slug: anco、2026-09-13確認) | user id 1(slug: anco、2026-10-17確認) | user id 1(slug: anco、2026-10-18確認) |
-| Yuka-MacBook-NEO(ユカのMac) | chomoand-2.comはanco(2026-10-25にユカ指定) | 未確認 | 未確認 | 未確認 | 未確認 | 未確認 | user id 1(slug: anco、2026-10-25確認) |
+| Yuka-MacBook-NEO(ユカのMac) | chomoand-2.comはanco(2026-10-25にユカ指定) | user id 4(anco。VIVANT記事からこの名義で投稿、2026-11-15にblogkitへ反映) | 未確認 | 未確認 | 未確認 | 未確認 | user id 1(slug: anco、2026-10-25確認) |
 
 - hostnameは`hostname`コマンドで確認できる。
 - [blog-uploadスキルSTEP3](../.claude/skills/blog-upload/SKILL.md)で下書き投稿するとき、この表を参照して`author`フィールドに該当ユーザーIDを含めること(省略するとサイトの認証ユーザー本人が投稿者になってしまう)。
