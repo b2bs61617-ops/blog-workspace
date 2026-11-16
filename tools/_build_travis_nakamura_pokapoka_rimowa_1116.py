@@ -35,6 +35,8 @@ X_TAGS = "#TravisJapan #中村海人 #ぽかぽか"
 MEDIA = json.loads((blogkit.ROOT / "images" / "pokapoka1116" / "media.json").read_text(encoding="utf-8"))
 PERFUME = "https://chomoand-4.blog/?p=2814"
 MATOME = "https://chomoand-4.blog/travis-japan-favorite-perfume-1278"
+HARAJUKU = "https://chomoand-4.blog/chakaumi-harajuku-sanpo-outfit-tomford-1583"
+PRESENT = "https://chomoand-4.blog/what-is-the-birthday-present-f-721"
 SRC = "出典:フジテレビ『ぽかぽか』2026年11月16日放送"
 
 b = blogkit.Blocks("#3f9e7a", "#9ad8bd", "#f0faf5")
@@ -163,6 +165,15 @@ out += b.p(
 out += b.p(
     "気分でサングラスを使い分けるという話に、スタジオは笑いに包まれていました。",
     "フレームの型番は映像では読めなかったため、モデル名までは特定できませんでした。",
+)
+out += b.p(
+    "中村さんはアイウェアもトムフォードがお気に入りのようです。",
+    "宮近海斗さんとの原宿散歩では、トムフォードのメガネをかけていました。",
+    "くわしくは" + L(HARAJUKU, "原宿散歩のちゃかうみの私服の記事") + "で紹介しています。",
+)
+out += b.p(
+    "宮近さんの誕生日には、トムフォードのサングラスをプレゼントしたこともあります。",
+    "そのときの話は" + L(PRESENT, "宮近海斗の誕生日プレゼントの記事") + "にまとめています。",
 )
 
 out += b.h3("ネックレスはルイ・ヴィトンのポーチに")
