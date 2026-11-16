@@ -37,6 +37,7 @@ PERFUME = "https://chomoand-4.blog/?p=2814"
 MATOME = "https://chomoand-4.blog/travis-japan-favorite-perfume-1278"
 HARAJUKU = "https://chomoand-4.blog/chakaumi-harajuku-sanpo-outfit-tomford-1583"
 PRESENT = "https://chomoand-4.blog/what-is-the-birthday-present-f-721"
+KEYCHAIN = "https://chomoand-4.blog/?p=2929"
 SRC = "出典:フジテレビ『ぽかぽか』2026年11月16日放送"
 
 b = blogkit.Blocks("#3f9e7a", "#9ad8bd", "#f0faf5")
@@ -122,11 +123,12 @@ out += b.p(
     "値段は色や時期で変わるので、買う前に公式サイトやお店で確かめてください。",
 )
 
-out += b.h3("スティッチのキーホルダーも")
+out += b.h3("スティッチとレゴのキーホルダーも")
 out += fig("nakamura_rimowa_stitch_1116")
 out += b.p(
-    "バッグには、緑のかぶりものをしたスティッチのぬいぐるみがついていました。",
+    "バッグには、恐竜のパジャマを着たスティッチのぬいぐるみと、レゴのキーホルダーがついていました。",
     "クールなシルバーのバッグに、かわいいキャラクターを合わせているのが中村さんらしいところです。",
+    "3つのキーホルダーのブランドと値段は、" + L(KEYCHAIN, "中村海人のキーホルダーの記事") + "でくわしく紹介しています。",
 )
 
 # ---- 中身
