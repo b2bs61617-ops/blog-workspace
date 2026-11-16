@@ -104,7 +104,8 @@ def _blob_svg(colors: list[str], rnd: random.Random, colors_right: list[str] | N
 </svg>'''
 
 
-def build_html(top: str, main: str, bottom: list[str], color_key: str, seed: int | None) -> str:
+def build_html(top: str, main: str, bottom: list[str], color_key: str, seed: int | None,
+               top_size: int = 54, bottom_size: int = 68) -> str:
     rnd = random.Random(seed)
     # "宮近海斗+吉澤閑也" のように+でつなぐと左右で二色展開(2人回用)
     keys = color_key.split("+")
@@ -120,9 +121,9 @@ html,body{{margin:0;padding:0}}
 .text{{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-family:'Kosugi Maru',sans-serif;color:{TEXT_COLOR};text-align:center}}
 .fit{{white-space:nowrap;line-height:1.12;-webkit-text-stroke-color:{TEXT_COLOR};}}
-.top{{font-size:54px;-webkit-text-stroke-width:1.6px;letter-spacing:0.04em;margin-bottom:4px}}
+.top{{font-size:{top_size}px;-webkit-text-stroke-width:{top_size * 1.6 / 54:.1f}px;letter-spacing:0.04em;margin-bottom:4px}}
 .main{{font-size:165px;-webkit-text-stroke-width:8px;letter-spacing:0.02em;margin-bottom:14px}}
-.bottom{{font-size:68px;-webkit-text-stroke-width:4px;line-height:1.2}}
+.bottom{{font-size:{bottom_size}px;-webkit-text-stroke-width:{bottom_size * 4 / 68:.1f}px;line-height:1.2}}
 </style></head><body><div class="stage">
 {_blob_svg(colors, rnd, colors_right)}
 <div class="text">
@@ -163,13 +164,24 @@ def render(html_text: str, out_path: Path) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser(description="chomoand-4.blog Canva風アイキャッチ生成")
     ap.add_argument("--top", default="Travis Japan", help="上段(小)。既定はTravis Japan")
-    ap.add_argument("--main", required=True, help="中央(特大)。個人=メンバー名/グループ=話題キーワード")
+    ap.add_argument("--group", action="store_true",
+                    help="グループ記事の型(2026-11-16ユカ指示、ID2728で確定): 上段=YouTube企画名/番組名/ドラマ名(--top必須)、"
+                         "中央=Travis Japan、下段=内容。上段・下段を同じ76pxにする")
+    ap.add_argument("--main", default=None, help="中央(特大)。個人=メンバー名/グループ=話題キーワード")
     ap.add_argument("--bottom", action="append", default=[], help="下段(複数指定で複数行、最大2行)")
     ap.add_argument("--color-key", required=True,
                     help=f"{'/'.join(sorted(WATERCOLORS))}。2人回は「宮近海斗+吉澤閑也」で左右二色")
     ap.add_argument("--seed", type=int, default=None, help="水彩の形を固定する乱数シード")
     ap.add_argument("--out", required=True, help="出力パス(.jpg/.png)")
     a = ap.parse_args()
+    top_size, bottom_size = 54, 68
+    if a.group:
+        if a.top == "Travis Japan":
+            ap.error("--group では --top に YouTube企画名・番組名・ドラマ名を入れる")
+        a.main = a.main or "Travis Japan"
+        top_size = bottom_size = 76
+    if not a.main:
+        ap.error("--main が必要(グループ記事は --group)")
     for k in a.color_key.split("+"):
         if k not in WATERCOLORS:
             ap.error(f"--color-key に無い色: {k}")
@@ -177,7 +189,7 @@ def main() -> None:
         ap.error("--color-key の+つなぎは2人まで")
     if len(a.bottom) > 2:
         ap.error("--bottom は2行まで")
-    print("done:", render(build_html(a.top, a.main, a.bottom, a.color_key, a.seed), Path(a.out)))
+    print("done:", render(build_html(a.top, a.main, a.bottom, a.color_key, a.seed, top_size, bottom_size), Path(a.out)))
 
 
 if __name__ == "__main__":
