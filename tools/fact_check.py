@@ -229,6 +229,9 @@ def check_shape(html, min_chars=2500):
         ng.append("[形] 区切り線(<hr>)がある(全部取る)")
     if not re.search(r"<h2\b", html):
         ng.append("[形] H2見出しが無い")
+    # 記事には必ずXから拾った写真を入れる(2026-11-16ユカ指示。docs/rules.mdの画像埋め込みルール)
+    if not re.search(r"<img\b", html):
+        ng.append("[写真] 本文に写真が無い(Xの投稿から写真を拾って入れる。アイキャッチは数えない)")
     if "【未】" in plain(html):
         warn.append("[形] 本文に【未】が入っている")
     # グループ名には「さん」を付けない(2026-11-15 ID718「Aぇ! groupさん」でオシリ指摘)

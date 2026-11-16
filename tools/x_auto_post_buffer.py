@@ -325,7 +325,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--text", required=True, help="フック文(URL・ハッシュタグは含めない)")
     parser.add_argument("--hashtags", default="", help="例: '#今日好き #今日好きになりました'")
-    parser.add_argument("--post-id", type=int, default=None, help="記事ID。本文内の画像を全て(最大4枚)添付する。画像が無ければ文章のみ")
+    parser.add_argument("--post-id", type=int, default=None, help="記事ID。本文内の画像を全て(最大4枚)添付する。画像が無ければ投稿しない(2026-11-16〜)")
     parser.add_argument("--image", action="append", default=[], help="添付画像URLを直接指定(複数可)。--post-id指定時はそちらを優先")
     parser.add_argument("--url", required=True, help="記事URL(リプライ投稿に使う)")
     parser.add_argument("--due-at", default=None, help="予約投稿時刻(ISO8601、例: 2026-09-25T21:00:00+09:00)。省略時は即時投稿")
@@ -339,6 +339,11 @@ if __name__ == "__main__":
     if args.post_id:
         site = urlparse(args.url)
         images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
+
+    # SNS投稿には必ず写真を付ける(2026-11-16ユカ指示)。アイキャッチで代わりにしない。
+    if not images:
+        print("写真が無いので投稿しないワン。記事本文にXの写真を入れてから(または--imageで写真を指定して)もう一度投稿してワン", file=sys.stderr)
+        sys.exit(2)
 
     result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft, threads=not args.no_threads, account=args.account)
     if result is None:

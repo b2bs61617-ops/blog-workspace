@@ -124,10 +124,11 @@ def test_title_rules():
 
 
 def test_shape_rules():
-    good = "<!-- wp:heading --><h2>a</h2><!-- /wp:heading --><!-- wp:paragraph --><p>" + "あ" * 2600 + "</p>"
+    good = "<!-- wp:heading --><h2>a</h2><!-- /wp:heading --><!-- wp:paragraph --><p>" + "あ" * 2600 + "</p>" \
+        '<figure><img src="https://example.com/a.jpg"><figcaption>出典</figcaption></figure>'
     assert fc.check_shape(good) == ([], [])
     ng, _ = fc.check_shape("<h2>a</h2><p>短い</p><hr>")
-    assert len(ng) == 3  # 字数・ブロック形式・区切り線
+    assert len(ng) == 4  # 字数・ブロック形式・区切り線・写真なし
     _, warn = fc.check_shape(good + "<p>一。二。三。四。</p>")
     assert any("<br>" in x for x in warn)
 
