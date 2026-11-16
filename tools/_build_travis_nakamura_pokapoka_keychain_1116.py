@@ -20,6 +20,22 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import blogkit  # noqa: E402
+import affiliate_box as ab  # noqa: E402
+import affiliate_linker as al  # noqa: E402
+
+_TAG = ab.load_keys().get("AMAZON_ASSOCIATE_TAG")
+
+
+def amz(q):
+    return al.build_amazon_search_url(q, _TAG)
+
+
+def amz_box(title, q, note=""):
+    return ab.build_box(None, None, title, amz(q), note, "#9ad8bd")
+
+
+def amz_inline(q):
+    return '(<a href="{}" {}>Amazonで見る</a>)'.format(amz(q), ab.SPON)
 
 SITE = "travis"
 KEY = "travis_nakamura_pokapoka_keychain_1116"
@@ -50,7 +66,7 @@ def fig(key):
         .format(m["url"], m["alt"], SRC))
 
 
-out = ""
+out = ab.NOTICE + "\n\n"
 
 # ---- リード
 out += b.p(
@@ -128,6 +144,7 @@ out += b.p(
 out += b.p(
     "フリマで買うときは、にせものや傷に気をつけて、写真と説明をよく確かめてください。",
     "ディズニーストアの店舗では、季節ごとにスティッチの新しいキーホルダーも出ています。",
+    "Amazonでもさがせます" + amz_inline("スティッチ ぬいぐるみキーホルダー PAJAMA STYLE") + "。",
 )
 
 # ---- ストームトルーパー
@@ -138,6 +155,8 @@ out += b.mini(
     ("品番", "853946"),
     ("海外の値段", "アメリカ5.99ドル・イギリス4.99ポンド"),
 )
+out += amz_box("レゴ スター・ウォーズ ストームトルーパー キーチェーン(853946)", "レゴ ストームトルーパー キーチェーン 853946",
+               "Amazonの検索結果が開きます。品番853946を確かめて選んでください")
 out += b.p(
     "2つ目は、白いレゴのミニフィギュアのキーホルダーです。",
     "逆さまにぶら下がっていて顔は映っていませんでしたが、足の形と色がはっきり見えました。",
@@ -168,6 +187,8 @@ out += b.mini(
     ("商品", "2x4 ブライトブルーイッシュグリーン キーチェーンとみられる"),
     ("品番", "854303"),
 )
+out += amz_box("レゴ 2x4 ブロック キーチェーン ブライトブルーイッシュグリーン(854303)", "レゴ キーチェーン 854303",
+               "Amazonの検索結果が開きます。色と品番を確かめて選んでください")
 out += b.p(
     "3つ目は、青みのある緑色のレゴブロックです。",
     "上のポッチが2つ見えていて、残りはスティッチのぬいぐるみにかくれていました。",
