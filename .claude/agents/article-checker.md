@@ -14,7 +14,7 @@ tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 - 使った出典(あれば)
 
 ## 先に読む
-- `docs/rules.md`(判断の基準。迷ったらここに書いてあるかで決める)
+- `docs/rules-short.md`(判断の基準。**`docs/rules.md` は全部読まない**。迷ったときだけ `grep -n` で該当の節を探して読む)
 - 記事を作ったスクリプト `tools/_build_<KEY>.py`(タイトル・NAMES・カテゴリの確認)
 
 ## 1. 機械チェック(全部まわす)

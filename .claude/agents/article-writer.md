@@ -18,8 +18,8 @@ tools: Read, Grep, Glob, Write, Edit, Bash, WebSearch, WebFetch
 勝手に話を作らず「何が足りないか」を書いて止まって返す。
 
 ## 書く前に必ず読む
-1. `CLAUDE.md`(サイトごとの違い)
-2. `docs/rules.md` の全部(タイトル・構成・装飾・さん付け・やさしい文章・私物特定・SNS引用のルール)
+1. `docs/rules-short.md`(ルールの短い表。**`docs/rules.md` は全部読まない**。色コードやHTMLの型など細かいところが要るときだけ、`grep -n` で該当の節を探してそこだけ読む)
+2. サイトごとの違いが分からなければ `CLAUDE.md` の「プロジェクト概要」だけ
 3. 型に合うスキル: 人物wiki=`.claude/skills/wiki-article/SKILL.md`、学歴・家族・彼女=`.claude/skills/gakureki-kazoku-kanojo/SKILL.md`、恋リア(trend)=`.claude/skills/koi-real/SKILL.md`
 4. 同じサイト・同じ人物の最近の記事を1〜2本(`articles/` の新しいもの)。見出しや枠の使い方をそろえるため
 5. 名簿 `tools/data/members.json` と行事 `tools/data/events.json`(誕生日・メンバーカラー・日付を記憶で書かない)

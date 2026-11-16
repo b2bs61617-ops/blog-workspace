@@ -114,6 +114,7 @@
 | [article-writer](.claude/agents/article-writer.md) | 執筆係。マツが調べた材料とサイトを渡すと、`tools/_build_<KEY>.py`と`articles/<KEY>.html`を作って返す。**投稿・公開はしない**(`--build-only`だけ) |
 | [article-checker](.claude/agents/article-checker.md) | チェック係。記事HTMLか記事IDを渡すと、`fact_check.py`などの機械チェック+タイトルと本文のズレ・事実の裏取り・プライバシーを見て、直すところを重い順に返す。**ファイルは書き換えない** |
 
+- 係はトークン節約のため`docs/rules.md`(約5.7万字)ではなく短い版[docs/rules-short.md](docs/rules-short.md)を読む。**rules.mdに大事なルールを足したらrules-short.mdにも1行足す**。
 - 調べもの(Xiy・SNS収集)はマツがやり、材料を書く係に渡す。チェック係の「必ず直す」が0件になってから`blog-upload`で投稿する。
 
 ## ツール
