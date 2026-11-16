@@ -107,15 +107,20 @@
 
 ## サブエージェント(2026-11-16〜 ユカ依頼)
 
-マツが仕事を任せる子分。設定は`.claude/agents/`。記事を書くときは「書く係→チェック係→マツが直して投稿」の順に回す。
+マツが仕事を任せる子分。設定は`.claude/agents/`。係はまっさらな状態で動き出すので、頼むときはサイト・KEY・材料のパスを全部渡す。**係はWordPressに書きこまない**(投稿・公開はマツがblog-upload/publishで行う)。
 
 | エージェント | 役割 |
 |---|---|
-| [article-writer](.claude/agents/article-writer.md) | 執筆係。マツが調べた材料とサイトを渡すと、`tools/_build_<KEY>.py`と`articles/<KEY>.html`を作って返す。**投稿・公開はしない**(`--build-only`だけ) |
-| [article-checker](.claude/agents/article-checker.md) | チェック係。記事HTMLか記事IDを渡すと、`fact_check.py`などの機械チェック+タイトルと本文のズレ・事実の裏取り・プライバシーを見て、直すところを重い順に返す。**ファイルは書き換えない** |
+| [researcher](.claude/agents/researcher.md) | 調べ係。Xiy CLI・YouTube文字起こし・Web検索で材料を集め、出典つきの材料メモ`articles/<KEY>_research.md`を返す。マツの会話を軽くする効果がいちばん大きい |
+| [link-finder](.claude/agents/link-finder.md) | 関連記事さがし係。WordPressの公開記事を検索して、内部リンクの候補(リンク文字の案・置き場所つき)を返す。読むだけ |
+| [article-writer](.claude/agents/article-writer.md) | 執筆係。材料メモとリンク候補から`tools/_build_<KEY>.py`と`articles/<KEY>.html`を作る(`--build-only`だけ) |
+| [article-checker](.claude/agents/article-checker.md) | チェック係。機械チェック+タイトルと本文のズレ・事実の裏取り・プライバシーを見て、直すところを重い順に返す。ファイルは書き換えない |
+| [translator](.claude/agents/translator.md) | 翻訳係(KO1KEYZのみ)。日本語版から`articles/<KEY>_kr.html`・`_en.html`とタイトルを作る。アフィリエイト枠は引き継がない。韓国語と英語は2つ同時に頼める |
 
+**記事1本の流れ**: researcher と link-finder を同時に → article-writer → article-checker →(「必ず直す」が0件になるまでマツが直す)→ blog-uploadで下書き →(KO1KEYZなら)translator → STEP6/7で翻訳の下書き。
+- 誤字直し・一言たすだけの小さい仕事は係を使わずマツが直接やる(係は毎回ルールを読み直すのでトークンが増える)。
 - 係はトークン節約のため`docs/rules.md`(約5.7万字)ではなく短い版[docs/rules-short.md](docs/rules-short.md)を読む。**rules.mdに大事なルールを足したらrules-short.mdにも1行足す**。
-- 調べもの(Xiy・SNS収集)はマツがやり、材料を書く係に渡す。チェック係の「必ず直す」が0件になってから`blog-upload`で投稿する。
+- アイキャッチ(Canva認証・見本との見くらべが要る)と公開(ユーザーの「公開して」が要る)は係に任せない。
 
 ## ツール
 

@@ -11,7 +11,8 @@ tools: Read, Grep, Glob, Write, Edit, Bash, WebSearch, WebFetch
 ## 受け取るもの(マツが渡す)
 - サイト: trend / sixtones / ko1keyz / snowman / travis / ktl
 - テーマ・読者の疑問・タイトル案(あれば)
-- 調べた材料: 出典URL、SNS投稿の要約、文字起こし、画像のパス など
+- 調べた材料: 調べ係(researcher)の材料メモ `articles/<KEY>_research.md`、または出典URL・SNS投稿の要約・文字起こし・画像のパス
+- 関連記事さがし係(link-finder)のリンク候補(あれば。無ければ自分で同じ人物の既存記事を探す)
 - メンバー以外の人名(さん付け用)
 
 材料が足りず記事にならない(2,500字に届かない、答えが出ない)ときは、
