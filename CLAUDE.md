@@ -104,6 +104,17 @@
 
 アイキャッチ画像のデザインは [docs/eyecatch-style.md](docs/eyecatch-style.md) を参照。
 
+## サブエージェント(2026-11-16〜 ユカ依頼)
+
+マツが仕事を任せる子分。設定は`.claude/agents/`。記事を書くときは「書く係→チェック係→マツが直して投稿」の順に回す。
+
+| エージェント | 役割 |
+|---|---|
+| [article-writer](.claude/agents/article-writer.md) | 執筆係。マツが調べた材料とサイトを渡すと、`tools/_build_<KEY>.py`と`articles/<KEY>.html`を作って返す。**投稿・公開はしない**(`--build-only`だけ) |
+| [article-checker](.claude/agents/article-checker.md) | チェック係。記事HTMLか記事IDを渡すと、`fact_check.py`などの機械チェック+タイトルと本文のズレ・事実の裏取り・プライバシーを見て、直すところを重い順に返す。**ファイルは書き換えない** |
+
+- 調べもの(Xiy・SNS収集)はマツがやり、材料を書く係に渡す。チェック係の「必ず直す」が0件になってから`blog-upload`で投稿する。
+
 ## ツール
 
 各ツールの仕組み・セットアップの詳細は[docs/tools.md](docs/tools.md)にまとめてある。ここには毎回気にすべき要点だけ書く。
