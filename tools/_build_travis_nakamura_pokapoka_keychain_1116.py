@@ -46,7 +46,7 @@ CATEGORIES = [3]
 NAMES = []
 EYECATCH = blogkit.ROOT / "images" / "tj_nakamura_pokapoka_keychain_1116_eyecatch_canva.jpg"
 EYECATCH_ALT = "中村海人のバッグについていたキーホルダー"
-X_TEXT = ""
+X_TEXT = "海人くんのぽかぽかのバッグについてたキーホルダー、3つ全部かわいくて情緒ぶっ壊れた😭💚\nぬいぐるみと白いミニフィギュアと緑のブロック…数千円で真似できるの優勝🫶"
 X_TAGS = "#TravisJapan #中村海人 #ぽかぽか"
 
 MEDIA = json.loads((blogkit.ROOT / "images" / "pokapoka1116" / "media.json").read_text(encoding="utf-8"))

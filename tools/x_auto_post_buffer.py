@@ -112,6 +112,9 @@ def extract_article_images(content_html):
         if not m:
             continue
         url = re.sub(r"-\d+x\d+(\.\w+)$", r"\1", m.group(1))
+        # アフィリエイト枠の商品画像(楽天・Amazonのお店の写真)はSNSに載せない(2026-11-17、ID2929で混入)
+        if re.search(r"rakuten\.co\.jp|amazon\.|media-amazon\.com|ssl-images-amazon", url):
+            continue
         if url not in urls:
             urls.append(url)
     return urls
