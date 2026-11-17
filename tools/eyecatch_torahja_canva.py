@@ -2,14 +2,15 @@
 公開記事に適用された「水彩にじみ+グレー丸ゴシック」デザインをHTML+Playwrightで再現する。
 
 構成(Canva版の型):
-    上段(小)  : 「Travis Japan」または分類(例: 4thアルバム『Jewelry Basket』)
+    上段(小)  : 番組名・YouTube企画名・イベント名など(例: ぽかぽか)。2026-11-17〜ユカ指示で必須、
+                「Travis Japan」は入れない
     中央(特大): 個人記事=メンバー名 / グループ記事=話題のキーワード
     下段(中)  : タイトルの残り1〜2行
 背景: 個人記事=メンバーカラーの水彩、グループ記事=紫系の水彩。
 
 使い方:
     python tools/eyecatch_torahja_canva.py \
-        --top "Travis Japan" --main "宮近海斗" \
+        --top "ぽかぽか" --main "宮近海斗" \
         --bottom "アウトレットで購入のTシャツは？" --bottom "バレンシアガと判明！" \
         --color-key 宮近海斗 --out images/xxx_eyecatch.png
 """
@@ -163,7 +164,8 @@ def render(html_text: str, out_path: Path) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="chomoand-4.blog Canva風アイキャッチ生成")
-    ap.add_argument("--top", default="Travis Japan", help="上段(小)。既定はTravis Japan")
+    ap.add_argument("--top", required=True,
+                    help="上段(小)。番組名・YouTube企画名・イベント名など(2026-11-17〜ユカ指示で必須)")
     ap.add_argument("--group", action="store_true",
                     help="グループ記事の型(2026-11-16ユカ指示、ID2728で確定): 上段=YouTube企画名/番組名/ドラマ名(--top必須)、"
                          "中央=Travis Japan、下段=内容。上段・下段を同じ76pxにする")
@@ -175,9 +177,9 @@ def main() -> None:
     ap.add_argument("--out", required=True, help="出力パス(.jpg/.png)")
     a = ap.parse_args()
     top_size, bottom_size = 54, 68
+    if a.top.strip() in ("Travis Japan", "TravisJapan", "トラジャ"):
+        ap.error("--top には番組名・YouTube企画名・イベント名などを入れる(Travis Japanは不可、2026-11-17ユカ指示)")
     if a.group:
-        if a.top == "Travis Japan":
-            ap.error("--group では --top に YouTube企画名・番組名・ドラマ名を入れる")
         a.main = a.main or "Travis Japan"
         top_size = bottom_size = 76
     if not a.main:

@@ -16,7 +16,7 @@
 
 2026-09-30に公開済み記事のアイキャッチがCanva(design `DAHWCN9D3pk`、1075×650 jpg)で一斉に差し替えられた。その見た目を`tools/eyecatch_torahja_canva.py`(HTML+Playwright、Kosugi Maru+text-strokeで太字化、SVGで水彩にじみ+飛沫+金ラメ)で再現し、下書き1119/1127/1141に適用してユーザーOK。
 
-- **上段(小)**: 基本「Travis Japan」(既定値)。アルバム記事など文脈がある時だけ分類語(例: 4thアルバム『Jewelry Basket』)
+- **上段(小)**: **【2026-11-17〜ユカ指示】個人記事もグループ記事も、番組名・YouTube企画名・イベント名などを入れる**(例: ぽかぽか、ID2918/2921で確定)。「Travis Japan」は入れない(`--top`は必須、Travis Japanを渡すとツールがエラーで止める)
 - **中央(特大)**: 個人記事=メンバー名。グループ記事・2人以上の回=話題のキーワード(例: シン日本遺産、TJパーティー、けるとめる)
 - **【2026-11-16〜ユカ指示】グループ記事は「上段=YouTube企画名・番組名・ドラマ名/中央=Travis Japan/下段2行=内容」にする**。`--group --top "{企画名}" --bottom "..." --bottom "..." --color-key group`で作る(`--group`で中央が「Travis Japan」になり、上段・下段が同じ76pxに大きくなる)。見本はID2728(大食い企画/Travis Japan/メンバーで大食いは誰？/7回の結果まとめ！)。上の「中央=話題のキーワード」は個人2人回など`--group`を使わない記事だけに残る
 - **下段(中、1〜2行)**: タイトルの残り。【御殿場】【けるとめる】などの墨付き括弧の語は下段に入れる
@@ -25,7 +25,7 @@
 - 出力は.jpg。生成後は必ず目視確認する
 
 ```bash
-python tools/eyecatch_torahja_canva.py --main "七五三掛龍也"   --bottom "インスタ夜散歩の私服はどこの？" --bottom "上下ロエベと判明！"   --color-key 七五三掛龍也 --out images/xxx_eyecatch_canva.jpg
+python tools/eyecatch_torahja_canva.py --top "インスタライブ" --main "七五三掛龍也"   --bottom "インスタ夜散歩の私服はどこの？" --bottom "上下ロエベと判明！"   --color-key 七五三掛龍也 --out images/xxx_eyecatch_canva.jpg
 ```
 
 ## (旧)chomoand-4.blog 旧ベージュ・センター人物名デザイン(2026-09-20〜10-01、廃止)
