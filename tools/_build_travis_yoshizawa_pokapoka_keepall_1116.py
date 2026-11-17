@@ -27,7 +27,7 @@ CATEGORIES = [3]
 NAMES = []
 EYECATCH = blogkit.ROOT / "images" / "tj_yoshizawa_pokapoka_keepall_1116_eyecatch_canva.jpg"
 EYECATCH_ALT = "吉澤閑也がぽかぽかで見せたルイ・ヴィトンのキーポル"
-X_TEXT = ""
+X_TEXT = "は？？閑也くんがぽかぽかで出したカバン、水色デニムの大きいボストンでおしゃれすぎ😭💙\nお値段まさかの52万円台…破壊力えぐい🫠\n中から出てきた物も気になる👀"
 X_TAGS = "#TravisJapan #吉澤閑也 #ぽかぽか"
 
 MEDIA = json.loads((blogkit.ROOT / "images" / "pokapoka1116" / "media.json").read_text(encoding="utf-8"))
