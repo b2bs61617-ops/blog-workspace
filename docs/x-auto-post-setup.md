@@ -94,3 +94,6 @@ JSON形式で`main_tweet_url`/`reply_tweet_url`が返り、実際にXで2件連�
 ## Instagramについて
 
 Instagram側は引き続き[Jetpack Social](sns-auto-post-setup.md)を使う(単一画像+キャプションの自動シェア)。カルーセル(複数画像スワイプ)投稿の自作化は将来の拡張として別途検討する。
+
+## 送信済みの投稿はBufferから消せない(2026-11-17確認)
+Buffer GraphQLの`deletePost`は、予約中の投稿なら消せるが、送信済み(`status: sent`)の投稿には`VoidMutationError: Account is not allowed to perform this action on post`が返り、X・Threadsのどちらからも消えない。送信済みを消したいときは、ユカ/トモキにX・Threadsのアプリで手で消してもらい、消えたあとに`post_thread`で出し直す(ID2929で実施)。
