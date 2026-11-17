@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# 2026-11-17: WP上で人の直し(特徴/比べる等)+楽天リンクを足した版が正。本文は articles/travis_nakamura_pokapoka_keychain_1116.html を参照し、このスクリプトで丸ごと上書きしないこと
 """chomoand-4.blog: 2026-11-16『ぽかぽか』で中村海人のRIMOWAのバッグについていたキーホルダー3つ(オシリ依頼・タイトル指定)。
 
 根拠(TVer 月曜(2) epoa245iv0 の映像を1080pで確認):
