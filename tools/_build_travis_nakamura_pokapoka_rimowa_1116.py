@@ -29,7 +29,7 @@ CATEGORIES = [3]
 NAMES = []
 EYECATCH = blogkit.ROOT / "images" / "tj_nakamura_pokapoka_rimowa_1116_eyecatch_canva.jpg"
 EYECATCH_ALT = "中村海人がぽかぽかで見せたリモワのバッグ"
-X_TEXT = ""
+X_TEXT = "海人くんがぽかぽかで見せたシルバーのバッグ、本人いわく「宇宙のカバンみたい」って可愛すぎて沼確定🛸💚\nお値段27万円台…ギラギラなのに上品で反則😭"
 X_TAGS = "#TravisJapan #中村海人 #ぽかぽか"
 
 MEDIA = json.loads((blogkit.ROOT / "images" / "pokapoka1116" / "media.json").read_text(encoding="utf-8"))
