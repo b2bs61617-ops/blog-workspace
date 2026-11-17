@@ -12,7 +12,9 @@ Buffer側の定額プラン内で行われるため従量課金が発生しな�
 
 添付画像は**記事本文内の画像すべて**(アイキャッチではない、2026-09-27トモキ指示)。
 `--post-id`を渡すと公開済み記事の本文から<img>を抜き出し、リサイズ版(-375x500等)を
-原寸URLに戻して添付する。Xの上限により先頭4枚まで。本文に画像が無ければ文章のみで投稿する。
+原寸URLに戻して添付する。Xの上限により先頭4枚まで。本文に画像が無ければ投稿しない(2026-11-16〜)。
+楽天・Amazonの商品画像と、altかファイル名に「結果・答え・正解・順位・ネタバレ・result」などが入った
+答えバレの写真は自動で外す(2026-11-17〜、ANSWER_IMAGE_WORDS)。
 
 事前準備(初回のみ、トモキ本人が実施):
   1. buffer.comで@chomoand17を接続
@@ -103,9 +105,26 @@ def compose_tweet_text(hook_text, hashtags, max_weight=280):
     return f"{hook_text}{separator}{hashtags}"
 
 
-def extract_article_images(content_html):
+# 答えが写った写真はSNSに付けない(2026-11-17ユカ指示)。SixTONES縄跳び検定(chomoand-0.com ID1545)で、
+# 文では「最高は何級？」と隠したのに、添付した結果表の画面(alt「最終結果…3級」・ファイル名result)で答えがバレた。
+# 写真のalt・ファイル名にこの言葉が入っていたら外す。記事の答えの言葉(ブランド名など)では外さない:
+# altに名前が入っているだけで写真には写っていないことが多く、私物特定記事の商品写真が全部外れて投稿できなくなるため。
+ANSWER_IMAGE_WORDS = ("結果", "答え", "正解", "順位", "ネタバレ", "result", "answer", "spoiler", "ranking")
+
+
+def answer_image_reason(url, alt):
+    """答えバレになる写真なら、その理由(当たった言葉)を返す。問題なければNone。"""
+    name = url.rsplit("/", 1)[-1].lower()
+    for w in ANSWER_IMAGE_WORDS:
+        if w in alt or w in name:
+            return w
+    return None
+
+
+def extract_article_images(content_html, skipped=None):
     """記事本文HTMLから<img>のURLを出現順に抜き出す(重複除外)。WordPressのリサイズ版
-    (例: foo-375x500.jpg)は原寸(foo.jpg)に戻す。"""
+    (例: foo-375x500.jpg)は原寸(foo.jpg)に戻す。答えが写った写真(answer_image_reason)は外し、
+    skippedにリストを渡すと外した(url, 理由)をそこに入れる。"""
     urls = []
     for tag in re.findall(r"<img\b[^>]*>", content_html):
         m = re.search(r'\ssrc="([^"]+)"', tag)
@@ -115,20 +134,27 @@ def extract_article_images(content_html):
         # アフィリエイト枠の商品画像(楽天・Amazonのお店の写真)はSNSに載せない(2026-11-17、ID2929で混入)
         if re.search(r"rakuten\.co\.jp|amazon\.|media-amazon\.com|ssl-images-amazon", url):
             continue
+        alt = re.search(r'\salt="([^"]*)"', tag)
+        reason = answer_image_reason(url, alt.group(1) if alt else "")
+        if reason:
+            if skipped is not None and (url, reason) not in skipped:
+                skipped.append((url, reason))
+            print(f"答えが写っていそうな写真は付けないワン({reason}): {url}", file=sys.stderr)
+            continue
         if url not in urls:
             urls.append(url)
     return urls
 
 
-def fetch_article_images(site_url, post_id):
-    """公開済み記事の本文から画像URLを取得する(認証不要のREST APIを使用)。"""
+def fetch_article_images(site_url, post_id, skipped=None):
+    """公開済み記事の本文から画像URLを取得する(認証不要のREST APIを使用)。答えが写った写真は外す。"""
     resp = requests.get(
         f"{site_url.rstrip('/')}/wp-json/wp/v2/posts/{post_id}",
         params={"_fields": "content"},
         timeout=30,
     )
     resp.raise_for_status()
-    return extract_article_images(resp.json()["content"]["rendered"])
+    return extract_article_images(resp.json()["content"]["rendered"], skipped)
 
 
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # Bufferの画像上限(5.0MB)
@@ -339,13 +365,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     images = args.image
+    skipped = []
     if args.post_id:
         site = urlparse(args.url)
-        images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id)
+        images = fetch_article_images(f"{site.scheme}://{site.netloc}", args.post_id, skipped)
 
     # SNS投稿には必ず写真を付ける(2026-11-16ユカ指示)。アイキャッチで代わりにしない。
     if not images:
-        print("写真が無いので投稿しないワン。記事本文にXの写真を入れてから(または--imageで写真を指定して)もう一度投稿してワン", file=sys.stderr)
+        if skipped:
+            print("答えが写っていない写真が1枚も無いので投稿しないワン。答えの写っていない写真を本文に足すか、--imageで写真を指定してワン", file=sys.stderr)
+        else:
+            print("写真が無いので投稿しないワン。記事本文にXの写真を入れてから(または--imageで写真を指定して)もう一度投稿してワン", file=sys.stderr)
         sys.exit(2)
 
     result = post_thread(args.text, args.hashtags, images, args.url, due_at=args.due_at, draft=args.draft, threads=not args.no_threads, account=args.account)
