@@ -73,3 +73,8 @@ tools/rival_watch/out/
 tools/rival_watch/state.json
 tools/rival_watch/candidates.json
 tools/rival_watch/history.jsonl
+
+tools/neta_watch/state.json
+tools/neta_watch/state.tmp
+tools/neta_watch/log.txt
+tools/neta_watch/running.lock
