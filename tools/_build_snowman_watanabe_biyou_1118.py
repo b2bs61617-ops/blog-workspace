@@ -3,7 +3,7 @@
 
 材料: articles/watanabe_biyou_aiyouhin_1118_research.md
 アンバサダー商品(フラルネ・スキコン・デンティス・SBC)と、2020年バズリズムで映った私物を分けて書く。
-楽天APIは11/18時点で403/429が続いたため、アフィリエイトはAmazon検索リンクだけ(build_boxの片方だけ)。
+楽天APIはIP未許可(CLIENT_IP_NOT_ALLOWED)のため、楽天は検索結果ページへのアフィリエイトリンク(rk_url)、Amazonも検索リンク。
 
     python tools/_build_snowman_watanabe_biyou_1118.py --build-only   # articles/<KEY>.html を作るだけ
 """
@@ -38,9 +38,16 @@ def amz_url(q):
     return al.build_amazon_search_url(q, _ENV.get("AMAZON_ASSOCIATE_TAG"))
 
 
+def rk_url(q):
+    """楽天APIはこのPCのIPが未許可(CLIENT_IP_NOT_ALLOWED)なので、楽天の検索結果ページへのアフィリエイトリンクにする。"""
+    import urllib.parse
+    t = urllib.parse.quote("https://search.rakuten.co.jp/search/mall/" + urllib.parse.quote(q) + "/", safe="")
+    return "https://hb.afl.rakuten.co.jp/hgc/{}/?pc={}&m={}".format(_ENV["RAKUTEN_AFFILIATE_ID"], t, t)
+
+
 def amz_box(title, q, note=""):
-    """楽天APIが使えないので、Amazon検索リンクだけの枠。"""
-    return ab.build_box(None, None, title, amz_url(q), note=note, border=ACC) + "\n\n"
+    """楽天(検索リンク)+Amazon(検索リンク)の枠。"""
+    return ab.build_box(rk_url(q), None, title, amz_url(q), note=note, border=ACC) + "\n\n"
 
 
 def amz_inline(q):
@@ -209,6 +216,7 @@ out += b.p("5品を小さいサイズでそろえると、合計で2万5,520円�
            "アルビオンは2026年11月2日に一部の商品を値上げしているので、買う前に最新の値段をチェックしましょう。")
 out += shopbox(["アルビオン公式:" + L(ALBION, "アルビオン公式サイト") + "・" + L(FLA_SP, "フラルネ特設サイト"),
                 "全国の百貨店のアルビオン売り場、@cosme STORE",
+                "楽天市場:" + '<a href="{}" {}>フラルネを楽天で見る</a>'.format(rk_url("フラルネ アルビオン"), SPON),
                 "Amazon:" + '<a href="{}" {}>フラルネをAmazonで見る</a>'.format(amz_url("フラルネ アルビオン"), SPON)])
 out += b.p("楽天やAmazonは、お店ではない出品者が売っていることも多いです。",
            "確実に正規品を買いたい人は、公式サイトや百貨店を選ぶと安心です。")
@@ -294,7 +302,8 @@ out += b.p("2025年10月には、1人3役をこなした「3人のデンティ�
            "出典:" + L(RS_DEN, "リアルサウンド(2025年10月)"))
 out += amz_box("デンティス チューブ エクストラフレッシュ 100g", "デンティス チューブ エクストラフレッシュ 100g")
 out += shopbox(["リベルタ公式:" + L(LIBERTA, "リベルタ オンラインショップ"),
-                "楽天市場のデンティス公式ストア、@cosme、ドラッグストア",
+                "楽天市場(デンティス公式ストアあり):" + '<a href="{}" {}>デンティスを楽天で見る</a>'.format(rk_url("デンティス チューブ 100g"), SPON),
+                "@cosme、ドラッグストア",
                 "Amazon:" + '<a href="{}" {}>デンティスをAmazonで見る</a>'.format(amz_url("デンティス チューブ 100g"), SPON)])
 
 # ---------------- SBC
