@@ -37,6 +37,9 @@ for _p in (TOOLS, TOOLS / "hasshin", TOOLS / "rival_watch", TOOLS / "Xiy", REPO)
 import hasshin  # noqa: E402
 import line_notify  # noqa: E402
 
+sys.path.insert(0, str(HERE))
+import sokuho_auto  # noqa: E402
+
 # 記録はOneDriveの外に置く(OneDriveが同期中にファイルをつかんでいて、保存が「アクセス拒否」になるため)
 WORK = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "neta_watch"
 WORK.mkdir(parents=True, exist_ok=True)
@@ -362,7 +365,7 @@ def analyze_video(client, item, now):
     log("  解析OK({}) ネタ{}こ 画像{}枚 → {}".format(how, len(result.get("neta", [])), len(frames), folder))
     return {"group": item["group"], "platform": "YouTube", "account": item["account"], "title": item["text"],
             "url": item["url"], "date": item["date"].isoformat(), "summary": result.get("summary", ""),
-            "neta": result.get("neta", []), "ideas": result.get("blog_ideas", []),
+            "talk": result.get("talk", []), "neta": result.get("neta", []), "ideas": result.get("blog_ideas", []),
             "folder": str(folder.relative_to(OUT))}
 
 
@@ -503,7 +506,11 @@ def run_sns(state, now, first_hours):
 def entry_text(p):
     lines = ["▶{} {}".format(p["platform"], p["title"][:50])]
     if p.get("summary"):
-        lines.append(p["summary"][:120])
+        lines.append("📝" + p["summary"][:300])
+    talk = (p.get("talk") or [])[:4]
+    if talk:
+        lines.append("🗣話した内容")
+        lines += ["・" + t[:80] for t in talk]
     for n in (p.get("neta") or [])[:6]:
         t = " ({})".format(mmss(n.get("time_sec"))) if mmss(n.get("time_sec")) else ""
         d = n.get("detail") or ""
@@ -516,18 +523,20 @@ def entry_text(p):
 
 
 def build_digest(pending, now):
-    order = [s["group"] for s in hasshin.blogkit.SITES.values() if s["group"]]
+    order = ["sokuho"] + [s["group"] for s in hasshin.blogkit.SITES.values() if s["group"]]
     pending = sorted(pending, key=lambda p: (order.index(p["group"]) if p["group"] in order else 99, p["platform"] != "YouTube", p["date"]))
     part = "朝" if now.astimezone().hour < 12 else "夜"
-    header = "🐶ネタ見張り {} {}のまとめワン\nYouTube {}本・SNS {}件".format(
+    header = "🐶ネタ見張り {} {}のまとめワン\nYouTube {}本・SNS {}件・速報 {}件".format(
         now.astimezone().strftime("%m/%d"), part,
-        sum(1 for p in pending if p["platform"] == "YouTube"), sum(1 for p in pending if p["platform"] != "YouTube"))
+        sum(1 for p in pending if p["platform"] == "YouTube"),
+        sum(1 for p in pending if p["platform"] not in ("YouTube", "速報")),
+        sum(1 for p in pending if p["platform"] == "速報"))
     blocks, cur = [], None
     for p in pending:
         txt = entry_text(p)
         if p["group"] != cur:
             cur = p["group"]
-            txt = "■" + hasshin.glabel(cur) + "\n" + txt
+            txt = "■" + ("⚡速報(chomoand.com)" if cur == "sokuho" else hasshin.glabel(cur)) + "\n" + txt
         blocks.append(txt)
     days = sorted({p["folder"].split(os.sep)[0].split("/")[0] for p in pending if p.get("folder")})
     footer = "📷画像とくわしいメモ: OneDrive › デスクトップ › AI作業場 › ネタ見張り › " + "・".join(days) if days else ""
@@ -577,11 +586,12 @@ def main(argv=None):
     ap.add_argument("--youtube", action="store_true")
     ap.add_argument("--sns", action="store_true")
     ap.add_argument("--digest", action="store_true")
+    ap.add_argument("--sokuho", action="store_true", help="速報を今すぐ(0〜7時以外は下書きで止まる)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--hours", type=int, default=24, help="最初の1回でさかのぼる時間")
     ap.add_argument("--video", default="", help="この動画IDだけ解析する(ためし用)")
     a = ap.parse_args(argv)
-    if not (a.auto or a.youtube or a.sns or a.digest or a.video):
+    if not (a.auto or a.youtube or a.sns or a.digest or a.video or a.sokuho):
         ap.print_help()
         return 1
     if not take_lock():
@@ -595,6 +605,10 @@ def main(argv=None):
         steps = []
         if a.auto or a.youtube or a.video:
             steps.append(("YouTube", lambda: run_youtube(state, now, a.hours, a.video or None)))
+        if a.sokuho or (a.auto and hour in sokuho_auto.NIGHT_HOURS):
+            steps.append(("速報(夜)", lambda: sokuho_auto.run(state, now, "night")))
+        elif a.auto and due(hour, sokuho_auto.DAY_HOURS, state.get("sokuho_last"), now):
+            steps.append(("速報(一覧)", lambda: sokuho_auto.run(state, now, "list")))
         if a.sns or (a.auto and due(hour, SNS_HOURS, state.get("sns_last"), now)):
             steps.append(("SNS", lambda: run_sns(state, now, a.hours)))
         if a.digest or (a.auto and due(hour, DIGEST_HOURS, state.get("digest_last"), now)):
