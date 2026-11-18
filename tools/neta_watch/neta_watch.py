@@ -456,7 +456,7 @@ def run_sns(state, now, first_hours):
     for f in failed:
         log("  " + f)
     seen = set(state.setdefault("sns_seen", []))
-    new = [i for i in items if i["key"] not in seen and not i.get("pinned")]
+    new = [i for i in items if i["key"] not in seen]  # 固定投稿も新しければ拾う(古いものは時間で外れる)
     state["sns_started"] = state.get("sns_started") or now.isoformat()
     state["sns_last"] = now.isoformat()
     state["ig_cache"] = dict(sorted(ig_cache.items(), key=lambda kv: kv[1]["date"])[-300:])
