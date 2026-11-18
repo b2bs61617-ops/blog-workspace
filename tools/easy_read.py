@@ -38,11 +38,18 @@ KANA = {
     "等を": "などを", "等で": "などで", "等に": "などに", "等も": "なども", 
     "凄い": "すごい", "凄く": "すごく", "素敵": "すてき", "綺麗": "きれい", "可愛い": "かわいい", "可愛く": "かわいく",
     "嬉しい": "うれしい", "嬉しく": "うれしく", "面白い": "おもしろい", "美味しい": "おいしい",
-    "怖い": "こわい", "頑張": "がんば", "一緒": "いっしょ", "貰": "もら",
+    "怖い": "こわい", "頑張": "がんば", "貰": "もら",
     "揃": "そろ", "拘": "こだわ", "呟": "つぶや", "囁": "ささや", "噂": "うわさ", "痺れ": "しびれ", "煌びやか": "きらびやか",
     "垣間見": "かいま見", "醸し出": "かもし出", "憧れ": "あこがれ", "眩し": "まぶし", "瞬く間": "またたく間",
     "是非": "ぜひ", "其々": "それぞれ", "夫々": "それぞれ", "何れ": "いずれ", "稀に": "まれに", "滅多に": "めったに",
 }
+
+# かなより漢字で書く語(fix で自動置換)。ユカ指示 2026-11-18「特ちょう→特徴、いっしょ→一緒」。
+# まぜ書き・ひらがなが読みにくい語はここに足す。KANA に同じ語を入れないこと。
+KANJI = [
+    (re.compile(r"特ちょう"), "特徴"),
+    (re.compile(r"いっしょ(?!う)"), "一緒"),  # 「いっしょうけんめい」は除く
+]
 
 # 意味ごと言い換えたほうが分かりやすい硬い言葉(自動では直さず check で候補を出す)。
 HARD = {
@@ -96,9 +103,15 @@ def _fix_abbrev(html):
     return "".join(parts)
 
 
+def _fix_kanji(s):
+    for pat, rep in KANJI:
+        s = pat.sub(rep, s)
+    return s
+
+
 def fix(html):
     html = _fix_abbrev(html)
-    return "".join(_KANA_RE.sub(lambda m: KANA[m.group(0)], s) if ok else s for ok, s in _text_parts(html))
+    return "".join(_fix_kanji(_KANA_RE.sub(lambda m: KANA[m.group(0)], s)) if ok else s for ok, s in _text_parts(html))
 
 
 def _plain(fragment):
@@ -203,7 +216,7 @@ def main(argv):
             new = fix(src)
             if new != src:
                 p.write_text(new, encoding="utf-8")
-                print(f"{f}: ひらがなに直した")
+                print(f"{f}: 表記を直した")
             else:
                 print(f"{f}: 直すところなし")
             continue
