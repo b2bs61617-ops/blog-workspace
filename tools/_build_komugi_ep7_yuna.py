@@ -29,7 +29,7 @@ CATEGORIES = [3, 8]
 NAMES = ["伊原六花", "清乃あさ姫", "寺本莉緒", "朝加真由美", "小手伸也", "味方良介", "烏森まど", "小林きな子", "トラウデン直美"]
 EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch.jpg")
 EYECATCH_ALT = "小麦とバターと復讐と7話の幼馴染ユナと冷蔵庫の犯人を解説する記事のアイキャッチ"
-X_TEXT = ""
+X_TEXT = "伊能先生と冷蔵庫に閉じこめられるとか夢すぎて無理😭💕 わざと閉めたのは誰…？しかも来週は“幼なじみ”の女の子まで登場するってほんと！？七五三掛龍也くんの「僕が守ります」だけで1週間生きられる🥹🍞"
 X_TAGS = "#小麦とバターと復讐と #七五三掛龍也 #TravisJapan"
 
 SRC = "https://x.com/suidora11/status/2123061648454025569"
@@ -215,6 +215,10 @@ if __name__ == "__main__":
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     wp = blogkit.WP(SITE)
+    if "--publish" in sys.argv:
+        state = json.loads((blogkit.ARTICLES / (KEY + "_posted.json")).read_text(encoding="utf-8"))
+        blogkit.publish(SITE, state["post"], X_TEXT, X_TAGS)
+        sys.exit()
     if "--upload" in sys.argv:
         ids = json.loads(MEDIA_FILE.read_text(encoding="utf-8")) if MEDIA_FILE.exists() else {}
         for k, alt in IMAGES.items():
