@@ -271,19 +271,32 @@ def post_thread(hook_text, hashtags, image_urls, article_url, due_at=None, draft
 
     result = _create_post(token, channel_id, "twitter", text, image_urls, article_url, due_at, draft)
 
-    # Threadsにも同じ内容(本文・画像・URLリプライ・予約時刻)で投稿する(2026-09-29〜)。
+    # Threadsにも同じ文章・画像・予約時刻で投稿する(2026-09-29〜)。
+    # 2026-11-19〜トモキ指示: Threadsはリプライに分けず、1件の投稿の最後に「答えはここをクリック！」+URLを載せる
+    # (リプライのURLに気づかない人が多いため。Xは従来どおりリプライ)。
     # 失敗してもXの結果は返す(フェイルセーフ)
     threads_channel_id = env.get("BUFFER_THREADS_CHANNEL_ID", DEFAULT_THREADS_CHANNEL_ID)
     if threads and threads_channel_id:
         try:
-            result["threads"] = _create_post(token, threads_channel_id, "threads", text, image_urls, article_url, due_at, draft)
+            result["threads"] = _create_post(token, threads_channel_id, "threads", threads_text(text, article_url),
+                                             image_urls, None, due_at, draft)
         except Exception as e:
             result["threads"] = {"error": str(e)}
     return result
 
 
+THREADS_LINK_LABEL = "👇答えはここをクリック！"
+
+
+def threads_text(text, article_url):
+    """Threads用の本文。Xと同じ文章の最後に「答えはここをクリック！」+記事URLを付ける(2026-11-19〜)。
+    Threadsは本文の下に写真が並ぶので、URLは本文の一番下(写真のすぐ上)に来る。"""
+    return f"{text}\n\n{THREADS_LINK_LABEL}\n{article_url}"
+
+
 def _create_post(token, channel_id, service, text, image_urls, article_url, due_at, draft):
     """Bufferで1チャンネルへスレッド(1件目=画像+本文、2件目=URLのみ)を作成する。
+    article_urlがNoneならリプライを付けず1件だけ投稿する(Threads用、2026-11-19〜)。
     serviceはPostInputMetaDataのキー("twitter"/"threads")"""
     assets = ", ".join(f"{{ image: {{ url: {_gql_string(u)} }} }}" for u in image_urls)
     assets_field = f"assets: [{assets}]" if image_urls else ""
@@ -293,6 +306,7 @@ def _create_post(token, channel_id, service, text, image_urls, article_url, due_
         mode = f"mode: customScheduled\n        dueAt: {_gql_string(due_at)}"
     else:
         mode = "mode: shareNow"
+    reply_field = f"{{ text: {_gql_string(article_url)} }}" if article_url else ""
 
     query = f"""
     mutation {{
@@ -306,7 +320,7 @@ def _create_post(token, channel_id, service, text, image_urls, article_url, due_
           {service}: {{
             thread: [
               {{ text: {_gql_string(text)} {assets_field} }}
-              {{ text: {_gql_string(article_url)} }}
+              {reply_field}
             ]
           }}
         }}
