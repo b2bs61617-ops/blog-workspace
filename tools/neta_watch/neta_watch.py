@@ -39,6 +39,7 @@ import line_notify  # noqa: E402
 
 sys.path.insert(0, str(HERE))
 import sokuho_auto  # noqa: E402
+import fan_search  # noqa: E402
 
 # 記録はOneDriveの外に置く(OneDriveが同期中にファイルをつかんでいて、保存が「アクセス拒否」になるため)
 WORK = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "neta_watch"
@@ -58,7 +59,7 @@ UNIFORM_FRAMES = 8             # 場面の画像とは別に、動画全体か�
 SNS_JUDGE_BATCH = 20           # SNSの判定を1回のGeminiにまとめる件数
 LINE_BUBBLE_CHARS = 4800       # LINEの吹き出し1つの上限(5000字)より少し小さく
 LINE_MAX_BUBBLES = 5           # 1回の送信で送れる吹き出しの数(5つまでなら1通として数えられる)
-LOCK_STALE_MIN = 90
+LOCK_STALE_MIN = 150  # ファンの声(約30分)が入って1回が長くなったため
 
 KIND_ICON = {"場所": "📍", "服": "👕", "小物": "💍", "食べ物": "🍴", "その他": "💡"}
 
@@ -526,10 +527,11 @@ def build_digest(pending, now):
     order = ["sokuho"] + [s["group"] for s in hasshin.blogkit.SITES.values() if s["group"]]
     pending = sorted(pending, key=lambda p: (order.index(p["group"]) if p["group"] in order else 99, p["platform"] != "YouTube", p["date"]))
     part = "朝" if now.astimezone().hour < 12 else "夜"
-    header = "🐶ネタ見張り {} {}のまとめワン\nYouTube {}本・SNS {}件・速報 {}件".format(
+    header = "🐶ネタ見張り {} {}のまとめワン\nYouTube {}本・SNS {}件・ファンの疑問 {}個・速報 {}件".format(
         now.astimezone().strftime("%m/%d"), part,
         sum(1 for p in pending if p["platform"] == "YouTube"),
-        sum(1 for p in pending if p["platform"] not in ("YouTube", "速報")),
+        sum(1 for p in pending if p["platform"] not in ("YouTube", "速報", "ファンの疑問")),
+        sum(1 for p in pending if p["platform"] == "ファンの疑問"),
         sum(1 for p in pending if p["platform"] == "速報"))
     blocks, cur = [], None
     for p in pending:
@@ -586,12 +588,15 @@ def main(argv=None):
     ap.add_argument("--youtube", action="store_true")
     ap.add_argument("--sns", action="store_true")
     ap.add_argument("--digest", action="store_true")
+    ap.add_argument("--fan", action="store_true", help="ファンの声(名前でX・Threadsを検索)だけ今すぐ")
+    ap.add_argument("--fan-group", default="", help="--fanでこのグループだけ(snowman等。ためし用)")
+    ap.add_argument("--fan-max-kw", type=int, default=0, help="--fanで1グループの検索語をこの数まで(ためし用)")
     ap.add_argument("--sokuho", action="store_true", help="速報を今すぐ(0〜7時以外は下書きで止まる)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--hours", type=int, default=24, help="最初の1回でさかのぼる時間")
     ap.add_argument("--video", default="", help="この動画IDだけ解析する(ためし用)")
     a = ap.parse_args(argv)
-    if not (a.auto or a.youtube or a.sns or a.digest or a.video or a.sokuho):
+    if not (a.auto or a.youtube or a.sns or a.digest or a.video or a.sokuho or a.fan):
         ap.print_help()
         return 1
     if not take_lock():
@@ -611,6 +616,9 @@ def main(argv=None):
             steps.append(("速報(一覧)", lambda: sokuho_auto.run(state, now, "list")))
         if a.sns or (a.auto and due(hour, SNS_HOURS, state.get("sns_last"), now)):
             steps.append(("SNS", lambda: run_sns(state, now, a.hours)))
+        if a.fan or (a.auto and due(hour, SNS_HOURS, state.get("fan_last"), now)):
+            me = sys.modules[__name__]
+            steps.append(("ファンの声", lambda: fan_search.run(me, state, now, log, a.fan_group or None, a.fan_max_kw or None)))
         if a.digest or (a.auto and due(hour, DIGEST_HOURS, state.get("digest_last"), now)):
             steps.append(("LINE", lambda: run_digest(state, now, a.dry_run)))
         for name, fn in steps:

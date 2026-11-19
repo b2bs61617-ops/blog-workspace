@@ -7,6 +7,7 @@
 |---|---|
 | 1時間おき | 5グループの公式YouTube(`tools/data/sources.json`)に新しい動画が出たら、Geminiに動画を見せて「話した内容・場所・服・小物・食べ物」を拾い、その場面の画像を保存 |
 | 7時・13時・19時・23時 | 公式とメンバーのX/Instagram(発信あつめと同じ名簿・同じブラウザ)の新しい投稿と写真を集めて、ネタになるか判定 |
+| 7時・13時・19時・23時 | **ファンの声**(`fan_search.py`、2026-11-19〜)。グループ名・呼び名・メンバー全員の名前でXとThreadsを検索し、ファンの投稿・ニュース・コメント欄から疑問(「？」や「どこの」「教えて」など)を集める → Geminiが記事になりそうな疑問を1グループ5個まで選ぶ → LINEのまとめに「ファンの疑問」としてのる。1回30〜45分 |
 | 0〜6時台(毎時) | **速報の自動記事**(`sokuho_auto.py`、2026-11-19〜)。Xの「速報」ラベルのニュース → 大手ニュース(NHK・スポーツ紙・ナタリーなど)で裏取り → chomoand.comに記事を書いて公開 → Indexing → @chomotirend(X/Threads)。**重い話(訃報・逮捕・事件事故・災害・不倫など)・事実チェックNG・報道/公式のXの写真が無い・2,000字未満は下書きで止める**。1回2本・1晩4本まで |
 | 7時・13時・19時 | 速報の一覧だけ集める(記事は作らない) |
 | 8時・20時 | たまったネタを「AIまつ」のLINEにまとめて1通で送る(ネタが無ければ送らない) |
@@ -17,7 +18,8 @@
 
 ## 使い方
 - 自動にする(このPCで1回だけ): `powershell -ExecutionPolicy Bypass -File tools\neta_watch\register_task.ps1`
-- 今すぐ動かす: `python tools/neta_watch/neta_watch.py --youtube`(`--sns` / `--digest` / `--sokuho` / `--dry-run`)
+- 今すぐ動かす: `python tools/neta_watch/neta_watch.py --youtube`(`--sns` / `--fan` / `--digest` / `--sokuho` / `--dry-run`)
+- ファンの声を少しだけ試す: `--fan --fan-group snowman --fan-max-kw 3`(ためしの回は時刻を残さないので本番の回は飛ばない)
 - 速報をためす(WordPressに出さない): `python tools/neta_watch/sokuho_auto.py --test`
 - 1本だけ試す: `python tools/neta_watch/neta_watch.py --video 動画ID`
 - 動いた記録: `tools/neta_watch/log.txt`
@@ -30,3 +32,5 @@
 - 速報の自動記事はGemini(無料)が書く。無料枠はモデルごとなので、昼の動画解析で1つ目を使い切っても`GEMINI_MODELS`の次のモデルで書く。
 - 速報のアイキャッチはCanvaが使えない(夜中は人がいない)ので予備の`eyecatch_chomoand.py --fallback-ok`。気になれば朝にCanvaで差し替える。
 - 決まりごと(トモキ 2026-11-19): 自動公開は0〜7時だけ/重い話は下書き止め/速報ラベル+大手ニュースで確認できたものだけ/知らせは8時のLINEのまとめに入れる。
+- ファンの声の見る範囲(1回): 名前ごとにXの「最新」とThreadsの「最近」を上から約15〜30件。前の回より新しい投稿だけ(初回24時間・最大12時間)、一度見た疑問は捨てる。グループ名だけは「話題/人気」も見て、コメントの多い投稿3件のコメント欄まで読む。うちのアカウント(@chomoand17・@chomotirend)と広告は数えない。数は`fan_search.py`の上の数字で変える。
+- ファンの声はXとThreadsのログイン済みブラウザ(`~/x_collector_profile`・`~/threads_profile`、使用中なら_2・_3)を使う。1日4回×約45語の検索なので、Xに止められたら回数か語を減らす。
