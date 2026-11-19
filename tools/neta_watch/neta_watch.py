@@ -50,7 +50,7 @@ OUT = Path(os.environ.get("NETA_WATCH_OUT") or (REPO.parent / "ネタ見張り")
 MEMBERS = TOOLS / "data" / "members.json"
 
 GEMINI_MODEL = "gemini-flash-latest"
-SNS_HOURS = (7, 13, 19)        # SNSを集める時刻
+SNS_HOURS = (7, 13, 19, 23)      # SNSを集める時刻
 DIGEST_HOURS = (8, 20)         # LINEに送る時刻
 MAX_VIDEOS_PER_RUN = 6         # 1回で解析する動画の上限(残りは次の回へ)
 MAX_TRIES = 6                  # 解析に失敗した動画をやり直す回数(プレミア公開前・ライブ中など)
