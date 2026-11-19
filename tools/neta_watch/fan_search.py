@@ -34,6 +34,9 @@ MAX_HOURS = 12          # 前の回から時間があいても、これより古
 MAX_Q_PER_GROUP = 150   # 1グループでGeminiに渡す疑問の上限
 PICK_PER_GROUP = 5      # 1グループでLINEにのせる疑問の数
 SEEN_KEEP = 6000
+# Xの検索はトレンドアカウント(@chomotirend)のブラウザで行う(2026-11-19 トモキ指示。@chomoand17に負担をかけない)
+X_PROFILE = str(Path.home() / "x_trend_profile")
+X_ACCOUNT = "chomotirend"
 OWN_ACCOUNTS = ("chomoand17", "chomotirend", "@chomoand17", "@chomotirend")  # うちの投稿は数えない
 QUESTION_RE = re.compile(r"[？?]")
 # 「？」が無くても疑問になっている言い方
@@ -147,18 +150,68 @@ def th_post(c):
     return {"text": post_body(c.get("raw") or ""), "time": c.get("time"), "url": c.get("url")}
 
 
+async def launch_x(p):
+    import x_collector as xc
+    Path(X_PROFILE).mkdir(exist_ok=True)
+    ctx = await p.chromium.launch_persistent_context(
+        xc.pick_profile(X_PROFILE), headless=False, channel="chrome", slow_mo=50,
+        args=["--disable-blink-features=AutomationControlled"])
+    if xc.STEALTH_OK:
+        await xc.Stealth(**xc.STEALTH_KWARGS).apply_stealth_async(ctx)
+    return ctx
+
+
+async def x_account(page):
+    """いまログインしているXのアカウント(「名前 @handle」)。ログインしていなければ空。"""
+    await page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30000)
+    await page.wait_for_timeout(4000)
+    el = await page.query_selector('[data-testid="SideNav_AccountSwitcher_Button"]')
+    return (await el.inner_text()).replace(chr(10), " ") if el else ""
+
+
+async def login_x(minutes=15):
+    """トレンドアカウントでログインしてもらう(初回だけ)。ログインできたら閉じる。"""
+    from playwright.async_api import async_playwright
+    async with async_playwright() as p:
+        ctx = await launch_x(p)
+        page = ctx.pages[0] if ctx.pages else await ctx.new_page()
+        who = await x_account(page)
+        if X_ACCOUNT in who.lower():
+            print("もうログインできているワン:", who)
+            await ctx.close()
+            return True
+        await page.goto("https://x.com/login", wait_until="domcontentloaded", timeout=30000)
+        print("開いたブラウザで @{} にログインしてワン(最大{}分待つ)".format(X_ACCOUNT, minutes), flush=True)
+        for _ in range(minutes * 12):
+            await page.wait_for_timeout(5000)
+            try:
+                el = await page.query_selector('[data-testid="SideNav_AccountSwitcher_Button"]')
+                who = (await el.inner_text()).replace(chr(10), " ") if el else ""
+            except Exception:  # noqa: BLE001
+                who = ""
+            if X_ACCOUNT in who.lower():
+                print("ログインできたワン:", who, flush=True)
+                await page.wait_for_timeout(3000)
+                await ctx.close()
+                return True
+            if who:
+                print("別のアカウントでログインしているワン:", who, flush=True)
+        await ctx.close()
+        return False
+
+
 async def search_x(groups, since, log):
     from playwright.async_api import async_playwright
     import x_collector as xc
     out = []
     async with async_playwright() as p:
-        ctx = await xc.launch_browser_context(p)
+        ctx = await launch_x(p)
         page = ctx.pages[0] if ctx.pages else await ctx.new_page()
         try:
-            await page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30000)
-            await page.wait_for_timeout(3000)
-            if not await xc.is_x_logged_in(page):
-                log("  X: ログインしていないので飛ばす")
+            who = await x_account(page)
+            if X_ACCOUNT not in who.lower():
+                log("  X: @{}でログインしていないので飛ばす(いま: {})。`python tools/neta_watch/fan_search.py --login`でログインしてワン".format(
+                    X_ACCOUNT, who or "ログインなし"))
                 return out
             for g, kws in groups:
                 for kw, is_group in kws:
@@ -328,3 +381,11 @@ def run(nw, state, now, log, only_group=None, max_kw=None):
         state["fan_last"] = now.isoformat()
     nw.save_state(state)
     log("  ファンの疑問 {}個をLINE待ちに入れた → {}".format(total, folder))
+
+
+if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if "--login" in sys.argv:
+        sys.exit(0 if asyncio.run(login_x()) else 1)
+    print("使い方: python tools/neta_watch/fan_search.py --login  (Xのトレンドアカウントでログインする・初回だけ)")
