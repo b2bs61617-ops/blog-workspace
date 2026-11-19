@@ -431,6 +431,19 @@ SNS_PROMPT = """あなたはアイドルファン向けブログのネタ探し�
 
 
 def judge_sns(client, group, batch, folder):
+    """混雑・無料枠切れのときは次のモデルでやり直す。"""
+    err = None
+    for model in (GEMINI_MODEL,) + tuple(m for m in sokuho_auto.GEMINI_MODELS if m != GEMINI_MODEL):
+        try:
+            return _judge_sns(client, group, batch, folder, model)
+        except Exception as e:  # noqa: BLE001
+            err = e
+            if not any(k in str(e) for k in ("429", "503", "500", "RESOURCE_EXHAUSTED", "UNAVAILABLE")):
+                raise
+    raise err
+
+
+def _judge_sns(client, group, batch, folder, model):
     from google.genai import types
     parts, lines = [], []
     for no, it in enumerate(batch, 1):
@@ -442,7 +455,7 @@ def judge_sns(client, group, batch, folder):
                 parts.append(types.Part.from_text(text="【{}】の写真".format(no)))
                 parts.append(types.Part.from_bytes(data=p.read_bytes(), mime_type="image/jpeg"))
     prompt = SNS_PROMPT.format(glabel=hasshin.glabel(group), members=member_names(group) or "不明", count=len(batch))
-    res = client.models.generate_content(model=GEMINI_MODEL, contents=[*parts, prompt + "\n\n" + "\n".join(lines)],
+    res = client.models.generate_content(model=model, contents=[*parts, prompt + "\n\n" + "\n".join(lines)],
                                          config=types.GenerateContentConfig(response_mime_type="application/json"))
     data = parse_json_text(res.text)
     return data if isinstance(data, list) else []

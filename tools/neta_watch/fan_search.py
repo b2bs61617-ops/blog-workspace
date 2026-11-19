@@ -11,6 +11,7 @@
 - 前の回より古い投稿は捨てる(初回は直近 FIRST_HOURS 時間)。一度見た投稿も捨てる
 - グループ名だけは「話題(人気)」も見て、コメントの多い投稿 REPLY_POSTS 件のコメント欄まで読む(XとThreads)
 - うちのアカウント(@chomoand17・@chomotirend)の投稿は数えない
+- Xは検索のあいだを8〜14秒あける。4語つづけて0件なら止められたとみてその回はやめる。はじめるグループは毎回ずらす
 """
 import asyncio
 import datetime
@@ -34,6 +35,8 @@ MAX_HOURS = 12          # 前の回から時間があいても、これより古
 MAX_Q_PER_GROUP = 150   # 1グループでGeminiに渡す疑問の上限
 PICK_PER_GROUP = 5      # 1グループでLINEにのせる疑問の数
 SEEN_KEEP = 6000
+X_WAIT_MS = (8000, 14000)  # Xの検索と検索のあいだ(2026-11-19: 3〜5秒だと約40語で止められた)
+X_ZERO_STOP = 4           # この数の語がつづけて0件なら止められたとみて、Xはその回やめる
 # Xの検索はトレンドアカウント(@chomotirend)のブラウザで行う(2026-11-19 トモキ指示。@chomoand17に負担をかけない)
 X_PROFILE = str(Path.home() / "x_trend_profile")
 X_ACCOUNT = "chomotirend"
@@ -213,10 +216,15 @@ async def search_x(groups, since, log):
                 log("  X: @{}でログインしていないので飛ばす(いま: {})。`python tools/neta_watch/fan_search.py --login`でログインしてワン".format(
                     X_ACCOUNT, who or "ログインなし"))
                 return out
+            zero = 0
             for g, kws in groups:
                 for kw, is_group in kws:
+                    if zero >= X_ZERO_STOP:
+                        log("  X: {}語つづけて0件=Xに一時的に止められたので、残りは次の回へ".format(X_ZERO_STOP))
+                        return out
                     try:
                         posts = await scroll_collect(page, xc.build_x_search_url(kw, "live"), X_JS, x_post)
+                        zero = zero + 1 if not posts else 0
                         posts = [dict(x, group=g, kw=kw, platform="X") for x in posts if fresh(x, since)]
                         if is_group:
                             top = await scroll_collect(page, xc.build_x_search_url(kw, "top"), X_JS, x_post, scrolls=3)
@@ -235,7 +243,7 @@ async def search_x(groups, since, log):
                         log("  X {}: {}件(うちコメント欄 {}件)".format(kw, len(posts), sum(1 for x in posts if x["platform"] == "Xコメント欄")))
                     except Exception as e:  # noqa: BLE001
                         log("  X {}: 失敗 {}".format(kw, str(e).split("\n")[0][:80]))
-                    await page.wait_for_timeout(random.randint(2500, 5000))
+                    await page.wait_for_timeout(random.randint(*X_WAIT_MS))  # Xに止められないようにゆっくり
         finally:
             await ctx.close()
     return out
@@ -320,6 +328,10 @@ def run(nw, state, now, log, only_group=None, max_kw=None):
         if g in groups_data and (not only_group or g == only_group):
             kws = keywords_for(groups_data[g])
             groups.append((g, kws[:max_kw] if max_kw else kws))
+    if not only_group and groups:  # 毎回はじめるグループをずらす(止められても同じグループばかり欠けないように)
+        r = state.get("fan_rot", 0) % len(groups)
+        groups = groups[r:] + groups[:r]
+        state["fan_rot"] = r + 1
     since = since_time(state.get("fan_last"), now)
     log("ファンの声: {}グループ・{}語をXとThreadsで検索({}より新しい投稿)".format(
         len(groups), sum(len(k) for _, k in groups), since.astimezone().strftime("%m/%d %H:%M")))
