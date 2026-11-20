@@ -199,6 +199,13 @@ out += p("一度は中止になったお皿なので、待っていたファン�
          "11月25日になったら、行きやすいお店のLINEから忘れずに応募してみてはいかがでしょうか！")
 out += p("参考: " + L(OFFICIAL, "くら寿司公式 ちいかわ オリジナル寿司皿 LINE抽選プレゼント！")
          + "/" + L(GOURMET, "グルメWatch"))
+# 関連記事(2026-11-20 ユカ指示。WP下書きにはユカの手直しを残したまま末尾に追記済み)
+out += b.html('<div style="border:1px solid #f9c6dc;border-left:4px solid #db2777;border-radius:4px;'
+              'padding:12px 18px;margin:16px 0;background:#fff4f8;"><p style="margin:0 0 6px 0;font-weight:bold;">関連記事</p>'
+              '<ul style="margin:0;padding-left:1.4em;">'
+              '<li><a href="https://chomoand.com/chiikawa-clinic-chusen-yoyaku/">ちいかわクリニックの抽選はいつ？予約販売の注意点と会場一覧</a></li>'
+              '<li><a href="https://chomoand.com/pasutaraisuke/">パスタライ助の名前の由来は？ハチワレのアカウント名がバズる理由</a></li>'
+              '</ul></div>')
 
 if __name__ == "__main__":
     if hasattr(sys.stdout, "reconfigure"):
