@@ -23,7 +23,7 @@ TITLE = "SixTONES日産スタジアムの帰り方は？飲み物の持ち込み
 SLUG = "sixtones-nissan-kaerikata"
 CATEGORIES = [15]
 NAMES = []
-EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch.jpg")
+EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch_v2.jpg")
 EYECATCH_ALT = "SixTONES日産スタジアムの帰り方"
 
 S = "https://chomoand-0.com/"
