@@ -63,6 +63,47 @@ SCHEDULE_ARTICLE = ("トラジャ2027ツアー『Jewelry Basket』の会場・�
 CD_ARTICLE = ("トラジャのアルバムCD延期はなぜ？発売記念イベントはどうなる？", "travis-japan-jewelry-basket-cd-postponed-2505")
 
 
+# --refresh: re-fetch all poll counts from fxtwitter and use them (AS_OF = now). Rewrites are done by rerunning with --refresh.
+OVERALL_ID = ("ticket_festa", "2123658306418053537")
+VENUE_IDS = ["2123658313384742990", "2123658316467577237", "2123658319508455744", "2123658322368999758",
+             "2123658325208498446", "2123658327926395243", "2123658330778607643", "2123658334024937978"]  # TOUR2027 order
+ZONE_IDS = ["2123657796273217772", "2123657798907314325", "2123657801323200761"]  # WS7x10
+
+
+def _poll(user, tid):
+    j = requests.get(f"https://api.fxtwitter.com/{user}/status/{tid}", headers={"User-Agent": "Mozilla/5.0"}, timeout=20).json()
+    pl = j["tweet"]["poll"]
+    return {c["label"]: c["count"] for c in pl["choices"]}, pl.get("ends_at")
+
+
+def refresh():
+    global OVERALL, VENUE_RESULTS, ZONES, AS_OF, FINAL
+    import datetime
+    c, end = _poll(*OVERALL_ID)
+    OVERALL = (c["当選"], c["落選"])
+    ends = [end]
+    vr = []
+    for (name, *_), tid in zip(VENUE_RESULTS, VENUE_IDS):
+        c, end = _poll("ticket_festa", tid)
+        vr.append((name, c["当選"], c["落選"]))
+        ends.append(end)
+    VENUE_RESULTS = vr
+    zs = []
+    for tid in ZONE_IDS:
+        c, end = _poll("WS7x10", tid)
+        ends.append(end)
+        labels = list(c)
+        for i in range(0, len(labels), 2):
+            zone = labels[i].split("・", 1)[1].replace("～", "〜")
+            zone = "25万〜30万番台以降" if zone.startswith("25万") else zone
+            zs.append((zone, c[labels[i]], c[labels[i + 1]]))
+    ZONES = zs
+    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+    FINAL = all(datetime.datetime.fromisoformat(e.replace("Z", "+00:00")) <= now for e in ends if e)
+    AS_OF = f"{now.month}月{now.day}日{now.hour}時" + ("半ごろ" if now.minute >= 30 else "ごろ")
+    print("refresh:", AS_OF, "FINAL" if FINAL else "途中", OVERALL, VENUE_RESULTS, ZONES)
+
+
 def rate(w, l):
     return w / (w + l) * 100
 
@@ -197,6 +238,11 @@ def build():
     os_ = next(x for x in vr if x[0] == "大阪")
     sz = next(x for x in vr if x[0] == "静岡")
     hk = next(x for x in vr if x[0] == "北海道")
+    # wording below is fixed text: stop if a refresh breaks it
+    assert yk[1] >= 60 and cb[1] >= 60 and {best[0], vr[1][0]} == {"横浜", "千葉"}, "関東6割超の文"
+    assert os_ is worst and os_[1] < 100 / 3 and sz[1] < 50, "大阪3人に2人落選/静岡の文"
+    assert all(60 <= r < 70 for _, r in zr), "どのゾーンも6割台の文"
+    assert 60 <= lo and hi <= 75, "3人に2人〜4人に3人の文"
     b.append(p([
         f"当選率がいちばん高かったのは{best[0]}の{best[1]:.1f}%で、{('千葉' if best[0] == '横浜' else '横浜')}も{(cb if best[0] == '横浜' else yk)[1]:.1f}%と、関東の2会場は6割をこえて当たっています。",
         "どちらも公演数が多く(横浜6公演・千葉5公演)、席の数に余裕があったと考えられます。",
@@ -294,6 +340,8 @@ def build():
 def main():
     IMG_DIR.mkdir(parents=True, exist_ok=True)
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
+    if "--refresh" in sys.argv:
+        refresh()
     html = build()
     if DRY:
         (IMG_DIR / "_dry.html").write_text(html, encoding="utf-8")
