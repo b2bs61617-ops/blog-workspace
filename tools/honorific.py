@@ -63,6 +63,8 @@ _NO_SAN_BLOCKS = re.compile(
 
 
 def _pattern(names):
+    if not names:  # 名前が1つも無い(トレンドで人名なし)と空の正規表現で全文字に「さん」が付くので、何にも当たらない形にする
+        return re.compile(r"(?!x)x")
     alts = []
     for full, short in names.items():
         alts.append((len(full), re.escape(full)))
