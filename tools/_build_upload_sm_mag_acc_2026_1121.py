@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import blogkit  # noqa: E402
-from _mag_acc_2026_common import Media  # noqa: E402
+from _mag_acc_2026_common import Media, NOTICE, aff  # noqa: E402
 
 SITE = "snowman"
 KEY = "sm_mag_acc_2026_1121"
@@ -40,7 +40,7 @@ IMGS = {
 
 
 def build():
-    o = ""
+    o = NOTICE
     o += b.p("Snow Manのメンバーは、雑誌のグラビアでもたくさんのアクセサリーを着けています。",
              "撮影のあと、ブランドの公式アカウントが「着用いただきました」と教えてくれることも多いです。")
     o += b.p("この記事では、" + b.mark("2026年に発売された雑誌で着用したアクセサリー") + "を、ブランドの公式発表をもとにまとめました。",
@@ -82,6 +82,7 @@ def build():
     o += M.fig("sm_2024341575942430942_2", "em_grp_official")
 
     # ---- anan 2489
+    o += aff("e.m.(イーエム)のネックレス", "e.m. イーエム ネックレス", "#3f8fd2")
     o += b.h2("anan No.2489：岩本照はkofuluとTaTa")
     o += b.mini(("雑誌", "anan No.2489(2026年3月25日発売)・表紙"),
                 ("メンバー", "岩本照(松田元太とのW表紙)"),
@@ -100,6 +101,8 @@ def build():
     o += b.xembed("https://x.com/_tata_atelier_/status/2037104209196433470")
 
     # ---- FINEBOYS
+    o += aff("kofulu(コフル)のリング", "kofulu リング", "#3f8fd2")
+    o += aff("TaTa(タタ)のネックレス", "TaTa ネックレス アトリエ", "#3f8fd2")
     o += b.h2("FINEBOYS 6月号：阿部亮平はScatのバングル")
     o += b.mini(("雑誌", "FINEBOYS 2026年6月号・表紙"),
                 ("メンバー", "阿部亮平"),
@@ -112,6 +115,7 @@ def build():
     o += M.fig("sm_2055276546185932903_1", "_scat_official")
 
     # ---- anan 2501
+    o += aff("Scat(スキャット)のバングル", "Scat バングル", "#3f8fd2")
     o += b.h2("anan No.2501：宮舘涼太のstlllのリングは即完売")
     o += b.mini(("雑誌", "anan No.2501(2026年6月24日発売)・表紙"),
                 ("メンバー", "宮舘涼太"),
@@ -127,6 +131,8 @@ def build():
     o += b.xembed("https://x.com/oki_jewelry/status/2074380464455037157")
 
     # ---- LHME 岩本
+    o += aff("stlll(スティル)のリング", "stlll リング", "#3f8fd2")
+    o += aff("O-KI(オーキ)のアクセ", "O-KI ジュエリー", "#3f8fd2")
     o += b.h2("岩本照はLHMEのネックレスを何度も着用")
     o += b.p("2026年の後半、岩本照は3冊の雑誌でLION HEARTのブランド「LHME」のネックレスを着けています。",
              "なかでも" + b.mark("ビジューY字ネックレスは2回") + "登場しました。")
@@ -142,6 +148,7 @@ def build():
     o += M.fig("sm_2096894996553031917_1", "LHME2020")
 
     # ---- LHME 佐久間
+    o += aff("LHME(ライオンハート)のネックレス", "LHME ライオンハート ネックレス", "#3f8fd2")
     o += b.h2("佐久間大介はLHMEのパールネックレスとイヤーカフ")
     o += b.p("佐久間大介も、2026年はLHMEのアクセサリーを2冊で着けています。")
     o += b.table(("雑誌", "アイテム", "値段(税込)"), [
@@ -154,6 +161,7 @@ def build():
     o += b.xembed("https://x.com/LHME2020/status/2097257384678658314")
 
     # ---- anan 2520
+    o += aff("LHMEのパールネックレス・イヤーカフ", "LHME パール ネックレス", "#3f8fd2")
     o += b.h2("anan No.2520：宮舘涼太は4ブランドのアクセを着用")
     o += b.mini(("雑誌", "anan No.2520(2026年11月18日発売)・表紙"),
                 ("メンバー", "宮舘涼太"),
@@ -177,6 +185,9 @@ def build():
     o += b.xembed("https://x.com/vividmarket2020/status/2123010605561118880")
 
     # ---- 購入先
+    o += aff("FADE,(フェード)のアクセ", "FADE アクセサリー", "#3f8fd2")
+    o += aff("objet sayoko(オブジェサヨコ)のイヤーカフ", "objet sayoko イヤーカフ", "#3f8fd2")
+    o += aff("kulolecoco(クロレココ)のアクセ", "kulolecoco", "#3f8fd2")
     o += b.h2("Snow Manの雑誌着用アクセが買えるお店")
     o += b.p("紹介したアクセサリーは、どれもブランドの公式オンラインショップで買えます。",
              "人気のアイテムは完売や予約販売になることがあるので、早めにチェックしてみてください。")

@@ -43,3 +43,24 @@ class Media(object):
             'style="max-width:{3}px;width:100%;height:auto;display:block;margin:0 auto;">'
             '<figcaption style="font-size:0.8em;color:#888;text-align:center;">出典：'
             '<a href="{2}" target="_blank" rel="noopener">{2}</a></figcaption></figure>'.format(url, alt, src, w))
+
+
+# ---- アフィリエイト(楽天APIはこのPCのIPが未許可なので、楽天の検索結果ページへのアフィリエイトリンク+Amazon検索)
+import urllib.parse  # noqa: E402
+
+import affiliate_box as ab  # noqa: E402
+import affiliate_linker as al  # noqa: E402
+
+_ENV = ab.load_keys()
+NOTICE = ab.NOTICE + "\n\n"
+
+
+def rk_url(q):
+    t = urllib.parse.quote("https://search.rakuten.co.jp/search/mall/" + urllib.parse.quote(q) + "/", safe="")
+    return "https://hb.afl.rakuten.co.jp/hgc/{}/?pc={}&m={}".format(_ENV["RAKUTEN_AFFILIATE_ID"], t, t)
+
+
+def aff(title, q, border, note=""):
+    """楽天/Amazonの検索ボタン枠。q=検索ワード(ブランド名+アイテム)。"""
+    return ab.build_box(rk_url(q), None, title, al.build_amazon_search_url(q, _ENV.get("AMAZON_ASSOCIATE_TAG")),
+                        note=note, border=border) + "\n\n"

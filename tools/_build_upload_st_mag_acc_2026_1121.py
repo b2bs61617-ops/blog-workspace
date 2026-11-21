@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import blogkit  # noqa: E402
 import sixtones_theme  # noqa: E402
-from _mag_acc_2026_common import Media  # noqa: E402
+from _mag_acc_2026_common import Media, NOTICE, aff  # noqa: E402
 
 SITE = "sixtones"
 KEY = "st_mag_acc_2026_1121"
@@ -39,7 +39,7 @@ IMGS = {
 
 
 def build():
-    o = ""
+    o = NOTICE
     o += b.p("SixTONESのメンバーは、雑誌のグラビアでもさまざまなアクセサリーを着けています。",
              "撮影のあと、ブランドの公式アカウントが「着用いただきました」と発表してくれることも多いです。")
     o += b.p("この記事では、" + b.mark("2026年に発売された雑誌で着用したアクセサリー") + "を、ブランドの公式発表をもとにまとめました。",
@@ -79,6 +79,7 @@ def build():
     o += M.fig("st_2008871244675043666_1", "lion_accessory")
 
     # ---- VoCE
+    o += aff("LION HEART(ライオンハート)のリング", "LION HEART ライオンハート リング", "#333333")
     o += b.h2("VoCE 3月号：田中樹はTaTaのゴールドネックレス")
     o += b.mini(("雑誌", "VoCE 2026年3月号 Special Edition"),
                 ("メンバー", "田中樹"),
@@ -90,6 +91,7 @@ def build():
     o += b.xembed("https://x.com/_tata_atelier_/status/2014560669564338476")
 
     # ---- STAGE navi 108
+    o += aff("TaTa(タタ)のネックレス", "TaTa ネックレス アトリエ", "#333333")
     o += b.h2("STAGE navi vol.108：5人がパールのアクセを着用")
     o += b.mini(("雑誌", "STAGE navi vol.108(2026年1月28日発売)・表紙"),
                 ("メンバー", "京本大我・松村北斗・髙地優吾・森本慎太郎・田中樹"),
@@ -114,6 +116,7 @@ def build():
     o += M.fig("st_2018946830651064468_0", "_tata_atelier_")
 
     # ---- anan 2487
+    o += aff("メンズのパールネックレス", "パールネックレス メンズ", "#333333")
     o += b.h2("anan No.2487：松村北斗はDaisy Lewis")
     o += b.mini(("雑誌", "anan No.2487(2026年3月11日発売)"),
                 ("メンバー", "松村北斗"),
@@ -125,6 +128,7 @@ def build():
     o += b.xembed("https://x.com/Daisylewis_ad/status/2031663028018749680")
 
     # ---- anan 2494
+    o += aff("Daisy Lewis(デイジールイス)のアクセ", "Daisy Lewis アクセサリー", "#333333")
     o += b.h2("anan No.2494：髙地優吾と森本慎太郎はFADE,")
     o += b.mini(("雑誌", "anan No.2494(2026年5月1日発売)"),
                 ("メンバー", "髙地優吾・森本慎太郎"),
@@ -141,6 +145,8 @@ def build():
     o += M.fig("st_2050052938593394851_0", "fade__official")
 
     # ---- CanCam 7
+    o += aff("FADE,(フェード)のアクセ", "FADE アクセサリー", "#333333")
+    o += aff("four seven nine(フォーセブンナイン)のアクセ", "four seven nine アクセサリー", "#333333")
     o += b.h2("CanCam 7月号：京本大我はLION HEARTのリング")
     o += b.mini(("雑誌", "CanCam 2026年7月号(連載ページ)"),
                 ("メンバー", "京本大我"),
@@ -152,6 +158,7 @@ def build():
     o += b.xembed("https://x.com/lion_accessory/status/2062829280485077118")
 
     # ---- BAILA
+    o += aff("LION HEARTのリング", "LION HEART ライオンハート リング シルバー", "#333333")
     o += b.h2("BAILA 10月号：ジェシーはLHMEのイヤーカフ")
     o += b.mini(("雑誌", "BAILA 2026年10月号 特別版・表紙"),
                 ("メンバー", "ジェシー"),
@@ -163,6 +170,7 @@ def build():
     o += M.fig("st_2098344548153872785_1", "LHME2020")
 
     # ---- anan 2518
+    o += aff("LHME(ライオンハート)のイヤーカフ", "LHME ライオンハート イヤーカフ", "#333333")
     o += b.h2("anan No.2518：田中樹はリング4点とネックレス")
     o += b.mini(("雑誌", "anan No.2518(2026年11月4日発売)・表紙"),
                 ("メンバー", "田中樹"),
@@ -197,6 +205,8 @@ def build():
     o += b.xembed("https://x.com/em_grp_official/status/2123653490706952287")
 
     # ---- 購入先
+    o += aff("e.m.(イーエム)のリング", "e.m. イーエム リング", "#333333")
+    o += aff("Spice(スパイス)のネックレス", "Spice ジュエリー ネックレス", "#333333")
     o += b.h2("SixTONESの雑誌着用アクセが買えるお店")
     o += b.p("紹介したアクセサリーは、どれもブランドの公式オンラインショップで買えます。",
              "人気のアイテムは完売や再入荷待ちになることがあるので、公式SNSもチェックしてみてください。")

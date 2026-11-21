@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import blogkit  # noqa: E402
-from _mag_acc_2026_common import Media  # noqa: E402
+from _mag_acc_2026_common import Media, NOTICE, aff  # noqa: E402
 
 SITE = "travis"
 KEY = "tj_mag_acc_2026_1121"
@@ -36,7 +36,7 @@ IMGS = {
 
 
 def build():
-    o = ""
+    o = NOTICE
     o += b.p("Travis Japanのメンバーは、雑誌のグラビアでもおしゃれなアクセサリーを着けています。",
              "撮影のあと、ブランドの公式アカウントが「着用いただきました」と発表してくれることもあります。")
     o += b.p("この記事では、" + b.mark("2026年に発売された雑誌で着用したアクセサリー") + "を、ブランドの公式発表をもとにまとめました。",
@@ -77,6 +77,7 @@ def build():
     o += M.fig("tj_2037133188443820376_0", "gramii_mf")
     o += M.fig("tj_2037133188443820376_2", "gramii_mf")
 
+    o += aff("gramii(グラミー)のリング", "gramii リング", "#4a7fc1")
     # ---- J Movie
     o += b.h2("J Movie Vol.129：松倉海斗はLHME")
     o += b.mini(("雑誌", "J Movie Magazine Vol.129(2026年4月1日発売)"),
@@ -88,6 +89,7 @@ def build():
              "2通りの着け方ができる2wayタイプで、サージカルステンレス製なので金属アレルギーにも配慮されています。")
     o += b.p("くわしくは、" + b.link("https://lionheart-store.com/cp/press/detail/321/", "LION HEART公式のPRESSページ") + "でも見られます。")
 
+    o += aff("LHMEのハートネックレス", "LHME ライオンハート ハート ネックレス", "#4a7fc1")
     # ---- TV station 9
     o += b.h2("TV station 9号：川島如恵留はパール")
     o += b.mini(("雑誌", "TV station 2026年9号(関東版・4月11日〜24日号)"),
@@ -111,6 +113,7 @@ def build():
     o += b.p("同じネックレスは、SixTONESのメンバーも雑誌で着けています。")
     o += M.fig("tj_2092907474244272311_1", "LHME2020")
 
+    o += aff("LHMEのバロックパールネックレス", "LHME バロックパール ネックレス", "#4a7fc1")
     # ---- FINEBOYS
     o += b.h2("FINEBOYS 10月号：七五三掛龍也は喜平のブレスレット")
     o += b.mini(("雑誌", "FINEBOYS 2026年10月号(2026年9月9日発売)・表紙"),
@@ -123,12 +126,14 @@ def build():
              "買いたい人は、ブランドの公式SNSで再販の情報をチェックしてみてください。")
     o += M.fig("tj_2097490177203523947_1", "NP_PRESS")
 
+    o += aff("NARRATIVEPLATOON(ナラティブプラトゥーン)のブレスレット", "NARRATIVEPLATOON", "#4a7fc1")
     # ---- おまけ
     o += b.h2("雑誌以外では『陰ニモ日向ニモ』でJUSTIN DAVIS")
     o += b.p("雑誌ではありませんが、2ndシングル『陰ニモ日向ニモ』でもアクセが話題になりました。", "ミュージックビデオとアーティスト写真で、JUSTIN DAVISのネックレスを着けています。",
              "ブランドの発表では、宮近海斗と松田元太の名前が挙がっていました。")
     o += b.xembed("https://x.com/joat_jack/status/2024427846652088679")
 
+    o += aff("JUSTIN DAVIS(ジャスティンデイビス)のネックレス", "JUSTIN DAVIS ネックレス", "#4a7fc1")
     # ---- 購入先
     o += b.h2("Travis Japanの雑誌着用アクセが買えるお店")
     o += b.p("紹介したアクセサリーは、ブランドの公式オンラインショップで買えます。",
