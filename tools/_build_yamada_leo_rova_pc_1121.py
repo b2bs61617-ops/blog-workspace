@@ -24,7 +24,7 @@ CATEGORIES = [37]
 NAMES = ["山田涼介", "髙野大知"]
 EYECATCH = blogkit.ROOT / "images" / (KEY + "_eyecatch.jpg")
 EYECATCH_ALT = "山田涼介 LEO RØVA 木目調PC 売り切れ 値段"
-X_TEXT = ""
+X_TEXT = "山田涼介(LEO)の木目調PC「RØVA」、公式ストアを見たら6種ぜんぶ同じ表示に…😳\n今日の会見では木目調のノートPCも出ると発表！\nメンバーからは「いつの間にPCなんて作ってたんだよ」の声も"
 X_TAGS = "#山田涼介 #LEO #RØVA"
 MEDIA_JSON = blogkit.ARTICLES / (KEY + "_media.json")
 
