@@ -384,9 +384,13 @@ async def collect_x(page, context, should_continue, on_status, on_post):
                         dt = datetime.fromisoformat(dt_attr.replace("Z", "+00:00"))
                         date_str = dt.strftime("%Y/%m/%d %H:%M")
 
-                on_status(f"[X] リプライ取得中... ({count + 1}件目)")
-                comments = await fetch_x_replies(context, tweet_url)
-                reply_fetch_count += 1
+                if os.environ.get("XIY_NO_REPLIES") == "1":
+                    # 2026-11-21: brand/announcement sweeps don't need replies; skip for speed
+                    comments = []
+                else:
+                    on_status(f"[X] リプライ取得中... ({count + 1}件目)")
+                    comments = await fetch_x_replies(context, tweet_url)
+                    reply_fetch_count += 1
 
                 post = {"platform": "x", "date": date_str, "text": text, "images": img_urls,
                         "url": tweet_url, "comments": comments}
